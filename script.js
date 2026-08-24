@@ -34,6 +34,169 @@ function gerarSlug(texto) {
     .slice(0, 40);
 }
 
+// ========== FUNÇÃO PARA FORMATAR WHATSAPP ==========
+function formatarWhatsApp(valor) {
+  // Remove tudo que não é número
+  let numeros = valor.replace(/\D/g, '');
+  
+  // Limita a 13 dígitos (2 do país + 2 do DDD + 9 do número)
+  numeros = numeros.slice(0, 13);
+  
+  // Se tiver código do país (55)
+  if (numeros.length > 11) {
+    // Formato: +55 (85) 99999-9999
+    if (numeros.length >= 13) {
+      return `+${numeros.slice(0, 2)} (${numeros.slice(2, 4)}) ${numeros.slice(4, 9)}-${numeros.slice(9, 13)}`;
+    }
+    // Formato parcial
+    if (numeros.length >= 12) {
+      return `+${numeros.slice(0, 2)} (${numeros.slice(2, 4)}) ${numeros.slice(4, 9)}-${numeros.slice(9)}`;
+    }
+  }
+  
+  // Formato: (85) 99999-9999
+  if (numeros.length >= 11) {
+    return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7, 11)}`;
+  }
+  if (numeros.length >= 10) {
+    return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 6)}-${numeros.slice(6, 10)}`;
+  }
+  if (numeros.length >= 7) {
+    return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7)}`;
+  }
+  if (numeros.length >= 3) {
+    return `(${numeros.slice(0, 2)}) ${numeros.slice(2)}`;
+  }
+  if (numeros.length >= 1) {
+    return `(${numeros}`;
+  }
+  
+  return numeros;
+}
+
+// ========== FUNÇÃO PARA VALIDAR WHATSAPP ==========
+function validarWhatsApp(valor) {
+  // Remove formatação
+  const numeros = valor.replace(/\D/g, '');
+  
+  // Verifica se está vazio
+  if (!numeros) {
+    return {
+      valido: false,
+      mensagem: 'Digite o número do WhatsApp'
+    };
+  }
+  
+  // Verifica quantidade mínima de dígitos
+  if (numeros.length < 10) {
+    return {
+      valido: false,
+      mensagem: 'Número incompleto. Digite o DDD + número (ex: 85 99999-9999)'
+    };
+  }
+  
+  // Se tiver 10 ou 11 dígitos, é formato brasileiro
+  if (numeros.length === 10 || numeros.length === 11) {
+    // Verifica se o DDD é válido (11-99)
+    const ddd = parseInt(numeros.slice(0, 2));
+    if (ddd < 11 || ddd > 99) {
+      return {
+        valido: false,
+        mensagem: 'DDD inválido. Use um DDD entre 11 e 99'
+      };
+    }
+    
+    // Verifica se o número começa com 9 (celular)
+    if (numeros.length === 11 && numeros[2] !== '9') {
+      return {
+        valido: false,
+        mensagem: 'Número de celular deve começar com 9 (ex: 85 99999-9999)'
+      };
+    }
+  }
+  
+  // Se tiver 12 ou 13 dígitos, verifica código do país
+  if (numeros.length === 12 || numeros.length === 13) {
+    const codigoPais = numeros.slice(0, 2);
+    if (codigoPais !== '55') {
+      return {
+        valido: false,
+        mensagem: 'Use o código do Brasil (55) ou remova o código do país'
+      };
+    }
+  }
+  
+  // Se tiver mais de 13 dígitos, está errado
+  if (numeros.length > 13) {
+    return {
+      valido: false,
+      mensagem: 'Número muito longo. Verifique se digitou corretamente'
+    };
+  }
+  
+  // Se passou por todas as validações, é válido
+  // Remove o código do país se tiver 12 ou 13 dígitos
+  let numeroLimpo = numeros;
+  if (numeros.length === 12 || numeros.length === 13) {
+    numeroLimpo = numeros.slice(2); // Remove o 55
+  }
+  
+  return {
+    valido: true,
+    mensagem: 'Número válido',
+    numeroLimpo: numeroLimpo
+  };
+}
+
+// ========== FUNÇÃO PARA MOSTRAR ERRO ==========
+function mostrarErro(campo, mensagem) {
+  // Remove erro anterior
+  limparErro(campo);
+  
+  const field = campo.closest('.field');
+  const div = document.createElement('div');
+  div.className = 'error-message';
+  div.textContent = '⚠️ ' + mensagem;
+  
+  campo.style.borderColor = '#ef4444';
+  campo.style.backgroundColor = '#fef2f2';
+  campo.classList.add('error');
+  
+  field.appendChild(div);
+}
+
+// ========== FUNÇÃO PARA LIMPAR ERRO ==========
+function limparErro(campo) {
+  const field = campo.closest('.field');
+  const erroDiv = field.querySelector('.error-message');
+  
+  if (erroDiv) {
+    erroDiv.remove();
+  }
+  
+  campo.style.borderColor = '';
+  campo.style.backgroundColor = '';
+  campo.classList.remove('error');
+}
+
+// ========== FUNÇÃO PARA ATUALIZAR PREVIEW ==========
+function atualizarPreview(whatsapp) {
+  const preview = document.getElementById('whatsappPreview');
+  const previewNumber = document.getElementById('previewNumber');
+  const numeros = whatsapp.value.replace(/\D/g, '');
+  
+  if (numeros.length >= 10) {
+    preview.style.display = 'flex';
+    if (numeros.length === 12 || numeros.length === 13) {
+      previewNumber.textContent = numeros.slice(2);
+    } else {
+      previewNumber.textContent = numeros;
+    }
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
 // ========== FUNÇÕES DE LOADING ==========
 function mostrarLoading(button) {
   button.disabled = true;
@@ -72,13 +235,27 @@ document.addEventListener('DOMContentLoaded', () => {
     slug.value = gerarSlug(slug.value);
   });
 
-  // ========== FORMATAR WHATSAPP ==========
-  whatsapp.addEventListener('input', () => {
-    let valor = whatsapp.value.replace(/\D/g, '');
-    if (valor.length > 13) {
-      valor = valor.slice(0, 13);
+  // ========== MÁSCARA DO WHATSAPP ==========
+  whatsapp.addEventListener('input', (e) => {
+    const valorFormatado = formatarWhatsApp(whatsapp.value);
+    whatsapp.value = valorFormatado;
+    
+    // Limpar erro se existir
+    limparErro(whatsapp);
+    
+    // Atualizar preview
+    atualizarPreview(whatsapp);
+  });
+
+  // ========== VALIDAÇÃO EM TEMPO REAL ==========
+  whatsapp.addEventListener('blur', () => {
+    const validacao = validarWhatsApp(whatsapp.value);
+    
+    if (!validacao.valido && whatsapp.value.trim() !== '') {
+      mostrarErro(whatsapp, validacao.mensagem);
+    } else if (validacao.valido) {
+      limparErro(whatsapp);
     }
-    whatsapp.value = valor;
   });
 
   // ========== ENVIAR FORMULÁRIO ==========
@@ -93,16 +270,34 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Validações
-    if (!payload.empresa || !payload.whatsapp || !payload.slug) {
-      alert('⚠️ Preencha todos os campos obrigatórios.');
+    if (!payload.empresa) {
+      alert('⚠️ Digite o nome da empresa.');
+      empresa.focus();
+      return;
+    }
+
+    if (!payload.whatsapp) {
+      mostrarErro(whatsapp, 'Digite o número do WhatsApp');
+      whatsapp.focus();
+      return;
+    }
+
+    if (!payload.slug) {
+      alert('⚠️ Digite um nome para o link.');
+      slug.focus();
       return;
     }
 
     // Validar WhatsApp
-    if (payload.whatsapp.length < 10) {
-      alert('⚠️ Número de WhatsApp inválido. Inclua o DDD.');
+    const validacaoWhatsApp = validarWhatsApp(payload.whatsapp);
+    if (!validacaoWhatsApp.valido) {
+      mostrarErro(whatsapp, validacaoWhatsApp.mensagem);
+      whatsapp.focus();
       return;
     }
+
+    // Limpar número do WhatsApp para salvar
+    payload.whatsapp = validacaoWhatsApp.numeroLimpo;
 
     mostrarLoading(submitBtn);
 
@@ -137,7 +332,6 @@ document.addEventListener('DOMContentLoaded', () => {
       copyBtn.textContent = '✅ Copiado!';
       setTimeout(() => copyBtn.textContent = '📋 Copiar', 2000);
     } catch (err) {
-      // Fallback para navegadores antigos
       generatedUrl.select();
       document.execCommand('copy');
       copyBtn.textContent = '✅ Copiado!';
