@@ -17,15 +17,6 @@
     <p class="sub">Estamos preparando seu atendimento...</p>
     
     <!-- ESPAÇO PARA ANÚNCIO -->
-    <!-- 
-    ═══════════════════════════════════════════════════════
-    ESPAÇO RESERVADO PARA ANÚNCIOS
-    Você pode colocar aqui:
-    - Google AdSense
-    - Banner próprio
-    - Links patrocinados
-    ═══════════════════════════════════════════════════════
-    -->
     <div class="ad-space">
       <small>PUBLICIDADE</small>
       <div class="ad-placeholder">
@@ -62,24 +53,21 @@
         const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
         const data = await response.json();
         
+        console.log('Dados recebidos:', data); // Debug
+        
         if (data.error) {
           throw new Error(data.error);
         }
         
+        // Garantir que os campos existam
+        if (!data.empresa || !data.whatsapp) {
+          throw new Error('Dados incompletos do link');
+        }
+        
         return data;
       } catch (err) {
-        throw new Error('Link não encontrado ou expirado');
-      }
-    }
-
-    // ========== FUNÇÃO PARA REGISTRAR CLIQUE ==========
-    async function registrarClique(slug) {
-      try {
-        await fetch(`${API_URL}?slug=${slug}&action=click`, {
-          method: 'POST'
-        });
-      } catch (err) {
-        console.log('Erro ao registrar clique:', err);
+        console.error('Erro ao buscar link:', err);
+        throw new Error(err.message || 'Link não encontrado ou expirado');
       }
     }
 
@@ -99,16 +87,13 @@
         // Buscar dados do link
         const link = await buscarLink(slug);
         
-        // Registrar clique
-        registrarClique(slug);
-        
         // Preencher dados na página
         document.getElementById('empresaNome').textContent = link.empresa;
         document.getElementById('avatar').textContent = link.empresa.charAt(0).toUpperCase();
         document.title = `${link.empresa} - WhatsApp`;
 
         // Montar URL do WhatsApp
-        let waNumber = link.whatsapp.replace(/\D/g, '');
+        let waNumber = String(link.whatsapp).replace(/\D/g, ''); // Converter para string
         
         // Adicionar código do país Brasil (55) se não tiver
         if (waNumber.length === 10 || waNumber.length === 11) {
@@ -118,9 +103,11 @@
         let waUrl = `https://wa.me/${waNumber}`;
         
         // Adicionar mensagem pré-preenchida se existir
-        if (link.mensagem) {
-          waUrl += `?text=${encodeURIComponent(link.mensagem)}`;
+        if (link.mensagem && String(link.mensagem).trim() !== '') {
+          waUrl += `?text=${encodeURIComponent(String(link.mensagem))}`;
         }
+        
+        console.log('URL do WhatsApp:', waUrl); // Debug
         
         document.getElementById('waLink').href = waUrl;
 
@@ -139,6 +126,7 @@
         }, 1000);
 
       } catch (err) {
+        console.error('Erro:', err);
         document.getElementById('container').innerHTML = 
           `<div style="text-align:center;padding:40px;">
             <p style="font-size:48px;margin-bottom:20px;">🔗</p>
