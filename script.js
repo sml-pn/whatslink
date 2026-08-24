@@ -1,8 +1,7 @@
 // ============================================================
-// CONFIGURAÇÃO - COLOQUE SUA URL AQUI
+// CONFIGURAÇÃO - URL DA API
 // ============================================================
-const API_URL = 'https://script.google.com/macros/s/SEU_ID_AQUI/exec';
-// ↑↑↑ SUBSTITUA "SEU_ID_AQUI" pela URL completa do seu Apps Script
+const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
 
 // ========== FUNÇÃO PARA CRIAR LINK ==========
 async function criarLink(payload) {
