@@ -1,7 +1,8 @@
 // ============================================================
-// CONFIGURAÇÃO - URL DA API
+// CONFIGURAÇÃO - URL DA API E DOMÍNIO
 // ============================================================
 const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+const DOMINIO = 'https://whatslink-48tc.onrender.com';
 
 // ========== FUNÇÃO PARA CRIAR LINK ==========
 async function criarLink(payload) {
@@ -107,8 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const data = await criarLink(payload);
-      const baseUrl = window.location.origin;
-      const fullUrl = `${baseUrl}/redirect.html?slug=${data.slug}`;
+      const fullUrl = `${DOMINIO}/redirect.html?slug=${data.slug}`;
       
       generatedUrl.value = fullUrl;
       resultDiv.style.display = 'block';
