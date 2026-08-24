@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecionando para WhatsApp...</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="redirect-card" id="container">
+    <!-- AVATAR DA EMPRESA -->
+    <div class="avatar" id="avatar">A</div>
+    
+    <!-- NOME DA EMPRESA -->
+    <h1 id="empresaNome">Carregando...</h1>
+    <p class="sub">Estamos preparando seu atendimento...</p>
+    
+    <!-- ESPAÇO PARA ANÚNCIO -->
+    <!-- 
+    ═══════════════════════════════════════════════════════
+    ESPAÇO RESERVADO PARA ANÚNCIOS
+    Você pode colocar aqui:
+    - Google AdSense
+    - Banner próprio
+    - Links patrocinados
+    ═══════════════════════════════════════════════════════
+    -->
+    <div class="ad-space">
+      <small>PUBLICIDADE</small>
+      <div class="ad-placeholder">
+        300×250 • Espaço para anúncio
+      </div>
+    </div>
+
+    <!-- INDICADOR DE CARREGAMENTO -->
+    <div class="spinner"></div>
+    <p style="font-weight: 500; margin-bottom: 8px;">Redirecionando para o WhatsApp</p>
+    
+    <!-- CONTADOR -->
+    <div class="timer-group">
+      <span>Aguarde</span>
+      <span class="timer" id="countdown">3</span>
+      <span>segundos</span>
+    </div>
+
+    <!-- LINK DIRETO -->
+    <a href="#" id="waLink" target="_blank" class="wa-link">
+      ou clique aqui para ir agora →
+    </a>
+  </div>
+
+  <script>
+    // ============================================================
+    // CONFIGURAÇÃO - COLOQUE SUA URL AQUI
+    // ============================================================
+    const API_URL = 'https://script.google.com/macros/s/SEU_ID_AQUI/exec';
+    // ↑↑↑ SUBSTITUA "SEU_ID_AQUI" pela URL completa do seu Apps Script
+
+    // ========== FUNÇÃO PARA BUSCAR DADOS ==========
+    async function buscarLink(slug) {
+      try {
+        const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
+        const data = await response.json();
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        return data;
+      } catch (err) {
+        throw new Error('Link não encontrado ou expirado');
+      }
+    }
+
+    // ========== FUNÇÃO PARA REGISTRAR CLIQUE ==========
+    async function registrarClique(slug) {
+      try {
+        await fetch(`${API_URL}?slug=${slug}&action=click`, {
+          method: 'POST'
+        });
+      } catch (err) {
+        console.log('Erro ao registrar clique:', err);
+      }
+    }
+
+    // ========== FUNÇÃO PRINCIPAL ==========
+    (async function() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+
+      // Verificar se tem slug
+      if (!slug) {
+        document.getElementById('container').innerHTML = 
+          '<p style="text-align:center;padding:40px;color:#ef4444;">❌ Link inválido</p>';
+        return;
+      }
+
+      try {
+        // Buscar dados do link
+        const link = await buscarLink(slug);
+        
+        // Registrar clique
+        registrarClique(slug);
+        
+        // Preencher dados na página
+        document.getElementById('empresaNome').textContent = link.empresa;
+        document.getElementById('avatar').textContent = link.empresa.charAt(0).toUpperCase();
+        document.title = `${link.empresa} - WhatsApp`;
+
+        // Montar URL do WhatsApp
+        let waNumber = link.whatsapp.replace(/\D/g, '');
+        
+        // Adicionar código do país Brasil (55) se não tiver
+        if (waNumber.length === 10 || waNumber.length === 11) {
+          waNumber = '55' + waNumber;
+        }
+        
+        let waUrl = `https://wa.me/${waNumber}`;
+        
+        // Adicionar mensagem pré-preenchida se existir
+        if (link.mensagem) {
+          waUrl += `?text=${encodeURIComponent(link.mensagem)}`;
+        }
+        
+        document.getElementById('waLink').href = waUrl;
+
+        // Contagem regressiva
+        let seconds = 3;
+        const timerEl = document.getElementById('countdown');
+        
+        const interval = setInterval(() => {
+          seconds--;
+          timerEl.textContent = seconds;
+          
+          if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.href = waUrl;
+          }
+        }, 1000);
+
+      } catch (err) {
+        document.getElementById('container').innerHTML = 
+          `<div style="text-align:center;padding:40px;">
+            <p style="font-size:48px;margin-bottom:20px;">🔗</p>
+            <p style="color:#ef4444;font-weight:600;margin-bottom:10px;">Link não encontrado</p>
+            <p style="color:#71717a;font-size:14px;">${err.message}</p>
+            <a href="index.html" style="display:inline-block;margin-top:20px;color:#18181b;text-decoration:underline;">
+              ← Voltar para página inicial
+            </a>
+          </div>`;
+      }
+    })();
+  </script>
+</body>
+</html>
