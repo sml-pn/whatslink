@@ -15,6 +15,8 @@
   --success: #16a34a;
   --success-bg: #f0fdf4;
   --success-border: #bbf7d0;
+  --error: #ef4444;
+  --error-bg: #fef2f2;
   --gray-50: #fafafa;
   --gray-100: #f4f4f5;
   --gray-200: #e4e4e7;
@@ -142,6 +144,7 @@ header {
 /* ========== CAMPOS DO FORMULÁRIO ========== */
 .field {
   margin-bottom: 20px;
+  position: relative;
 }
 
 .field label {
@@ -182,12 +185,60 @@ header {
   color: var(--gray-400);
 }
 
+.field input.error {
+  border-color: var(--error);
+  background-color: var(--error-bg);
+}
+
 .field small {
   display: block;
   margin-top: 6px;
   font-size: 11px;
   color: var(--gray-400);
   line-height: 1.4;
+}
+
+/* ========== MENSAGEM DE ERRO ========== */
+.error-message {
+  color: var(--error);
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 500;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== PREVIEW DO WHATSAPP ========== */
+.whatsapp-preview {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #15803d;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: slideDown 0.3s ease;
+}
+
+.preview-icon {
+  font-size: 14px;
+}
+
+.preview-text {
+  font-weight: 500;
 }
 
 /* ========== GRUPO DO SLUG ========== */
@@ -551,5 +602,17 @@ footer {
   
   .redirect-card {
     padding: 30px 20px;
+  }
+  
+  .slug-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .slug-group span {
+    border-right: none;
+    border-bottom: 2px solid var(--gray-200);
+    padding: 8px 16px;
+    font-size: 11px;
   }
 }
