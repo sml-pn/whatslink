@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsLink - Crie seu link para WhatsApp</title>
+  <meta name="description" content="Crie links profissionais para WhatsApp gratuitamente" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- CABEÇALHO -->
+    <header>
+      <div class="logo">
+        WhatsLink <span>BETA</span>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+      <!-- HERO -->
+      <div class="hero">
+        <h1>Crie seu link para <span>WhatsApp</span> gratuitamente</h1>
+        <p>Transforme seu número em um link curto e profissional. Compartilhe onde quiser.</p>
+      </div>
+
+      <!-- CARD DO FORMULÁRIO -->
+      <div class="card">
+        <h2>🚀 Criar meu link</h2>
+        <p class="card-subtitle">Preencha os dados abaixo para gerar seu link personalizado</p>
+        
+        <form id="linkForm">
+          <!-- NOME DA EMPRESA -->
+          <div class="field">
+            <label for="empresa">Nome da empresa *</label>
+            <input 
+              type="text" 
+              id="empresa" 
+              placeholder="Ex: Academia Top Fit" 
+              required 
+              autocomplete="organization"
+            />
+          </div>
+
+          <!-- NÚMERO DO WHATSAPP -->
+          <div class="field">
+            <label for="whatsapp">Número do WhatsApp *</label>
+            <input 
+              type="tel" 
+              id="whatsapp" 
+              placeholder="Ex: 85999999999" 
+              required 
+              autocomplete="tel"
+            />
+            <small>Digite apenas números com DDD. Ex: 85999999999</small>
+          </div>
+
+          <!-- MENSAGEM AUTOMÁTICA -->
+          <div class="field">
+            <label for="mensagem">Mensagem automática <span>(opcional)</span></label>
+            <textarea 
+              id="mensagem" 
+              rows="3" 
+              placeholder="Ex: Olá! Gostaria de mais informações sobre os serviços..."
+            ></textarea>
+            <small>Esta mensagem aparecerá pré-preenchida no WhatsApp do cliente</small>
+          </div>
+
+          <!-- SLUG PERSONALIZADO -->
+          <div class="field">
+            <label for="slug">Nome personalizado do link *</label>
+            <div class="slug-group">
+              <span>seudominio.com/</span>
+              <input 
+                type="text" 
+                id="slug" 
+                placeholder="academia-top-fit" 
+                required 
+              />
+            </div>
+            <small>Gerado automaticamente, mas você pode personalizar</small>
+          </div>
+
+          <!-- BOTÃO SUBMIT -->
+          <button type="submit" id="submitBtn">
+            Gerar meu link →
+          </button>
+        </form>
+
+        <!-- RESULTADO -->
+        <div id="result" style="display: none;">
+          <div class="result-box">
+            <p>✅ Seu link foi criado com sucesso!</p>
+            <div class="link-row">
+              <input type="text" id="generatedUrl" readonly />
+              <button id="copyBtn" title="Copiar link">📋 Copiar</button>
+            </div>
+            <button id="previewBtn">👁️ Ver página intermediária →</button>
+            <p class="share-tip">💡 Compartilhe este link em suas redes sociais, bio do Instagram, cartões de visita e onde mais quiser!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENEFÍCIOS -->
+      <div class="benefits">
+        <div class="benefit-item">
+          <span class="benefit-icon">⚡</span>
+          <h3>Rápido</h3>
+          <p>Crie seu link em segundos</p>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">🎯</span>
+          <h3>Profissional</h3>
+          <p>Link personalizado com sua marca</p>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">📊</span>
+          <h3>Mensurável</h3>
+          <p>Acompanhe os cliques</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+      <p>WhatsLink © 2024 • 100% gratuito • Feito com ❤️</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
