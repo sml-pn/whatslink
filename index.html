@@ -29,14 +29,14 @@
         <h2>🚀 Criar meu link</h2>
         <p class="card-subtitle">Preencha os dados abaixo para gerar seu link personalizado</p>
         
-        <form id="linkForm">
+        <form id="linkForm" novalidate>
           <!-- NOME DA EMPRESA -->
           <div class="field">
             <label for="empresa">Nome da empresa *</label>
             <input 
               type="text" 
               id="empresa" 
-              placeholder="Seu Negócio" 
+              placeholder="Ex: Seu Negócio" 
               required 
               autocomplete="organization"
             />
@@ -48,11 +48,16 @@
             <input 
               type="tel" 
               id="whatsapp" 
-              placeholder="Ex: 85999999999" 
+              placeholder="(85) 99999-9999" 
               required 
               autocomplete="tel"
+              maxlength="18"
             />
-            <small>Digite apenas números com DDD. Ex: 85999999999</small>
+            <small>Digite o DDD + número. Ex: (85) 99999-9999</small>
+            <div class="whatsapp-preview" id="whatsappPreview" style="display: none;">
+              <span class="preview-icon">💬</span>
+              <span class="preview-text">Link direto: wa.me/55<span id="previewNumber"></span></span>
+            </div>
           </div>
 
           <!-- MENSAGEM AUTOMÁTICA -->
