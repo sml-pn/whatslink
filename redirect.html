@@ -3,114 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="pageTitle">Carregando...</title>
-  <meta name="robots" content="noindex, nofollow" />
+  <title>Redirecionando...</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="reception-page" id="container">
-    <!-- HEADER COM BANNER OU LOGO -->
+    <!-- Cabeçalho visual -->
     <div class="header-container" id="headerContainer">
-      <div class="banner-image" id="bannerImageDiv" style="display: none;">
-        <img id="bannerImage" src="" alt="Banner" />
+      <!-- Banner (se existir) -->
+      <div class="banner-image" id="bannerDiv" style="display:none;">
+        <img id="bannerImg" src="" alt="Banner" />
       </div>
-      
-      <div class="logo-banner" id="logoBannerDiv" style="display: none;">
-        <img id="logoBannerImage" src="" alt="Logo" />
+      <!-- Logo como fundo com efeito vidro (se não houver banner) -->
+      <div class="logo-banner" id="logoBannerDiv" style="display:none;">
+        <img id="logoBannerImg" src="" alt="Logo" />
         <div class="glass-overlay"></div>
       </div>
-      
+      <!-- Cor sólida (se nada) -->
       <div class="color-banner" id="colorBannerDiv">
         <div class="color-banner-content">
           <span class="material-icons">storefront</span>
         </div>
       </div>
     </div>
-    
-    <!-- LOGO CIRCULAR -->
+
+    <!-- Logo circular -->
     <div class="reception-header">
-      <div class="company-logo" id="companyLogo" style="display: none;">
-        <img id="logoImage" src="" alt="Logo" />
+      <div class="company-logo" id="logoCircleDiv" style="display:none;">
+        <img id="logoCircleImg" src="" alt="Logo" />
       </div>
-      <div class="company-avatar" id="companyAvatar">
+      <div class="company-avatar" id="avatarDiv">
         <span id="avatarLetter">A</span>
       </div>
     </div>
-    
-    <!-- NOME E DESCRIÇÃO -->
+
+    <!-- Nome e descrição -->
     <div class="company-info">
       <h1 id="empresaNome">Carregando...</h1>
-      <p class="company-description" id="empresaDescricao" style="display: none;"></p>
+      <p class="company-description" id="descricaoTexto" style="display:none;"></p>
     </div>
-    
-    <!-- LOCALIZAÇÃO -->
-    <div class="map-container" id="mapContainer" style="display: none;">
+
+    <!-- Mapa (se localização fornecida) -->
+    <div class="map-container" id="mapContainer" style="display:none;">
       <div class="map-header">
-        <span class="material-icons map-icon">location_on</span>
-        <h3>Nossa localização</h3>
+        <span class="material-icons">location_on</span>
+        <h3>Localização</h3>
       </div>
-      <div class="map-embed" id="mapEmbed">
-        <p>Carregando mapa...</p>
-      </div>
-      <a href="#" id="mapLink" target="_blank" class="map-link">
-        <span class="material-icons">open_in_new</span>
-        Abrir no Google Maps
-      </a>
+      <div class="map-embed" id="mapEmbed">Carregando mapa...</div>
+      <a href="#" id="mapLink" target="_blank" class="map-link">Abrir no Google Maps</a>
     </div>
-    
-    <!-- BOTÃO WHATSAPP -->
+
+    <!-- Botão WhatsApp -->
     <div class="whatsapp-button-container">
       <button id="whatsappBtn" class="btn-whatsapp">
-        <i class="fab fa-whatsapp btn-icon"></i>
-        <span>Chamar no WhatsApp</span>
+        <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
       </button>
     </div>
-    
-    <!-- REDES SOCIAIS -->
-    <div class="social-buttons" id="socialButtons" style="display: none;">
-      <button id="instagramBtn" class="btn-social btn-instagram" style="display: none;">
-        <i class="fab fa-instagram btn-icon"></i>
-        <span>Instagram</span>
+
+    <!-- Redes sociais (somente se existirem) -->
+    <div class="social-buttons" id="socialButtons" style="display:none;">
+      <button id="instagramBtn" class="btn-social btn-instagram" style="display:none;">
+        <i class="fab fa-instagram"></i> Instagram
       </button>
-      
-      <button id="facebookBtn" class="btn-social btn-facebook" style="display: none;">
-        <i class="fab fa-facebook-f btn-icon"></i>
-        <span>Facebook</span>
+      <button id="facebookBtn" class="btn-social btn-facebook" style="display:none;">
+        <i class="fab fa-facebook-f"></i> Facebook
       </button>
-      
-      <button id="siteBtn" class="btn-social btn-site" style="display: none;">
-        <span class="material-icons btn-icon">public</span>
-        <span>Site</span>
+      <button id="siteBtn" class="btn-social btn-site" style="display:none;">
+        <span class="material-icons">public</span> Site
       </button>
     </div>
-    
-    <!-- HORÁRIO -->
+
+    <!-- Horário (se fornecido) -->
     <div class="additional-info">
-      <div id="horarioInfo" class="info-item" style="display: none;">
-        <span class="material-icons info-icon">schedule</span>
+      <div id="horarioInfo" class="info-item" style="display:none;">
+        <span class="material-icons">schedule</span>
         <div>
           <h3>Horário</h3>
           <p id="horarioTexto"></p>
         </div>
       </div>
     </div>
-    
-    <!-- MODAL -->
-    <div class="modal-overlay" id="modalOverlay" style="display: none;">
+
+    <!-- Modal de redirecionamento -->
+    <div class="modal-overlay" id="modalOverlay" style="display:none;">
       <div class="modal-content">
         <div class="spinner"></div>
         <h3>Abrindo WhatsApp...</h3>
-        <p>Você será redirecionado em instantes</p>
-        <button id="cancelRedirect" class="btn-cancel">
-          <span class="material-icons">close</span>
-          Cancelar
-        </button>
-        <a href="#" id="waLink" target="_blank" class="wa-link">
-          <span class="material-icons">open_in_new</span>
-          Ou clique aqui se não redirecionar
-        </a>
+        <p>Você será redirecionado</p>
+        <button id="cancelRedirect" class="btn-cancel">Cancelar</button>
+        <a href="#" id="waLink" target="_blank" class="wa-link">Abrir diretamente</a>
       </div>
     </div>
   </div>
@@ -119,165 +102,126 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
 
     async function buscarLink(slug) {
-      try {
-        const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
-        const data = await response.json();
-        
-        if (data.error) {
-          throw new Error(data.error);
-        }
-        
-        return data;
-      } catch (err) {
-        throw new Error('Link não encontrado');
-      }
+      const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      return data;
     }
 
     (async function() {
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('slug');
-
       if (!slug) {
-        document.getElementById('container').innerHTML = 
-          '<p style="text-align:center;padding:40px;">Link inválido</p>';
+        document.getElementById('container').innerHTML = '<p>Link inválido</p>';
         return;
       }
 
       try {
         const link = await buscarLink(slug);
-        
+        console.log('Dados recebidos:', link);
+
         document.title = link.empresa + ' - Página Oficial';
-        
-        // ========== HEADER ==========
-        const temBanner = link.banner_url && String(link.banner_url).trim() !== '';
-        const temLogo = link.logo_url && String(link.logo_url).trim() !== '';
-        
+
+        // Cabeçalho: banner, logo ou cor
+        const temBanner = link.banner_url && link.banner_url.trim() !== '';
+        const temLogo = link.logo_url && link.logo_url.trim() !== '';
+
         if (temBanner) {
-          document.getElementById('bannerImage').src = link.banner_url;
-          document.getElementById('bannerImageDiv').style.display = 'block';
-          document.getElementById('logoBannerDiv').style.display = 'none';
-          document.getElementById('colorBannerDiv').style.display = 'none';
+          document.getElementById('bannerImg').src = link.banner_url;
+          document.getElementById('bannerDiv').style.display = 'block';
         } else if (temLogo) {
-          document.getElementById('logoBannerImage').src = link.logo_url;
+          document.getElementById('logoBannerImg').src = link.logo_url;
           document.getElementById('logoBannerDiv').style.display = 'block';
-          document.getElementById('bannerImageDiv').style.display = 'none';
-          document.getElementById('colorBannerDiv').style.display = 'none';
         } else {
           document.getElementById('colorBannerDiv').style.display = 'block';
-          document.getElementById('bannerImageDiv').style.display = 'none';
-          document.getElementById('logoBannerDiv').style.display = 'none';
         }
-        
-        // ========== LOGO CIRCULAR ==========
+
+        // Logo circular
         if (temLogo) {
-          document.getElementById('logoImage').src = link.logo_url;
-          document.getElementById('companyLogo').style.display = 'block';
-          document.getElementById('companyAvatar').style.display = 'none';
+          document.getElementById('logoCircleImg').src = link.logo_url;
+          document.getElementById('logoCircleDiv').style.display = 'block';
+          document.getElementById('avatarDiv').style.display = 'none';
         } else {
           document.getElementById('avatarLetter').textContent = link.empresa.charAt(0).toUpperCase();
-          document.getElementById('companyAvatar').style.display = 'flex';
         }
-        
-        // ========== NOME ==========
+
+        // Nome e descrição
         document.getElementById('empresaNome').textContent = link.empresa;
-        
-        // ========== DESCRIÇÃO ==========
-        if (link.descricao && String(link.descricao).trim() !== '') {
-          document.getElementById('empresaDescricao').textContent = link.descricao;
-          document.getElementById('empresaDescricao').style.display = 'block';
+        if (link.descricao && link.descricao.trim() !== '') {
+          document.getElementById('descricaoTexto').textContent = link.descricao;
+          document.getElementById('descricaoTexto').style.display = 'block';
         }
-        
-        // ========== LOCALIZAÇÃO ==========
-        if (link.localizacao && String(link.localizacao).trim() !== '') {
+
+        // Localização
+        if (link.localizacao && link.localizacao.trim() !== '') {
           document.getElementById('mapContainer').style.display = 'block';
           document.getElementById('mapLink').href = link.localizacao;
-          
-          if (link.localizacao.includes('maps.google.com') || link.localizacao.includes('goo.gl/maps')) {
+          if (link.localizacao.includes('google.com/maps')) {
             const iframe = document.createElement('iframe');
             iframe.src = link.localizacao.replace('/maps?', '/maps?output=embed&');
             iframe.width = '100%';
             iframe.height = '200';
             iframe.style.border = '0';
-            iframe.allowFullscreen = true;
-            iframe.loading = 'lazy';
-            
             document.getElementById('mapEmbed').innerHTML = '';
             document.getElementById('mapEmbed').appendChild(iframe);
           } else {
-            document.getElementById('mapEmbed').innerHTML = '<p>Clique para ver a localização</p>';
+            document.getElementById('mapEmbed').innerHTML = '<p>Clique no link abaixo</p>';
           }
         }
-        
-        // ========== WHATSAPP ==========
+
+        // WhatsApp
         let waNumber = String(link.whatsapp).replace(/\D/g, '');
-        if (waNumber.length === 10 || waNumber.length === 11) {
-          waNumber = '55' + waNumber;
-        }
+        if (waNumber.length === 10 || waNumber.length === 11) waNumber = '55' + waNumber;
         let waUrl = 'https://wa.me/' + waNumber;
-        if (link.mensagem && String(link.mensagem).trim() !== '') {
+        if (link.mensagem && link.mensagem.trim() !== '') {
           waUrl += '?text=' + encodeURIComponent(link.mensagem);
         }
-        
         document.getElementById('waLink').href = waUrl;
-        
+
         document.getElementById('whatsappBtn').addEventListener('click', () => {
           document.getElementById('modalOverlay').style.display = 'flex';
-          
           setTimeout(() => {
             window.open(waUrl, '_blank');
             document.getElementById('modalOverlay').style.display = 'none';
           }, 2000);
         });
-        
         document.getElementById('cancelRedirect').addEventListener('click', () => {
           document.getElementById('modalOverlay').style.display = 'none';
         });
-        
-        // ========== REDES SOCIAIS ==========
-        let temRedeSocial = false;
-        
-        if (link.instagram && String(link.instagram).trim() !== '') {
+
+        // Redes sociais
+        let temSocial = false;
+        if (link.instagram && link.instagram.trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
           document.getElementById('instagramBtn').addEventListener('click', () => {
-            const instagram = link.instagram.replace('@', '');
-            window.open('https://instagram.com/' + instagram, '_blank');
+            window.open('https://instagram.com/' + link.instagram.replace('@',''), '_blank');
           });
-          temRedeSocial = true;
+          temSocial = true;
         }
-        
-        if (link.facebook && String(link.facebook).trim() !== '') {
+        if (link.facebook && link.facebook.trim() !== '') {
           document.getElementById('facebookBtn').style.display = 'flex';
           document.getElementById('facebookBtn').addEventListener('click', () => {
             window.open(link.facebook, '_blank');
           });
-          temRedeSocial = true;
+          temSocial = true;
         }
-        
-        if (link.site && String(link.site).trim() !== '') {
+        if (link.site && link.site.trim() !== '') {
           document.getElementById('siteBtn').style.display = 'flex';
           document.getElementById('siteBtn').addEventListener('click', () => {
             window.open(link.site, '_blank');
           });
-          temRedeSocial = true;
+          temSocial = true;
         }
-        
-        if (temRedeSocial) {
-          document.getElementById('socialButtons').style.display = 'flex';
-        }
-        
-        // ========== HORÁRIO ==========
-        if (link.horario && String(link.horario).trim() !== '') {
+        if (temSocial) document.getElementById('socialButtons').style.display = 'flex';
+
+        // Horário
+        if (link.horario && link.horario.trim() !== '') {
           document.getElementById('horarioInfo').style.display = 'flex';
           document.getElementById('horarioTexto').textContent = link.horario;
         }
-        
+
       } catch (err) {
-        document.getElementById('container').innerHTML = 
-          '<div style="text-align:center;padding:40px;">' +
-            '<span class="material-icons" style="font-size:48px;margin-bottom:20px;">link_off</span>' +
-            '<p style="color:#ef4444;">' + err.message + '</p>' +
-            '<a href="index.html" style="display:inline-block;margin-top:20px;color:#18181b;text-decoration:underline;">Voltar para página inicial</a>' +
-          '</div>';
+        document.getElementById('container').innerHTML = '<p>Link não encontrado</p>';
       }
     })();
   </script>
