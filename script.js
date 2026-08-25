@@ -234,21 +234,23 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // Coletar TODOS os dados
     const payload = {
       empresa: empresa.value.trim(),
       whatsapp: whatsapp.value.trim(),
       slug: slug.value.trim(),
-      mensagem: mensagem.value.trim(),
-      logo_url: logoUrl.value.trim(),
-      banner_url: bannerUrl.value.trim(),
-      descricao: descricao.value.trim(),
-      localizacao: localizacao.value.trim(),
-      instagram: instagram.value.trim(),
-      facebook: facebook.value.trim(),
-      site: site.value.trim(),
-      horario: horario.value.trim(),
+      mensagem: mensagem.value.trim() || '',
+      logo_url: logoUrl.value.trim() || '',
+      banner_url: bannerUrl.value.trim() || '',
+      descricao: descricao.value.trim() || '',
+      localizacao: localizacao.value.trim() || '',
+      instagram: instagram.value.trim() || '',
+      facebook: facebook.value.trim() || '',
+      site: site.value.trim() || '',
+      horario: horario.value.trim() || ''
     };
 
+    // Validações
     if (!payload.empresa) {
       alert('Digite o nome da empresa.');
       empresa.focus();
@@ -280,6 +282,8 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.innerHTML = '<span class="material-icons" style="animation:spin 1s linear infinite;">sync</span> Gerando...';
 
     try {
+      console.log('Enviando dados:', payload); // Debug
+      
       const data = await criarLink(payload);
       const fullUrl = `${DOMINIO}/redirect.html?slug=${data.slug}`;
       
