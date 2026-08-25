@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WhatsLink - Crie seu link para WhatsApp gratuitamente</title>
-  <meta name="description" content="Crie links profissionais para WhatsApp 100% grátis" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
@@ -21,173 +20,109 @@
     <main>
       <div class="hero">
         <h1>Crie seu link para <span>WhatsApp</span> 100% grátis</h1>
-        <p>Link profissional, página personalizada e sem custo nenhum. Para sempre.</p>
-        <div class="hero-badges">
-          <span class="badge">
-            <span class="material-icons badge-icon">check_circle</span>
-            Sem cadastro
-          </span>
-          <span class="badge">
-            <span class="material-icons badge-icon">all_inclusive</span>
-            Sem limites
-          </span>
-          <span class="badge">
-            <span class="material-icons badge-icon">favorite</span>
-            Para sempre grátis
-          </span>
-        </div>
+        <p>Link profissional, página personalizada e sem custo nenhum.</p>
       </div>
 
       <div class="card">
-        <h2>
-          <span class="material-icons card-icon">rocket_launch</span>
-          Criar meu link agora
-        </h2>
-        <p class="card-subtitle">Leva menos de 1 minuto</p>
-        
+        <h2>Criar meu link agora</h2>
+        <p class="card-subtitle">Preencha os campos abaixo</p>
+
         <form id="linkForm" novalidate>
+          <!-- Campo: Nome da empresa -->
           <div class="field">
-            <label for="empresa">
-              <span class="material-icons field-icon">business</span>
-              Nome da empresa *
-            </label>
+            <label for="empresa">Nome da empresa *</label>
             <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
           </div>
 
+          <!-- Campo: Logo URL -->
           <div class="field">
-            <label for="logoUrl">
-              <span class="material-icons field-icon">image</span>
-              Logo da empresa <span>(opcional)</span>
-            </label>
+            <label for="logoUrl">Logo da empresa (opcional)</label>
             <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
-            <small>Cole o link da sua logo (PNG, JPG ou GIF)</small>
-            <div class="logo-preview" id="logoPreview" style="display: none;">
-              <img id="logoPreviewImage" src="" alt="Preview da logo" />
-            </div>
+            <small>Link direto da imagem (PNG, JPG)</small>
           </div>
 
+          <!-- Campo: Banner URL -->
           <div class="field">
-            <label for="bannerUrl">
-              <span class="material-icons field-icon">panorama</span>
-              Banner <span>(opcional)</span>
-            </label>
+            <label for="bannerUrl">Banner (opcional)</label>
             <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
-            <small>Link do banner para exibir no topo da página</small>
-            <div class="banner-preview" id="bannerPreview" style="display: none;">
-              <img id="bannerPreviewImage" src="" alt="Preview do banner" />
-            </div>
+            <small>Imagem ampla para o topo da página</small>
           </div>
 
+          <!-- Campo: WhatsApp -->
           <div class="field">
-            <label for="whatsapp">
-              <i class="fab fa-whatsapp field-icon whatsapp-icon"></i>
-              Número do WhatsApp *
-            </label>
+            <label for="whatsapp">Número do WhatsApp *</label>
             <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" />
-            <small>Digite o DDD + número. Ex: (85) 99999-9999</small>
           </div>
 
+          <!-- Campo: Mensagem automática -->
           <div class="field">
-            <label for="mensagem">
-              <span class="material-icons field-icon">chat</span>
-              Mensagem automática <span>(opcional)</span>
-            </label>
+            <label for="mensagem">Mensagem automática (opcional)</label>
             <textarea id="mensagem" rows="3" placeholder="Ex: Olá! Gostaria de mais informações..."></textarea>
           </div>
 
+          <!-- Campo: Descrição -->
           <div class="field">
-            <label for="descricao">
-              <span class="material-icons field-icon">description</span>
-              Descrição <span>(opcional)</span>
-            </label>
-            <textarea id="descricao" rows="3" placeholder="Descreva sua empresa, serviços, produtos..."></textarea>
+            <label for="descricao">Descrição (opcional)</label>
+            <textarea id="descricao" rows="3" placeholder="Descreva sua empresa, serviços..."></textarea>
           </div>
 
+          <!-- Campo: Localização -->
           <div class="field">
-            <label for="localizacao">
-              <span class="material-icons field-icon">location_on</span>
-              Link da localização <span>(opcional)</span>
-            </label>
+            <label for="localizacao">Link do Google Maps (opcional)</label>
             <input type="url" id="localizacao" placeholder="https://maps.google.com/?q=..." />
-            <small>Link do Google Maps da sua empresa</small>
           </div>
 
+          <!-- Campo: Instagram -->
           <div class="field">
-            <label for="instagram">
-              <i class="fab fa-instagram field-icon instagram-icon"></i>
-              Instagram <span>(opcional)</span>
-            </label>
+            <label for="instagram">Instagram (opcional)</label>
             <input type="text" id="instagram" placeholder="@suaempresa" />
           </div>
 
+          <!-- Campo: Facebook -->
           <div class="field">
-            <label for="facebook">
-              <i class="fab fa-facebook field-icon facebook-icon"></i>
-              Facebook <span>(opcional)</span>
-            </label>
+            <label for="facebook">Facebook (opcional)</label>
             <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
           </div>
 
+          <!-- Campo: Site -->
           <div class="field">
-            <label for="site">
-              <span class="material-icons field-icon">public</span>
-              Site <span>(opcional)</span>
-            </label>
+            <label for="site">Site (opcional)</label>
             <input type="url" id="site" placeholder="https://suaempresa.com" />
           </div>
 
+          <!-- Campo: Horário -->
           <div class="field">
-            <label for="horario">
-              <span class="material-icons field-icon">schedule</span>
-              Horário de funcionamento <span>(opcional)</span>
-            </label>
+            <label for="horario">Horário de funcionamento (opcional)</label>
             <input type="text" id="horario" placeholder="Seg a Sex: 8h às 18h" />
           </div>
 
+          <!-- Campo: Slug -->
           <div class="field">
-            <label for="slug">
-              <span class="material-icons field-icon">tag</span>
-              Nome do link *
-            </label>
+            <label for="slug">Nome do link *</label>
             <div class="slug-group">
               <span>whatslink-48tc.onrender.com/</span>
               <input type="text" id="slug" placeholder="academia-top-fit" required />
             </div>
-            <small>Gerado automaticamente, mas você pode personalizar</small>
           </div>
 
-          <button type="submit" id="submitBtn">
-            <span class="material-icons">send</span>
-            Gerar link grátis
-          </button>
+          <button type="submit" id="submitBtn">Gerar link grátis</button>
         </form>
 
         <div id="result" style="display: none;">
           <div class="result-box">
-            <p>
-              <span class="material-icons">check_circle</span>
-              Seu link foi criado com sucesso!
-            </p>
+            <p>✅ Link criado com sucesso!</p>
             <div class="link-row">
               <input type="text" id="generatedUrl" readonly />
-              <button id="copyBtn" title="Copiar link">
-                <span class="material-icons">content_copy</span>
-                Copiar
-              </button>
+              <button id="copyBtn">Copiar</button>
             </div>
-            <button id="previewBtn">
-              <span class="material-icons">visibility</span>
-              Ver página
-            </button>
+            <button id="previewBtn">Ver página</button>
           </div>
         </div>
       </div>
     </main>
 
     <footer>
-      <p>WhatsLink © 2024 • 100% gratuito • Feito com 
-        <span class="material-icons footer-heart">favorite</span>
-      </p>
+      <p>WhatsLink © 2024 • 100% gratuito</p>
     </footer>
   </div>
 
