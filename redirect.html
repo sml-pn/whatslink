@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redirecionando...</title>
+  <title>Página de recepção</title>
+  <meta name="robots" content="noindex, nofollow" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
@@ -11,84 +12,76 @@
 <body>
   <div class="reception-page" id="container">
     <!-- Cabeçalho visual -->
-    <div class="header-container" id="headerContainer">
-      <!-- Banner (se existir) -->
+    <div class="header-visual" id="headerVisual">
       <div class="banner-image" id="bannerDiv" style="display:none;">
         <img id="bannerImg" src="" alt="Banner" />
       </div>
-      <!-- Logo como fundo com efeito vidro (se não houver banner) -->
       <div class="logo-banner" id="logoBannerDiv" style="display:none;">
         <img id="logoBannerImg" src="" alt="Logo" />
         <div class="glass-overlay"></div>
       </div>
-      <!-- Cor sólida (se nada) -->
       <div class="color-banner" id="colorBannerDiv">
-        <div class="color-banner-content">
-          <span class="material-icons">storefront</span>
-        </div>
+        <span class="material-icons">storefront</span>
       </div>
     </div>
 
-    <!-- Logo circular -->
-    <div class="reception-header">
-      <div class="company-logo" id="logoCircleDiv" style="display:none;">
+    <!-- Conteúdo principal -->
+    <div class="reception-content">
+      <div class="logo-circle" id="logoCircle" style="display:none;">
         <img id="logoCircleImg" src="" alt="Logo" />
       </div>
-      <div class="company-avatar" id="avatarDiv">
+      <div class="avatar-circle" id="avatarCircle">
         <span id="avatarLetter">A</span>
       </div>
-    </div>
 
-    <!-- Nome e descrição -->
-    <div class="company-info">
-      <h1 id="empresaNome">Carregando...</h1>
-      <p class="company-description" id="descricaoTexto" style="display:none;"></p>
-    </div>
+      <h1 class="company-name" id="empresaNome">Carregando...</h1>
+      <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
 
-    <!-- Mapa (se localização fornecida) -->
-    <div class="map-container" id="mapContainer" style="display:none;">
-      <div class="map-header">
-        <span class="material-icons">location_on</span>
-        <h3>Localização</h3>
+      <!-- Botão WhatsApp -->
+      <button id="whatsappBtn" class="whatsapp-btn">
+        <i class="fab fa-whatsapp"></i>
+        <span>Chamar no WhatsApp</span>
+      </button>
+
+      <!-- Redes sociais -->
+      <div class="social-links" id="socialLinks" style="display:none;">
+        <button id="instagramBtn" class="social-btn instagram" style="display:none;">
+          <i class="fab fa-instagram"></i> Instagram
+        </button>
+        <button id="facebookBtn" class="social-btn facebook" style="display:none;">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </button>
+        <button id="siteBtn" class="social-btn site" style="display:none;">
+          <span class="material-icons">public</span> Site
+        </button>
       </div>
-      <div class="map-embed" id="mapEmbed">Carregando mapa...</div>
-      <a href="#" id="mapLink" target="_blank" class="map-link">Abrir no Google Maps</a>
-    </div>
 
-    <!-- Botão WhatsApp -->
-    <div class="whatsapp-button-container">
-      <button id="whatsappBtn" class="btn-whatsapp">
-        <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
-      </button>
-    </div>
+      <!-- Localização -->
+      <div class="location-block" id="locationBlock" style="display:none;">
+        <div class="map-container">
+          <iframe id="mapIframe" src="" width="100%" height="200" style="border:0;" loading="lazy"></iframe>
+        </div>
+        <a href="#" id="mapLink" target="_blank" class="map-link">
+          <span class="material-icons">open_in_new</span> Abrir no Google Maps
+        </a>
+      </div>
 
-    <!-- Redes sociais (somente se existirem) -->
-    <div class="social-buttons" id="socialButtons" style="display:none;">
-      <button id="instagramBtn" class="btn-social btn-instagram" style="display:none;">
-        <i class="fab fa-instagram"></i> Instagram
-      </button>
-      <button id="facebookBtn" class="btn-social btn-facebook" style="display:none;">
-        <i class="fab fa-facebook-f"></i> Facebook
-      </button>
-      <button id="siteBtn" class="btn-social btn-site" style="display:none;">
-        <span class="material-icons">public</span> Site
-      </button>
-    </div>
-
-    <!-- Horário (se fornecido) -->
-    <div class="additional-info">
-      <div id="horarioInfo" class="info-item" style="display:none;">
+      <!-- Horário -->
+      <div class="info-block" id="horarioBlock" style="display:none;">
         <span class="material-icons">schedule</span>
         <div>
-          <h3>Horário</h3>
+          <h3>Horário de funcionamento</h3>
           <p id="horarioTexto"></p>
         </div>
       </div>
+
+      <!-- Rodapé discreto -->
+      <p class="powered-by">Criado com <span class="heart">❤</span> WhatsLink</p>
     </div>
 
     <!-- Modal de redirecionamento -->
     <div class="modal-overlay" id="modalOverlay" style="display:none;">
-      <div class="modal-content">
+      <div class="modal-card">
         <div class="spinner"></div>
         <h3>Abrindo WhatsApp...</h3>
         <p>Você será redirecionado</p>
@@ -112,17 +105,15 @@
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('slug');
       if (!slug) {
-        document.getElementById('container').innerHTML = '<p>Link inválido</p>';
+        document.getElementById('container').innerHTML = '<p style="text-align:center;padding:40px;">Link inválido</p>';
         return;
       }
 
       try {
         const link = await buscarLink(slug);
-        console.log('Dados recebidos:', link);
+        document.title = link.empresa + ' – Página Oficial';
 
-        document.title = link.empresa + ' - Página Oficial';
-
-        // Cabeçalho: banner, logo ou cor
+        // Cabeçalho visual
         const temBanner = link.banner_url && link.banner_url.trim() !== '';
         const temLogo = link.logo_url && link.logo_url.trim() !== '';
 
@@ -136,37 +127,20 @@
           document.getElementById('colorBannerDiv').style.display = 'block';
         }
 
-        // Logo circular
+        // Logo circular / avatar
         if (temLogo) {
           document.getElementById('logoCircleImg').src = link.logo_url;
-          document.getElementById('logoCircleDiv').style.display = 'block';
-          document.getElementById('avatarDiv').style.display = 'none';
+          document.getElementById('logoCircle').style.display = 'block';
+          document.getElementById('avatarCircle').style.display = 'none';
         } else {
           document.getElementById('avatarLetter').textContent = link.empresa.charAt(0).toUpperCase();
         }
 
-        // Nome e descrição
         document.getElementById('empresaNome').textContent = link.empresa;
+
         if (link.descricao && link.descricao.trim() !== '') {
           document.getElementById('descricaoTexto').textContent = link.descricao;
           document.getElementById('descricaoTexto').style.display = 'block';
-        }
-
-        // Localização
-        if (link.localizacao && link.localizacao.trim() !== '') {
-          document.getElementById('mapContainer').style.display = 'block';
-          document.getElementById('mapLink').href = link.localizacao;
-          if (link.localizacao.includes('google.com/maps')) {
-            const iframe = document.createElement('iframe');
-            iframe.src = link.localizacao.replace('/maps?', '/maps?output=embed&');
-            iframe.width = '100%';
-            iframe.height = '200';
-            iframe.style.border = '0';
-            document.getElementById('mapEmbed').innerHTML = '';
-            document.getElementById('mapEmbed').appendChild(iframe);
-          } else {
-            document.getElementById('mapEmbed').innerHTML = '<p>Clique no link abaixo</p>';
-          }
         }
 
         // WhatsApp
@@ -183,7 +157,7 @@
           setTimeout(() => {
             window.open(waUrl, '_blank');
             document.getElementById('modalOverlay').style.display = 'none';
-          }, 2000);
+          }, 1800);
         });
         document.getElementById('cancelRedirect').addEventListener('click', () => {
           document.getElementById('modalOverlay').style.display = 'none';
@@ -212,16 +186,27 @@
           });
           temSocial = true;
         }
-        if (temSocial) document.getElementById('socialButtons').style.display = 'flex';
+        if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
+
+        // Localização
+        if (link.localizacao && link.localizacao.trim() !== '') {
+          document.getElementById('locationBlock').style.display = 'block';
+          document.getElementById('mapLink').href = link.localizacao;
+          if (link.localizacao.includes('google.com/maps')) {
+            document.getElementById('mapIframe').src = link.localizacao.replace('/maps?', '/maps?output=embed&');
+          } else {
+            document.getElementById('locationBlock').innerHTML = '<a href="' + link.localizacao + '" target="_blank">Ver localização</a>';
+          }
+        }
 
         // Horário
         if (link.horario && link.horario.trim() !== '') {
-          document.getElementById('horarioInfo').style.display = 'flex';
+          document.getElementById('horarioBlock').style.display = 'flex';
           document.getElementById('horarioTexto').textContent = link.horario;
         }
 
       } catch (err) {
-        document.getElementById('container').innerHTML = '<p>Link não encontrado</p>';
+        document.getElementById('container').innerHTML = '<p style="text-align:center;padding:40px;">Link não encontrado</p>';
       }
     })();
   </script>
