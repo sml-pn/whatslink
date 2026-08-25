@@ -1,10 +1,6 @@
-// ============================================================
-// CONFIGURAÇÃO
-// ============================================================
 const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
 const DOMINIO = 'https://whatslink-48tc.onrender.com';
 
-// ========== FUNÇÃO PARA CRIAR LINK ==========
 async function criarLink(payload) {
   const response = await fetch(API_URL, {
     method: 'POST',
@@ -23,7 +19,6 @@ async function criarLink(payload) {
   return data;
 }
 
-// ========== FORMATAR WHATSAPP ==========
 function formatarWhatsApp(valor) {
   let numeros = valor.replace(/\D/g, '');
   numeros = numeros.slice(0, 13);
@@ -56,7 +51,6 @@ function formatarWhatsApp(valor) {
   return numeros;
 }
 
-// ========== VALIDAR WHATSAPP ==========
 function validarWhatsApp(valor) {
   const numeros = valor.replace(/\D/g, '');
   
@@ -68,27 +62,6 @@ function validarWhatsApp(valor) {
     return { valido: false, mensagem: 'Número incompleto. Ex: (85) 99999-9999' };
   }
   
-  if (numeros.length === 10 || numeros.length === 11) {
-    const ddd = parseInt(numeros.slice(0, 2));
-    if (ddd < 11 || ddd > 99) {
-      return { valido: false, mensagem: 'DDD inválido' };
-    }
-    
-    if (numeros.length === 11 && numeros[2] !== '9') {
-      return { valido: false, mensagem: 'Celular deve começar com 9' };
-    }
-  }
-  
-  if (numeros.length === 12 || numeros.length === 13) {
-    if (numeros.slice(0, 2) !== '55') {
-      return { valido: false, mensagem: 'Use código do Brasil (55)' };
-    }
-  }
-  
-  if (numeros.length > 13) {
-    return { valido: false, mensagem: 'Número muito longo' };
-  }
-  
   let numeroLimpo = numeros;
   if (numeros.length === 12 || numeros.length === 13) {
     numeroLimpo = numeros.slice(2);
@@ -97,7 +70,6 @@ function validarWhatsApp(valor) {
   return { valido: true, numeroLimpo: numeroLimpo };
 }
 
-// ========== GERAR SLUG ==========
 function gerarSlug(texto) {
   return texto
     .toLowerCase()
@@ -108,19 +80,17 @@ function gerarSlug(texto) {
     .slice(0, 40);
 }
 
-// ========== MOSTRAR ERRO ==========
 function mostrarErro(campo, mensagem) {
   limparErro(campo);
   const field = campo.closest('.field');
   const div = document.createElement('div');
   div.className = 'error-message';
-  div.innerHTML = '<span class="material-icons" style="font-size:14px;">error</span> ' + mensagem;
+  div.textContent = mensagem;
   campo.style.borderColor = '#ef4444';
   campo.style.backgroundColor = '#fef2f2';
   field.appendChild(div);
 }
 
-// ========== LIMPAR ERRO ==========
 function limparErro(campo) {
   const field = campo.closest('.field');
   const erroDiv = field.querySelector('.error-message');
@@ -129,45 +99,6 @@ function limparErro(campo) {
   campo.style.backgroundColor = '';
 }
 
-// ========== PREVIEW DA LOGO ==========
-function atualizarPreviewLogo(url) {
-  const preview = document.getElementById('logoPreview');
-  const img = document.getElementById('logoPreviewImage');
-  
-  if (url && url.trim() !== '') {
-    img.src = url;
-    img.onerror = function() {
-      preview.style.display = 'none';
-    };
-    img.onload = function() {
-      preview.style.display = 'block';
-      limparErro(document.getElementById('logoUrl'));
-    };
-  } else {
-    preview.style.display = 'none';
-  }
-}
-
-// ========== PREVIEW DO BANNER ==========
-function atualizarPreviewBanner(url) {
-  const preview = document.getElementById('bannerPreview');
-  const img = document.getElementById('bannerPreviewImage');
-  
-  if (url && url.trim() !== '') {
-    img.src = url;
-    img.onerror = function() {
-      preview.style.display = 'none';
-    };
-    img.onload = function() {
-      preview.style.display = 'block';
-      limparErro(document.getElementById('bannerUrl'));
-    };
-  } else {
-    preview.style.display = 'none';
-  }
-}
-
-// ========== EXECUTAR QUANDO A PÁGINA CARREGAR ==========
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('linkForm');
   const empresa = document.getElementById('empresa');
@@ -190,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let slugManuallyEdited = false;
 
-  // Slug automático
   empresa.addEventListener('input', function() {
     if (!slugManuallyEdited) {
       slug.value = gerarSlug(empresa.value);
@@ -202,82 +132,57 @@ document.addEventListener('DOMContentLoaded', function() {
     slug.value = gerarSlug(slug.value);
   });
 
-  // Máscara WhatsApp
   whatsapp.addEventListener('input', function() {
     whatsapp.value = formatarWhatsApp(whatsapp.value);
     limparErro(whatsapp);
   });
 
-  // Preview logo
-  logoUrl.addEventListener('input', function() {
-    atualizarPreviewLogo(logoUrl.value);
-  });
-
-  logoUrl.addEventListener('blur', function() {
-    if (logoUrl.value.trim() !== '') {
-      atualizarPreviewLogo(logoUrl.value);
-    }
-  });
-
-  // Preview banner
-  bannerUrl.addEventListener('input', function() {
-    atualizarPreviewBanner(bannerUrl.value);
-  });
-
-  bannerUrl.addEventListener('blur', function() {
-    if (bannerUrl.value.trim() !== '') {
-      atualizarPreviewBanner(bannerUrl.value);
-    }
-  });
-
-  // Enviar formulário
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
+    // Coletar TODOS os dados
     const payload = {
       empresa: empresa.value.trim(),
       whatsapp: whatsapp.value.trim(),
       slug: slug.value.trim(),
-      mensagem: mensagem.value.trim() || '',
-      logo_url: logoUrl.value.trim() || '',
-      banner_url: bannerUrl.value.trim() || '',
-      descricao: descricao.value.trim() || '',
-      localizacao: localizacao.value.trim() || '',
-      instagram: instagram.value.trim() || '',
-      facebook: facebook.value.trim() || '',
-      site: site.value.trim() || '',
-      horario: horario.value.trim() || ''
+      mensagem: mensagem.value.trim(),
+      logo_url: logoUrl.value.trim(),
+      banner_url: bannerUrl.value.trim(),
+      descricao: descricao.value.trim(),
+      localizacao: localizacao.value.trim(),
+      instagram: instagram.value.trim(),
+      facebook: facebook.value.trim(),
+      site: site.value.trim(),
+      horario: horario.value.trim()
     };
 
+    console.log('Payload:', payload); // Debug
+
     if (!payload.empresa) {
-      alert('Digite o nome da empresa.');
-      empresa.focus();
+      alert('Digite o nome da empresa');
       return;
     }
 
     if (!payload.whatsapp) {
-      mostrarErro(whatsapp, 'Digite o número do WhatsApp');
-      whatsapp.focus();
+      mostrarErro(whatsapp, 'Digite o WhatsApp');
       return;
     }
 
     if (!payload.slug) {
-      alert('Digite um nome para o link.');
-      slug.focus();
+      alert('Digite o nome do link');
       return;
     }
 
     const validacao = validarWhatsApp(payload.whatsapp);
     if (!validacao.valido) {
       mostrarErro(whatsapp, validacao.mensagem);
-      whatsapp.focus();
       return;
     }
 
     payload.whatsapp = validacao.numeroLimpo;
 
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="material-icons" style="animation:spin 1s linear infinite;">sync</span> Gerando...';
+    submitBtn.textContent = 'Gerando...';
 
     try {
       const data = await criarLink(payload);
@@ -285,39 +190,37 @@ document.addEventListener('DOMContentLoaded', function() {
       
       generatedUrl.value = fullUrl;
       resultDiv.style.display = 'block';
-      resultDiv.scrollIntoView({ behavior: 'smooth' });
 
       previewBtn.onclick = function() {
         window.open(fullUrl, '_blank');
       };
 
-      submitBtn.innerHTML = '<span class="material-icons">check_circle</span> Link gerado!';
+      submitBtn.textContent = 'Link gerado!';
       setTimeout(function() {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
+        submitBtn.textContent = 'Gerar link grátis';
       }, 3000);
 
     } catch (err) {
       alert(err.message);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
+      submitBtn.textContent = 'Gerar link grátis';
     }
   });
 
-  // Copiar link
   copyBtn.addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(generatedUrl.value);
-      copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
+      copyBtn.textContent = 'Copiado!';
       setTimeout(function() {
-        copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar';
+        copyBtn.textContent = 'Copiar';
       }, 2000);
     } catch (err) {
       generatedUrl.select();
       document.execCommand('copy');
-      copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
+      copyBtn.textContent = 'Copiado!';
       setTimeout(function() {
-        copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar';
+        copyBtn.textContent = 'Copiar';
       }, 2000);
     }
   });
