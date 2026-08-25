@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const resultDiv = document.getElementById('result');
   const generatedUrl = document.getElementById('generatedUrl');
   const copyBtn = document.getElementById('copyBtn');
-  const previewBtn = document.getElementById('previewBtn');
+  const openPageBtn = document.getElementById('openPageBtn');
 
   let slugManuallyEdited = false;
 
@@ -109,10 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
       const fullUrl = `${DOMINIO}/redirect.html?slug=${data.slug}`;
       generatedUrl.value = fullUrl;
       resultDiv.style.display = 'block';
-      previewBtn.onclick = () => window.open(fullUrl, '_blank');
+
+      openPageBtn.onclick = function() {
+        window.open(fullUrl, '_blank');
+      };
 
       submitBtn.innerHTML = '<span class="material-icons">check_circle</span> Link gerado!';
-      setTimeout(() => {
+      setTimeout(function() {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
       }, 3000);
@@ -127,12 +130,12 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       await navigator.clipboard.writeText(generatedUrl.value);
       copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
-      setTimeout(() => copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar', 2000);
+      setTimeout(function() { copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar'; }, 2000);
     } catch {
       generatedUrl.select();
       document.execCommand('copy');
       copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
-      setTimeout(() => copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar', 2000);
+      setTimeout(function() { copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar'; }, 2000);
     }
   });
 });
