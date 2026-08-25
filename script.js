@@ -51,17 +51,19 @@ document.addEventListener('DOMContentLoaded', function() {
   const resultDiv = document.getElementById('result');
   const generatedUrl = document.getElementById('generatedUrl');
   const copyBtn = document.getElementById('copyBtn');
-  const openPageBtn = document.getElementById('openPageBtn');
+  const previewBtn = document.getElementById('previewBtn');
 
   let slugManuallyEdited = false;
 
   empresa.addEventListener('input', function() {
     if (!slugManuallyEdited) slug.value = gerarSlug(empresa.value);
   });
+
   slug.addEventListener('input', function() {
     slugManuallyEdited = true;
     slug.value = gerarSlug(slug.value);
   });
+
   whatsapp.addEventListener('input', function() {
     whatsapp.value = formatarWhatsApp(whatsapp.value);
   });
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     payload.whatsapp = validacao.numeroLimpo;
 
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="material-icons">sync</span> Gerando...';
+    submitBtn.textContent = 'Gerando...';
 
     try {
       const response = await fetch(API_URL, {
@@ -106,36 +108,37 @@ document.addEventListener('DOMContentLoaded', function() {
       const data = await response.json();
       if (data.error) throw new Error(data.error);
 
-      const fullUrl = `${DOMINIO}/redirect.html?slug=${data.slug}`;
+      const fullUrl = DOMINIO + '/redirect.html?slug=' + data.slug;
       generatedUrl.value = fullUrl;
       resultDiv.style.display = 'block';
 
-      openPageBtn.onclick = function() {
+      previewBtn.onclick = function() {
         window.open(fullUrl, '_blank');
       };
 
-      submitBtn.innerHTML = '<span class="material-icons">check_circle</span> Link gerado!';
+      submitBtn.textContent = 'Link gerado!';
       setTimeout(function() {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
+        submitBtn.textContent = 'Gerar link grátis';
       }, 3000);
+
     } catch (err) {
       alert('Erro: ' + err.message);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
+      submitBtn.textContent = 'Gerar link grátis';
     }
   });
 
   copyBtn.addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(generatedUrl.value);
-      copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
-      setTimeout(function() { copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar'; }, 2000);
+      copyBtn.textContent = 'Copiado!';
+      setTimeout(function() { copyBtn.textContent = 'Copiar'; }, 2000);
     } catch {
       generatedUrl.select();
       document.execCommand('copy');
-      copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
-      setTimeout(function() { copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar'; }, 2000);
+      copyBtn.textContent = 'Copiado!';
+      setTimeout(function() { copyBtn.textContent = 'Copiar'; }, 2000);
     }
   });
 });
