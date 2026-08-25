@@ -3,21 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- SEO -->
-  <title>WhatsLink – Crie sua página profissional de WhatsApp grátis</title>
-  <meta name="description" content="Crie uma página de recepção personalizada para o seu WhatsApp. Link grátis, com logo, banner, localização e redes sociais. Perfeito para empresas e profissionais." />
-  <meta name="keywords" content="link whatsapp, página de recepção, whatsapp profissional, link personalizado, whatsapp grátis, bio whatsapp" />
-  <meta name="author" content="WhatsLink" />
-  <meta name="robots" content="index, follow" />
-  
-  <!-- Open Graph -->
+  <title>WhatsLink – Página profissional para WhatsApp</title>
+  <meta name="description" content="Crie uma página de recepção personalizada para o seu WhatsApp com logo, banner, localização e redes sociais. Grátis e sem cadastro." />
+  <meta name="keywords" content="link whatsapp, página de recepção, whatsapp profissional, bio whatsapp, link personalizado" />
   <meta property="og:title" content="WhatsLink – Página profissional para WhatsApp" />
-  <meta property="og:description" content="Crie um link personalizado com logo, banner e informações da sua empresa." />
+  <meta property="og:description" content="Link personalizado com logo, banner, localização e redes sociais." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://whatslink-48tc.onrender.com" />
-  <meta property="og:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
-
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
@@ -42,28 +34,13 @@
     <main>
       <section class="hero-section">
         <div class="container hero-content">
-          <div class="hero-text">
-            <h1>Crie uma <span class="highlight">página profissional</span> para o seu WhatsApp</h1>
-            <p class="hero-subtitle">Em menos de 1 minuto, tenha um link personalizado com logo, banner, localização e todos os seus contatos. Sem cadastro, sem custo.</p>
-            <div class="hero-cta">
-              <a href="#criar" class="btn-primary">Criar meu link agora</a>
-              <a href="#como-funciona" class="btn-secondary">Ver como funciona</a>
-            </div>
-            <div class="hero-trust">
-              <span><i class="fas fa-check-circle"></i> 100% gratuito</span>
-              <span><i class="fas fa-check-circle"></i> Sem cadastro</span>
-              <span><i class="fas fa-check-circle"></i> Links ilimitados</span>
-            </div>
-          </div>
-          <div class="hero-visual">
-            <div class="phone-mockup">
-              <div class="phone-screen">
-                <div class="mock-header"></div>
-                <div class="mock-logo"></div>
-                <div class="mock-title"></div>
-                <div class="mock-button"></div>
-              </div>
-            </div>
+          <h1>Crie uma <span class="highlight">página profissional</span> para o seu WhatsApp</h1>
+          <p>Em menos de 1 minuto, tenha um link personalizado com logo, banner, localização e todos os seus contatos.</p>
+          <a href="#criar" class="btn-primary">Criar meu link agora</a>
+          <div class="hero-trust">
+            <span><i class="fas fa-check-circle"></i> 100% gratuito</span>
+            <span><i class="fas fa-check-circle"></i> Sem cadastro</span>
+            <span><i class="fas fa-check-circle"></i> Links ilimitados</span>
           </div>
         </div>
       </section>
@@ -80,57 +57,46 @@
                   <label for="empresa"><span class="material-icons">business</span> Nome da empresa *</label>
                   <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
                 </div>
-
                 <div class="field">
                   <label for="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp *</label>
                   <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" />
                 </div>
-
                 <div class="field">
                   <label for="logoUrl"><span class="material-icons">image</span> Logo (URL) <span class="optional">opcional</span></label>
                   <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
                 </div>
-
                 <div class="field">
                   <label for="bannerUrl"><span class="material-icons">panorama</span> Banner (URL) <span class="optional">opcional</span></label>
                   <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
                 </div>
-
                 <div class="field full-width">
                   <label for="mensagem"><span class="material-icons">chat</span> Mensagem automática <span class="optional">opcional</span></label>
                   <textarea id="mensagem" rows="3" placeholder="Olá! Gostaria de mais informações..."></textarea>
                 </div>
-
                 <div class="field full-width">
                   <label for="descricao"><span class="material-icons">description</span> Descrição <span class="optional">opcional</span></label>
                   <textarea id="descricao" rows="3" placeholder="Descreva seus serviços, horários, diferenciais..."></textarea>
                 </div>
-
                 <div class="field">
                   <label for="localizacao"><span class="material-icons">location_on</span> Localização (Google Maps) <span class="optional">opcional</span></label>
                   <input type="url" id="localizacao" placeholder="https://maps.google.com/?q=..." />
                 </div>
-
                 <div class="field">
                   <label for="instagram"><i class="fab fa-instagram"></i> Instagram <span class="optional">opcional</span></label>
                   <input type="text" id="instagram" placeholder="@suaempresa" />
                 </div>
-
                 <div class="field">
                   <label for="facebook"><i class="fab fa-facebook"></i> Facebook <span class="optional">opcional</span></label>
                   <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
                 </div>
-
                 <div class="field">
                   <label for="site"><span class="material-icons">public</span> Site <span class="optional">opcional</span></label>
                   <input type="url" id="site" placeholder="https://suaempresa.com" />
                 </div>
-
                 <div class="field">
                   <label for="horario"><span class="material-icons">schedule</span> Horário <span class="optional">opcional</span></label>
                   <input type="text" id="horario" placeholder="Seg a Sex: 8h às 18h" />
                 </div>
-
                 <div class="field full-width">
                   <label for="slug"><span class="material-icons">tag</span> Nome do link *</label>
                   <div class="slug-group">
@@ -139,7 +105,6 @@
                   </div>
                 </div>
               </div>
-
               <button type="submit" id="submitBtn" class="btn-primary btn-submit">
                 <span class="material-icons">send</span> Gerar link grátis
               </button>
@@ -151,7 +116,9 @@
                 <input type="text" id="generatedUrl" readonly />
                 <button id="copyBtn"><span class="material-icons">content_copy</span> Copiar</button>
               </div>
-              <button id="previewBtn" class="btn-secondary"><span class="material-icons">visibility</span> Ver página</button>
+              <button id="openPageBtn" class="btn-primary" style="width:100%; justify-content:center; margin-top:10px;">
+                <span class="material-icons">visibility</span> Abrir página
+              </button>
             </div>
           </div>
         </div>
@@ -161,26 +128,10 @@
         <div class="container">
           <h2>Recursos incríveis</h2>
           <div class="features-grid">
-            <div class="feature-item">
-              <span class="material-icons">flash_on</span>
-              <h3>Rápido</h3>
-              <p>Crie seu link em segundos</p>
-            </div>
-            <div class="feature-item">
-              <span class="material-icons">devices</span>
-              <h3>Responsivo</h3>
-              <p>Funciona em qualquer dispositivo</p>
-            </div>
-            <div class="feature-item">
-              <span class="material-icons">palette</span>
-              <h3>Personalizável</h3>
-              <p>Logo, banner e cores</p>
-            </div>
-            <div class="feature-item">
-              <span class="material-icons">share</span>
-              <h3>Compartilhável</h3>
-              <p>Link único para divulgar</p>
-            </div>
+            <div class="feature-item"><span class="material-icons">flash_on</span><h3>Rápido</h3><p>Crie em segundos</p></div>
+            <div class="feature-item"><span class="material-icons">devices</span><h3>Responsivo</h3><p>Funciona em qualquer tela</p></div>
+            <div class="feature-item"><span class="material-icons">palette</span><h3>Personalizável</h3><p>Logo, banner e cores</p></div>
+            <div class="feature-item"><span class="material-icons">share</span><h3>Compartilhável</h3><p>Link único para divulgar</p></div>
           </div>
         </div>
       </section>
@@ -189,21 +140,9 @@
         <div class="container">
           <h2>Como funciona</h2>
           <div class="steps">
-            <div class="step">
-              <div class="step-number">1</div>
-              <h3>Preencha</h3>
-              <p>Informe os dados da sua empresa</p>
-            </div>
-            <div class="step">
-              <div class="step-number">2</div>
-              <h3>Gere o link</h3>
-              <p>Clique em gerar e pronto</p>
-            </div>
-            <div class="step">
-              <div class="step-number">3</div>
-              <h3>Compartilhe</h3>
-              <p>Divulgue onde quiser</p>
-            </div>
+            <div class="step"><div class="step-number">1</div><h3>Preencha</h3><p>Dados da empresa</p></div>
+            <div class="step"><div class="step-number">2</div><h3>Gere o link</h3><p>Clique em gerar</p></div>
+            <div class="step"><div class="step-number">3</div><h3>Compartilhe</h3><p>Divulgue onde quiser</p></div>
           </div>
         </div>
       </section>
@@ -211,29 +150,17 @@
       <section id="faq" class="faq-section">
         <div class="container">
           <h2>Perguntas frequentes</h2>
-          <details>
-            <summary>É realmente grátis?</summary>
-            <p>Sim, 100% gratuito e sem limites.</p>
-          </details>
-          <details>
-            <summary>Preciso me cadastrar?</summary>
-            <p>Não, crie seus links sem cadastro.</p>
-          </details>
-          <details>
-            <summary>Posso personalizar a página?</summary>
-            <p>Sim, com logo, banner, descrição e redes sociais.</p>
-          </details>
+          <details><summary>É realmente grátis?</summary><p>Sim, 100% gratuito.</p></details>
+          <details><summary>Preciso me cadastrar?</summary><p>Não, crie sem cadastro.</p></details>
+          <details><summary>Posso personalizar?</summary><p>Sim, com logo, banner, etc.</p></details>
         </div>
       </section>
     </main>
 
     <footer class="main-footer">
-      <div class="container footer-content">
-        <p>WhatsLink © 2024 • Feito com <span class="heart">❤</span> para facilitar sua comunicação</p>
-      </div>
+      <div class="container"><p>WhatsLink © 2024 • Feito com <span class="heart">❤</span></p></div>
     </footer>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
