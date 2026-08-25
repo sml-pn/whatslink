@@ -138,7 +138,6 @@ function atualizarPreviewLogo(url) {
     img.src = url;
     img.onerror = () => {
       preview.style.display = 'none';
-      mostrarErro(document.getElementById('logoUrl'), 'URL da imagem inválida');
     };
     img.onload = () => {
       preview.style.display = 'block';
@@ -158,7 +157,6 @@ function atualizarPreviewBanner(url) {
     img.src = url;
     img.onerror = () => {
       preview.style.display = 'none';
-      mostrarErro(document.getElementById('bannerUrl'), 'URL da imagem inválida');
     };
     img.onload = () => {
       preview.style.display = 'block';
@@ -192,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let slugManuallyEdited = false;
 
-  // ========== SLUG AUTOMÁTICO ==========
+  // Slug automático
   empresa.addEventListener('input', () => {
     if (!slugManuallyEdited) {
       slug.value = gerarSlug(empresa.value);
@@ -204,13 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
     slug.value = gerarSlug(slug.value);
   });
 
-  // ========== MÁSCARA WHATSAPP ==========
+  // Máscara WhatsApp
   whatsapp.addEventListener('input', () => {
     whatsapp.value = formatarWhatsApp(whatsapp.value);
     limparErro(whatsapp);
   });
 
-  // ========== PREVIEW LOGO ==========
+  // Preview logo
   logoUrl.addEventListener('input', () => {
     atualizarPreviewLogo(logoUrl.value);
   });
@@ -221,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ========== PREVIEW BANNER ==========
+  // Preview banner
   bannerUrl.addEventListener('input', () => {
     atualizarPreviewBanner(bannerUrl.value);
   });
@@ -232,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ========== ENVIAR FORMULÁRIO ==========
+  // Enviar formulário
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -251,9 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
       horario: horario.value.trim(),
     };
 
-    // Validações
     if (!payload.empresa) {
-      alert('⚠️ Digite o nome da empresa.');
+      alert('Digite o nome da empresa.');
       empresa.focus();
       return;
     }
@@ -265,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (!payload.slug) {
-      alert('⚠️ Digite um nome para o link.');
+      alert('Digite um nome para o link.');
       slug.focus();
       return;
     }
@@ -279,7 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     payload.whatsapp = validacao.numeroLimpo;
 
-    // Loading
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="material-icons" style="animation:spin 1s linear infinite;">sync</span> Gerando...';
 
@@ -302,13 +298,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 3000);
 
     } catch (err) {
-      alert('❌ ' + err.message);
+      alert(err.message);
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
     }
   });
 
-  // ========== COPIAR LINK ==========
+  // Copiar link
   copyBtn.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(generatedUrl.value);
