@@ -1,7 +1,6 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
 const DOMINIO = 'https://whatslink-48tc.onrender.com';
 
-// Funções auxiliares
 function gerarSlug(texto) {
   return texto.toLowerCase()
     .normalize('NFD')
@@ -35,7 +34,6 @@ function validarWhatsApp(valor) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Obter referências
   const form = document.getElementById('linkForm');
   const empresa = document.getElementById('empresa');
   const whatsapp = document.getElementById('whatsapp');
@@ -57,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let slugManuallyEdited = false;
 
-  // Slug automático
   empresa.addEventListener('input', function() {
     if (!slugManuallyEdited) slug.value = gerarSlug(empresa.value);
   });
@@ -65,17 +62,13 @@ document.addEventListener('DOMContentLoaded', function() {
     slugManuallyEdited = true;
     slug.value = gerarSlug(slug.value);
   });
-
-  // Máscara WhatsApp
   whatsapp.addEventListener('input', function() {
     whatsapp.value = formatarWhatsApp(whatsapp.value);
   });
 
-  // Envio do formulário
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Construir objeto com TODOS os campos
     const payload = {
       empresa: empresa.value.trim(),
       whatsapp: whatsapp.value.trim(),
@@ -91,7 +84,8 @@ document.addEventListener('DOMContentLoaded', function() {
       horario: horario.value.trim() || ''
     };
 
-    // Validações
+    console.log('Payload:', payload);
+
     if (!payload.empresa) { alert('Informe o nome da empresa'); return; }
     if (!payload.whatsapp) { alert('Informe o WhatsApp'); return; }
     if (!payload.slug) { alert('Informe o nome do link'); return; }
@@ -101,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     payload.whatsapp = validacao.numeroLimpo;
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Gerando...';
+    submitBtn.innerHTML = '<span class="material-icons">sync</span> Gerando...';
 
     try {
       const response = await fetch(API_URL, {
@@ -117,29 +111,28 @@ document.addEventListener('DOMContentLoaded', function() {
       resultDiv.style.display = 'block';
       previewBtn.onclick = () => window.open(fullUrl, '_blank');
 
-      submitBtn.textContent = '✅ Link gerado!';
+      submitBtn.innerHTML = '<span class="material-icons">check_circle</span> Link gerado!';
       setTimeout(() => {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Gerar link grátis';
+        submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
       }, 3000);
     } catch (err) {
       alert('Erro: ' + err.message);
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Gerar link grátis';
+      submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
     }
   });
 
-  // Copiar link
   copyBtn.addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(generatedUrl.value);
-      copyBtn.textContent = 'Copiado!';
-      setTimeout(() => copyBtn.textContent = 'Copiar', 2000);
+      copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
+      setTimeout(() => copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar', 2000);
     } catch {
       generatedUrl.select();
       document.execCommand('copy');
-      copyBtn.textContent = 'Copiado!';
-      setTimeout(() => copyBtn.textContent = 'Copiar', 2000);
+      copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
+      setTimeout(() => copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar', 2000);
     }
   });
 });
