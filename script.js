@@ -30,27 +30,27 @@ function formatarWhatsApp(valor) {
   
   if (numeros.length > 11) {
     if (numeros.length >= 13) {
-      return `+${numeros.slice(0, 2)} (${numeros.slice(2, 4)}) ${numeros.slice(4, 9)}-${numeros.slice(9, 13)}`;
+      return '+' + numeros.slice(0, 2) + ' (' + numeros.slice(2, 4) + ') ' + numeros.slice(4, 9) + '-' + numeros.slice(9, 13);
     }
     if (numeros.length >= 12) {
-      return `+${numeros.slice(0, 2)} (${numeros.slice(2, 4)}) ${numeros.slice(4, 9)}-${numeros.slice(9)}`;
+      return '+' + numeros.slice(0, 2) + ' (' + numeros.slice(2, 4) + ') ' + numeros.slice(4, 9) + '-' + numeros.slice(9);
     }
   }
   
   if (numeros.length >= 11) {
-    return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7, 11)}`;
+    return '(' + numeros.slice(0, 2) + ') ' + numeros.slice(2, 7) + '-' + numeros.slice(7, 11);
   }
   if (numeros.length >= 10) {
-    return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 6)}-${numeros.slice(6, 10)}`;
+    return '(' + numeros.slice(0, 2) + ') ' + numeros.slice(2, 6) + '-' + numeros.slice(6, 10);
   }
   if (numeros.length >= 7) {
-    return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7)}`;
+    return '(' + numeros.slice(0, 2) + ') ' + numeros.slice(2, 7) + '-' + numeros.slice(7);
   }
   if (numeros.length >= 3) {
-    return `(${numeros.slice(0, 2)}) ${numeros.slice(2)}`;
+    return '(' + numeros.slice(0, 2) + ') ' + numeros.slice(2);
   }
   if (numeros.length >= 1) {
-    return `(${numeros}`;
+    return '(' + numeros;
   }
   
   return numeros;
@@ -114,7 +114,7 @@ function mostrarErro(campo, mensagem) {
   const field = campo.closest('.field');
   const div = document.createElement('div');
   div.className = 'error-message';
-  div.innerHTML = `<span class="material-icons" style="font-size:14px;">error</span> ${mensagem}`;
+  div.innerHTML = '<span class="material-icons" style="font-size:14px;">error</span> ' + mensagem;
   campo.style.borderColor = '#ef4444';
   campo.style.backgroundColor = '#fef2f2';
   field.appendChild(div);
@@ -136,10 +136,10 @@ function atualizarPreviewLogo(url) {
   
   if (url && url.trim() !== '') {
     img.src = url;
-    img.onerror = () => {
+    img.onerror = function() {
       preview.style.display = 'none';
     };
-    img.onload = () => {
+    img.onload = function() {
       preview.style.display = 'block';
       limparErro(document.getElementById('logoUrl'));
     };
@@ -155,10 +155,10 @@ function atualizarPreviewBanner(url) {
   
   if (url && url.trim() !== '') {
     img.src = url;
-    img.onerror = () => {
+    img.onerror = function() {
       preview.style.display = 'none';
     };
-    img.onload = () => {
+    img.onload = function() {
       preview.style.display = 'block';
       limparErro(document.getElementById('bannerUrl'));
     };
@@ -168,7 +168,7 @@ function atualizarPreviewBanner(url) {
 }
 
 // ========== EXECUTAR QUANDO A PÁGINA CARREGAR ==========
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('linkForm');
   const empresa = document.getElementById('empresa');
   const whatsapp = document.getElementById('whatsapp');
@@ -191,50 +191,49 @@ document.addEventListener('DOMContentLoaded', () => {
   let slugManuallyEdited = false;
 
   // Slug automático
-  empresa.addEventListener('input', () => {
+  empresa.addEventListener('input', function() {
     if (!slugManuallyEdited) {
       slug.value = gerarSlug(empresa.value);
     }
   });
 
-  slug.addEventListener('input', () => {
+  slug.addEventListener('input', function() {
     slugManuallyEdited = true;
     slug.value = gerarSlug(slug.value);
   });
 
   // Máscara WhatsApp
-  whatsapp.addEventListener('input', () => {
+  whatsapp.addEventListener('input', function() {
     whatsapp.value = formatarWhatsApp(whatsapp.value);
     limparErro(whatsapp);
   });
 
   // Preview logo
-  logoUrl.addEventListener('input', () => {
+  logoUrl.addEventListener('input', function() {
     atualizarPreviewLogo(logoUrl.value);
   });
 
-  logoUrl.addEventListener('blur', () => {
+  logoUrl.addEventListener('blur', function() {
     if (logoUrl.value.trim() !== '') {
       atualizarPreviewLogo(logoUrl.value);
     }
   });
 
   // Preview banner
-  bannerUrl.addEventListener('input', () => {
+  bannerUrl.addEventListener('input', function() {
     atualizarPreviewBanner(bannerUrl.value);
   });
 
-  bannerUrl.addEventListener('blur', () => {
+  bannerUrl.addEventListener('blur', function() {
     if (bannerUrl.value.trim() !== '') {
       atualizarPreviewBanner(bannerUrl.value);
     }
   });
 
   // Enviar formulário
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Coletar TODOS os dados
     const payload = {
       empresa: empresa.value.trim(),
       whatsapp: whatsapp.value.trim(),
@@ -250,7 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
       horario: horario.value.trim() || ''
     };
 
-    // Validações
     if (!payload.empresa) {
       alert('Digite o nome da empresa.');
       empresa.focus();
@@ -282,21 +280,19 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.innerHTML = '<span class="material-icons" style="animation:spin 1s linear infinite;">sync</span> Gerando...';
 
     try {
-      console.log('Enviando dados:', payload); // Debug
-      
       const data = await criarLink(payload);
-      const fullUrl = `${DOMINIO}/redirect.html?slug=${data.slug}`;
+      const fullUrl = DOMINIO + '/redirect.html?slug=' + data.slug;
       
       generatedUrl.value = fullUrl;
       resultDiv.style.display = 'block';
       resultDiv.scrollIntoView({ behavior: 'smooth' });
 
-      previewBtn.onclick = () => {
+      previewBtn.onclick = function() {
         window.open(fullUrl, '_blank');
       };
 
       submitBtn.innerHTML = '<span class="material-icons">check_circle</span> Link gerado!';
-      setTimeout(() => {
+      setTimeout(function() {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<span class="material-icons">send</span> Gerar link grátis';
       }, 3000);
@@ -309,18 +305,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Copiar link
-  copyBtn.addEventListener('click', async () => {
+  copyBtn.addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(generatedUrl.value);
       copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
-      setTimeout(() => {
+      setTimeout(function() {
         copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar';
       }, 2000);
     } catch (err) {
       generatedUrl.select();
       document.execCommand('copy');
       copyBtn.innerHTML = '<span class="material-icons">check</span> Copiado!';
-      setTimeout(() => {
+      setTimeout(function() {
         copyBtn.innerHTML = '<span class="material-icons">content_copy</span> Copiar';
       }, 2000);
     }
