@@ -11,10 +11,28 @@
 </head>
 <body>
   <div class="reception-page" id="container">
-    <div class="banner-container" id="bannerContainer" style="display: none;">
-      <img id="bannerImage" src="" alt="Banner" />
+    <!-- BANNER / HEADER -->
+    <div class="header-container" id="headerContainer">
+      <!-- Se tiver banner, mostra banner -->
+      <div class="banner-image" id="bannerImageDiv" style="display: none;">
+        <img id="bannerImage" src="" alt="Banner" />
+      </div>
+      
+      <!-- Se NÃO tiver banner mas tiver logo, mostra logo com efeito vidro -->
+      <div class="logo-banner" id="logoBannerDiv" style="display: none;">
+        <img id="logoBannerImage" src="" alt="Logo" />
+        <div class="glass-overlay"></div>
+      </div>
+      
+      <!-- Se não tiver nenhum, mostra cor sólida -->
+      <div class="color-banner" id="colorBannerDiv">
+        <div class="color-banner-content">
+          <span class="material-icons">storefront</span>
+        </div>
+      </div>
     </div>
     
+    <!-- CABEÇALHO COM LOGO -->
     <div class="reception-header">
       <div class="company-logo" id="companyLogo" style="display: none;">
         <img id="logoImage" src="" alt="Logo" />
@@ -24,11 +42,13 @@
       </div>
     </div>
     
+    <!-- INFORMAÇÕES DA EMPRESA -->
     <div class="company-info">
       <h1 id="empresaNome">Carregando...</h1>
       <p class="company-description" id="empresaDescricao" style="display: none;"></p>
     </div>
     
+    <!-- LOCALIZAÇÃO (só se preenchido) -->
     <div class="map-container" id="mapContainer" style="display: none;">
       <div class="map-header">
         <span class="material-icons map-icon">location_on</span>
@@ -43,6 +63,7 @@
       </a>
     </div>
     
+    <!-- BOTÃO WHATSAPP -->
     <div class="whatsapp-button-container">
       <button id="whatsappBtn" class="btn-whatsapp">
         <i class="fab fa-whatsapp btn-icon"></i>
@@ -50,7 +71,8 @@
       </button>
     </div>
     
-    <div class="social-buttons" id="socialButtons">
+    <!-- REDES SOCIAIS (só se preenchido) -->
+    <div class="social-buttons" id="socialButtons" style="display: none;">
       <button id="instagramBtn" class="btn-social btn-instagram" style="display: none;">
         <i class="fab fa-instagram btn-icon"></i>
         <span>Instagram</span>
@@ -67,6 +89,7 @@
       </button>
     </div>
     
+    <!-- HORÁRIO (só se preenchido) -->
     <div class="additional-info">
       <div id="horarioInfo" class="info-item" style="display: none;">
         <span class="material-icons info-icon">schedule</span>
@@ -77,6 +100,7 @@
       </div>
     </div>
     
+    <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay" style="display: none;">
       <div class="modal-content">
         <div class="spinner"></div>
@@ -125,14 +149,35 @@
       try {
         const link = await buscarLink(slug);
         
+        console.log('Dados recebidos:', link); // Debug
+        
         document.title = `${link.empresa} - Página Oficial`;
         
-        if (link.banner_url) {
+        // ========== BANNER / LOGO NO HEADER ==========
+        const temBanner = link.banner_url && String(link.banner_url).trim() !== '';
+        const temLogo = link.logo_url && String(link.logo_url).trim() !== '';
+        
+        if (temBanner) {
+          // Tem banner - mostra banner normalmente
           document.getElementById('bannerImage').src = link.banner_url;
-          document.getElementById('bannerContainer').style.display = 'block';
+          document.getElementById('bannerImageDiv').style.display = 'block';
+          document.getElementById('logoBannerDiv').style.display = 'none';
+          document.getElementById('colorBannerDiv').style.display = 'none';
+        } else if (temLogo) {
+          // Não tem banner mas tem logo - mostra logo com efeito vidro
+          document.getElementById('logoBannerImage').src = link.logo_url;
+          document.getElementById('logoBannerDiv').style.display = 'block';
+          document.getElementById('bannerImageDiv').style.display = 'none';
+          document.getElementById('colorBannerDiv').style.display = 'none';
+        } else {
+          // Não tem nenhum - mostra cor sólida
+          document.getElementById('colorBannerDiv').style.display = 'block';
+          document.getElementById('bannerImageDiv').style.display = 'none';
+          document.getElementById('logoBannerDiv').style.display = 'none';
         }
         
-        if (link.logo_url) {
+        // ========== LOGO CIRCULAR ==========
+        if (temLogo) {
           document.getElementById('logoImage').src = link.logo_url;
           document.getElementById('companyLogo').style.display = 'block';
           document.getElementById('companyAvatar').style.display = 'none';
@@ -140,14 +185,17 @@
           document.getElementById('avatarLetter').textContent = link.empresa.charAt(0).toUpperCase();
         }
         
+        // ========== NOME DA EMPRESA ==========
         document.getElementById('empresaNome').textContent = link.empresa;
         
-        if (link.descricao) {
+        // ========== DESCRIÇÃO (só se preenchida) ==========
+        if (link.descricao && String(link.descricao).trim() !== '') {
           document.getElementById('empresaDescricao').textContent = link.descricao;
           document.getElementById('empresaDescricao').style.display = 'block';
         }
         
-        if (link.localizacao) {
+        // ========== LOCALIZAÇÃO (só se preenchida) ==========
+        if (link.localizacao && String(link.localizacao).trim() !== '') {
           document.getElementById('mapContainer').style.display = 'block';
           document.getElementById('mapLink').href = link.localizacao;
           
@@ -168,12 +216,13 @@
           }
         }
         
+        // ========== WHATSAPP ==========
         let waNumber = String(link.whatsapp).replace(/\D/g, '');
         if (waNumber.length === 10 || waNumber.length === 11) {
           waNumber = '55' + waNumber;
         }
         let waUrl = `https://wa.me/${waNumber}`;
-        if (link.mensagem) {
+        if (link.mensagem && String(link.mensagem).trim() !== '') {
           waUrl += `?text=${encodeURIComponent(link.mensagem)}`;
         }
         
@@ -192,29 +241,40 @@
           document.getElementById('modalOverlay').style.display = 'none';
         });
         
-        if (link.instagram) {
+        // ========== REDES SOCIAIS (só se preenchidas) ==========
+        let temRedeSocial = false;
+        
+        if (link.instagram && String(link.instagram).trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
           document.getElementById('instagramBtn').addEventListener('click', () => {
             const instagram = link.instagram.replace('@', '');
             window.open(`https://instagram.com/${instagram}`, '_blank');
           });
+          temRedeSocial = true;
         }
         
-        if (link.facebook) {
+        if (link.facebook && String(link.facebook).trim() !== '') {
           document.getElementById('facebookBtn').style.display = 'flex';
           document.getElementById('facebookBtn').addEventListener('click', () => {
             window.open(link.facebook, '_blank');
           });
+          temRedeSocial = true;
         }
         
-        if (link.site) {
+        if (link.site && String(link.site).trim() !== '') {
           document.getElementById('siteBtn').style.display = 'flex';
           document.getElementById('siteBtn').addEventListener('click', () => {
             window.open(link.site, '_blank');
           });
+          temRedeSocial = true;
         }
         
-        if (link.horario) {
+        if (temRedeSocial) {
+          document.getElementById('socialButtons').style.display = 'flex';
+        }
+        
+        // ========== HORÁRIO (só se preenchido) ==========
+        if (link.horario && String(link.horario).trim() !== '') {
           document.getElementById('horarioInfo').style.display = 'flex';
           document.getElementById('horarioTexto').textContent = link.horario;
         }
