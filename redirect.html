@@ -49,18 +49,27 @@
 
       <div class="divider" id="divider" style="display:none;"></div>
 
+      <!-- BOTÃO WHATSAPP PRINCIPAL -->
       <button id="whatsappBtn" class="whatsapp-btn">
         <i class="fab fa-whatsapp"></i>
-        <span>Chamar no WhatsApp</span>
+        <span id="whatsappBtnText">Chamar no WhatsApp</span>
         <span class="btn-pulse"></span>
       </button>
 
+      <!-- BOTÃO WHATSAPP SECUNDÁRIO -->
+      <button id="whatsappBtn2" class="whatsapp-btn" style="display:none; margin-top:10px;">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp Secundário</span>
+      </button>
+
+      <!-- REDES SOCIAIS -->
       <div class="social-links" id="socialLinks" style="display:none;">
         <button id="instagramBtn" class="social-btn instagram" style="display:none;"><i class="fab fa-instagram"></i><span>Instagram</span></button>
         <button id="facebookBtn" class="social-btn facebook" style="display:none;"><i class="fab fa-facebook-f"></i><span>Facebook</span></button>
         <button id="siteBtn" class="social-btn site" style="display:none;"><span class="material-icons-round">public</span><span>Site</span></button>
       </div>
 
+      <!-- LOCALIZAÇÃO -->
       <div class="location-block" id="locationBlock" style="display:none;">
         <div class="map-container" id="mapContainer">
           <iframe id="mapIframe" src="" width="100%" height="220" style="border:0; border-radius:18px; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -71,6 +80,7 @@
         </a>
       </div>
 
+      <!-- HORÁRIO -->
       <div class="info-block" id="horarioBlock" style="display:none;">
         <span class="material-icons-round">schedule</span>
         <div>
@@ -79,7 +89,10 @@
         </div>
       </div>
 
-      <p class="powered-by">Criado com ❤️ <strong>WhatsLink</strong> • 100% grátis</p>
+      <!-- RODAPÉ COM LINK -->
+      <p class="powered-by">
+        Criado com ❤️ <a href="https://whatslink-48tc.onrender.com/" style="color:inherit; text-decoration:underline; font-weight:700;">WhatsLink</a> • 100% grátis
+      </p>
     </div>
   </div>
 
@@ -188,6 +201,7 @@
           document.getElementById('divider').style.display = 'block';
         }
 
+        // WhatsApp principal
         let waNumber = String(link.whatsapp).replace(/\D/g, '');
         if (waNumber.length === 10 || waNumber.length === 11) waNumber = '55' + waNumber;
         let waUrl = 'https://wa.me/' + waNumber;
@@ -195,10 +209,30 @@
           waUrl += '?text=' + encodeURIComponent(link.mensagem);
         }
 
+        // Nome do botão
+        if (link.botao_whatsapp && link.botao_whatsapp.trim() !== '') {
+          document.getElementById('whatsappBtnText').textContent = link.botao_whatsapp;
+        }
+
         document.getElementById('whatsappBtn').addEventListener('click', function() {
           window.open(waUrl, '_blank');
         });
 
+        // WhatsApp secundário
+        if (link.whatsapp2 && String(link.whatsapp2).trim() !== '') {
+          let waNumber2 = String(link.whatsapp2).replace(/\D/g, '');
+          if (waNumber2.length === 10 || waNumber2.length === 11) waNumber2 = '55' + waNumber2;
+          let waUrl2 = 'https://wa.me/' + waNumber2;
+          if (link.mensagem && link.mensagem.trim() !== '') {
+            waUrl2 += '?text=' + encodeURIComponent(link.mensagem);
+          }
+          document.getElementById('whatsappBtn2').style.display = 'flex';
+          document.getElementById('whatsappBtn2').addEventListener('click', function() {
+            window.open(waUrl2, '_blank');
+          });
+        }
+
+        // Redes sociais
         let temSocial = false;
         if (link.instagram && link.instagram.trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
@@ -217,6 +251,7 @@
         }
         if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
 
+        // Localização
         if (link.localizacao && link.localizacao.trim() !== '') {
           const locUrl = link.localizacao.trim();
           const tipoLink = detectarTipoLink(locUrl);
@@ -244,6 +279,7 @@
           }
         }
 
+        // Horário
         if (link.horario && link.horario.trim() !== '') { 
           document.getElementById('horarioBlock').style.display = 'flex'; 
           document.getElementById('horarioTexto').textContent = link.horario; 
