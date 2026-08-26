@@ -7,7 +7,6 @@ const USERS_SHEET = 'Users';
 const CHAVE_CRIPTO = 'WhatsLink_Secure_Key_2026';
 const MAX_EDICOES_POR_DIA = 5;
 
-// ========== FUNÇÃO PARA GUARDAR CHAVE SECRETA (EXECUTE UMA VEZ) ==========
 function guardarChaveSecreta() {
   PropertiesService.getScriptProperties().setProperty(
     'GOOGLE_CLIENT_SECRET',
@@ -16,12 +15,10 @@ function guardarChaveSecreta() {
   Logger.log('Chave secreta guardada com sucesso!');
 }
 
-// ========== FUNÇÃO PARA OBTER CHAVE SECRETA ==========
 function obterChaveSecreta() {
   return PropertiesService.getScriptProperties().getProperty('GOOGLE_CLIENT_SECRET');
 }
 
-// ========== FUNÇÃO DE CRIPTOGRAFIA ==========
 function criptografar(texto) {
   if (!texto) return '';
   const textoStr = String(texto);
@@ -33,7 +30,6 @@ function criptografar(texto) {
   return Utilities.base64Encode(resultado);
 }
 
-// ========== FUNÇÃO DE DESCRIPTOGRAFIA ==========
 function descriptografar(textoCriptografado) {
   if (!textoCriptografado) return '';
   try {
@@ -49,22 +45,20 @@ function descriptografar(textoCriptografado) {
   }
 }
 
-// ========== FUNÇÃO PARA GERAR ID ÚNICO ==========
 function gerarId() {
   return new Date().getTime().toString(36) + Math.random().toString(36).substr(2, 8);
 }
 
-// ========== FUNÇÃO PARA INICIALIZAR PLANILHAS ==========
 function inicializarPlanilhas() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   
   if (!ss.getSheetByName(SHEET_NAME)) {
     const sheet = ss.insertSheet(SHEET_NAME);
     sheet.appendRow([
-      'id', 'empresa', 'whatsapp', 'slug', 'mensagem',
+      'id', 'empresa', 'whatsapp', 'whatsapp2', 'slug', 'mensagem',
       'logo_url', 'banner_url', 'descricao', 'localizacao',
       'instagram', 'facebook', 'site', 'horario', 'tema',
-      'cliques', 'created_at', 'user_email', 'edit_token'
+      'botao_whatsapp', 'cliques', 'created_at', 'user_email', 'edit_token'
     ]);
     sheet.protect().setDescription('Protegido - Acesso via API');
   }
@@ -78,7 +72,6 @@ function inicializarPlanilhas() {
   }
 }
 
-// ========== FUNÇÃO PRINCIPAL - POST ==========
 function doPost(e) {
   if (!e || !e.postData || !e.postData.contents) {
     return response({ error: 'Requisição inválida' });
@@ -110,7 +103,6 @@ function doPost(e) {
   }
 }
 
-// ========== LOGIN COM GOOGLE ==========
 function loginGoogle(data) {
   try {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
@@ -138,16 +130,7 @@ function loginGoogle(data) {
     if (!userData) {
       const novoId = gerarId();
       const now = new Date().toISOString();
-      usersSheet.appendRow([
-        novoId,
-        data.email,
-        data.nome,
-        data.foto || '',
-        now,
-        0,
-        ''
-      ]);
-      
+      usersSheet.appendRow([novoId, data.email, data.nome, data.foto || '', now, 0, '']);
       userData = {
         id: novoId,
         email: data.email,
@@ -158,18 +141,13 @@ function loginGoogle(data) {
       };
     }
 
-    return response({
-      success: true,
-      user: userData,
-      message: 'Login realizado com sucesso!'
-    });
+    return response({ success: true, user: userData, message: 'Login realizado com sucesso!' });
 
   } catch (error) {
     return response({ error: 'Erro no login: ' + error.message });
   }
 }
 
-// ========== VERIFICAR TOKEN ==========
 function verificarToken(data) {
   try {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
@@ -199,7 +177,6 @@ function verificarToken(data) {
   }
 }
 
-// ========== CRIAR LINK (COM CRIPTOGRAFIA) ==========
 function criarLink(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
@@ -213,7 +190,7 @@ function criarLink(data) {
 
     const lastRow = sheet.getLastRow();
     if (lastRow > 1) {
-      const slugs = sheet.getRange(2, 4, lastRow - 1, 1).getValues().flat();
+      const slugs = sheet.getRange(2, 5, lastRow - 1, 1).getValues().flat();
       if (slugs.includes(slug)) {
         return response({ error: 'Este link já existe' });
       }
@@ -224,6 +201,7 @@ function criarLink(data) {
     const editToken = gerarId();
 
     const whatsappCripto = criptografar(whatsapp);
+    const whatsapp2Cripto = criptografar(String(data.whatsapp2 || '').replace(/\D/g, ''));
     const mensagemCripto = criptografar(data.mensagem || '');
     const emailCripto = criptografar(data.user_email || '');
 
@@ -231,6 +209,7 @@ function criarLink(data) {
       id,
       String(data.empresa || ''),
       whatsappCripto,
+      whatsapp2Cripto,
       slug,
       mensagemCripto,
       String(data.logo_url || ''),
@@ -242,13 +221,14 @@ function criarLink(data) {
       String(data.site || ''),
       String(data.horario || ''),
       String(data.tema || 'verde'),
+      String(data.botao_whatsapp || 'Chamar no WhatsApp'),
       0,
       now,
       emailCripto,
       editToken
     ];
 
-    sheet.getRange(lastRow + 1, 1, 1, 18).setValues([row]);
+    sheet.getRange(lastRow + 1, 1, 1, 20).setValues([row]);
 
     return response({
       success: true,
@@ -263,7 +243,6 @@ function criarLink(data) {
   }
 }
 
-// ========== EDITAR LINK (5 EDIÇÕES POR DIA) ==========
 function editarLink(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
@@ -278,10 +257,10 @@ function editarLink(data) {
     let userEmail = '';
     
     for (let i = 2; i <= lastRow; i++) {
-      const rowData = sheet.getRange(i, 1, 1, 18).getValues()[0];
-      if (rowData[0] === data.id && rowData[17] === data.edit_token) {
+      const rowData = sheet.getRange(i, 1, 1, 20).getValues()[0];
+      if (rowData[0] === data.id && rowData[19] === data.edit_token) {
         linkRow = i;
-        userEmail = descriptografar(rowData[16]);
+        userEmail = descriptografar(rowData[18]);
         break;
       }
     }
@@ -326,16 +305,18 @@ function editarLink(data) {
 
     if (data.empresa !== undefined) sheet.getRange(linkRow, 2).setValue(String(data.empresa));
     if (data.whatsapp !== undefined) sheet.getRange(linkRow, 3).setValue(criptografar(String(data.whatsapp).replace(/\D/g, '')));
-    if (data.mensagem !== undefined) sheet.getRange(linkRow, 5).setValue(criptografar(String(data.mensagem)));
-    if (data.logo_url !== undefined) sheet.getRange(linkRow, 6).setValue(String(data.logo_url));
-    if (data.banner_url !== undefined) sheet.getRange(linkRow, 7).setValue(String(data.banner_url));
-    if (data.descricao !== undefined) sheet.getRange(linkRow, 8).setValue(String(data.descricao));
-    if (data.localizacao !== undefined) sheet.getRange(linkRow, 9).setValue(String(data.localizacao));
-    if (data.instagram !== undefined) sheet.getRange(linkRow, 10).setValue(String(data.instagram));
-    if (data.facebook !== undefined) sheet.getRange(linkRow, 11).setValue(String(data.facebook));
-    if (data.site !== undefined) sheet.getRange(linkRow, 12).setValue(String(data.site));
-    if (data.horario !== undefined) sheet.getRange(linkRow, 13).setValue(String(data.horario));
-    if (data.tema !== undefined) sheet.getRange(linkRow, 14).setValue(String(data.tema));
+    if (data.whatsapp2 !== undefined) sheet.getRange(linkRow, 4).setValue(criptografar(String(data.whatsapp2).replace(/\D/g, '')));
+    if (data.mensagem !== undefined) sheet.getRange(linkRow, 6).setValue(criptografar(String(data.mensagem)));
+    if (data.logo_url !== undefined) sheet.getRange(linkRow, 7).setValue(String(data.logo_url));
+    if (data.banner_url !== undefined) sheet.getRange(linkRow, 8).setValue(String(data.banner_url));
+    if (data.descricao !== undefined) sheet.getRange(linkRow, 9).setValue(String(data.descricao));
+    if (data.localizacao !== undefined) sheet.getRange(linkRow, 10).setValue(String(data.localizacao));
+    if (data.instagram !== undefined) sheet.getRange(linkRow, 11).setValue(String(data.instagram));
+    if (data.facebook !== undefined) sheet.getRange(linkRow, 12).setValue(String(data.facebook));
+    if (data.site !== undefined) sheet.getRange(linkRow, 13).setValue(String(data.site));
+    if (data.horario !== undefined) sheet.getRange(linkRow, 14).setValue(String(data.horario));
+    if (data.tema !== undefined) sheet.getRange(linkRow, 15).setValue(String(data.tema));
+    if (data.botao_whatsapp !== undefined) sheet.getRange(linkRow, 16).setValue(String(data.botao_whatsapp));
 
     editCount++;
     usersSheet.getRange(userRow, 6).setValue(editCount);
@@ -355,7 +336,6 @@ function editarLink(data) {
   }
 }
 
-// ========== BUSCAR LINKS DO USUÁRIO ==========
 function buscarMeusLinks(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
@@ -367,16 +347,16 @@ function buscarMeusLinks(data) {
     const links = [];
 
     for (let i = 2; i <= lastRow; i++) {
-      const rowData = sheet.getRange(i, 1, 1, 18).getValues()[0];
-      if (rowData[16] === emailCripto) {
+      const rowData = sheet.getRange(i, 1, 1, 20).getValues()[0];
+      if (rowData[18] === emailCripto) {
         links.push({
           id: rowData[0],
           empresa: rowData[1],
-          slug: rowData[3],
-          tema: rowData[13],
-          cliques: rowData[14],
-          created_at: rowData[15],
-          edit_token: rowData[17]
+          slug: rowData[4],
+          tema: rowData[14],
+          cliques: rowData[16],
+          created_at: rowData[17],
+          edit_token: rowData[19]
         });
       }
     }
@@ -388,7 +368,6 @@ function buscarMeusLinks(data) {
   }
 }
 
-// ========== BUSCAR LINK (GET) ==========
 function doGet(e) {
   try {
     inicializarPlanilhas();
@@ -401,30 +380,32 @@ function doGet(e) {
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ error: 'Link não encontrado' });
 
-    const data = sheet.getRange(1, 1, lastRow, 18).getValues();
+    const data = sheet.getRange(1, 1, lastRow, 20).getValues();
 
     for (let i = 1; i < data.length; i++) {
-      if (String(data[i][3]) === slug) {
+      if (String(data[i][4]) === slug) {
         const link = {
           id: String(data[i][0] || ''),
           empresa: String(data[i][1] || ''),
           whatsapp: descriptografar(String(data[i][2] || '')),
-          slug: String(data[i][3] || ''),
-          mensagem: descriptografar(String(data[i][4] || '')),
-          logo_url: String(data[i][5] || ''),
-          banner_url: String(data[i][6] || ''),
-          descricao: String(data[i][7] || ''),
-          localizacao: String(data[i][8] || ''),
-          instagram: String(data[i][9] || ''),
-          facebook: String(data[i][10] || ''),
-          site: String(data[i][11] || ''),
-          horario: String(data[i][12] || ''),
-          tema: String(data[i][13] || 'verde'),
-          cliques: parseInt(data[i][14]) || 0,
-          created_at: String(data[i][15] || '')
+          whatsapp2: descriptografar(String(data[i][3] || '')),
+          slug: String(data[i][4] || ''),
+          mensagem: descriptografar(String(data[i][5] || '')),
+          logo_url: String(data[i][6] || ''),
+          banner_url: String(data[i][7] || ''),
+          descricao: String(data[i][8] || ''),
+          localizacao: String(data[i][9] || ''),
+          instagram: String(data[i][10] || ''),
+          facebook: String(data[i][11] || ''),
+          site: String(data[i][12] || ''),
+          horario: String(data[i][13] || ''),
+          tema: String(data[i][14] || 'verde'),
+          botao_whatsapp: String(data[i][15] || 'Chamar no WhatsApp'),
+          cliques: parseInt(data[i][16]) || 0,
+          created_at: String(data[i][17] || '')
         };
 
-        sheet.getRange(i + 1, 15).setValue(link.cliques + 1);
+        sheet.getRange(i + 1, 17).setValue(link.cliques + 1);
 
         return response(link);
       }
@@ -437,7 +418,6 @@ function doGet(e) {
   }
 }
 
-// ========== FUNÇÃO AUXILIAR DE RESPOSTA ==========
 function response(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
