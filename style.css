@@ -670,8 +670,15 @@ footer { margin-top:80px; padding:32px 0 0; border-top:1px solid var(--border); 
     gap:8px;
   }
   
+  /* CORREÇÃO AQUI: Botão Começar no mobile */
+  .nav-cta {
+    background:var(--text) !important;
+    color:white !important;
+    justify-content:center;
+    font-weight:600 !important;
+  }
+  
   .nav-edit { display:flex !important; }
-  .nav-cta { justify-content:center; }
   
   .hero { margin:36px auto 32px; }
   .hero h1 { font-size:32px; }
