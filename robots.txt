@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /redirect.html
+Disallow: /edit.html
+Disallow: /css/
+Disallow: /Código.gs
+
+Sitemap: https://whatslink-48tc.onrender.com/sitemap.xml
