@@ -45,7 +45,6 @@ body {
   padding: 0;
 }
 
-/* Botões */
 .btn-primary {
   background: var(--whatsapp);
   color: white;
@@ -78,7 +77,6 @@ body {
   color: var(--text);
 }
 
-/* Formulários */
 .field { margin-bottom: 18px; }
 .field label { font-weight: 600; font-size: 13px; display: block; margin-bottom: 8px; }
 .optional {
@@ -138,6 +136,7 @@ button[type="submit"] {
   gap: 10px; margin-top: 12px; transition: .22s;
 }
 button[type="submit"]:hover { background: black; }
+button[type="submit"]:disabled { opacity: .6; cursor: not-allowed; }
 
 .spinner {
   width: 18px; height: 18px;
@@ -145,7 +144,6 @@ button[type="submit"]:hover { background: black; }
   border-radius: 50%; animation: spin .8s linear infinite;
 }
 
-/* Toast */
 .toast {
   position: fixed; bottom: 24px; left: 50%;
   transform: translateX(-50%) translateY(80px);
@@ -160,7 +158,6 @@ button[type="submit"]:hover { background: black; }
 }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-/* Animações */
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes pulseDot { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
@@ -171,7 +168,6 @@ button[type="submit"]:hover { background: black; }
 @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-22px,-18px); } }
 @keyframes gradientShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
-/* Responsivo */
 @media (max-width: 720px) {
   .grid-2 { grid-template-columns: 1fr; }
 }
