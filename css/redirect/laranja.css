@@ -1,5 +1,5 @@
 /* ============================================
-   WHATSLINK - TEMA LARANJA (ENERGIA VIBRANTE)
+   WHATSLINK - TEMA LARANJA ENERGIA
    ============================================ */
 
 .theme-laranja {
@@ -93,21 +93,6 @@
   margin-bottom: 16px;
 }
 
-/* Stats */
-.stats-row {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 20px;
-  padding: 14px;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.06);
-}
-.stat-item { text-align: center; }
-.stat-value { font-size: 16px; font-weight: 800; color: var(--theme); }
-.stat-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; }
-
 .whatsapp-btn {
   width: 100%;
   padding: 17px;
@@ -124,6 +109,7 @@
   background: var(--theme);
   box-shadow: 0 10px 30px rgba(249,115,22,.35);
   transition: .22s;
+  position: relative;
 }
 .whatsapp-btn:hover { background: var(--theme-2); transform: translateY(-2px); }
 .btn-pulse {
