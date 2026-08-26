@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /redirect.html
 Disallow: /edit.html
+Disallow: /criar.html
 Disallow: /css/
 Disallow: /Código.gs
 
