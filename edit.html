@@ -5,51 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meus Links - WhatsLink</title>
   <meta name="robots" content="noindex, nofollow" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .edit-container { max-width:600px; margin:0 auto; padding:20px; }
-    .edit-header { display:flex; justify-content:space-between; align-items:center; padding:16px 0; margin-bottom:24px; }
-    .edit-logo { font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
-    .edit-logo span { color:#25D366; }
-    .user-area { display:flex; align-items:center; gap:10px; background:white; padding:8px 14px; border-radius:999px; border:1px solid #e2e8f0; }
-    .user-area img { width:32px; height:32px; border-radius:50%; }
-    .user-area span { font-weight:600; font-size:13px; }
-    .logout-btn { background:none; border:none; cursor:pointer; color:#64748b; font-size:13px; font-weight:600; display:flex; align-items:center; gap:4px; }
-    .login-box { background:white; border-radius:20px; padding:40px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.08); max-width:400px; margin:80px auto; }
-    .login-box h2 { margin-bottom:8px; }
-    .login-box p { color:#64748b; margin-bottom:24px; font-size:14px; }
-    .google-btn { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; max-width:280px; margin:0 auto; padding:14px 20px; background:white; border:2px solid #e2e8f0; border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; transition:.2s; }
-    .google-btn:hover { background:#f8fafc; border-color:#cbd5e1; }
-    .link-card { background:white; border-radius:16px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.08); margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; }
-    .link-card h3 { font-size:16px; margin-bottom:4px; }
-    .link-card p { font-size:12px; color:#64748b; }
-    .btn { padding:10px 16px; border:none; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; display:flex; align-items:center; gap:6px; transition:.2s; text-decoration:none; }
-    .btn-view { background:#25D366; color:white; }
-    .btn-view:hover { background:#128C7E; }
-    .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#0f172a; color:white; padding:12px 18px; border-radius:999px; font-size:13px; font-weight:600; z-index:100; transition:.35s; opacity:0; }
-    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
-    .empty-state { text-align:center; padding:60px 20px; color:#64748b; }
-    .empty-state span { font-size:48px; display:block; margin-bottom:16px; }
-    .g_id_signin { width:100%; min-height:48px; display:flex; justify-content:center; }
-    .g_id_signin iframe { width:100% !important; max-width:280px; min-width:200px; }
-  </style>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/edit.css" />
 </head>
 <body>
-  <div class="edit-container">
-    <header class="edit-header">
-      <div class="edit-logo"><span class="material-icons-round">link</span> Whats<span>Link</span></div>
-      <div id="userArea" style="display:none;">
-        <div class="user-area">
-          <img id="userPhoto" src="" alt="Foto" />
-          <span id="userName"></span>
-          <button class="logout-btn" id="logoutBtn"><span class="material-icons-round" style="font-size:18px;">logout</span> Sair</button>
-        </div>
-      </div>
-    </header>
+  <!-- NAVBAR -->
+  <header class="main-header">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><span class="material-icons-round">link</span></div>
+      Whats<span>Link</span>
+    </a>
+    <a href="index.html" class="back-link">
+      <span class="material-icons-round" style="font-size:18px;">arrow_back</span>
+      Voltar para página inicial
+    </a>
+  </header>
 
+  <div class="edit-container">
+    <!-- LOGIN -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
@@ -57,6 +33,19 @@
       <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
     </div>
 
+    <!-- USUÁRIO LOGADO -->
+    <div id="userArea" style="display:none;">
+      <div class="user-area">
+        <img id="userPhoto" src="" alt="Foto" />
+        <span id="userName"></span>
+        <button class="logout-btn" id="logoutBtn">
+          <span class="material-icons-round" style="font-size:18px;">logout</span>
+          Sair
+        </button>
+      </div>
+    </div>
+
+    <!-- LISTA DE LINKS -->
     <div id="linksArea" style="display:none;">
       <h2 style="margin-bottom:16px;">Meus Links</h2>
       <div id="linksList"></div>
@@ -71,6 +60,7 @@
 
     function showToast(msg, icon = 'check_circle') {
       const t = document.getElementById('toast');
+      if (!t) return;
       t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
@@ -79,7 +69,11 @@
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
+        currentUser = {
+          email: payload.email,
+          nome: payload.name,
+          foto: payload.picture
+        };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
         document.getElementById('loginCard').style.display = 'none';
         document.getElementById('userArea').style.display = 'block';
@@ -100,12 +94,18 @@
         });
         const data = await response.json();
         if (data.error) throw new Error(data.error);
-        
+
         const links = data.links || [];
         const linksList = document.getElementById('linksList');
-        
+
         if (links.length === 0) {
-          linksList.innerHTML = `<div class="empty-state"><span class="material-icons-round">link_off</span><p>Você ainda não criou nenhum link.</p><a href="/" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a></div>`;
+          linksList.innerHTML = `
+            <div class="empty-state">
+              <span class="material-icons-round">link_off</span>
+              <p>Você ainda não criou nenhum link.</p>
+              <a href="/" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
+            </div>
+          `;
         } else {
           linksList.innerHTML = links.map(link => `
             <div class="link-card">
@@ -114,12 +114,13 @@
                 <p>whatslink-48tc.onrender.com/${link.slug} • ${link.cliques} cliques</p>
               </div>
               <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
-                <span class="material-icons-round" style="font-size:16px;">visibility</span> Ver
+                <span class="material-icons-round" style="font-size:16px;">visibility</span>
+                Ver
               </a>
             </div>
           `).join('');
         }
-        
+
         document.getElementById('linksArea').style.display = 'block';
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
