@@ -32,6 +32,7 @@
   </header>
 
   <div class="edit-container">
+    <!-- LOGIN -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
@@ -39,6 +40,7 @@
       <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
     </div>
 
+    <!-- USUÁRIO -->
     <div id="userArea" style="display:none;">
       <div class="user-area">
         <img id="userPhoto" src="" alt="Foto" />
@@ -50,9 +52,115 @@
       </div>
     </div>
 
+    <!-- LISTA DE LINKS -->
     <div id="linksArea" style="display:none;">
       <h2 style="margin-bottom:16px;">Meus Links</h2>
       <div id="linksList"></div>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDIÇÃO -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><span class="material-icons-round">edit</span> Editar Link</h2>
+        <button class="modal-close" id="closeEditModal">&times;</button>
+      </div>
+      <form id="editForm" novalidate>
+        <input type="hidden" id="editId" />
+        <input type="hidden" id="editToken" />
+        
+        <div class="field">
+          <label for="editEmpresa">Nome da empresa *</label>
+          <input type="text" id="editEmpresa" required />
+        </div>
+        
+        <div class="field">
+          <label for="editWhatsapp">WhatsApp principal *</label>
+          <input type="tel" id="editWhatsapp" required maxlength="18" />
+        </div>
+        
+        <div class="field">
+          <label for="editBotao1">Nome do botão principal *</label>
+          <input type="text" id="editBotao1" required />
+        </div>
+        
+        <div class="field">
+          <label for="editWhatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
+          <input type="tel" id="editWhatsapp2" maxlength="18" />
+        </div>
+        
+        <div class="field">
+          <label for="editBotao2">Nome do botão secundário <span class="optional">opcional</span></label>
+          <input type="text" id="editBotao2" />
+        </div>
+        
+        <div class="grid-2">
+          <div class="field">
+            <label for="editLogo">Logo (URL)</label>
+            <input type="url" id="editLogo" />
+          </div>
+          <div class="field">
+            <label for="editBanner">Banner (URL)</label>
+            <input type="url" id="editBanner" />
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="editMensagem">Mensagem automática</label>
+          <textarea id="editMensagem" rows="2"></textarea>
+        </div>
+        
+        <div class="field">
+          <label for="editDescricao">Descrição</label>
+          <textarea id="editDescricao" rows="3"></textarea>
+        </div>
+        
+        <div class="grid-2">
+          <div class="field">
+            <label for="editInstagram">Instagram</label>
+            <input type="text" id="editInstagram" />
+          </div>
+          <div class="field">
+            <label for="editHorario">Horário</label>
+            <input type="text" id="editHorario" />
+          </div>
+        </div>
+        
+        <div class="grid-2">
+          <div class="field">
+            <label for="editFacebook">Facebook</label>
+            <input type="url" id="editFacebook" />
+          </div>
+          <div class="field">
+            <label for="editSite">Site</label>
+            <input type="url" id="editSite" />
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="editLocalizacao">Localização (Google Maps)</label>
+          <input type="text" id="editLocalizacao" />
+        </div>
+        
+        <div class="field">
+          <label>Tema da página</label>
+          <input type="hidden" id="editTema" value="verde" />
+          <div class="theme-selector" id="editThemeSelector">
+            <button type="button" class="theme-option active" data-theme="verde" style="background:linear-gradient(135deg,#25D366,#128C7E);"><span class="material-icons-round">check</span></button>
+            <button type="button" class="theme-option" data-theme="azul" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);"><span class="material-icons-round">check</span></button>
+            <button type="button" class="theme-option" data-theme="roxo" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);"><span class="material-icons-round">check</span></button>
+            <button type="button" class="theme-option" data-theme="laranja" style="background:linear-gradient(135deg,#f97316,#ea580c);"><span class="material-icons-round">check</span></button>
+            <button type="button" class="theme-option" data-theme="preto" style="background:linear-gradient(135deg,#d4af37,#c19b2e);"><span class="material-icons-round">check</span></button>
+            <button type="button" class="theme-option" data-theme="cardapio" style="background:linear-gradient(135deg,#ff8f00,#ffb300);"><span class="material-icons-round">check</span></button>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+          <span class="material-icons-round">save</span>
+          Salvar alterações
+        </button>
+      </form>
     </div>
   </div>
 
@@ -61,9 +169,13 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     let currentUser = null;
+    let linksCache = [];
+
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
 
     function showToast(msg, icon = 'check_circle') {
-      const t = document.getElementById('toast');
+      const t = $('#toast');
       if (!t) return;
       t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
       t.classList.add('show');
@@ -75,10 +187,10 @@
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
         currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
-        document.getElementById('loginCard').style.display = 'none';
-        document.getElementById('userArea').style.display = 'block';
-        document.getElementById('userPhoto').src = currentUser.foto;
-        document.getElementById('userName').textContent = currentUser.nome;
+        $('#loginCard').style.display = 'none';
+        $('#userArea').style.display = 'block';
+        $('#userPhoto').src = currentUser.foto;
+        $('#userName').textContent = currentUser.nome;
         buscarMeusLinks();
       } catch (err) {
         showToast('Erro ao fazer login', 'error');
@@ -96,52 +208,170 @@
         if (data.error) throw new Error(data.error);
 
         const links = data.links || [];
-        const linksList = document.getElementById('linksList');
-
-        if (links.length === 0) {
-          linksList.innerHTML = `
-            <div class="empty-state">
-              <span class="material-icons-round">link_off</span>
-              <p>Você ainda não criou nenhum link.</p>
-              <a href="criar.html" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
-            </div>
-          `;
-        } else {
-          linksList.innerHTML = links.map(link => `
-            <div class="link-card">
-              <div>
-                <h3>${link.empresa}</h3>
-                <p>whatslink-48tc.onrender.com/${link.slug} • ${link.cliques} cliques</p>
-              </div>
-              <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
-                <span class="material-icons-round" style="font-size:16px;">visibility</span>
-                Ver
-              </a>
-            </div>
-          `).join('');
-        }
-
-        document.getElementById('linksArea').style.display = 'block';
+        linksCache = links;
+        renderizarLinks(links);
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
       }
     }
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('whatslink_user');
-      currentUser = null;
-      document.getElementById('userArea').style.display = 'none';
-      document.getElementById('loginCard').style.display = 'block';
-      document.getElementById('linksArea').style.display = 'none';
+    function renderizarLinks(links) {
+      const linksList = $('#linksList');
+      if (links.length === 0) {
+        linksList.innerHTML = `
+          <div class="empty-state">
+            <span class="material-icons-round">link_off</span>
+            <p>Você ainda não criou nenhum link.</p>
+            <a href="criar.html" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
+          </div>
+        `;
+        $('#linksArea').style.display = 'block';
+        return;
+      }
+
+      linksList.innerHTML = links.map(link => `
+        <div class="link-card">
+          <div>
+            <h3>${link.empresa}</h3>
+            <p>whatslink-48tc.onrender.com/${link.slug} • ${link.cliques} cliques</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
+              <span class="material-icons-round" style="font-size:16px;">visibility</span>
+              Ver
+            </a>
+            <button class="btn btn-edit" onclick="abrirEdicao('${link.id}', '${link.edit_token}')">
+              <span class="material-icons-round" style="font-size:16px;">edit</span>
+              Editar
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      $('#linksArea').style.display = 'block';
+    }
+
+    window.abrirEdicao = async function(id, token) {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'buscar_link', id, edit_token: token })
+        });
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+
+        // Preencher formulário
+        $('#editId').value = data.id;
+        $('#editToken').value = token;
+        $('#editEmpresa').value = data.empresa;
+        $('#editWhatsapp').value = data.whatsapp;
+        $('#editBotao1').value = data.botao_whatsapp || 'Chamar no WhatsApp';
+        $('#editWhatsapp2').value = data.whatsapp2 || '';
+        $('#editBotao2').value = data.botao_whatsapp2 || '';
+        $('#editLogo').value = data.logo_url || '';
+        $('#editBanner').value = data.banner_url || '';
+        $('#editMensagem').value = data.mensagem || '';
+        $('#editDescricao').value = data.descricao || '';
+        $('#editInstagram').value = data.instagram || '';
+        $('#editHorario').value = data.horario || '';
+        $('#editFacebook').value = data.facebook || '';
+        $('#editSite').value = data.site || '';
+        $('#editLocalizacao').value = data.localizacao || '';
+        $('#editTema').value = data.tema || 'verde';
+
+        // Marcar tema
+        $$('#editThemeSelector .theme-option').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
+        });
+
+        // Abrir modal
+        $('#editModal').classList.add('active');
+      } catch (err) {
+        showToast('Erro ao carregar link: ' + err.message, 'error');
+      }
+    };
+
+    // Fechar modal
+    $('#closeEditModal').addEventListener('click', () => {
+      $('#editModal').classList.remove('active');
     });
 
+    // Fechar ao clicar fora
+    $('#editModal').addEventListener('click', (e) => {
+      if (e.target === $('#editModal')) {
+        $('#editModal').classList.remove('active');
+      }
+    });
+
+    // Seleção de tema no modal
+    $$('#editThemeSelector .theme-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $('#editTema').value = btn.dataset.theme;
+        $$('#editThemeSelector .theme-option').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Salvar edição
+    $('#editForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        action: 'editar',
+        id: $('#editId').value,
+        edit_token: $('#editToken').value,
+        empresa: $('#editEmpresa').value.trim(),
+        whatsapp: $('#editWhatsapp').value.trim().replace(/\D/g, ''),
+        whatsapp2: $('#editWhatsapp2').value.trim().replace(/\D/g, ''),
+        botao_whatsapp: $('#editBotao1').value.trim(),
+        botao_whatsapp2: $('#editBotao2').value.trim(),
+        logo_url: $('#editLogo').value.trim(),
+        banner_url: $('#editBanner').value.trim(),
+        mensagem: $('#editMensagem').value.trim(),
+        descricao: $('#editDescricao').value.trim(),
+        instagram: $('#editInstagram').value.trim().replace('@', ''),
+        facebook: $('#editFacebook').value.trim(),
+        site: $('#editSite').value.trim(),
+        horario: $('#editHorario').value.trim(),
+        localizacao: $('#editLocalizacao').value.trim(),
+        tema: $('#editTema').value
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        if (result.error) throw new Error(result.error);
+
+        showToast(result.message || 'Link atualizado!');
+        $('#editModal').classList.remove('active');
+        buscarMeusLinks(); // recarrega lista
+      } catch (err) {
+        showToast('Erro: ' + err.message, 'error');
+      }
+    });
+
+    // Logout
+    $('#logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('whatslink_user');
+      currentUser = null;
+      $('#userArea').style.display = 'none';
+      $('#loginCard').style.display = 'block';
+      $('#linksArea').style.display = 'none';
+    });
+
+    // Verificar sessão
     const savedUser = localStorage.getItem('whatslink_user');
     if (savedUser) {
       currentUser = JSON.parse(savedUser);
-      document.getElementById('loginCard').style.display = 'none';
-      document.getElementById('userArea').style.display = 'block';
-      document.getElementById('userPhoto').src = currentUser.foto;
-      document.getElementById('userName').textContent = currentUser.nome;
+      $('#loginCard').style.display = 'none';
+      $('#userArea').style.display = 'block';
+      $('#userPhoto').src = currentUser.foto;
+      $('#userName').textContent = currentUser.nome;
       buscarMeusLinks();
     }
   </script>
