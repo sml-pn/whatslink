@@ -44,7 +44,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// CARROSSEL - 6 TEMAS
+// CARROSSEL CORRIGIDO - 6 TEMAS VISÍVEIS
 (function carousel() {
   const track = $('#carouselTrack');
   if (!track) return;
@@ -53,7 +53,14 @@ function extrairUrlEmbed(html) {
   const next = $('#nextBtn');
   const dotsWrap = $('#carouselDots');
   let index = 0;
-  const visible = () => window.innerWidth < 720 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+  
+  const visible = () => {
+    if (window.innerWidth < 480) return 1;
+    if (window.innerWidth < 768) return 2;
+    if (window.innerWidth < 1024) return 3;
+    return 4;
+  };
+  
   const maxIndex = () => Math.max(0, cards.length - visible());
 
   cards.forEach((_, i) => {
@@ -65,10 +72,19 @@ function extrairUrlEmbed(html) {
   const dots = dotsWrap ? [...dotsWrap.children] : [];
 
   function update() {
-    const cardW = cards[0].offsetWidth + 18;
-    track.style.transform = `translateX(-${index * cardW}px)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    if (window.innerWidth < 768) {
+      track.style.transform = 'none';
+      const scrollPos = track.scrollLeft;
+      const cardW = cards[0].offsetWidth + 18;
+      const activeIndex = Math.round(scrollPos / cardW);
+      dots.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
+    } else {
+      const cardW = cards[0].offsetWidth + 18;
+      track.style.transform = `translateX(-${index * cardW}px)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
   }
+
   function goTo(i) {
     index = Math.min(Math.max(i, 0), maxIndex());
     update();
@@ -76,6 +92,10 @@ function extrairUrlEmbed(html) {
 
   prev?.addEventListener('click', () => goTo(index - 1));
   next?.addEventListener('click', () => goTo(index + 1));
+
+  track.addEventListener('scroll', () => {
+    if (window.innerWidth < 768) update();
+  });
 
   function setTheme(theme) {
     $('#tema').value = theme;
@@ -147,7 +167,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// FORM SUBMIT
+// FORM SUBMIT - COM EMAIL E TOKEN
 (function form() {
   const form = $('#linkForm');
   if (!form) return;
@@ -176,7 +196,8 @@ function extrairUrlEmbed(html) {
       site: $('#site').value.trim(),
       horario: $('#horario').value.trim(),
       tema: $('#tema').value,
-      slug: slugify($('#slug').value.trim())
+      slug: slugify($('#slug').value.trim()),
+      user_email: $('#userEmail') ? $('#userEmail').value.trim() : ''
     };
 
     submitBtn.disabled = true;
@@ -195,6 +216,16 @@ function extrairUrlEmbed(html) {
       const finalUrl = BASE_URL + data.slug;
       $('#generatedUrl').value = finalUrl;
       $('#result').style.display = 'block';
+      
+      // Mostrar token de edição
+      if (result.edit_token) {
+        const tokenDisplay = document.createElement('p');
+        tokenDisplay.innerHTML = `<strong>Token de edição:</strong> <code>${result.edit_token}</code>`;
+        tokenDisplay.style.fontSize = '11px';
+        tokenDisplay.style.marginTop = '8px';
+        $('#result').appendChild(tokenDisplay);
+      }
+      
       $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
       showToast('Link criado com sucesso!');
 
@@ -209,15 +240,6 @@ function extrairUrlEmbed(html) {
         }
       };
       $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
-      $('#shareBtn')?.addEventListener('click', async () => {
-        if (navigator.share) {
-          try { await navigator.share({ title: data.empresa, url: finalUrl }); } catch {}
-        } else {
-          $('#copyBtn').click();
-        }
-      });
-
-      localStorage.setItem('whatslink_last', JSON.stringify(data));
 
     } catch (err) {
       showToast('Erro: ' + err.message, 'error');
