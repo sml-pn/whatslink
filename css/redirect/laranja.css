@@ -158,4 +158,41 @@
 .info-block {
   display: flex; gap: 12px; padding: 16px;
   background: white; border: 1px solid #e5e7eb;
-  border-radius: 14px;
+  border-radius: 14px; margin-top: 16px;
+}
+.info-block h3 { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+.info-block p { color: #6b7280; font-size: 13px; margin-top: 2px; }
+.info-block .material-icons-round { color: var(--theme); }
+
+.powered-by {
+  text-align: center; color: #9ca3af;
+  font-size: 11px; margin-top: 32px;
+}
+
+.reception-skeleton {
+  position: absolute; inset: 0;
+  background: #fff8f0; z-index: 20; padding: 0 24px;
+}
+.reception-skeleton div {
+  background: linear-gradient(90deg, #fde8d7 25%, #fce0c8 50%, #fde8d7 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+  border-radius: 12px;
+}
+.sk-banner { height: 220px; border-radius: 0 !important; margin: 0 -24px; }
+.sk-logo { width: 100px; height: 100px; border-radius: 50% !important; margin: -50px auto 16px; }
+.sk-title { height: 28px; width: 60%; margin: 0 auto 12px; }
+.sk-text { height: 16px; width: 80%; margin: 0 auto 22px; }
+.sk-btn { height: 56px; border-radius: 14px !important; }
+
+.error-state {
+  text-align: center; padding: 80px 24px;
+  display: grid; place-items: center; gap: 16px;
+  color: #6b7280;
+}
+.error-state span { font-size: 48px; color: #9ca3af; }
+.error-state a {
+  background: var(--theme); color: white;
+  padding: 12px 20px; border-radius: 999px;
+  text-decoration: none; font-weight: 600; margin-top: 8px;
+}
