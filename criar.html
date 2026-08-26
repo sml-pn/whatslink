@@ -7,26 +7,22 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
   
-  <!-- FAVICON -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   
-  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=Manrope:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   
-  <!-- CSS -->
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/edit.css" />
   
   <style>
     .criar-container { max-width: 680px; margin: 0 auto; padding: 20px; }
     
-    /* Login */
     .login-required {
       background: white;
       border-radius: 24px;
@@ -70,7 +66,6 @@
       color: var(--whatsapp);
     }
     
-    /* Barra do usuário */
     .user-info-bar {
       display: flex;
       align-items: center;
@@ -106,7 +101,6 @@
     .g_id_signin { width: 100%; min-height: 48px; display: flex; justify-content: center; }
     .g_id_signin iframe { width: 100% !important; max-width: 280px; }
     
-    /* Banner de aviso */
     .email-notice {
       display: flex;
       align-items: center;
@@ -123,7 +117,6 @@
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
   <header class="main-header">
     <a href="index.html" class="logo">
       <div class="logo-icon"><span class="material-icons-round">link</span></div>
@@ -136,7 +129,6 @@
   </header>
 
   <div class="criar-container">
-    <!-- ============ TELA DE LOGIN ============ -->
     <div class="login-required" id="loginRequired">
       <div class="login-icon"><span class="material-icons-round">lock</span></div>
       <h2>🔐 Faça login para criar seu link</h2>
@@ -153,9 +145,7 @@
       <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
     </div>
 
-    <!-- ============ USUÁRIO LOGADO + FORMULÁRIO ============ -->
     <div id="formArea" style="display:none;">
-      <!-- Barra do usuário -->
       <div class="user-info-bar">
         <div class="user-info-left">
           <img id="userPhoto" src="" alt="Foto" />
@@ -170,13 +160,11 @@
         </button>
       </div>
 
-      <!-- Aviso de email vinculado -->
       <div class="email-notice">
         <span class="material-icons-round">info</span>
         <span>Seu link será vinculado ao email <strong id="emailVinculado"></strong>. Você poderá editá-lo em "Meus Links".</span>
       </div>
 
-      <!-- Card do formulário -->
       <div class="card">
         <div class="card-header">
           <div class="card-icon"><span class="material-icons-round">edit_note</span></div>
@@ -187,7 +175,6 @@
         </div>
         
         <form id="linkForm" novalidate>
-          <!-- ============ INFORMAÇÕES PRINCIPAIS ============ -->
           <div class="form-group-title">
             <span class="material-icons-round">business</span>
             Informações principais
@@ -236,7 +223,6 @@
             </div>
           </div>
           
-          <!-- ============ MENSAGEM E CONTEÚDO ============ -->
           <div class="form-group-title">
             <span class="material-icons-round">chat_bubble</span>
             Mensagem & Conteúdo
@@ -260,7 +246,6 @@
             </span>
           </div>
           
-          <!-- ============ LINKS E CONTATO ============ -->
           <div class="form-group-title">
             <span class="material-icons-round">share_location</span>
             Links & Contato
@@ -313,7 +298,6 @@
             </div>
           </div>
           
-          <!-- ============ APARÊNCIA ============ -->
           <div class="form-group-title">
             <span class="material-icons-round">palette</span>
             Aparência
@@ -349,7 +333,6 @@
           </button>
         </form>
         
-        <!-- RESULTADO -->
         <div id="result" style="display:none;">
           <div class="result-box">
             <div class="result-head">
@@ -409,7 +392,6 @@
       return html.trim();
     }
 
-    // ============ LOGIN GOOGLE ============
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
@@ -419,21 +401,18 @@
           foto: payload.picture
         };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
-        
         document.getElementById('loginRequired').style.display = 'none';
         document.getElementById('formArea').style.display = 'block';
         document.getElementById('userPhoto').src = currentUser.foto;
         document.getElementById('userName').textContent = currentUser.nome;
         document.getElementById('userEmail').textContent = currentUser.email;
         document.getElementById('emailVinculado').textContent = currentUser.email;
-        
         showToast('Login realizado! Agora crie seu link.');
       } catch (err) {
         showToast('Erro ao fazer login', 'error');
       }
     }
 
-    // ============ LOGOUT ============
     document.getElementById('logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
       currentUser = null;
@@ -442,7 +421,6 @@
       showToast('Você saiu da sua conta');
     });
 
-    // ============ VERIFICAR SESSÃO ============
     const savedUser = localStorage.getItem('whatslink_user');
     if (savedUser) {
       currentUser = JSON.parse(savedUser);
@@ -454,7 +432,6 @@
       document.getElementById('emailVinculado').textContent = currentUser.email;
     }
 
-    // ============ MÁSCARA WHATSAPP PRINCIPAL ============
     document.getElementById('whatsapp').addEventListener('input', (e) => {
       let v = e.target.value.replace(/\D/g, '').slice(0, 11);
       if (v.length > 6) {
@@ -465,7 +442,6 @@
       e.target.value = v;
     });
 
-    // ============ MÁSCARA WHATSAPP SECUNDÁRIO ============
     document.getElementById('whatsapp2').addEventListener('input', (e) => {
       let v = e.target.value.replace(/\D/g, '').slice(0, 11);
       if (v.length > 6) {
@@ -476,7 +452,6 @@
       e.target.value = v;
     });
 
-    // ============ SLUG AUTOMÁTICO ============
     const empresa = document.getElementById('empresa');
     const slug = document.getElementById('slug');
     let slugTouched = false;
@@ -485,7 +460,6 @@
       if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
     });
 
-    // ============ LOCALIZAÇÃO ============
     document.getElementById('localizacao').addEventListener('paste', (e) => {
       setTimeout(() => {
         const valor = document.getElementById('localizacao').value;
@@ -505,7 +479,6 @@
       }
     });
 
-    // ============ SELEÇÃO DE TEMA ============
     $$('.theme-option').forEach(btn => {
       btn.addEventListener('click', () => {
         document.getElementById('tema').value = btn.dataset.theme;
@@ -514,7 +487,6 @@
       });
     });
 
-    // ============ FORM SUBMIT ============
     document.getElementById('linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
