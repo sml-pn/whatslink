@@ -17,6 +17,30 @@ function slugify(text) {
     .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// Função para extrair URL de embed de um HTML do Google Maps
+function extrairUrlEmbed(html) {
+  if (!html) return '';
+  
+  // Se já for uma URL limpa, retorna como está
+  if (html.trim().startsWith('http') && !html.includes('<')) {
+    return html.trim();
+  }
+  
+  // Tenta extrair src do iframe
+  const srcMatch = html.match(/src=["']([^"']+)["']/);
+  if (srcMatch && srcMatch[1]) {
+    return srcMatch[1];
+  }
+  
+  // Tenta extrair qualquer URL
+  const urlMatch = html.match(/https?:\/\/[^\s"']+/);
+  if (urlMatch && urlMatch[0]) {
+    return urlMatch[0];
+  }
+  
+  return html.trim();
+}
+
 // CARROSSEL
 (function carousel() {
   const track = $('#carouselTrack');
@@ -98,6 +122,33 @@ function slugify(text) {
   });
 })();
 
+// LOCALIZAÇÃO - EXTRAÇÃO AUTOMÁTICA DO HTML
+(function localizacao() {
+  const input = $('#localizacao');
+  if (!input) return;
+  
+  input.addEventListener('paste', (e) => {
+    // Deixa o navegador colar primeiro
+    setTimeout(() => {
+      const valor = input.value;
+      const urlExtraida = extrairUrlEmbed(valor);
+      if (urlExtraida !== valor) {
+        input.value = urlExtraida;
+        showToast('Link extraído automaticamente!', 'check_circle');
+      }
+    }, 100);
+  });
+  
+  input.addEventListener('blur', () => {
+    const valor = input.value;
+    const urlExtraida = extrairUrlEmbed(valor);
+    if (urlExtraida !== valor) {
+      input.value = urlExtraida;
+      showToast('Link extraído automaticamente!', 'check_circle');
+    }
+  });
+})();
+
 // FORM SUBMIT
 (function form() {
   const form = $('#linkForm');
@@ -114,6 +165,10 @@ function slugify(text) {
       return;
     }
 
+    // Extrair URL de localização se for HTML
+    const localizacaoBruta = $('#localizacao').value.trim();
+    const localizacao = extrairUrlEmbed(localizacaoBruta);
+
     const data = {
       empresa: $('#empresa').value.trim(),
       whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
@@ -121,7 +176,7 @@ function slugify(text) {
       banner_url: $('#bannerUrl').value.trim(),
       mensagem: $('#mensagem').value.trim(),
       descricao: $('#descricao').value.trim(),
-      localizacao: $('#localizacao').value.trim(),
+      localizacao: localizacao,
       instagram: $('#instagram').value.trim().replace('@', ''),
       facebook: $('#facebook').value.trim(),
       site: $('#site').value.trim(),
