@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Link - WhatsLink</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#64748b;
+      --border:#e2e8f0; --primary:#25D366; --primary-dark:#128C7E;
+      --radius:16px; --shadow:0 4px 12px rgba(0,0,0,0.08);
+    }
+    body {
+      font-family:'Inter',system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      line-height:1.6;
+    }
+    .container { max-width:600px; margin:0 auto; padding:20px; }
+    
+    header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:16px 0; margin-bottom:24px;
+    }
+    .logo { font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
+    .logo span { color:var(--primary); }
+    
+    .user-info {
+      display:flex; align-items:center; gap:10px;
+      background:white; padding:8px 14px; border-radius:999px;
+      border:1px solid var(--border); box-shadow:var(--shadow);
+    }
+    .user-info img { width:32px; height:32px; border-radius:50%; }
+    .user-info span { font-weight:600; font-size:13px; }
+    .logout-btn {
+      background:none; border:none; cursor:pointer; color:var(--muted);
+      font-size:13px; font-weight:600; display:flex; align-items:center; gap:4px;
+    }
+    
+    .login-card {
+      background:white; border-radius:20px; padding:40px; text-align:center;
+      box-shadow:var(--shadow); max-width:400px; margin:80px auto;
+    }
+    .login-card h2 { margin-bottom:8px; }
+    .login-card p { color:var(--muted); margin-bottom:24px; font-size:14px; }
+    
+    .links-list { margin-top:24px; }
+    .link-item {
+      background:white; border-radius:16px; padding:20px;
+      box-shadow:var(--shadow); margin-bottom:16px;
+      border:1px solid var(--border);
+      display:flex; justify-content:space-between; align-items:center;
+      transition:.2s;
+    }
+    .link-item:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
+    .link-info h3 { font-size:16px; margin-bottom:4px; }
+    .link-info p { font-size:12px; color:var(--muted); }
+    .link-actions { display:flex; gap:8px; }
+    
+    .btn {
+      padding:10px 16px; border:none; border-radius:10px; cursor:pointer;
+      font-weight:600; font-size:13px; display:flex; align-items:center; gap:6px;
+      transition:.2s; text-decoration:none;
+    }
+    .btn-edit { background:#f1f5f9; color:var(--text); }
+    .btn-edit:hover { background:#e2e8f0; }
+    .btn-view { background:var(--primary); color:white; }
+    .btn-view:hover { background:var(--primary-dark); }
+    
+    .edit-form {
+      background:white; border-radius:20px; padding:30px;
+      box-shadow:var(--shadow); margin-top:20px;
+      display:none;
+    }
+    .edit-form.active { display:block; animation:fadeIn .3s ease; }
+    .edit-form h2 { margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+    
+    .field { margin-bottom:16px; }
+    .field label { font-weight:600; font-size:13px; display:block; margin-bottom:6px; }
+    .field input, .field textarea {
+      width:100%; padding:12px 16px; border:2px solid var(--border);
+      border-radius:12px; font-size:14px; outline:none; transition:.2s;
+      font-family:inherit;
+    }
+    .field input:focus, .field textarea:focus {
+      border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,211,102,0.1);
+    }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    
+    .btn-save {
+      width:100%; padding:14px; background:var(--primary); color:white;
+      border:none; border-radius:12px; font-size:15px; font-weight:700;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      gap:8px; transition:.2s;
+    }
+    .btn-save:hover { background:var(--primary-dark); }
+    .btn-save:disabled { opacity:0.6; cursor:not-allowed; }
+    
+    .btn-cancel {
+      width:100%; padding:14px; background:#f1f5f9; color:var(--text);
+      border:none; border-radius:12px; font-size:15px; font-weight:600;
+      cursor:pointer; margin-top:8px;
+    }
+    
+    .edit-counter {
+      background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px;
+      padding:12px 16px; margin-bottom:20px; font-size:13px;
+      display:flex; align-items:center; gap:8px; color:#15803d;
+    }
+    
+    .toast {
+      position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+      background:var(--text); color:white; padding:12px 18px; border-radius:999px;
+      font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.2); z-index:100;
+      transition:.35s; opacity:0;
+    }
+    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+    
+    .empty-state {
+      text-align:center; padding:60px 20px; color:var(--muted);
+    }
+    .empty-state span { font-size:48px; display:block; margin-bottom:16px; }
+    
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(10px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    
+    @media(max-width:600px) {
+      .grid-2 { grid-template-columns:1fr; }
+      .link-item { flex-direction:column; gap:12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- CABEÇALHO -->
+    <header>
+      <div class="logo">
+        <span class="material-icons-round">link</span>
+        Whats<span>Link</span>
+      </div>
+      <div id="userArea" style="display:none;">
+        <div class="user-info">
+          <img id="userPhoto" src="" alt="Foto" />
+          <span id="userName"></span>
+          <button class="logout-btn" id="logoutBtn">
+            <span class="material-icons-round" style="font-size:18px;">logout</span>
+            Sair
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- LOGIN -->
+    <div class="login-card" id="loginCard">
+      <h2>🔐 Entre para editar seus links</h2>
+      <p>Use sua conta Google para acessar seus links criados</p>
+      <div id="g_id_onload"
+           data-client_id="SEU_CLIENT_ID_GOOGLE"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+           data-type="standard"
+           data-size="large"
+           data-theme="outline"
+           data-text="sign_in_with"
+           data-shape="rectangular"
+           data-logo_alignment="left">
+      </div>
+    </div>
+
+    <!-- LISTA DE LINKS -->
+    <div id="linksArea" style="display:none;">
+      <h2 style="margin-bottom:16px;">Meus Links</h2>
+      <div id="linksList" class="links-list"></div>
+    </div>
+
+    <!-- FORMULÁRIO DE EDIÇÃO -->
+    <div class="edit-form" id="editForm">
+      <h2>
+        <span class="material-icons-round">edit</span>
+        Editar Link
+      </h2>
+      <div class="edit-counter" id="editCounter"></div>
+      <form id="editFormInner">
+        <input type="hidden" id="editId" />
+        <input type="hidden" id="editToken" />
+        
+        <div class="field">
+          <label for="editEmpresa">Nome da empresa</label>
+          <input type="text" id="editEmpresa" required />
+        </div>
+        
+        <div class="field">
+          <label for="editWhatsapp">WhatsApp</label>
+          <input type="tel" id="editWhatsapp" required />
+        </div>
+        
+        <div class="grid-2">
+          <div class="field">
+            <label for="editLogo">Logo (URL)</label>
+            <input type="url" id="editLogo" />
+          </div>
+          <div class="field">
+            <label for="editBanner">Banner (URL)</label>
+            <input type="url" id="editBanner" />
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="editMensagem">Mensagem automática</label>
+          <textarea id="editMensagem" rows="2"></textarea>
+        </div>
+        
+        <div class="field">
+          <label for="editDescricao">Descrição</label>
+          <textarea id="editDescricao" rows="3"></textarea>
+        </div>
+        
+        <div class="grid-2">
+          <div class="field">
+            <label for="editInstagram">Instagram</label>
+            <input type="text" id="editInstagram" />
+          </div>
+          <div class="field">
+            <label for="editHorario">Horário</label>
+            <input type="text" id="editHorario" />
+          </div>
+        </div>
+        
+        <div class="grid-2">
+          <div class="field">
+            <label for="editFacebook">Facebook</label>
+            <input type="url" id="editFacebook" />
+          </div>
+          <div class="field">
+            <label for="editSite">Site</label>
+            <input type="url" id="editSite" />
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="editLocalizacao">Localização (Google Maps)</label>
+          <input type="text" id="editLocalizacao" />
+        </div>
+        
+        <button type="submit" class="btn-save" id="saveBtn">
+          <span class="material-icons-round">save</span>
+          Salvar alterações
+        </button>
+        <button type="button" class="btn-cancel" id="cancelEditBtn">
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+    
+    let currentUser = null;
+    let linksDoUsuario = [];
+    
+    function showToast(msg, icon = 'check_circle') {
+      const t = document.getElementById('toast');
+      t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3200);
+    }
+    
+    // ========== LOGIN COM GOOGLE ==========
+    function handleCredentialResponse(response) {
+      try {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        
+        currentUser = {
+          email: payload.email,
+          nome: payload.name,
+          foto: payload.picture
+        };
+        
+        // Salvar sessão
+        localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
+        
+        // Mostrar área do usuário
+        document.getElementById('loginCard').style.display = 'none';
+        document.getElementById('userArea').style.display = 'block';
+        document.getElementById('userPhoto').src = currentUser.foto;
+        document.getElementById('userName').textContent = currentUser.nome;
+        
+        // Buscar links
+        buscarMeusLinks();
+        
+      } catch (err) {
+        showToast('Erro ao fazer login', 'error');
+      }
+    }
+    
+    // ========== BUSCAR LINKS DO USUÁRIO ==========
+    async function buscarMeusLinks() {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'buscar_meus_links',
+            email: currentUser.email
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) throw new Error(data.error);
+        
+        linksDoUsuario = data.links || [];
+        renderizarLinks();
+        
+      } catch (err) {
+        showToast('Erro ao buscar links: ' + err.message, 'error');
+      }
+    }
+    
+    // ========== RENDERIZAR LINKS ==========
+    function renderizarLinks() {
+      const linksArea = document.getElementById('linksArea');
+      const linksList = document.getElementById('linksList');
+      
+      if (linksDoUsuario.length === 0) {
+        linksList.innerHTML = `
+          <div class="empty-state">
+            <span class="material-icons-round">link_off</span>
+            <p>Você ainda não criou nenhum link.</p>
+            <a href="/" style="color:#25D366; font-weight:600; margin-top:12px; display:inline-block;">Criar meu primeiro link →</a>
+          </div>
+        `;
+        linksArea.style.display = 'block';
+        return;
+      }
+      
+      linksList.innerHTML = linksDoUsuario.map(link => `
+        <div class="link-item">
+          <div class="link-info">
+            <h3>${link.empresa}</h3>
+            <p>whatslink-48tc.onrender.com/${link.slug} • ${link.cliques} cliques</p>
+          </div>
+          <div class="link-actions">
+            <button class="btn btn-view" onclick="window.open('https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}', '_blank')">
+              <span class="material-icons-round" style="font-size:16px;">visibility</span>
+              Ver
+            </button>
+            <button class="btn btn-edit" onclick="abrirEdicao('${link.id}', '${link.edit_token}')">
+              <span class="material-icons-round" style="font-size:16px;">edit</span>
+              Editar
+            </button>
+          </div>
+        </div>
+      `).join('');
+      
+      linksArea.style.display = 'block';
+    }
+    
+    // ========== ABRIR EDIÇÃO ==========
+    function abrirEdicao(id, token) {
+      document.getElementById('editId').value = id;
+      document.getElementById('editToken').value = token;
+      
+      // Preencher formulário (buscar dados completos)
+      // Aqui você pode buscar os dados completos via API
+      
+      document.getElementById('editForm').classList.add('active');
+      document.getElementById('editForm').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // ========== SALVAR EDIÇÃO ==========
+    document.getElementById('editFormInner').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<span class="material-icons-round">sync</span> Salvando...';
+      
+      try {
+        const data = {
+          action: 'editar',
+          id: document.getElementById('editId').value,
+          edit_token: document.getElementById('editToken').value,
+          empresa: document.getElementById('editEmpresa').value.trim(),
+          whatsapp: document.getElementById('editWhatsapp').value.trim().replace(/\D/g, ''),
+          logo_url: document.getElementById('editLogo').value.trim(),
+          banner_url: document.getElementById('editBanner').value.trim(),
+          mensagem: document.getElementById('editMensagem').value.trim(),
+          descricao: document.getElementById('editDescricao').value.trim(),
+          instagram: document.getElementById('editInstagram').value.trim().replace('@', ''),
+          facebook: document.getElementById('editFacebook').value.trim(),
+          site: document.getElementById('editSite').value.trim(),
+          horario: document.getElementById('editHorario').value.trim(),
+          localizacao: document.getElementById('editLocalizacao').value.trim()
+        };
+        
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.error) throw new Error(result.error);
+        
+        showToast(result.message || 'Link atualizado!');
+        
+        // Atualizar contador
+        if (result.edicoes_restantes !== undefined) {
+          document.getElementById('editCounter').innerHTML = 
+            `<span class="material-icons-round" style="font-size:16px;">info</span>
+             Você tem ${result.edicoes_restantes} edições restantes hoje`;
+        }
+        
+        // Fechar formulário
+        document.getElementById('editForm').classList.remove('active');
+        
+        // Recarregar links
+        buscarMeusLinks();
+        
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<span class="material-icons-round">save</span> Salvar alterações';
+      }
+    });
+    
+    // ========== CANCELAR EDIÇÃO ==========
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+      document.getElementById('editForm').classList.remove('active');
+    });
+    
+    // ========== LOGOUT ==========
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('whatslink_user');
+      currentUser = null;
+      document.getElementById('userArea').style.display = 'none';
+      document.getElementById('loginCard').style.display = 'block';
+      document.getElementById('linksArea').style.display = 'none';
+      document.getElementById('editForm').classList.remove('active');
+    });
+    
+    // ========== VERIFICAR SESSÃO ==========
+    const savedUser = localStorage.getItem('whatslink_user');
+    if (savedUser) {
+      currentUser = JSON.parse(savedUser);
+      document.getElementById('loginCard').style.display = 'none';
+      document.getElementById('userArea').style.display = 'block';
+      document.getElementById('userPhoto').src = currentUser.foto;
+      document.getElementById('userName').textContent = currentUser.nome;
+      buscarMeusLinks();
+    }
+  </script>
+</body>
+</html>
