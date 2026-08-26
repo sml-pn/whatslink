@@ -1,238 +1,408 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
+// ============================================================
+// WHATSLINK API - VERSÃO SEGURA COM AUTENTICAÇÃO
+// ============================================================
 
-const $ = (s) => document.querySelector(s);
-const $$ = (s) => [...document.querySelectorAll(s)];
+const SHEET_NAME = 'Sheet1';
+const USERS_SHEET = 'Users';
+const CHAVE_CRIPTO = 'WhatsLink_Secure_Key_2026';
+const MAX_EDICOES_POR_DIA = 5;
 
-function showToast(msg, icon = 'check_circle') {
-  const t = $('#toast');
-  if (!t) return;
-  t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+// ========== FUNÇÃO DE CRIPTOGRAFIA ==========
+function criptografar(texto) {
+  if (!texto) return '';
+  const textoStr = String(texto);
+  let resultado = '';
+  for (let i = 0; i < textoStr.length; i++) {
+    const charCode = textoStr.charCodeAt(i) ^ CHAVE_CRIPTO.charCodeAt(i % CHAVE_CRIPTO.length);
+    resultado += String.fromCharCode(charCode);
+  }
+  return Utilities.base64Encode(resultado);
 }
 
-function slugify(text) {
-  return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
-}
-
-// Função para extrair URL de embed de um HTML do Google Maps
-function extrairUrlEmbed(html) {
-  if (!html) return '';
-  
-  // Se já for uma URL limpa, retorna como está
-  if (html.trim().startsWith('http') && !html.includes('<')) {
-    return html.trim();
-  }
-  
-  // Tenta extrair src do iframe
-  const srcMatch = html.match(/src=["']([^"']+)["']/);
-  if (srcMatch && srcMatch[1]) {
-    return srcMatch[1];
-  }
-  
-  // Tenta extrair qualquer URL
-  const urlMatch = html.match(/https?:\/\/[^\s"']+/);
-  if (urlMatch && urlMatch[0]) {
-    return urlMatch[0];
-  }
-  
-  return html.trim();
-}
-
-// CARROSSEL
-(function carousel() {
-  const track = $('#carouselTrack');
-  if (!track) return;
-  const cards = $$('.theme-card');
-  const prev = $('#prevBtn');
-  const next = $('#nextBtn');
-  const dotsWrap = $('#carouselDots');
-  let index = 0;
-  const visible = () => window.innerWidth < 720 ? 1 : 4;
-  const maxIndex = () => Math.max(0, cards.length - visible());
-
-  cards.forEach((_, i) => {
-    const d = document.createElement('span');
-    if (i === 0) d.classList.add('active');
-    d.addEventListener('click', () => goTo(i));
-    dotsWrap?.appendChild(d);
-  });
-  const dots = dotsWrap ? [...dotsWrap.children] : [];
-
-  function update() {
-    const cardW = cards[0].offsetWidth + 18;
-    track.style.transform = `translateX(-${index * cardW}px)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
-  }
-  function goTo(i) {
-    index = Math.min(Math.max(i, 0), maxIndex());
-    update();
-  }
-
-  prev?.addEventListener('click', () => goTo(index - 1));
-  next?.addEventListener('click', () => goTo(index + 1));
-
-  function setTheme(theme) {
-    $('#tema').value = theme;
-    $$('.theme-option').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
-    cards.forEach(c => c.classList.toggle('active', c.dataset.theme === theme));
-  }
-
-  cards.forEach(card => {
-    card.addEventListener('click', () => setTheme(card.dataset.theme));
-    card.addEventListener('keydown', e => { if (e.key === 'Enter') setTheme(card.dataset.theme); });
-  });
-  $$('.theme-option').forEach(btn => {
-    btn.addEventListener('click', () => setTheme(btn.dataset.theme));
-  });
-
-  window.addEventListener('resize', update);
-  update();
-})();
-
-// MASCARA WHATSAPP
-(function mask() {
-  const input = $('#whatsapp');
-  if (!input) return;
-  input.addEventListener('input', (e) => {
-    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-    if (v.length > 6) {
-      if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-      else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-    } else if (v.length > 2) {
-      v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
-    } else if (v.length > 0) {
-      v = v.replace(/(\d*)/, '($1');
+// ========== FUNÇÃO DE DESCRIPTOGRAFIA ==========
+function descriptografar(textoCriptografado) {
+  if (!textoCriptografado) return '';
+  try {
+    const texto = Utilities.base64Decode(textoCriptografado);
+    let resultado = '';
+    for (let i = 0; i < texto.length; i++) {
+      const charCode = texto[i] ^ CHAVE_CRIPTO.charCodeAt(i % CHAVE_CRIPTO.length);
+      resultado += String.fromCharCode(charCode);
     }
-    e.target.value = v;
-  });
-})();
+    return resultado;
+  } catch (e) {
+    return '';
+  }
+}
 
-// SLUG AUTOMÁTICO
-(function autoSlug() {
-  const empresa = $('#empresa');
-  const slug = $('#slug');
-  if (!empresa || !slug) return;
-  let touched = false;
-  slug.addEventListener('input', () => touched = true);
-  empresa.addEventListener('input', () => {
-    if (!touched || slug.value === '') slug.value = slugify(empresa.value);
-  });
-})();
+// ========== FUNÇÃO PARA GERAR ID ÚNICO ==========
+function gerarId() {
+  return new Date().getTime().toString(36) + Math.random().toString(36).substr(2, 8);
+}
 
-// LOCALIZAÇÃO - EXTRAÇÃO AUTOMÁTICA DO HTML
-(function localizacao() {
-  const input = $('#localizacao');
-  if (!input) return;
+// ========== FUNÇÃO PARA INICIALIZAR PLANILHAS ==========
+function inicializarPlanilhas() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
   
-  input.addEventListener('paste', (e) => {
-    // Deixa o navegador colar primeiro
-    setTimeout(() => {
-      const valor = input.value;
-      const urlExtraida = extrairUrlEmbed(valor);
-      if (urlExtraida !== valor) {
-        input.value = urlExtraida;
-        showToast('Link extraído automaticamente!', 'check_circle');
+  // Planilha de links
+  if (!ss.getSheetByName(SHEET_NAME)) {
+    const sheet = ss.insertSheet(SHEET_NAME);
+    sheet.appendRow([
+      'id', 'empresa', 'whatsapp', 'slug', 'mensagem', 
+      'logo_url', 'banner_url', 'descricao', 'localizacao',
+      'instagram', 'facebook', 'site', 'horario', 'tema',
+      'cliques', 'created_at', 'user_email', 'edit_token'
+    ]);
+    sheet.protect().setDescription('Protegido - Acesso via API');
+  }
+  
+  // Planilha de usuários
+  if (!ss.getSheetByName(USERS_SHEET)) {
+    const usersSheet = ss.insertSheet(USERS_SHEET);
+    usersSheet.appendRow(['id', 'email', 'nome', 'foto', 'created_at', 'edit_count', 'last_edit_date']);
+    usersSheet.protect().setDescription('Usuários - Acesso via API');
+  }
+}
+
+// ========== FUNÇÃO PRINCIPAL - POST ==========
+function doPost(e) {
+  if (!e || !e.postData || !e.postData.contents) {
+    return response({ error: 'Requisição inválida' });
+  }
+
+  try {
+    inicializarPlanilhas();
+    
+    const data = JSON.parse(e.postData.contents);
+    const action = data.action || 'criar';
+
+    switch (action) {
+      case 'login_google':
+        return loginGoogle(data);
+      case 'criar':
+        return criarLink(data);
+      case 'editar':
+        return editarLink(data);
+      case 'buscar_meus_links':
+        return buscarMeusLinks(data);
+      default:
+        return response({ error: 'Ação inválida' });
+    }
+
+  } catch (error) {
+    return response({ error: 'Erro: ' + error.message });
+  }
+}
+
+// ========== LOGIN COM GOOGLE ==========
+function loginGoogle(data) {
+  try {
+    const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
+    const lastRow = usersSheet.getLastRow();
+    
+    let userData = null;
+    
+    if (lastRow > 1) {
+      const users = usersSheet.getRange(2, 1, lastRow - 1, 7).getValues();
+      for (let i = 0; i < users.length; i++) {
+        if (users[i][1] === data.email) {
+          userData = {
+            id: users[i][0],
+            email: users[i][1],
+            nome: users[i][2],
+            foto: users[i][3],
+            edit_count: parseInt(users[i][5]) || 0,
+            last_edit_date: users[i][6] || ''
+          };
+          break;
+        }
       }
-    }, 100);
-  });
-  
-  input.addEventListener('blur', () => {
-    const valor = input.value;
-    const urlExtraida = extrairUrlEmbed(valor);
-    if (urlExtraida !== valor) {
-      input.value = urlExtraida;
-      showToast('Link extraído automaticamente!', 'check_circle');
-    }
-  });
-})();
-
-// FORM SUBMIT
-(function form() {
-  const form = $('#linkForm');
-  if (!form) return;
-  const submitBtn = $('#submitBtn');
-  const btnText = submitBtn.querySelector('.btn-text');
-  const loader = submitBtn.querySelector('.btn-loader');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!form.checkValidity()) {
-      showToast('Preencha os campos obrigatórios', 'error');
-      form.reportValidity();
-      return;
     }
 
-    // Extrair URL de localização se for HTML
-    const localizacaoBruta = $('#localizacao').value.trim();
-    const localizacao = extrairUrlEmbed(localizacaoBruta);
-
-    const data = {
-      empresa: $('#empresa').value.trim(),
-      whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
-      logo_url: $('#logoUrl').value.trim(),
-      banner_url: $('#bannerUrl').value.trim(),
-      mensagem: $('#mensagem').value.trim(),
-      descricao: $('#descricao').value.trim(),
-      localizacao: localizacao,
-      instagram: $('#instagram').value.trim().replace('@', ''),
-      facebook: $('#facebook').value.trim(),
-      site: $('#site').value.trim(),
-      horario: $('#horario').value.trim(),
-      tema: $('#tema').value,
-      slug: slugify($('#slug').value.trim())
-    };
-
-    submitBtn.disabled = true;
-    btnText.style.opacity = '0';
-    loader.style.display = 'grid';
-
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(data)
-      });
-      const result = await res.json();
-      if (result.error) throw new Error(result.error);
-
-      const finalUrl = BASE_URL + data.slug;
-      $('#generatedUrl').value = finalUrl;
-      $('#result').style.display = 'block';
-      $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      showToast('Link criado com sucesso!');
-
-      $('#copyBtn').onclick = async () => {
-        try {
-          await navigator.clipboard.writeText(finalUrl);
-          showToast('Link copiado!');
-        } catch {
-          $('#generatedUrl').select();
-          document.execCommand('copy');
-          showToast('Link copiado!');
-        }
+    if (!userData) {
+      // Criar novo usuário
+      const novoId = gerarId();
+      const now = new Date().toISOString();
+      usersSheet.appendRow([
+        novoId,
+        data.email,
+        data.nome,
+        data.foto || '',
+        now,
+        0,
+        ''
+      ]);
+      
+      userData = {
+        id: novoId,
+        email: data.email,
+        nome: data.nome,
+        foto: data.foto || '',
+        edit_count: 0,
+        last_edit_date: ''
       };
-
-      $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
-
-      $('#shareBtn')?.addEventListener('click', async () => {
-        if (navigator.share) {
-          try { await navigator.share({ title: data.empresa, url: finalUrl }); } catch {}
-        } else {
-          $('#copyBtn').click();
-        }
-      });
-
-      localStorage.setItem('whatslink_last', JSON.stringify(data));
-
-    } catch (err) {
-      showToast('Erro ao criar link: ' + err.message, 'error');
-    } finally {
-      submitBtn.disabled = false;
-      btnText.style.opacity = '1';
-      loader.style.display = 'none';
     }
-  });
-})();
+
+    return response({
+      success: true,
+      user: userData,
+      message: 'Login realizado com sucesso!'
+    });
+
+  } catch (error) {
+    return response({ error: 'Erro no login: ' + error.message });
+  }
+}
+
+// ========== CRIAR LINK (COM CRIPTOGRAFIA) ==========
+function criarLink(data) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    
+    const slug = String(data.slug || '').toLowerCase().replace(/[^a-z0-9-]/g, '-');
+    const whatsapp = String(data.whatsapp || '').replace(/\D/g, '');
+
+    if (!data.empresa || !whatsapp || !slug) {
+      return response({ error: 'Campos obrigatórios faltando' });
+    }
+
+    // Verificar duplicados
+    const lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      const slugs = sheet.getRange(2, 4, lastRow - 1, 1).getValues().flat();
+      if (slugs.includes(slug)) {
+        return response({ error: 'Este link já existe' });
+      }
+    }
+
+    const id = gerarId();
+    const now = new Date().toISOString();
+    const editToken = gerarId();
+
+    // Criptografar dados sensíveis
+    const whatsappCripto = criptografar(whatsapp);
+    const mensagemCripto = criptografar(data.mensagem || '');
+    const emailCripto = criptografar(data.user_email || '');
+
+    const row = [
+      id,                              // A - id
+      String(data.empresa || ''),      // B - empresa
+      whatsappCripto,                  // C - whatsapp (CRIPTOGRAFADO)
+      slug,                            // D - slug
+      mensagemCripto,                  // E - mensagem (CRIPTOGRAFADA)
+      String(data.logo_url || ''),     // F - logo_url
+      String(data.banner_url || ''),   // G - banner_url
+      String(data.descricao || ''),    // H - descricao
+      String(data.localizacao || ''),  // I - localizacao
+      String(data.instagram || ''),    // J - instagram
+      String(data.facebook || ''),     // K - facebook
+      String(data.site || ''),         // L - site
+      String(data.horario || ''),      // M - horario
+      String(data.tema || 'verde'),    // N - tema
+      0,                               // O - cliques
+      now,                             // P - created_at
+      emailCripto,                     // Q - user_email (CRIPTOGRAFADO)
+      editToken                        // R - edit_token
+    ];
+
+    sheet.getRange(lastRow + 1, 1, 1, 18).setValues([row]);
+
+    return response({
+      success: true,
+      slug: slug,
+      id: id,
+      edit_token: editToken,
+      message: 'Link criado! Guarde seu token de edição.'
+    });
+
+  } catch (error) {
+    return response({ error: 'Erro ao criar: ' + error.message });
+  }
+}
+
+// ========== EDITAR LINK (5 EDIÇÕES POR DIA) ==========
+function editarLink(data) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
+    
+    if (!data.id || !data.edit_token) {
+      return response({ error: 'ID e token de edição são necessários' });
+    }
+
+    // Buscar o link
+    const lastRow = sheet.getLastRow();
+    let linkRow = -1;
+    let userEmail = '';
+    
+    for (let i = 2; i <= lastRow; i++) {
+      const rowData = sheet.getRange(i, 1, 1, 18).getValues()[0];
+      if (rowData[0] === data.id && rowData[17] === data.edit_token) {
+        linkRow = i;
+        userEmail = descriptografar(rowData[16]);
+        break;
+      }
+    }
+
+    if (linkRow === -1) {
+      return response({ error: 'Link não encontrado ou token inválido' });
+    }
+
+    // Verificar limite de edições
+    const today = new Date().toISOString().split('T')[0];
+    const usersLastRow = usersSheet.getLastRow();
+    let userRow = -1;
+    let editCount = 0;
+    let lastEditDate = '';
+    
+    if (usersLastRow > 1) {
+      const users = usersSheet.getRange(2, 1, usersLastRow - 1, 7).getValues();
+      for (let i = 0; i < users.length; i++) {
+        if (users[i][1] === userEmail) {
+          userRow = i + 2;
+          editCount = parseInt(users[i][5]) || 0;
+          lastEditDate = users[i][6] || '';
+          break;
+        }
+      }
+    }
+
+    if (userRow === -1) {
+      return response({ error: 'Usuário não encontrado' });
+    }
+
+    // Resetar contador se for um novo dia
+    if (lastEditDate !== today) {
+      editCount = 0;
+    }
+
+    // Verificar se atingiu o limite
+    if (editCount >= MAX_EDICOES_POR_DIA) {
+      return response({ 
+        error: `Você atingiu o limite de ${MAX_EDICOES_POR_DIA} edições hoje. Volte amanhã!`,
+        edit_count: editCount,
+        max_edicoes: MAX_EDICOES_POR_DIA
+      });
+    }
+
+    // Atualizar dados
+    if (data.empresa !== undefined) sheet.getRange(linkRow, 2).setValue(String(data.empresa));
+    if (data.whatsapp !== undefined) sheet.getRange(linkRow, 3).setValue(criptografar(String(data.whatsapp).replace(/\D/g, '')));
+    if (data.mensagem !== undefined) sheet.getRange(linkRow, 5).setValue(criptografar(String(data.mensagem)));
+    if (data.logo_url !== undefined) sheet.getRange(linkRow, 6).setValue(String(data.logo_url));
+    if (data.banner_url !== undefined) sheet.getRange(linkRow, 7).setValue(String(data.banner_url));
+    if (data.descricao !== undefined) sheet.getRange(linkRow, 8).setValue(String(data.descricao));
+    if (data.localizacao !== undefined) sheet.getRange(linkRow, 9).setValue(String(data.localizacao));
+    if (data.instagram !== undefined) sheet.getRange(linkRow, 10).setValue(String(data.instagram));
+    if (data.facebook !== undefined) sheet.getRange(linkRow, 11).setValue(String(data.facebook));
+    if (data.site !== undefined) sheet.getRange(linkRow, 12).setValue(String(data.site));
+    if (data.horario !== undefined) sheet.getRange(linkRow, 13).setValue(String(data.horario));
+    if (data.tema !== undefined) sheet.getRange(linkRow, 14).setValue(String(data.tema));
+
+    // Incrementar contador de edições
+    editCount++;
+    usersSheet.getRange(userRow, 6).setValue(editCount);
+    usersSheet.getRange(userRow, 7).setValue(today);
+
+    const edicoesRestantes = MAX_EDICOES_POR_DIA - editCount;
+
+    return response({ 
+      success: true, 
+      message: `Link atualizado! Você ainda tem ${edicoesRestantes} edições hoje.`,
+      edit_count: editCount,
+      edicoes_restantes: edicoesRestantes
+    });
+
+  } catch (error) {
+    return response({ error: 'Erro ao editar: ' + error.message });
+  }
+}
+
+// ========== BUSCAR LINKS DO USUÁRIO ==========
+function buscarMeusLinks(data) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    const lastRow = sheet.getLastRow();
+    
+    if (lastRow < 2) return response({ links: [] });
+
+    const emailCripto = criptografar(data.email || '');
+    const links = [];
+
+    for (let i = 2; i <= lastRow; i++) {
+      const rowData = sheet.getRange(i, 1, 1, 18).getValues()[0];
+      if (rowData[16] === emailCripto) {
+        links.push({
+          id: rowData[0],
+          empresa: rowData[1],
+          slug: rowData[3],
+          tema: rowData[13],
+          cliques: rowData[14],
+          created_at: rowData[15],
+          edit_token: rowData[17]
+        });
+      }
+    }
+
+    return response({ success: true, links: links });
+
+  } catch (error) {
+    return response({ error: 'Erro: ' + error.message });
+  }
+}
+
+// ========== BUSCAR LINK (GET - PÁGINA DE RECEPÇÃO) ==========
+function doGet(e) {
+  try {
+    inicializarPlanilhas();
+    
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    const slug = e.parameter && e.parameter.slug ? e.parameter.slug : '';
+    
+    if (!slug) return response({ error: 'Slug não informado' });
+
+    const lastRow = sheet.getLastRow();
+    if (lastRow < 2) return response({ error: 'Link não encontrado' });
+
+    const data = sheet.getRange(1, 1, lastRow, 18).getValues();
+
+    for (let i = 1; i < data.length; i++) {
+      if (String(data[i][3]) === slug) {
+        const link = {
+          id: String(data[i][0] || ''),
+          empresa: String(data[i][1] || ''),
+          whatsapp: descriptografar(String(data[i][2] || '')),
+          slug: String(data[i][3] || ''),
+          mensagem: descriptografar(String(data[i][4] || '')),
+          logo_url: String(data[i][5] || ''),
+          banner_url: String(data[i][6] || ''),
+          descricao: String(data[i][7] || ''),
+          localizacao: String(data[i][8] || ''),
+          instagram: String(data[i][9] || ''),
+          facebook: String(data[i][10] || ''),
+          site: String(data[i][11] || ''),
+          horario: String(data[i][12] || ''),
+          tema: String(data[i][13] || 'verde'),
+          cliques: parseInt(data[i][14]) || 0,
+          created_at: String(data[i][15] || '')
+        };
+
+        sheet.getRange(i + 1, 15).setValue(link.cliques + 1);
+
+        return response(link);
+      }
+    }
+
+    return response({ error: 'Link não encontrado' });
+
+  } catch (error) {
+    return response({ error: 'Erro: ' + error.message });
+  }
+}
+
+// ========== FUNÇÃO AUXILIAR DE RESPOSTA ==========
+function response(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
