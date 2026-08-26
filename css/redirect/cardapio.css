@@ -31,7 +31,6 @@
   background: var(--bg-dark);
 }
 
-/* Textura de fundo */
 .reception-page::before {
   content: '';
   position: absolute;
@@ -113,45 +112,6 @@
   letter-spacing: .15em;
 }
 
-/* Itens do cardápio */
-.menu-items {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.menu-item {
-  background: var(--bg-card);
-  border: 1px solid rgba(141,110,99,.3);
-  border-radius: 12px;
-  padding: 14px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: .2s;
-}
-.menu-item:hover {
-  border-color: rgba(255,143,0,.5);
-  transform: translateX(4px);
-}
-.menu-item-info h4 {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--theme-2);
-  letter-spacing: .02em;
-}
-.menu-item-info p {
-  font-size: 11px;
-  color: rgba(255,204,128,.6);
-  margin-top: 2px;
-}
-.menu-item-price {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--theme-2);
-}
-
-/* Botão pedido */
 .whatsapp-btn {
   width: 100%;
   padding: 16px;
@@ -171,6 +131,7 @@
   text-transform: uppercase;
   letter-spacing: .08em;
   margin-top: 20px;
+  position: relative;
 }
 .whatsapp-btn:hover {
   background: var(--theme-2);
@@ -207,28 +168,6 @@
   letter-spacing: .05em;
 }
 .social-btn:hover { background: var(--bg-card); }
-
-/* Informações de entrega */
-.delivery-info {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 16px;
-  padding: 12px 16px;
-  background: rgba(78,52,46,.6);
-  border: 1px solid rgba(141,110,99,.4);
-  border-radius: 10px;
-  font-size: 11px;
-  color: var(--text-light);
-}
-.delivery-info span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.delivery-info .material-icons-round {
-  font-size: 14px;
-  color: var(--theme);
-}
 
 .location-block {
   margin-top: 16px;
