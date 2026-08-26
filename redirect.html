@@ -23,42 +23,72 @@
   <link rel="stylesheet" href="css/redirect/laranja.css" />
   <link rel="stylesheet" href="css/redirect/preto.css" />
   <link rel="stylesheet" href="css/redirect/cardapio.css" />
+  
+  <style>
+    /* Efeito shimmer nos elementos enquanto carrega */
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+      background: #e2e8f0 !important;
+      color: transparent !important;
+      border-radius: 8px;
+      animation: shimmerEffect 1.5s infinite;
+    }
+    
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+      animation: shimmerSlide 1.5s infinite;
+    }
+    
+    @keyframes shimmerEffect {
+      0% { opacity: .7; }
+      50% { opacity: 1; }
+      100% { opacity: .7; }
+    }
+    
+    @keyframes shimmerSlide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    /* Elementos com shimmer inicial */
+    .company-name.shimmer { min-height: 28px; width: 60%; margin: 0 auto 6px; }
+    .company-desc.shimmer { min-height: 16px; width: 80%; margin: 0 auto 22px; }
+    .whatsapp-btn.shimmer { min-height: 56px; border-radius: 999px; }
+    .logo-circle.shimmer, .avatar-circle.shimmer { border: none; }
+  </style>
 </head>
 <body class="reception-body">
   <div class="reception-page theme-verde" id="container">
-    <!-- SKELETON (ocultado via JS assim que possível) -->
-    <div class="reception-skeleton" id="skeleton" style="opacity:1; transition: opacity .3s ease;">
-      <div class="sk-banner"></div>
-      <div class="sk-logo"></div>
-      <div class="sk-title"></div>
-      <div class="sk-text"></div>
-      <div class="sk-btn"></div>
-    </div>
-
-    <div class="header-visual">
+    <!-- CABEÇALHO VISUAL -->
+    <div class="header-visual" id="headerVisual">
       <div class="banner-image" id="bannerDiv" style="display:none;"><img id="bannerImg" src="" alt="Banner" /></div>
       <div class="logo-banner" id="logoBannerDiv" style="display:none;"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
-      <div class="color-banner" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
+      <div class="color-banner" id="colorBannerDiv" style="display:none;"><span class="material-icons-round">storefront</span></div>
     </div>
 
+    <!-- CONTEÚDO -->
     <div class="reception-content">
-      <div class="logo-circle" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
-      <div class="avatar-circle" id="avatarCircle"><span id="avatarLetter">A</span></div>
+      <div class="logo-circle shimmer" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
+      <div class="avatar-circle shimmer" id="avatarCircle"><span id="avatarLetter">A</span></div>
 
-      <h1 class="company-name" id="empresaNome"></h1>
-      <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
+      <h1 class="company-name shimmer" id="empresaNome">&nbsp;</h1>
+      <p class="company-desc shimmer" id="descricaoTexto" style="display:none;"></p>
 
       <div class="divider" id="divider" style="display:none;"></div>
 
-      <button id="whatsappBtn" class="whatsapp-btn">
+      <button id="whatsappBtn" class="whatsapp-btn shimmer">
         <i class="fab fa-whatsapp"></i>
-        <span id="whatsappBtnText">Chamar no WhatsApp</span>
+        <span id="whatsappBtnText">&nbsp;</span>
         <span class="btn-pulse"></span>
       </button>
 
       <button id="whatsappBtn2" class="whatsapp-btn" style="display:none; margin-top:10px;">
         <i class="fab fa-whatsapp"></i>
-        <span id="whatsappBtn2Text">WhatsApp Secundário</span>
+        <span id="whatsappBtn2Text">&nbsp;</span>
       </button>
 
       <div class="social-links" id="socialLinks" style="display:none;">
@@ -94,7 +124,6 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     
-    // Função de fetch com timeout
     function fetchComTimeout(url, options = {}, timeout = 8000) {
       return Promise.race([
         fetch(url, options),
@@ -104,16 +133,14 @@
       ]);
     }
 
-    function ocultarSkeleton() {
-      const sk = document.getElementById('skeleton');
-      if (sk) {
-        sk.style.opacity = '0';
-        setTimeout(() => { sk.style.display = 'none'; }, 300);
-      }
+    function removerShimmer() {
+      document.querySelectorAll('.shimmer').forEach(el => {
+        el.classList.remove('shimmer');
+      });
     }
 
     function mostrarErro(mensagem) {
-      ocultarSkeleton();
+      removerShimmer();
       document.getElementById('container').innerHTML = `
         <div class="error-state">
           <span class="material-icons-round">error</span>
@@ -155,7 +182,6 @@
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('slug');
       
-      // Se não houver slug, redirecionar para home
       if (!slug) {
         window.location.href = '/';
         return;
@@ -163,7 +189,7 @@
 
       try {
         const link = await buscarLink(slug);
-        ocultarSkeleton(); // esconder skeleton assim que dados chegam
+        removerShimmer();
         
         const tema = link.tema || 'verde';
         const container = document.getElementById('container');
