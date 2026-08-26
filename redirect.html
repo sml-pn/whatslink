@@ -18,8 +18,17 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   
+  <!-- ============ CARREGAR TODOS OS CSS DE UMA VEZ ============ -->
   <!-- CSS Base -->
   <link rel="stylesheet" href="css/base.css" />
+  
+  <!-- Todos os temas (carregados de uma vez para evitar flash) -->
+  <link rel="stylesheet" href="css/redirect/verde.css" />
+  <link rel="stylesheet" href="css/redirect/azul.css" />
+  <link rel="stylesheet" href="css/redirect/roxo.css" />
+  <link rel="stylesheet" href="css/redirect/laranja.css" />
+  <link rel="stylesheet" href="css/redirect/preto.css" />
+  <link rel="stylesheet" href="css/redirect/cardapio.css" />
 </head>
 <body class="reception-body">
   <div class="reception-page theme-verde" id="container">
@@ -59,7 +68,7 @@
       <!-- BOTÃO WHATSAPP SECUNDÁRIO -->
       <button id="whatsappBtn2" class="whatsapp-btn" style="display:none; margin-top:10px;">
         <i class="fab fa-whatsapp"></i>
-        <span>WhatsApp Secundário</span>
+        <span id="whatsappBtn2Text">WhatsApp Secundário</span>
       </button>
 
       <!-- REDES SOCIAIS -->
@@ -99,15 +108,6 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     
-    const temaCSS = {
-      verde: 'css/redirect/verde.css',
-      azul: 'css/redirect/azul.css',
-      roxo: 'css/redirect/roxo.css',
-      laranja: 'css/redirect/laranja.css',
-      preto: 'css/redirect/preto.css',
-      cardapio: 'css/redirect/cardapio.css'
-    };
-
     async function buscarLink(slug) {
       const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
       const data = await response.json();
@@ -152,12 +152,6 @@
         const tema = link.tema || 'verde';
         const container = document.getElementById('container');
         container.className = 'reception-page theme-' + tema;
-        
-        const cssHref = temaCSS[tema] || temaCSS.verde;
-        const cssLink = document.createElement('link');
-        cssLink.rel = 'stylesheet';
-        cssLink.href = cssHref;
-        document.head.appendChild(cssLink);
         
         const coresTema = {
           verde: '#25D366', azul: '#3b82f6', roxo: '#8b5cf6',
@@ -209,7 +203,7 @@
           waUrl += '?text=' + encodeURIComponent(link.mensagem);
         }
 
-        // Nome do botão
+        // Nome do botão principal
         if (link.botao_whatsapp && link.botao_whatsapp.trim() !== '') {
           document.getElementById('whatsappBtnText').textContent = link.botao_whatsapp;
         }
@@ -219,13 +213,19 @@
         });
 
         // WhatsApp secundário
-        if (link.whatsapp2 && String(link.whatsapp2).trim() !== '') {
+        if (link.whatsapp2 && String(link.whatsapp2).replace(/\D/g, '') !== '') {
           let waNumber2 = String(link.whatsapp2).replace(/\D/g, '');
           if (waNumber2.length === 10 || waNumber2.length === 11) waNumber2 = '55' + waNumber2;
           let waUrl2 = 'https://wa.me/' + waNumber2;
           if (link.mensagem && link.mensagem.trim() !== '') {
             waUrl2 += '?text=' + encodeURIComponent(link.mensagem);
           }
+          
+          // Nome do botão secundário
+          if (link.botao_whatsapp2 && link.botao_whatsapp2.trim() !== '') {
+            document.getElementById('whatsappBtn2Text').textContent = link.botao_whatsapp2;
+          }
+          
           document.getElementById('whatsappBtn2').style.display = 'flex';
           document.getElementById('whatsappBtn2').addEventListener('click', function() {
             window.open(waUrl2, '_blank');
