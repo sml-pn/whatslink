@@ -27,7 +27,26 @@ function extrairUrlEmbed(html) {
   return html.trim();
 }
 
-// CARROSSEL
+// ========== MENU MOBILE ==========
+(function menuMobile() {
+  const toggle = $('#menuToggle');
+  const nav = $('#mainNav');
+  if (!toggle || !nav) return;
+  
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('active');
+    nav.classList.toggle('open');
+  });
+  
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      toggle.classList.remove('active');
+      nav.classList.remove('open');
+    });
+  });
+})();
+
+// ========== CARROSSEL ==========
 (function carousel() {
   const track = $('#carouselTrack');
   if (!track) return;
@@ -73,7 +92,7 @@ function extrairUrlEmbed(html) {
   update();
 })();
 
-// MASCARA WHATSAPP
+// ========== MASCARA WHATSAPP ==========
 (function mask() {
   const input = $('#whatsapp');
   if (!input) return;
@@ -88,7 +107,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// SLUG AUTOMÁTICO
+// ========== SLUG AUTOMÁTICO ==========
 (function autoSlug() {
   const empresa = $('#empresa');
   const slug = $('#slug');
@@ -98,7 +117,7 @@ function extrairUrlEmbed(html) {
   empresa.addEventListener('input', () => { if (!touched || slug.value === '') slug.value = slugify(empresa.value); });
 })();
 
-// LOCALIZAÇÃO - EXTRAÇÃO AUTOMÁTICA
+// ========== LOCALIZAÇÃO ==========
 (function localizacao() {
   const input = $('#localizacao');
   if (!input) return;
@@ -116,7 +135,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// FORM SUBMIT
+// ========== FORM SUBMIT ==========
 (function form() {
   const form = $('#linkForm');
   if (!form) return;
@@ -128,9 +147,6 @@ function extrairUrlEmbed(html) {
     e.preventDefault();
     if (!form.checkValidity()) { showToast('Preencha os campos obrigatórios', 'error'); form.reportValidity(); return; }
 
-    const localizacaoBruta = $('#localizacao').value.trim();
-    const localizacao = extrairUrlEmbed(localizacaoBruta);
-
     const data = {
       empresa: $('#empresa').value.trim(),
       whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
@@ -138,7 +154,7 @@ function extrairUrlEmbed(html) {
       banner_url: $('#bannerUrl').value.trim(),
       mensagem: $('#mensagem').value.trim(),
       descricao: $('#descricao').value.trim(),
-      localizacao: localizacao,
+      localizacao: extrairUrlEmbed($('#localizacao').value.trim()),
       instagram: $('#instagram').value.trim().replace('@', ''),
       facebook: $('#facebook').value.trim(),
       site: $('#site').value.trim(),
@@ -179,7 +195,7 @@ function extrairUrlEmbed(html) {
       localStorage.setItem('whatslink_last', JSON.stringify(data));
 
     } catch (err) {
-      showToast('Erro ao criar link: ' + err.message, 'error');
+      showToast('Erro: ' + err.message, 'error');
     } finally {
       submitBtn.disabled = false;
       btnText.style.opacity = '1';
