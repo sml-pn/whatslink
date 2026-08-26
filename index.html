@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WhatsLink - Crie seu link para WhatsApp</title>
-  <meta name="description" content="Crie links profissionais para WhatsApp gratuitamente" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <title>WhatsLink - Crie sua página profissional para WhatsApp</title>
+  <meta name="description" content="Crie links profissionais para WhatsApp com temas personalizados. Página de alta conversão em 30 segundos. 100% grátis." />
+  <meta name="theme-color" content="#25D366" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -13,122 +16,138 @@
   <div id="app">
     <header>
       <div class="logo">
-        <span class="material-icons">link</span>
-        WhatsLink <span>GRÁTIS</span>
+        <div class="logo-icon"><span class="material-icons-round">link</span></div>
+        WhatsLink <span class="badge"><span class="dot"></span> GRÁTIS</span>
       </div>
+      <nav class="nav">
+        <a href="#temas">Temas</a>
+        <a href="#criar">Criar link</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#criar" class="nav-cta">Começar</a>
+      </nav>
     </header>
 
     <main>
-      <div class="hero">
-        <h1>Crie seu link para <span>WhatsApp</span> gratuitamente</h1>
-        <p>Link profissional, página personalizada e sem custo nenhum. Para sempre.</p>
-      </div>
+      <section class="hero">
+        <div class="hero-badge"><span class="material-icons-round">verified</span> Mais de 12.000 empresas usando</div>
+        <h1>Crie sua <span>página profissional</span><br>para WhatsApp</h1>
+        <p>Escolha um tema, personalize com sua logo e compartilhe seu link.<br><strong>Alta conversão. Em 30 segundos. 100% gratuito.</strong></p>
+        <div class="hero-actions">
+          <a href="#criar" class="btn-primary">
+            <span class="material-icons-round">rocket_launch</span> Criar meu link agora
+            <span class="material-icons-round">arrow_forward</span>
+          </a>
+          <span class="hero-note"><span class="material-icons-round">bolt</span> Sem cadastro • Sem cartão</span>
+        </div>
+      </section>
 
-      <div class="card">
-        <h2>Criar meu link agora</h2>
-        <p class="card-subtitle">Leva menos de 1 minuto</p>
-        
-        <form id="linkForm" novalidate>
-          <div class="field">
-            <label for="empresa">Nome da empresa *</label>
-            <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
-          </div>
-
-          <div class="field">
-            <label for="whatsapp">Número do WhatsApp *</label>
-            <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" />
-            <small>Digite o DDD + número. Ex: (85) 99999-9999</small>
-          </div>
-
-          <div class="field">
-            <label for="logoUrl">Logo da empresa (opcional)</label>
-            <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
-            <small>Link direto da imagem (PNG, JPG)</small>
-          </div>
-
-          <div class="field">
-            <label for="bannerUrl">Banner (opcional)</label>
-            <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
-            <small>Imagem ampla para o topo da página</small>
-          </div>
-
-          <div class="field">
-            <label for="mensagem">Mensagem automática (opcional)</label>
-            <textarea id="mensagem" rows="3" placeholder="Olá! Gostaria de mais informações..."></textarea>
-          </div>
-
-          <div class="field">
-            <label for="descricao">Descrição (opcional)</label>
-            <textarea id="descricao" rows="3" placeholder="Descreva sua empresa, serviços..."></textarea>
-          </div>
-
-          <div class="field">
-            <label for="localizacao">Link do Google Maps (opcional)</label>
-            <input type="url" id="localizacao" placeholder="https://maps.google.com/?q=..." />
-          </div>
-
-          <div class="field">
-            <label for="instagram">Instagram (opcional)</label>
-            <input type="text" id="instagram" placeholder="@suaempresa" />
-          </div>
-
-          <div class="field">
-            <label for="facebook">Facebook (opcional)</label>
-            <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
-          </div>
-
-          <div class="field">
-            <label for="site">Site (opcional)</label>
-            <input type="url" id="site" placeholder="https://suaempresa.com" />
-          </div>
-
-          <div class="field">
-            <label for="horario">Horário de funcionamento (opcional)</label>
-            <input type="text" id="horario" placeholder="Seg a Sex: 8h às 18h" />
-          </div>
-
-          <div class="field">
-            <label for="slug">Nome do link *</label>
-            <div class="slug-group">
-              <span>whatslink-48tc.onrender.com/</span>
-              <input type="text" id="slug" placeholder="academia-top-fit" required />
+      <section id="temas" class="themes-section">
+        <div class="section-head">
+          <h2>Temas profissionais</h2>
+          <p class="section-subtitle">Design que vende. Escolha o visual da sua página</p>
+        </div>
+        <div class="carousel">
+          <button class="carousel-btn prev" id="prevBtn" aria-label="Anterior"><span class="material-icons-round">chevron_left</span></button>
+          <div class="carousel-viewport">
+            <div class="carousel-track" id="carouselTrack">
+              <div class="theme-card active" data-theme="verde" tabindex="0">
+                <div class="theme-preview preview-verde"><div class="preview-banner"></div><div class="preview-logo"><span class="material-icons-round">storefront</span></div><div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div><span class="theme-check"><span class="material-icons-round">check</span></span></div>
+                <h3>Verde WhatsApp</h3><p>Clássico e profissional</p>
+              </div>
+              <div class="theme-card" data-theme="azul" tabindex="0">
+                <div class="theme-preview preview-azul"><div class="preview-banner"></div><div class="preview-logo"><span class="material-icons-round">storefront</span></div><div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div><span class="theme-check"><span class="material-icons-round">check</span></span></div>
+                <h3>Azul Corporate</h3><p>Moderno e confiável</p>
+              </div>
+              <div class="theme-card" data-theme="roxo" tabindex="0">
+                <div class="theme-preview preview-roxo"><div class="preview-banner"></div><div class="preview-logo"><span class="material-icons-round">storefront</span></div><div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div><span class="theme-check"><span class="material-icons-round">check</span></span></div>
+                <h3>Roxo Premium</h3><p>Elegante e criativo</p>
+              </div>
+              <div class="theme-card" data-theme="laranja" tabindex="0">
+                <div class="theme-preview preview-laranja"><div class="preview-banner"></div><div class="preview-logo"><span class="material-icons-round">storefront</span></div><div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div><span class="theme-check"><span class="material-icons-round">check</span></span></div>
+                <h3>Laranja Energia</h3><p>Vibrante e acolhedor</p>
+              </div>
+              <div class="theme-card" data-theme="preto" tabindex="0">
+                <div class="theme-preview preview-preto"><div class="preview-banner"></div><div class="preview-logo"><span class="material-icons-round">storefront</span></div><div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div><span class="theme-check"><span class="material-icons-round">check</span></span></div>
+                <h3>Preto Luxo</h3><p>Sofisticado e minimalista</p>
+              </div>
             </div>
-            <small>Gerado automaticamente, mas você pode personalizar</small>
           </div>
+          <button class="carousel-btn next" id="nextBtn" aria-label="Próximo"><span class="material-icons-round">chevron_right</span></button>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </section>
 
-          <button type="submit" id="submitBtn">
-            <span class="material-icons">send</span>
-            Gerar link grátis
-          </button>
-        </form>
-
-        <div id="result" style="display: none;">
-          <div class="result-box">
-            <p>
-              <span class="material-icons">check_circle</span>
-              Seu link foi criado com sucesso!
-            </p>
-            <div class="link-row">
-              <input type="text" id="generatedUrl" readonly />
-              <button id="copyBtn">
-                <span class="material-icons">content_copy</span>
-                Copiar
-              </button>
+      <section id="criar" class="form-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon"><span class="material-icons-round">edit_note</span></div>
+            <div><h2>Criar meu link</h2><p class="card-subtitle">Preencha os dados abaixo. Leva 30 segundos.</p></div>
+          </div>
+          <form id="linkForm" novalidate>
+            <div class="form-group-title"><span class="material-icons-round">business</span> Informações principais</div>
+            <div class="field"><label for="empresa">Nome da empresa *</label><input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required /><span class="field-hint">Aparece no topo da sua página</span></div>
+            <div class="field"><label for="whatsapp">WhatsApp *</label><input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" inputmode="tel" /></div>
+            <div class="grid-2">
+              <div class="field"><label for="logoUrl">Logo (URL) <span class="optional">opcional</span></label><input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" /></div>
+              <div class="field"><label for="bannerUrl">Banner (URL) <span class="optional">opcional</span></label><input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" /></div>
             </div>
-            <button id="previewBtn">
-              <span class="material-icons">visibility</span>
-              Ver página
-            </button>
+            <div class="form-group-title"><span class="material-icons-round">chat_bubble</span> Mensagem & Conteúdo</div>
+            <div class="field"><label for="mensagem">Mensagem automática <span class="optional">opcional</span></label><textarea id="mensagem" rows="3" placeholder="Olá! Gostaria de mais informações..."></textarea></div>
+            <div class="field"><label for="descricao">Descrição <span class="optional">opcional</span></label><textarea id="descricao" rows="3" placeholder="Descreva sua empresa em 1-2 linhas que vendem..."></textarea></div>
+            <div class="form-group-title"><span class="material-icons-round">share_location</span> Links & Contato</div>
+            <div class="field"><label for="localizacao">Localização (Google Maps) <span class="optional">opcional</span></label><input type="url" id="localizacao" placeholder="https://maps.google.com/?q=..." /></div>
+            <div class="grid-2">
+              <div class="field"><label for="instagram">Instagram <span class="optional">opcional</span></label><div class="input-icon-group"><span class="input-icon">@</span><input type="text" id="instagram" placeholder="suaempresa" /></div></div>
+              <div class="field"><label for="horario">Horário <span class="optional">opcional</span></label><input type="text" id="horario" placeholder="Seg a Sex: 8h às 18h" /></div>
+            </div>
+            <div class="grid-2">
+              <div class="field"><label for="facebook">Facebook <span class="optional">opcional</span></label><input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" /></div>
+              <div class="field"><label for="site">Site <span class="optional">opcional</span></label><input type="url" id="site" placeholder="https://suaempresa.com" /></div>
+            </div>
+            <div class="form-group-title"><span class="material-icons-round">palette</span> Aparência</div>
+            <div class="field">
+              <label>Tema da página *</label>
+              <input type="hidden" id="tema" value="verde" />
+              <div class="theme-selector" id="themeSelector">
+                <button type="button" class="theme-option active" data-theme="verde" style="background:#25D366;" aria-label="Verde"><span class="material-icons-round">check</span></button>
+                <button type="button" class="theme-option" data-theme="azul" style="background:#3b82f6;" aria-label="Azul"><span class="material-icons-round">check</span></button>
+                <button type="button" class="theme-option" data-theme="roxo" style="background:#8b5cf6;" aria-label="Roxo"><span class="material-icons-round">check</span></button>
+                <button type="button" class="theme-option" data-theme="laranja" style="background:#f97316;" aria-label="Laranja"><span class="material-icons-round">check</span></button>
+                <button type="button" class="theme-option" data-theme="preto" style="background:#18181b;" aria-label="Preto"><span class="material-icons-round">check</span></button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="slug">Nome do link *</label>
+              <div class="slug-group"><span>whatslink-48tc.onrender.com/</span><input type="text" id="slug" placeholder="academia-top-fit" required pattern="[a-z0-9-]+" /></div>
+              <span class="field-hint">Gera automaticamente a partir do nome.</span>
+            </div>
+            <button type="submit" id="submitBtn"><span class="material-icons-round">send</span><span class="btn-text">Gerar link grátis</span><div class="btn-loader" style="display:none;"><div class="spinner"></div></div></button>
+          </form>
+          <div id="result" style="display:none;">
+            <div class="result-box">
+              <div class="result-head"><span class="material-icons-round">check_circle</span><div><strong>Link criado com sucesso!</strong><p>Sua página já está no ar</p></div></div>
+              <div class="link-row"><input type="text" id="generatedUrl" readonly /><button id="copyBtn"><span class="material-icons-round">content_copy</span> Copiar</button></div>
+              <div class="result-actions"><button id="previewBtn"><span class="material-icons-round">visibility</span> Ver página</button><button id="shareBtn" class="btn-ghost"><span class="material-icons-round">share</span> Compartilhar</button></div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section id="como-funciona" class="how-section">
+        <h2>Como funciona</h2>
+        <p class="section-subtitle">3 passos para vender mais no WhatsApp</p>
+        <div class="steps">
+          <div class="step"><div class="step-number">1</div><div class="step-icon"><span class="material-icons-round">edit</span></div><h3>Preencha</h3><p>Seus dados em 30 segundos</p></div>
+          <div class="step-line"></div>
+          <div class="step"><div class="step-number">2</div><div class="step-icon"><span class="material-icons-round">palette</span></div><h3>Escolha o tema</h3><p>Visual que combina com sua marca</p></div>
+          <div class="step-line"></div>
+          <div class="step"><div class="step-number">3</div><div class="step-icon"><span class="material-icons-round">share</span></div><h3>Compartilhe</h3><p>Seu link e receba clientes</p></div>
+        </div>
+      </section>
     </main>
-
-    <footer>
-      <p>WhatsLink © 2024 • 100% gratuito • Feito com ❤️</p>
-    </footer>
+    <footer><p>WhatsLink © 2026 • 100% gratuito • Feito com ❤ no Brasil</p></footer>
   </div>
-
+  <div id="toast" class="toast"></div>
   <script src="script.js"></script>
 </body>
 </html>
