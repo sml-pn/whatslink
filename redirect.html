@@ -13,48 +13,82 @@
 </head>
 <body class="reception-body">
   <div class="reception-page theme-verde" id="container">
+    <!-- SKELETON DE CARREGAMENTO -->
     <div class="reception-skeleton" id="skeleton">
-      <div class="sk-banner"></div><div class="sk-logo"></div><div class="sk-title"></div><div class="sk-text"></div><div class="sk-btn"></div>
+      <div class="sk-banner"></div>
+      <div class="sk-logo"></div>
+      <div class="sk-title"></div>
+      <div class="sk-text"></div>
+      <div class="sk-btn"></div>
     </div>
 
+    <!-- CABEÇALHO VISUAL -->
     <div class="header-visual">
-      <div class="banner-image" id="bannerDiv" style="display:none;"><img id="bannerImg" src="" alt="Banner" /></div>
-      <div class="logo-banner" id="logoBannerDiv" style="display:none;"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
-      <div class="color-banner" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
+      <div class="banner-image" id="bannerDiv" style="display:none;">
+        <img id="bannerImg" src="" alt="Banner" />
+      </div>
+      <div class="logo-banner" id="logoBannerDiv" style="display:none;">
+        <img id="logoBannerImg" src="" alt="Logo" />
+        <div class="glass-overlay"></div>
+      </div>
+      <div class="color-banner" id="colorBannerDiv">
+        <span class="material-icons-round">storefront</span>
+      </div>
     </div>
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <div class="reception-content">
-      <div class="logo-circle" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
-      <div class="avatar-circle" id="avatarCircle"><span id="avatarLetter">A</span></div>
+      <!-- LOGO CIRCULAR -->
+      <div class="logo-circle" id="logoCircle" style="display:none;">
+        <img id="logoCircleImg" src="" alt="Logo" />
+      </div>
+      <div class="avatar-circle" id="avatarCircle">
+        <span id="avatarLetter">A</span>
+      </div>
 
+      <!-- NOME E DESCRIÇÃO -->
       <h1 class="company-name" id="empresaNome"></h1>
       <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
 
+      <!-- BOTÃO WHATSAPP -->
       <button id="whatsappBtn" class="whatsapp-btn">
         <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
         <span class="btn-pulse"></span>
       </button>
 
+      <!-- REDES SOCIAIS -->
       <div class="social-links" id="socialLinks" style="display:none;">
-        <button id="instagramBtn" class="social-btn instagram" style="display:none;"><i class="fab fa-instagram"></i> Instagram</button>
-        <button id="facebookBtn" class="social-btn facebook" style="display:none;"><i class="fab fa-facebook-f"></i> Facebook</button>
-        <button id="siteBtn" class="social-btn site" style="display:none;"><span class="material-icons-round">public</span> Site</button>
+        <button id="instagramBtn" class="social-btn instagram" style="display:none;">
+          <i class="fab fa-instagram"></i> Instagram
+        </button>
+        <button id="facebookBtn" class="social-btn facebook" style="display:none;">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </button>
+        <button id="siteBtn" class="social-btn site" style="display:none;">
+          <span class="material-icons-round">public</span> Site
+        </button>
       </div>
 
+      <!-- LOCALIZAÇÃO -->
       <div class="location-block" id="locationBlock" style="display:none;">
         <div class="map-container" id="mapContainer">
-          <iframe id="mapIframe" src="" width="100%" height="220" style="border:0; border-radius:18px;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          <iframe id="mapIframe" src="" width="100%" height="220" style="border:0; border-radius:18px; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
-        <a href="#" id="mapLink" target="_blank" class="map-link">
+        <a href="#" id="mapLink" target="_blank" class="map-link" style="display:none;">
           <span class="material-icons-round">open_in_new</span> Abrir no Google Maps
         </a>
       </div>
 
+      <!-- HORÁRIO -->
       <div class="info-block" id="horarioBlock" style="display:none;">
         <span class="material-icons-round">schedule</span>
-        <div><h3>Horário de atendimento</h3><p id="horarioTexto"></p></div>
+        <div>
+          <h3>Horário de atendimento</h3>
+          <p id="horarioTexto"></p>
+        </div>
       </div>
 
+      <!-- RODAPÉ -->
       <p class="powered-by">Criado com ❤ <strong>WhatsLink</strong> • 100% grátis</p>
     </div>
   </div>
@@ -69,46 +103,28 @@
       return data;
     }
 
-    // Função para converter link do Google Maps em embed
-function converterParaEmbed(url) {
-  if (!url) return '';
-  
-  // Se já for um link de embed, retorna como está
-  if (url.includes('output=embed')) return url;
-  
-  // Se for link curto do Google Maps (maps.app.goo.gl ou goo.gl/maps)
-  if (url.includes('maps.app.goo.gl') || url.includes('goo.gl/maps')) {
-    // Para links curtos, usamos o link diretamente no iframe
-    // O Google Maps aceita links curtos em iframes
-    return `https://maps.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
-  }
-  
-  // Se for link normal do Google Maps
-  if (url.includes('google.com/maps') || url.includes('google.com.br/maps')) {
-    // Tenta extrair a query
-    const match = url.match(/[?&]q=([^&]+)/);
-    if (match) {
-      const query = decodeURIComponent(match[1]);
-      return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+    // Função para detectar o tipo de link de localização
+    function detectarTipoLink(url) {
+      if (!url) return 'vazio';
+      if (url.includes('google.com/maps/embed') || url.includes('output=embed')) return 'embed';
+      if (url.includes('maps.app.goo.gl') || url.includes('goo.gl/maps')) return 'curto';
+      if (url.includes('google.com/maps') || url.includes('google.com.br/maps')) return 'normal';
+      return 'outro';
     }
-    
-    // Se tiver coordenadas (@latitude,longitude)
-    const coordMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-    if (coordMatch) {
-      return `https://www.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&output=embed`;
+
+    // Função para criar card de fallback bonito
+    function criarCardLocalizacao(url, tema) {
+      return `
+        <div style="padding:30px 20px; text-align:center; background:linear-gradient(135deg, #f8fafc, #f1f5f9); min-height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; border-radius:18px;">
+          <span class="material-icons-round" style="font-size:48px; color:${tema};">location_on</span>
+          <p style="font-size:14px; color:#64748b; font-weight:500;">Toque abaixo para ver a localização</p>
+          <a href="${url}" target="_blank" style="background:${tema}; color:white; padding:12px 20px; border-radius:999px; text-decoration:none; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:6px; transition:.2s;">
+            <span class="material-icons-round" style="font-size:18px;">map</span>
+            Abrir no Google Maps
+          </a>
+        </div>
+      `;
     }
-    
-    // Se for um place
-    const placeMatch = url.match(/place\/([^/]+)/);
-    if (placeMatch) {
-      const place = placeMatch[1].replace(/\+/g, ' ');
-      return `https://www.google.com/maps?q=${encodeURIComponent(place)}&output=embed`;
-    }
-  }
-  
-  // Se for um endereço simples, usa como busca
-  return `https://www.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
-}
 
     (async function() {
       const params = new URLSearchParams(window.location.search);
@@ -127,13 +143,15 @@ function converterParaEmbed(url) {
         const container = document.getElementById('container');
         container.className = 'reception-page theme-' + tema;
         
-        document.querySelector('meta[name="theme-color"]').content = {
+        const coresTema = {
           verde: '#25D366', azul: '#3b82f6', roxo: '#8b5cf6', laranja: '#f97316', preto: '#18181b'
-        }[tema] || '#25D366';
+        };
+        const corTema = coresTema[tema] || '#25D366';
         
+        document.querySelector('meta[name="theme-color"]').content = corTema;
         document.title = link.empresa + ' | WhatsApp';
 
-        // Banner / Logo / Cor
+        // ========== BANNER / LOGO / COR ==========
         const temBanner = link.banner_url && link.banner_url.trim() !== '';
         const temLogo = link.logo_url && link.logo_url.trim() !== '';
         
@@ -147,7 +165,7 @@ function converterParaEmbed(url) {
           document.getElementById('colorBannerDiv').style.display = 'flex'; 
         }
 
-        // Logo circular
+        // ========== LOGO CIRCULAR ==========
         if (temLogo) {
           document.getElementById('logoCircleImg').src = link.logo_url;
           document.getElementById('logoCircle').style.display = 'flex';
@@ -157,16 +175,16 @@ function converterParaEmbed(url) {
           document.getElementById('avatarCircle').style.display = 'flex';
         }
 
-        // Nome
+        // ========== NOME ==========
         document.getElementById('empresaNome').textContent = link.empresa;
 
-        // Descrição
+        // ========== DESCRIÇÃO ==========
         if (link.descricao && link.descricao.trim() !== '') { 
           document.getElementById('descricaoTexto').textContent = link.descricao; 
           document.getElementById('descricaoTexto').style.display = 'block'; 
         }
 
-        // WhatsApp
+        // ========== WHATSAPP ==========
         let waNumber = String(link.whatsapp).replace(/\D/g, '');
         if (waNumber.length === 10 || waNumber.length === 11) waNumber = '55' + waNumber;
         let waUrl = 'https://wa.me/' + waNumber;
@@ -176,7 +194,7 @@ function converterParaEmbed(url) {
           window.open(waUrl, '_blank');
         });
 
-        // Redes sociais
+        // ========== REDES SOCIAIS ==========
         let temSocial = false;
         if (link.instagram && link.instagram.trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
@@ -201,32 +219,42 @@ function converterParaEmbed(url) {
         }
         if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
 
-        // ========== LOCALIZAÇÃO CORRIGIDA ==========
+        // ========== LOCALIZAÇÃO ==========
         if (link.localizacao && link.localizacao.trim() !== '') {
-          const locationBlock = document.getElementById('locationBlock');
-          locationBlock.style.display = 'block';
+          const locUrl = link.localizacao.trim();
+          const tipoLink = detectarTipoLink(locUrl);
           
-          // Link para abrir no Google Maps
-          document.getElementById('mapLink').href = link.localizacao;
+          document.getElementById('locationBlock').style.display = 'block';
+          document.getElementById('mapLink').href = locUrl;
+          document.getElementById('mapLink').style.display = 'flex';
           
-          // Converter URL para formato embed
-          const embedUrl = converterParaEmbed(link.localizacao);
-          console.log('URL Embed:', embedUrl);
+          const mapContainer = document.getElementById('mapContainer');
+          const mapIframe = document.getElementById('mapIframe');
           
-          const iframe = document.getElementById('mapIframe');
-          iframe.src = embedUrl;
-          
-          // Se o iframe falhar, mostra fallback
-          iframe.onerror = function() {
-            document.getElementById('mapContainer').innerHTML = 
-              '<div style="padding:20px; text-align:center; background:#f8fafc;">' +
-              '<span class="material-icons-round" style="font-size:40px; color:#94a3b8;">location_on</span>' +
-              '<p style="margin-top:8px; color:#64748b; font-size:13px;">Clique abaixo para ver no Google Maps</p>' +
-              '</div>';
-          };
+          if (tipoLink === 'embed') {
+            // Link de incorporação - carrega diretamente
+            mapIframe.src = locUrl;
+            mapIframe.style.display = 'block';
+          } else if (tipoLink === 'curto') {
+            // Link curto - Google bloqueia iframe
+            mapIframe.style.display = 'none';
+            mapContainer.innerHTML = criarCardLocalizacao(locUrl, corTema);
+          } else if (tipoLink === 'normal') {
+            // Link normal - tenta converter para embed
+            let embedUrl = locUrl;
+            if (!embedUrl.includes('output=embed')) {
+              embedUrl = embedUrl + (embedUrl.includes('?') ? '&' : '?') + 'output=embed';
+            }
+            mapIframe.src = embedUrl;
+            mapIframe.style.display = 'block';
+          } else {
+            // Outro formato - mostra botão
+            mapIframe.style.display = 'none';
+            mapContainer.innerHTML = criarCardLocalizacao(locUrl, corTema);
+          }
         }
 
-        // Horário
+        // ========== HORÁRIO ==========
         if (link.horario && link.horario.trim() !== '') { 
           document.getElementById('horarioBlock').style.display = 'flex'; 
           document.getElementById('horarioTexto').textContent = link.horario; 
