@@ -1,5 +1,5 @@
 /* ============================================
-   WHATSLINK - TEMA PRETO (LUXURY PREMIUM)
+   WHATSLINK - TEMA PRETO LUXURY
    ============================================ */
 
 .theme-preto {
@@ -27,7 +27,6 @@
   background: #1a1a1a;
 }
 
-/* Borda dourada sutil */
 .reception-page::before {
   content: '';
   position: absolute;
@@ -107,7 +106,6 @@
   letter-spacing: .25em;
 }
 
-/* Linha divisória dourada */
 .divider {
   width: 60px;
   height: 1px;
@@ -133,6 +131,7 @@
   transition: .22s;
   text-transform: uppercase;
   letter-spacing: .08em;
+  position: relative;
 }
 .whatsapp-btn:hover { background: var(--theme-2); transform: translateY(-2px); }
 .btn-pulse {
@@ -140,7 +139,12 @@
   background: inherit; animation: pulseBtn 2.2s infinite; z-index: -1;
 }
 
-.social-links { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
 
 .social-btn {
   width: 100%;
@@ -161,28 +165,6 @@
   letter-spacing: .08em;
 }
 .social-btn:hover { background: rgba(212,175,55,.1); }
-
-/* Cards de recursos */
-.features-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 14px;
-}
-.feature-item {
-  padding: 14px;
-  border: 1px solid rgba(212,175,55,.2);
-  border-radius: 4px;
-  text-align: center;
-  color: rgba(212,175,55,.7);
-  font-size: 11px;
-}
-.feature-item .material-icons-round {
-  font-size: 20px;
-  color: var(--theme);
-  display: block;
-  margin-bottom: 6px;
-}
 
 .location-block {
   margin-top: 20px;
