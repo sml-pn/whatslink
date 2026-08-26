@@ -44,7 +44,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// CARROSSEL (6 TEMAS)
+// CARROSSEL - 6 TEMAS
 (function carousel() {
   const track = $('#carouselTrack');
   if (!track) return;
@@ -69,7 +69,10 @@ function extrairUrlEmbed(html) {
     track.style.transform = `translateX(-${index * cardW}px)`;
     dots.forEach((d, i) => d.classList.toggle('active', i === index));
   }
-  function goTo(i) { index = Math.min(Math.max(i, 0), maxIndex()); update(); }
+  function goTo(i) {
+    index = Math.min(Math.max(i, 0), maxIndex());
+    update();
+  }
 
   prev?.addEventListener('click', () => goTo(index - 1));
   next?.addEventListener('click', () => goTo(index + 1));
@@ -99,8 +102,11 @@ function extrairUrlEmbed(html) {
     if (v.length > 6) {
       if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
       else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-    } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
-    else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
+    } else if (v.length > 2) {
+      v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+    } else if (v.length > 0) {
+      v = v.replace(/(\d*)/, '($1');
+    }
     e.target.value = v;
   });
 })();
@@ -112,7 +118,9 @@ function extrairUrlEmbed(html) {
   if (!empresa || !slug) return;
   let touched = false;
   slug.addEventListener('input', () => touched = true);
-  empresa.addEventListener('input', () => { if (!touched || slug.value === '') slug.value = slugify(empresa.value); });
+  empresa.addEventListener('input', () => {
+    if (!touched || slug.value === '') slug.value = slugify(empresa.value);
+  });
 })();
 
 // LOCALIZAÇÃO
@@ -123,13 +131,19 @@ function extrairUrlEmbed(html) {
     setTimeout(() => {
       const valor = input.value;
       const urlExtraida = extrairUrlEmbed(valor);
-      if (urlExtraida !== valor) { input.value = urlExtraida; showToast('Link extraído automaticamente!'); }
+      if (urlExtraida !== valor) {
+        input.value = urlExtraida;
+        showToast('Link extraído automaticamente!');
+      }
     }, 100);
   });
   input.addEventListener('blur', () => {
     const valor = input.value;
     const urlExtraida = extrairUrlEmbed(valor);
-    if (urlExtraida !== valor) { input.value = urlExtraida; showToast('Link extraído automaticamente!'); }
+    if (urlExtraida !== valor) {
+      input.value = urlExtraida;
+      showToast('Link extraído automaticamente!');
+    }
   });
 })();
 
@@ -143,7 +157,11 @@ function extrairUrlEmbed(html) {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!form.checkValidity()) { showToast('Preencha os campos obrigatórios', 'error'); form.reportValidity(); return; }
+    if (!form.checkValidity()) {
+      showToast('Preencha os campos obrigatórios', 'error');
+      form.reportValidity();
+      return;
+    }
 
     const data = {
       empresa: $('#empresa').value.trim(),
@@ -181,13 +199,22 @@ function extrairUrlEmbed(html) {
       showToast('Link criado com sucesso!');
 
       $('#copyBtn').onclick = async () => {
-        try { await navigator.clipboard.writeText(finalUrl); showToast('Link copiado!'); }
-        catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Link copiado!'); }
+        try {
+          await navigator.clipboard.writeText(finalUrl);
+          showToast('Link copiado!');
+        } catch {
+          $('#generatedUrl').select();
+          document.execCommand('copy');
+          showToast('Link copiado!');
+        }
       };
       $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
       $('#shareBtn')?.addEventListener('click', async () => {
-        if (navigator.share) { try { await navigator.share({ title: data.empresa, url: finalUrl }); } catch {} }
-        else { $('#copyBtn').click(); }
+        if (navigator.share) {
+          try { await navigator.share({ title: data.empresa, url: finalUrl }); } catch {}
+        } else {
+          $('#copyBtn').click();
+        }
       });
 
       localStorage.setItem('whatslink_last', JSON.stringify(data));
