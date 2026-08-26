@@ -44,7 +44,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// CARROSSEL CORRIGIDO - 6 TEMAS VISÍVEIS
+// CARROSSEL
 (function carousel() {
   const track = $('#carouselTrack');
   if (!track) return;
@@ -131,6 +131,24 @@ function extrairUrlEmbed(html) {
   });
 })();
 
+// MASCARA WHATSAPP 2
+(function mask2() {
+  const input = $('#whatsapp2');
+  if (!input) return;
+  input.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 6) {
+      if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else if (v.length > 2) {
+      v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+    } else if (v.length > 0) {
+      v = v.replace(/(\d*)/, '($1');
+    }
+    e.target.value = v;
+  });
+})();
+
 // SLUG AUTOMÁTICO
 (function autoSlug() {
   const empresa = $('#empresa');
@@ -167,7 +185,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// FORM SUBMIT - COM EMAIL E TOKEN
+// FORM SUBMIT
 (function form() {
   const form = $('#linkForm');
   if (!form) return;
@@ -186,6 +204,7 @@ function extrairUrlEmbed(html) {
     const data = {
       empresa: $('#empresa').value.trim(),
       whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
+      whatsapp2: $('#whatsapp2') ? $('#whatsapp2').value.trim().replace(/\D/g, '') : '',
       logo_url: $('#logoUrl').value.trim(),
       banner_url: $('#bannerUrl').value.trim(),
       mensagem: $('#mensagem').value.trim(),
@@ -196,6 +215,7 @@ function extrairUrlEmbed(html) {
       site: $('#site').value.trim(),
       horario: $('#horario').value.trim(),
       tema: $('#tema').value,
+      botao_whatsapp: $('#botaoWhatsapp') ? $('#botaoWhatsapp').value.trim() : 'Chamar no WhatsApp',
       slug: slugify($('#slug').value.trim()),
       user_email: $('#userEmail') ? $('#userEmail').value.trim() : ''
     };
@@ -217,7 +237,6 @@ function extrairUrlEmbed(html) {
       $('#generatedUrl').value = finalUrl;
       $('#result').style.display = 'block';
       
-      // Mostrar token de edição
       if (result.edit_token) {
         const tokenDisplay = document.createElement('p');
         tokenDisplay.innerHTML = `<strong>Token de edição:</strong> <code>${result.edit_token}</code>`;
