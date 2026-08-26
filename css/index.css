@@ -10,7 +10,6 @@
   width: 100%;
 }
 
-/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
@@ -124,7 +123,6 @@ header {
 .menu-toggle.active span:nth-child(2) { opacity: 0; }
 .menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* HERO */
 .hero {
   text-align: center;
   margin: 72px auto 56px;
@@ -184,7 +182,6 @@ header {
   font-weight: 500;
 }
 
-/* CARROSSEL - 6 TEMAS */
 .themes-section { margin: 80px 0; }
 .section-head { text-align: center; margin-bottom: 36px; }
 .themes-section h2 { font-family: var(--font-display); font-size: 36px; font-weight: 800; }
@@ -313,7 +310,6 @@ header {
   transform: scale(1);
 }
 
-/* Previews dos 6 temas */
 .preview-verde { background: linear-gradient(135deg, #1a103d, #2d1b69 50%, #25D366); }
 .preview-azul { background: linear-gradient(135deg, #111827, #1e293b); }
 .preview-roxo { background: linear-gradient(135deg, #7c3aed, #a855f7 50%, #06b6d4); }
@@ -376,7 +372,6 @@ header {
   background: var(--text);
 }
 
-/* FORMULÁRIO */
 .form-section { margin: 80px 0; }
 
 .card {
@@ -436,7 +431,6 @@ header {
   border-top: 0;
 }
 
-/* Resultado */
 .result-box {
   margin-top: 24px;
   padding: 20px;
@@ -503,7 +497,6 @@ header {
   gap: 6px;
 }
 
-/* STEPS */
 .how-section {
   margin: 90px 0 40px;
   text-align: center;
@@ -586,7 +579,6 @@ footer {
   font-size: 13px;
 }
 
-/* RESPONSIVO */
 @media (max-width: 720px) {
   .menu-toggle { display: flex; }
   
