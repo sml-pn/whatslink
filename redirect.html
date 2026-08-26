@@ -6,55 +6,105 @@
   <title>WhatsApp</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&family=Manrope:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Ícones -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
+  
+  <!-- CSS Base -->
+  <link rel="stylesheet" href="css/base.css" />
 </head>
 <body class="reception-body">
   <div class="reception-page theme-verde" id="container">
+    <!-- SKELETON DE CARREGAMENTO -->
     <div class="reception-skeleton" id="skeleton">
-      <div class="sk-banner"></div><div class="sk-logo"></div><div class="sk-title"></div><div class="sk-text"></div><div class="sk-btn"></div>
+      <div class="sk-banner"></div>
+      <div class="sk-logo"></div>
+      <div class="sk-title"></div>
+      <div class="sk-text"></div>
+      <div class="sk-btn"></div>
     </div>
 
+    <!-- CABEÇALHO VISUAL -->
     <div class="header-visual">
-      <div class="banner-image" id="bannerDiv" style="display:none;"><img id="bannerImg" src="" alt="Banner" /></div>
-      <div class="logo-banner" id="logoBannerDiv" style="display:none;"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
-      <div class="color-banner" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
+      <div class="banner-image" id="bannerDiv" style="display:none;">
+        <img id="bannerImg" src="" alt="Banner" />
+      </div>
+      <div class="logo-banner" id="logoBannerDiv" style="display:none;">
+        <img id="logoBannerImg" src="" alt="Logo" />
+        <div class="glass-overlay"></div>
+      </div>
+      <div class="color-banner" id="colorBannerDiv">
+        <span class="material-icons-round">storefront</span>
+      </div>
     </div>
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <div class="reception-content">
-      <div class="logo-circle" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
-      <div class="avatar-circle" id="avatarCircle"><span id="avatarLetter">A</span></div>
+      <!-- LOGO CIRCULAR -->
+      <div class="logo-circle" id="logoCircle" style="display:none;">
+        <img id="logoCircleImg" src="" alt="Logo" />
+      </div>
+      <div class="avatar-circle" id="avatarCircle">
+        <span id="avatarLetter">A</span>
+      </div>
 
+      <!-- NOME E DESCRIÇÃO -->
       <h1 class="company-name" id="empresaNome"></h1>
       <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
 
+      <!-- DIVIDER (apenas tema preto) -->
+      <div class="divider" id="divider" style="display:none;"></div>
+
+      <!-- BOTÃO WHATSAPP -->
       <button id="whatsappBtn" class="whatsapp-btn">
-        <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
+        <i class="fab fa-whatsapp"></i>
+        <span>Chamar no WhatsApp</span>
         <span class="btn-pulse"></span>
       </button>
 
+      <!-- REDES SOCIAIS -->
       <div class="social-links" id="socialLinks" style="display:none;">
-        <button id="instagramBtn" class="social-btn instagram" style="display:none;"><i class="fab fa-instagram"></i> Instagram</button>
-        <button id="facebookBtn" class="social-btn facebook" style="display:none;"><i class="fab fa-facebook-f"></i> Facebook</button>
-        <button id="siteBtn" class="social-btn site" style="display:none;"><span class="material-icons-round">public</span> Site</button>
+        <button id="instagramBtn" class="social-btn instagram" style="display:none;">
+          <i class="fab fa-instagram"></i>
+          <span>Instagram</span>
+        </button>
+        <button id="facebookBtn" class="social-btn facebook" style="display:none;">
+          <i class="fab fa-facebook-f"></i>
+          <span>Facebook</span>
+        </button>
+        <button id="siteBtn" class="social-btn site" style="display:none;">
+          <span class="material-icons-round">public</span>
+          <span>Site</span>
+        </button>
       </div>
 
+      <!-- LOCALIZAÇÃO -->
       <div class="location-block" id="locationBlock" style="display:none;">
         <div class="map-container" id="mapContainer">
           <iframe id="mapIframe" src="" width="100%" height="220" style="border:0; border-radius:18px; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
-        <a href="#" id="mapLink" target="_blank" class="map-link" style="display:none;">
-          <span class="material-icons-round">open_in_new</span> Abrir no Google Maps
+        <a href="#" id="mapLink" target="_blank" class="map-link">
+          <span class="material-icons-round">open_in_new</span>
+          <span>Abrir no Google Maps</span>
         </a>
       </div>
 
+      <!-- HORÁRIO -->
       <div class="info-block" id="horarioBlock" style="display:none;">
         <span class="material-icons-round">schedule</span>
-        <div><h3>Horário de atendimento</h3><p id="horarioTexto"></p></div>
+        <div>
+          <h3>Horário de atendimento</h3>
+          <p id="horarioTexto"></p>
+        </div>
       </div>
 
+      <!-- RODAPÉ -->
       <p class="powered-by">Criado com ❤️ <strong>WhatsLink</strong> • 100% grátis</p>
     </div>
   </div>
@@ -62,6 +112,16 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     
+    // Mapeamento dos temas para arquivos CSS
+    const temaCSS = {
+      verde: 'css/redirect/verde.css',
+      azul: 'css/redirect/azul.css',
+      roxo: 'css/redirect/roxo.css',
+      laranja: 'css/redirect/laranja.css',
+      preto: 'css/redirect/preto.css',
+      cardapio: 'css/redirect/cardapio.css'
+    };
+
     async function buscarLink(slug) {
       const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
       const data = await response.json();
@@ -107,12 +167,28 @@
         const container = document.getElementById('container');
         container.className = 'reception-page theme-' + tema;
         
-        const coresTema = { verde: '#25D366', azul: '#3b82f6', roxo: '#8b5cf6', laranja: '#f97316', preto: '#18181b' };
-        const corTema = coresTema[tema] || '#25D366';
+        // Carregar CSS do tema dinamicamente
+        const cssHref = temaCSS[tema] || temaCSS.verde;
+        const cssLink = document.createElement('link');
+        cssLink.rel = 'stylesheet';
+        cssLink.href = cssHref;
+        document.head.appendChild(cssLink);
         
+        // Atualizar theme-color
+        const coresTema = {
+          verde: '#25D366',
+          azul: '#3b82f6',
+          roxo: '#8b5cf6',
+          laranja: '#f97316',
+          preto: '#d4af37',
+          cardapio: '#ff8f00'
+        };
+        const corTema = coresTema[tema] || '#25D366';
         document.querySelector('meta[name="theme-color"]').content = corTema;
+        
         document.title = link.empresa + ' | WhatsApp';
 
+        // ========== BANNER / LOGO / COR ==========
         const temBanner = link.banner_url && link.banner_url.trim() !== '';
         const temLogo = link.logo_url && link.logo_url.trim() !== '';
         
@@ -126,6 +202,7 @@
           document.getElementById('colorBannerDiv').style.display = 'flex'; 
         }
 
+        // ========== LOGO CIRCULAR ==========
         if (temLogo) {
           document.getElementById('logoCircleImg').src = link.logo_url;
           document.getElementById('logoCircle').style.display = 'flex';
@@ -135,40 +212,60 @@
           document.getElementById('avatarCircle').style.display = 'flex';
         }
 
+        // ========== NOME ==========
         document.getElementById('empresaNome').textContent = link.empresa;
 
+        // ========== DESCRIÇÃO ==========
         if (link.descricao && link.descricao.trim() !== '') { 
           document.getElementById('descricaoTexto').textContent = link.descricao; 
           document.getElementById('descricaoTexto').style.display = 'block'; 
         }
 
+        // ========== DIVIDER (apenas tema preto/luxury) ==========
+        if (tema === 'preto') {
+          document.getElementById('divider').style.display = 'block';
+        }
+
+        // ========== WHATSAPP ==========
         let waNumber = String(link.whatsapp).replace(/\D/g, '');
         if (waNumber.length === 10 || waNumber.length === 11) waNumber = '55' + waNumber;
         let waUrl = 'https://wa.me/' + waNumber;
-        if (link.mensagem && link.mensagem.trim() !== '') waUrl += '?text=' + encodeURIComponent(link.mensagem);
+        if (link.mensagem && link.mensagem.trim() !== '') {
+          waUrl += '?text=' + encodeURIComponent(link.mensagem);
+        }
 
         document.getElementById('whatsappBtn').addEventListener('click', function() {
           window.open(waUrl, '_blank');
         });
 
+        // ========== REDES SOCIAIS ==========
         let temSocial = false;
         if (link.instagram && link.instagram.trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
-          document.getElementById('instagramBtn').onclick = function() { window.open('https://instagram.com/' + link.instagram.replace('@',''), '_blank'); };
+          document.getElementById('instagramBtn').onclick = function() { 
+            window.open('https://instagram.com/' + link.instagram.replace('@',''), '_blank'); 
+          };
           temSocial = true;
         }
         if (link.facebook && link.facebook.trim() !== '') {
           document.getElementById('facebookBtn').style.display = 'flex';
-          document.getElementById('facebookBtn').onclick = function() { window.open(link.facebook, '_blank'); };
+          document.getElementById('facebookBtn').onclick = function() { 
+            window.open(link.facebook, '_blank'); 
+          };
           temSocial = true;
         }
         if (link.site && link.site.trim() !== '') {
           document.getElementById('siteBtn').style.display = 'flex';
-          document.getElementById('siteBtn').onclick = function() { window.open(link.site, '_blank'); };
+          document.getElementById('siteBtn').onclick = function() { 
+            window.open(link.site, '_blank'); 
+          };
           temSocial = true;
         }
-        if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
+        if (temSocial) {
+          document.getElementById('socialLinks').style.display = 'flex';
+        }
 
+        // ========== LOCALIZAÇÃO ==========
         if (link.localizacao && link.localizacao.trim() !== '') {
           const locUrl = link.localizacao.trim();
           const tipoLink = detectarTipoLink(locUrl);
@@ -196,6 +293,7 @@
           }
         }
 
+        // ========== HORÁRIO ==========
         if (link.horario && link.horario.trim() !== '') { 
           document.getElementById('horarioBlock').style.display = 'flex'; 
           document.getElementById('horarioTexto').textContent = link.horario; 
