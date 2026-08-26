@@ -78,12 +78,13 @@
 </head>
 <body>
   <div id="app">
-    <!-- HEADER -->
+    <!-- ========== HEADER ========== -->
     <header>
       <div class="logo">
         <div class="logo-icon"><span class="material-icons-round">link</span></div>
         WhatsLink <span class="badge"><span class="dot"></span> GRÁTIS</span>
       </div>
+      
       <nav class="nav" id="mainNav">
         <a href="#temas">Temas</a>
         <a href="#criar">Criar link</a>
@@ -94,13 +95,14 @@
         </a>
         <a href="#criar" class="nav-cta">Começar</a>
       </nav>
+      
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
         <span></span><span></span><span></span>
       </button>
     </header>
 
     <main>
-      <!-- HERO -->
+      <!-- ========== HERO ========== -->
       <section class="hero">
         <div class="hero-badge">
           <span class="material-icons-round">verified</span>
@@ -114,10 +116,14 @@
             Criar meu link agora
             <span class="material-icons-round">arrow_forward</span>
           </a>
+          <span class="hero-note">
+            <span class="material-icons-round">bolt</span>
+            Sem cadastro • Sem cartão
+          </span>
         </div>
       </section>
 
-      <!-- CARROSSEL DE TEMAS -->
+      <!-- ========== CARROSSEL DE 6 TEMAS ========== -->
       <section id="temas" class="themes-section">
         <div class="section-head">
           <h2>Temas profissionais</h2>
@@ -134,60 +140,90 @@
                 <div class="theme-preview preview-verde">
                   <div class="preview-banner"></div>
                   <div class="preview-logo"><span class="material-icons-round">storefront</span></div>
-                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <div class="preview-content">
+                    <div class="preview-lines line-1"></div>
+                    <div class="preview-lines line-2"></div>
+                    <div class="preview-btn"></div>
+                  </div>
                   <span class="theme-check"><span class="material-icons-round">check</span></span>
                 </div>
-                <h3>Verde Glass</h3><p>Vidro translúcido • WhatsApp</p>
+                <h3>Verde Glass</h3>
+                <p>Vidro translúcido • WhatsApp</p>
               </div>
               
               <div class="theme-card" data-theme="azul" tabindex="0">
                 <div class="theme-preview preview-azul">
                   <div class="preview-banner"></div>
                   <div class="preview-logo"><span class="material-icons-round">business_center</span></div>
-                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <div class="preview-content">
+                    <div class="preview-lines line-1"></div>
+                    <div class="preview-lines line-2"></div>
+                    <div class="preview-btn"></div>
+                  </div>
                   <span class="theme-check"><span class="material-icons-round">check</span></span>
                 </div>
-                <h3>Azul Corporate</h3><p>Dark • Profissional</p>
+                <h3>Azul Corporate</h3>
+                <p>Dark • Profissional</p>
               </div>
               
               <div class="theme-card" data-theme="roxo" tabindex="0">
                 <div class="theme-preview preview-roxo">
                   <div class="preview-banner"></div>
                   <div class="preview-logo"><span class="material-icons-round">auto_awesome</span></div>
-                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <div class="preview-content">
+                    <div class="preview-lines line-1"></div>
+                    <div class="preview-lines line-2"></div>
+                    <div class="preview-btn"></div>
+                  </div>
                   <span class="theme-check"><span class="material-icons-round">check</span></span>
                 </div>
-                <h3>Roxo Gradient</h3><p>Gradiente animado • Premium</p>
+                <h3>Roxo Gradient</h3>
+                <p>Gradiente animado • Premium</p>
               </div>
               
               <div class="theme-card" data-theme="laranja" tabindex="0">
                 <div class="theme-preview preview-laranja">
                   <div class="preview-banner"></div>
                   <div class="preview-logo"><span class="material-icons-round">local_fire_department</span></div>
-                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <div class="preview-content">
+                    <div class="preview-lines line-1"></div>
+                    <div class="preview-lines line-2"></div>
+                    <div class="preview-btn"></div>
+                  </div>
                   <span class="theme-check"><span class="material-icons-round">check</span></span>
                 </div>
-                <h3>Laranja Energia</h3><p>Vibrante • Acolhedor</p>
+                <h3>Laranja Energia</h3>
+                <p>Vibrante • Acolhedor</p>
               </div>
               
               <div class="theme-card" data-theme="preto" tabindex="0">
                 <div class="theme-preview preview-preto">
                   <div class="preview-banner"></div>
                   <div class="preview-logo"><span class="material-icons-round">diamond</span></div>
-                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <div class="preview-content">
+                    <div class="preview-lines line-1"></div>
+                    <div class="preview-lines line-2"></div>
+                    <div class="preview-btn"></div>
+                  </div>
                   <span class="theme-check"><span class="material-icons-round">check</span></span>
                 </div>
-                <h3>Preto Luxury</h3><p>Dourado • Sofisticado</p>
+                <h3>Preto Luxury</h3>
+                <p>Dourado • Sofisticado</p>
               </div>
               
               <div class="theme-card" data-theme="cardapio" tabindex="0">
                 <div class="theme-preview preview-cardapio">
                   <div class="preview-banner"></div>
                   <div class="preview-logo"><span class="material-icons-round">restaurant</span></div>
-                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <div class="preview-content">
+                    <div class="preview-lines line-1"></div>
+                    <div class="preview-lines line-2"></div>
+                    <div class="preview-btn"></div>
+                  </div>
                   <span class="theme-check"><span class="material-icons-round">check</span></span>
                 </div>
-                <h3>Cardápio Digital</h3><p>Restaurantes • Delivery</p>
+                <h3>Cardápio Digital</h3>
+                <p>Restaurantes • Delivery</p>
               </div>
               
             </div>
@@ -199,7 +235,7 @@
         <div class="carousel-dots" id="carouselDots"></div>
       </section>
 
-      <!-- FORMULÁRIO -->
+      <!-- ========== FORMULÁRIO ========== -->
       <section id="criar" class="form-section">
         <div class="card">
           <div class="card-header">
@@ -219,6 +255,7 @@
             <div class="field">
               <label for="empresa">Nome da empresa *</label>
               <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
+              <span class="field-hint">Aparece no topo da sua página</span>
             </div>
             
             <div class="field">
@@ -255,7 +292,7 @@
             
             <div class="field">
               <label for="descricao">Descrição <span class="optional">opcional</span></label>
-              <textarea id="descricao" rows="3" placeholder="Descreva sua empresa..."></textarea>
+              <textarea id="descricao" rows="3" placeholder="Descreva sua empresa em 1-2 linhas..."></textarea>
             </div>
             
             <div class="form-group-title">
@@ -320,6 +357,7 @@
                 <span>whatslink-48tc.onrender.com/</span>
                 <input type="text" id="slug" placeholder="academia-top-fit" required pattern="[a-z0-9-]+" />
               </div>
+              <span class="field-hint">Gera automaticamente a partir do nome.</span>
             </div>
             
             <button type="submit" id="submitBtn">
@@ -350,7 +388,7 @@
         </div>
       </section>
 
-      <!-- COMO FUNCIONA -->
+      <!-- ========== COMO FUNCIONA ========== -->
       <section id="como-funciona" class="how-section">
         <h2>Como funciona</h2>
         <p class="section-subtitle">3 passos para vender mais no WhatsApp</p>
