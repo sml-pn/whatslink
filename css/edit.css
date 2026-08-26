@@ -1,0 +1,36 @@
+/* ============================================
+   WHATSLINK - PÁGINA DE EDIÇÃO
+   ============================================ */
+
+.edit-container { max-width:600px; margin:0 auto; padding:20px; }
+.edit-header { display:flex; justify-content:space-between; align-items:center; padding:16px 0; margin-bottom:24px; }
+.edit-logo { font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
+.edit-logo span { color:var(--whatsapp); }
+.user-area { display:flex; align-items:center; gap:10px; background:white; padding:8px 14px; border-radius:999px; border:1px solid var(--border); }
+.user-area img { width:32px; height:32px; border-radius:50%; }
+.user-area span { font-weight:600; font-size:13px; }
+.logout-btn { background:none; border:none; cursor:pointer; color:var(--muted); font-size:13px; font-weight:600; display:flex; align-items:center; gap:4px; }
+
+.login-box { background:white; border-radius:20px; padding:40px; text-align:center; box-shadow:var(--shadow-md); max-width:400px; margin:80px auto; }
+.login-box h2 { margin-bottom:8px; }
+.login-box p { color:var(--muted); margin-bottom:24px; font-size:14px; }
+
+.google-btn {
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  width:100%; max-width:280px; margin:0 auto; padding:14px 20px;
+  background:white; border:2px solid var(--border); border-radius:12px;
+  font-size:15px; font-weight:600; cursor:pointer; transition:.2s;
+}
+.google-btn:hover { background:#f8fafc; border-color:#cbd5e1; }
+
+.g_id_signin { width:100%; min-height:48px; display:flex; justify-content:center; }
+.g_id_signin iframe { width:100% !important; max-width:280px; min-width:200px; }
+
+.link-card { background:white; border-radius:16px; padding:20px; box-shadow:var(--shadow-sm); margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); }
+.link-card h3 { font-size:16px; margin-bottom:4px; }
+.link-card p { font-size:12px; color:var(--muted); }
+.btn { padding:10px 16px; border:none; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; display:flex; align-items:center; gap:6px; transition:.2s; text-decoration:none; }
+.btn-view { background:var(--whatsapp); color:white; }
+.btn-view:hover { background:var(--whatsapp-hover); }
+.empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
+.empty-state span { font-size:48px; display:block; margin-bottom:16px; }
