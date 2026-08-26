@@ -13,63 +13,34 @@
 </head>
 <body class="reception-body">
   <div class="reception-page theme-verde" id="container">
-    <!-- SKELETON DE CARREGAMENTO -->
     <div class="reception-skeleton" id="skeleton">
-      <div class="sk-banner"></div>
-      <div class="sk-logo"></div>
-      <div class="sk-title"></div>
-      <div class="sk-text"></div>
-      <div class="sk-btn"></div>
+      <div class="sk-banner"></div><div class="sk-logo"></div><div class="sk-title"></div><div class="sk-text"></div><div class="sk-btn"></div>
     </div>
 
-    <!-- CABEÇALHO VISUAL -->
     <div class="header-visual">
-      <div class="banner-image" id="bannerDiv" style="display:none;">
-        <img id="bannerImg" src="" alt="Banner" />
-      </div>
-      <div class="logo-banner" id="logoBannerDiv" style="display:none;">
-        <img id="logoBannerImg" src="" alt="Logo" />
-        <div class="glass-overlay"></div>
-      </div>
-      <div class="color-banner" id="colorBannerDiv">
-        <span class="material-icons-round">storefront</span>
-      </div>
+      <div class="banner-image" id="bannerDiv" style="display:none;"><img id="bannerImg" src="" alt="Banner" /></div>
+      <div class="logo-banner" id="logoBannerDiv" style="display:none;"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
+      <div class="color-banner" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <div class="reception-content">
-      <!-- LOGO CIRCULAR -->
-      <div class="logo-circle" id="logoCircle" style="display:none;">
-        <img id="logoCircleImg" src="" alt="Logo" />
-      </div>
-      <div class="avatar-circle" id="avatarCircle">
-        <span id="avatarLetter">A</span>
-      </div>
+      <div class="logo-circle" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
+      <div class="avatar-circle" id="avatarCircle"><span id="avatarLetter">A</span></div>
 
-      <!-- NOME E DESCRIÇÃO -->
       <h1 class="company-name" id="empresaNome"></h1>
       <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
 
-      <!-- BOTÃO WHATSAPP -->
       <button id="whatsappBtn" class="whatsapp-btn">
         <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
         <span class="btn-pulse"></span>
       </button>
 
-      <!-- REDES SOCIAIS -->
       <div class="social-links" id="socialLinks" style="display:none;">
-        <button id="instagramBtn" class="social-btn instagram" style="display:none;">
-          <i class="fab fa-instagram"></i> Instagram
-        </button>
-        <button id="facebookBtn" class="social-btn facebook" style="display:none;">
-          <i class="fab fa-facebook-f"></i> Facebook
-        </button>
-        <button id="siteBtn" class="social-btn site" style="display:none;">
-          <span class="material-icons-round">public</span> Site
-        </button>
+        <button id="instagramBtn" class="social-btn instagram" style="display:none;"><i class="fab fa-instagram"></i> Instagram</button>
+        <button id="facebookBtn" class="social-btn facebook" style="display:none;"><i class="fab fa-facebook-f"></i> Facebook</button>
+        <button id="siteBtn" class="social-btn site" style="display:none;"><span class="material-icons-round">public</span> Site</button>
       </div>
 
-      <!-- LOCALIZAÇÃO -->
       <div class="location-block" id="locationBlock" style="display:none;">
         <div class="map-container" id="mapContainer">
           <iframe id="mapIframe" src="" width="100%" height="220" style="border:0; border-radius:18px; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -79,16 +50,11 @@
         </a>
       </div>
 
-      <!-- HORÁRIO -->
       <div class="info-block" id="horarioBlock" style="display:none;">
         <span class="material-icons-round">schedule</span>
-        <div>
-          <h3>Horário de atendimento</h3>
-          <p id="horarioTexto"></p>
-        </div>
+        <div><h3>Horário de atendimento</h3><p id="horarioTexto"></p></div>
       </div>
 
-      <!-- RODAPÉ -->
       <p class="powered-by">Criado com ❤ <strong>WhatsLink</strong> • 100% grátis</p>
     </div>
   </div>
@@ -103,7 +69,6 @@
       return data;
     }
 
-    // Função para detectar o tipo de link de localização
     function detectarTipoLink(url) {
       if (!url) return 'vazio';
       if (url.includes('google.com/maps/embed') || url.includes('output=embed')) return 'embed';
@@ -112,7 +77,6 @@
       return 'outro';
     }
 
-    // Função para criar card de fallback bonito
     function criarCardLocalizacao(url, tema) {
       return `
         <div style="padding:30px 20px; text-align:center; background:linear-gradient(135deg, #f8fafc, #f1f5f9); min-height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; border-radius:18px;">
@@ -143,15 +107,12 @@
         const container = document.getElementById('container');
         container.className = 'reception-page theme-' + tema;
         
-        const coresTema = {
-          verde: '#25D366', azul: '#3b82f6', roxo: '#8b5cf6', laranja: '#f97316', preto: '#18181b'
-        };
+        const coresTema = { verde: '#25D366', azul: '#3b82f6', roxo: '#8b5cf6', laranja: '#f97316', preto: '#18181b' };
         const corTema = coresTema[tema] || '#25D366';
         
         document.querySelector('meta[name="theme-color"]').content = corTema;
         document.title = link.empresa + ' | WhatsApp';
 
-        // ========== BANNER / LOGO / COR ==========
         const temBanner = link.banner_url && link.banner_url.trim() !== '';
         const temLogo = link.logo_url && link.logo_url.trim() !== '';
         
@@ -165,7 +126,6 @@
           document.getElementById('colorBannerDiv').style.display = 'flex'; 
         }
 
-        // ========== LOGO CIRCULAR ==========
         if (temLogo) {
           document.getElementById('logoCircleImg').src = link.logo_url;
           document.getElementById('logoCircle').style.display = 'flex';
@@ -175,16 +135,13 @@
           document.getElementById('avatarCircle').style.display = 'flex';
         }
 
-        // ========== NOME ==========
         document.getElementById('empresaNome').textContent = link.empresa;
 
-        // ========== DESCRIÇÃO ==========
         if (link.descricao && link.descricao.trim() !== '') { 
           document.getElementById('descricaoTexto').textContent = link.descricao; 
           document.getElementById('descricaoTexto').style.display = 'block'; 
         }
 
-        // ========== WHATSAPP ==========
         let waNumber = String(link.whatsapp).replace(/\D/g, '');
         if (waNumber.length === 10 || waNumber.length === 11) waNumber = '55' + waNumber;
         let waUrl = 'https://wa.me/' + waNumber;
@@ -194,32 +151,24 @@
           window.open(waUrl, '_blank');
         });
 
-        // ========== REDES SOCIAIS ==========
         let temSocial = false;
         if (link.instagram && link.instagram.trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
-          document.getElementById('instagramBtn').onclick = function() { 
-            window.open('https://instagram.com/' + link.instagram.replace('@',''), '_blank'); 
-          };
+          document.getElementById('instagramBtn').onclick = function() { window.open('https://instagram.com/' + link.instagram.replace('@',''), '_blank'); };
           temSocial = true;
         }
         if (link.facebook && link.facebook.trim() !== '') {
           document.getElementById('facebookBtn').style.display = 'flex';
-          document.getElementById('facebookBtn').onclick = function() { 
-            window.open(link.facebook, '_blank'); 
-          };
+          document.getElementById('facebookBtn').onclick = function() { window.open(link.facebook, '_blank'); };
           temSocial = true;
         }
         if (link.site && link.site.trim() !== '') {
           document.getElementById('siteBtn').style.display = 'flex';
-          document.getElementById('siteBtn').onclick = function() { 
-            window.open(link.site, '_blank'); 
-          };
+          document.getElementById('siteBtn').onclick = function() { window.open(link.site, '_blank'); };
           temSocial = true;
         }
         if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
 
-        // ========== LOCALIZAÇÃO ==========
         if (link.localizacao && link.localizacao.trim() !== '') {
           const locUrl = link.localizacao.trim();
           const tipoLink = detectarTipoLink(locUrl);
@@ -232,29 +181,21 @@
           const mapIframe = document.getElementById('mapIframe');
           
           if (tipoLink === 'embed') {
-            // Link de incorporação - carrega diretamente
             mapIframe.src = locUrl;
             mapIframe.style.display = 'block';
-          } else if (tipoLink === 'curto') {
-            // Link curto - Google bloqueia iframe
+          } else if (tipoLink === 'curto' || tipoLink === 'outro') {
             mapIframe.style.display = 'none';
             mapContainer.innerHTML = criarCardLocalizacao(locUrl, corTema);
           } else if (tipoLink === 'normal') {
-            // Link normal - tenta converter para embed
             let embedUrl = locUrl;
             if (!embedUrl.includes('output=embed')) {
               embedUrl = embedUrl + (embedUrl.includes('?') ? '&' : '?') + 'output=embed';
             }
             mapIframe.src = embedUrl;
             mapIframe.style.display = 'block';
-          } else {
-            // Outro formato - mostra botão
-            mapIframe.style.display = 'none';
-            mapContainer.innerHTML = criarCardLocalizacao(locUrl, corTema);
           }
         }
 
-        // ========== HORÁRIO ==========
         if (link.horario && link.horario.trim() !== '') { 
           document.getElementById('horarioBlock').style.display = 'flex'; 
           document.getElementById('horarioTexto').textContent = link.horario; 
