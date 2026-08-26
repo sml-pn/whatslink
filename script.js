@@ -44,7 +44,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// CARROSSEL
+// CARROSSEL (6 TEMAS)
 (function carousel() {
   const track = $('#carouselTrack');
   if (!track) return;
@@ -53,7 +53,7 @@ function extrairUrlEmbed(html) {
   const next = $('#nextBtn');
   const dotsWrap = $('#carouselDots');
   let index = 0;
-  const visible = () => window.innerWidth < 720 ? 1 : 4;
+  const visible = () => window.innerWidth < 720 ? 1 : window.innerWidth < 1024 ? 2 : 4;
   const maxIndex = () => Math.max(0, cards.length - visible());
 
   cards.forEach((_, i) => {
