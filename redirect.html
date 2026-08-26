@@ -3,87 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carregando...</title>
+  <title>WhatsApp</title>
   <meta name="robots" content="noindex, nofollow" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <meta name="theme-color" content="#25D366" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="reception-page" id="container">
-    <!-- Banner ou Logo no topo -->
-    <div class="header-visual">
-      <div class="banner-image" id="bannerDiv" style="display:none;">
-        <img id="bannerImg" src="" alt="Banner" />
-      </div>
-      <div class="logo-banner" id="logoBannerDiv" style="display:none;">
-        <img id="logoBannerImg" src="" alt="Logo" />
-        <div class="glass-overlay"></div>
-      </div>
-      <div class="color-banner" id="colorBannerDiv">
-        <span class="material-icons">storefront</span>
-      </div>
+<body class="reception-body">
+  <div class="reception-page theme-verde" id="container">
+    <div class="reception-skeleton" id="skeleton">
+      <div class="sk-banner"></div><div class="sk-logo"></div><div class="sk-title"></div><div class="sk-text"></div><div class="sk-btn"></div>
     </div>
 
-    <!-- Conteúdo principal -->
-    <div class="reception-content">
-      <!-- Logo circular -->
-      <div class="logo-circle" id="logoCircle" style="display:none;">
-        <img id="logoCircleImg" src="" alt="Logo" />
-      </div>
-      <div class="avatar-circle" id="avatarCircle">
-        <span id="avatarLetter">A</span>
-      </div>
+    <div class="header-visual">
+      <div class="banner-image" id="bannerDiv" style="display:none;"><img id="bannerImg" src="" alt="Banner" /></div>
+      <div class="logo-banner" id="logoBannerDiv" style="display:none;"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
+      <div class="color-banner" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
+    </div>
 
-      <!-- Nome e descrição -->
-      <h1 class="company-name" id="empresaNome">Carregando...</h1>
+    <div class="reception-content">
+      <div class="logo-circle" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
+      <div class="avatar-circle" id="avatarCircle"><span id="avatarLetter">A</span></div>
+
+      <h1 class="company-name" id="empresaNome"></h1>
       <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
 
-      <!-- Botão WhatsApp -->
       <button id="whatsappBtn" class="whatsapp-btn">
-        <i class="fab fa-whatsapp"></i>
-        <span>Chamar no WhatsApp</span>
+        <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
+        <span class="btn-pulse"></span>
       </button>
 
-      <!-- Redes sociais -->
       <div class="social-links" id="socialLinks" style="display:none;">
-        <button id="instagramBtn" class="social-btn instagram" style="display:none;">
-          <i class="fab fa-instagram"></i> Instagram
-        </button>
-        <button id="facebookBtn" class="social-btn facebook" style="display:none;">
-          <i class="fab fa-facebook-f"></i> Facebook
-        </button>
-        <button id="siteBtn" class="social-btn site" style="display:none;">
-          <span class="material-icons">public</span> Site
-        </button>
+        <button id="instagramBtn" class="social-btn instagram" style="display:none;"><i class="fab fa-instagram"></i> Instagram</button>
+        <button id="facebookBtn" class="social-btn facebook" style="display:none;"><i class="fab fa-facebook-f"></i> Facebook</button>
+        <button id="siteBtn" class="social-btn site" style="display:none;"><span class="material-icons-round">public</span> Site</button>
       </div>
 
-      <!-- Localização -->
       <div class="location-block" id="locationBlock" style="display:none;">
-        <div class="map-container">
-          <iframe id="mapIframe" src="" width="100%" height="200" style="border:0;" loading="lazy"></iframe>
-        </div>
-        <a href="#" id="mapLink" target="_blank" class="map-link">
-          <span class="material-icons">open_in_new</span> Abrir no Google Maps
-        </a>
+        <div class="map-container"><iframe id="mapIframe" src="" width="100%" height="220" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+        <a href="#" id="mapLink" target="_blank" class="map-link"><span class="material-icons-round">open_in_new</span> Abrir no Google Maps</a>
       </div>
 
-      <!-- Horário -->
       <div class="info-block" id="horarioBlock" style="display:none;">
-        <span class="material-icons">schedule</span>
-        <div>
-          <h3>Horário de funcionamento</h3>
-          <p id="horarioTexto"></p>
-        </div>
+        <span class="material-icons-round">schedule</span>
+        <div><h3>Horário de atendimento</h3><p id="horarioTexto"></p></div>
       </div>
 
-      <p class="powered-by">Criado com ❤️ WhatsLink</p>
+      <p class="powered-by">Criado com ❤ <strong>WhatsLink</strong> • 100% grátis</p>
     </div>
   </div>
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-
+    
     async function buscarLink(slug) {
       const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
       const data = await response.json();
@@ -94,59 +68,64 @@
     (async function() {
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('slug');
-
-      if (!slug) {
-        document.getElementById('container').innerHTML = '<p style="text-align:center;padding:40px;">Link inválido</p>';
-        return;
+      
+      if (!slug) { 
+        document.getElementById('container').innerHTML = '<div class="error-state"><span class="material-icons-round">link_off</span><p>Link inválido</p></div>'; 
+        return; 
       }
 
       try {
         const link = await buscarLink(slug);
-        console.log('Dados recebidos:', link);
+        document.getElementById('skeleton').style.display = 'none';
         
-        document.title = link.empresa + ' - Página Oficial';
+        const tema = link.tema || 'verde';
+        const container = document.getElementById('container');
+        container.className = 'reception-page theme-' + tema;
+        
+        document.querySelector('meta[name="theme-color"]').content = {
+          verde: '#25D366', azul: '#3b82f6', roxo: '#8b5cf6', laranja: '#f97316', preto: '#18181b'
+        }[tema] || '#25D366';
+        
+        document.title = link.empresa + ' | WhatsApp';
 
         // Banner / Logo / Cor
         const temBanner = link.banner_url && link.banner_url.trim() !== '';
         const temLogo = link.logo_url && link.logo_url.trim() !== '';
-
-        if (temBanner) {
-          document.getElementById('bannerImg').src = link.banner_url;
-          document.getElementById('bannerDiv').style.display = 'block';
-        } else if (temLogo) {
-          document.getElementById('logoBannerImg').src = link.logo_url;
-          document.getElementById('logoBannerDiv').style.display = 'block';
-        } else {
-          document.getElementById('colorBannerDiv').style.display = 'block';
+        
+        if (temBanner) { 
+          document.getElementById('bannerImg').src = link.banner_url; 
+          document.getElementById('bannerDiv').style.display = 'block'; 
+        } else if (temLogo) { 
+          document.getElementById('logoBannerImg').src = link.logo_url; 
+          document.getElementById('logoBannerDiv').style.display = 'block'; 
+        } else { 
+          document.getElementById('colorBannerDiv').style.display = 'flex'; 
         }
 
         // Logo circular
         if (temLogo) {
           document.getElementById('logoCircleImg').src = link.logo_url;
-          document.getElementById('logoCircle').style.display = 'block';
+          document.getElementById('logoCircle').style.display = 'flex';
           document.getElementById('avatarCircle').style.display = 'none';
         } else {
           document.getElementById('avatarLetter').textContent = link.empresa.charAt(0).toUpperCase();
+          document.getElementById('avatarCircle').style.display = 'flex';
         }
 
         // Nome
         document.getElementById('empresaNome').textContent = link.empresa;
 
         // Descrição
-        if (link.descricao && link.descricao.trim() !== '') {
-          document.getElementById('descricaoTexto').textContent = link.descricao;
-          document.getElementById('descricaoTexto').style.display = 'block';
+        if (link.descricao && link.descricao.trim() !== '') { 
+          document.getElementById('descricaoTexto').textContent = link.descricao; 
+          document.getElementById('descricaoTexto').style.display = 'block'; 
         }
 
         // WhatsApp
         let waNumber = String(link.whatsapp).replace(/\D/g, '');
-        if (waNumber.length === 10 || waNumber.length === 11) {
-          waNumber = '55' + waNumber;
-        }
+        if (waNumber.length === 10 || waNumber.length === 11) waNumber = '55' + waNumber;
         let waUrl = 'https://wa.me/' + waNumber;
-        if (link.mensagem && link.mensagem.trim() !== '') {
-          waUrl += '?text=' + encodeURIComponent(link.mensagem);
-        }
+        if (link.mensagem && link.mensagem.trim() !== '') waUrl += '?text=' + encodeURIComponent(link.mensagem);
 
         document.getElementById('whatsappBtn').addEventListener('click', function() {
           window.open(waUrl, '_blank');
@@ -156,48 +135,44 @@
         let temSocial = false;
         if (link.instagram && link.instagram.trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
-          document.getElementById('instagramBtn').addEventListener('click', function() {
-            window.open('https://instagram.com/' + link.instagram.replace('@',''), '_blank');
-          });
+          document.getElementById('instagramBtn').onclick = function() { 
+            window.open('https://instagram.com/' + link.instagram.replace('@',''), '_blank'); 
+          };
           temSocial = true;
         }
         if (link.facebook && link.facebook.trim() !== '') {
           document.getElementById('facebookBtn').style.display = 'flex';
-          document.getElementById('facebookBtn').addEventListener('click', function() {
-            window.open(link.facebook, '_blank');
-          });
+          document.getElementById('facebookBtn').onclick = function() { 
+            window.open(link.facebook, '_blank'); 
+          };
           temSocial = true;
         }
         if (link.site && link.site.trim() !== '') {
           document.getElementById('siteBtn').style.display = 'flex';
-          document.getElementById('siteBtn').addEventListener('click', function() {
-            window.open(link.site, '_blank');
-          });
+          document.getElementById('siteBtn').onclick = function() { 
+            window.open(link.site, '_blank'); 
+          };
           temSocial = true;
         }
-        if (temSocial) {
-          document.getElementById('socialLinks').style.display = 'flex';
-        }
+        if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
 
         // Localização
         if (link.localizacao && link.localizacao.trim() !== '') {
           document.getElementById('locationBlock').style.display = 'block';
           document.getElementById('mapLink').href = link.localizacao;
           if (link.localizacao.includes('google.com/maps')) {
-            document.getElementById('mapIframe').src = link.localizacao.replace('/maps?', '/maps?output=embed&');
-          } else {
-            document.getElementById('locationBlock').innerHTML = '<a href="' + link.localizacao + '" target="_blank">Ver localização</a>';
+            document.getElementById('mapIframe').src = link.localizacao;
           }
         }
 
         // Horário
-        if (link.horario && link.horario.trim() !== '') {
-          document.getElementById('horarioBlock').style.display = 'flex';
-          document.getElementById('horarioTexto').textContent = link.horario;
+        if (link.horario && link.horario.trim() !== '') { 
+          document.getElementById('horarioBlock').style.display = 'flex'; 
+          document.getElementById('horarioTexto').textContent = link.horario; 
         }
 
       } catch (err) {
-        document.getElementById('container').innerHTML = '<p style="text-align:center;padding:40px;">Link não encontrado</p>';
+        document.getElementById('container').innerHTML = '<div class="error-state"><span class="material-icons-round">error</span><p>Link não encontrado</p><a href="/">Criar meu link</a></div>';
       }
     })();
   </script>
