@@ -7,23 +7,19 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
   
-  <!-- FAVICON -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   
-  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   
-  <!-- CSS -->
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/edit.css" />
 </head>
 <body>
-  <!-- NAVBAR -->
   <header class="main-header">
     <a href="index.html" class="logo">
       <div class="logo-icon"><span class="material-icons-round">link</span></div>
@@ -36,7 +32,6 @@
   </header>
 
   <div class="edit-container">
-    <!-- LOGIN -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
@@ -44,7 +39,6 @@
       <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
     </div>
 
-    <!-- USUÁRIO -->
     <div id="userArea" style="display:none;">
       <div class="user-area">
         <img id="userPhoto" src="" alt="Foto" />
@@ -56,7 +50,6 @@
       </div>
     </div>
 
-    <!-- LINKS -->
     <div id="linksArea" style="display:none;">
       <h2 style="margin-bottom:16px;">Meus Links</h2>
       <div id="linksList"></div>
@@ -110,7 +103,7 @@
             <div class="empty-state">
               <span class="material-icons-round">link_off</span>
               <p>Você ainda não criou nenhum link.</p>
-              <a href="/" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
+              <a href="criar.html" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
             </div>
           `;
         } else {
