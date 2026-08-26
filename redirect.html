@@ -26,7 +26,8 @@
 </head>
 <body class="reception-body">
   <div class="reception-page theme-verde" id="container">
-    <div class="reception-skeleton" id="skeleton">
+    <!-- SKELETON (ocultado via JS assim que possível) -->
+    <div class="reception-skeleton" id="skeleton" style="opacity:1; transition: opacity .3s ease;">
       <div class="sk-banner"></div>
       <div class="sk-logo"></div>
       <div class="sk-title"></div>
@@ -93,8 +94,37 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     
+    // Função de fetch com timeout
+    function fetchComTimeout(url, options = {}, timeout = 8000) {
+      return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Tempo esgotado. Tente novamente.')), timeout)
+        )
+      ]);
+    }
+
+    function ocultarSkeleton() {
+      const sk = document.getElementById('skeleton');
+      if (sk) {
+        sk.style.opacity = '0';
+        setTimeout(() => { sk.style.display = 'none'; }, 300);
+      }
+    }
+
+    function mostrarErro(mensagem) {
+      ocultarSkeleton();
+      document.getElementById('container').innerHTML = `
+        <div class="error-state">
+          <span class="material-icons-round">error</span>
+          <p>${mensagem}</p>
+          <a href="/">Ir para página inicial</a>
+        </div>
+      `;
+    }
+
     async function buscarLink(slug) {
-      const response = await fetch(`${API_URL}?slug=${encodeURIComponent(slug)}`);
+      const response = await fetchComTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`);
       const data = await response.json();
       if (data.error) throw new Error(data.error);
       return data;
@@ -125,14 +155,15 @@
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('slug');
       
-      if (!slug) { 
-        document.getElementById('container').innerHTML = '<div class="error-state"><span class="material-icons-round">link_off</span><p>Link inválido</p></div>'; 
-        return; 
+      // Se não houver slug, redirecionar para home
+      if (!slug) {
+        window.location.href = '/';
+        return;
       }
 
       try {
         const link = await buscarLink(slug);
-        document.getElementById('skeleton').style.display = 'none';
+        ocultarSkeleton(); // esconder skeleton assim que dados chegam
         
         const tema = link.tema || 'verde';
         const container = document.getElementById('container');
@@ -264,7 +295,7 @@
         }
 
       } catch (err) {
-        document.getElementById('container').innerHTML = '<div class="error-state"><span class="material-icons-round">error</span><p>Link não encontrado</p><a href="/">Criar meu link</a></div>';
+        mostrarErro(err.message || 'Link não encontrado');
       }
     })();
   </script>
