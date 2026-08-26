@@ -27,17 +27,15 @@ function extrairUrlEmbed(html) {
   return html.trim();
 }
 
-// ========== MENU MOBILE ==========
+// MENU MOBILE
 (function menuMobile() {
   const toggle = $('#menuToggle');
   const nav = $('#mainNav');
   if (!toggle || !nav) return;
-  
   toggle.addEventListener('click', () => {
     toggle.classList.toggle('active');
     nav.classList.toggle('open');
   });
-  
   nav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       toggle.classList.remove('active');
@@ -46,7 +44,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// ========== CARROSSEL ==========
+// CARROSSEL
 (function carousel() {
   const track = $('#carouselTrack');
   if (!track) return;
@@ -92,7 +90,7 @@ function extrairUrlEmbed(html) {
   update();
 })();
 
-// ========== MASCARA WHATSAPP ==========
+// MASCARA WHATSAPP
 (function mask() {
   const input = $('#whatsapp');
   if (!input) return;
@@ -107,7 +105,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// ========== SLUG AUTOMÁTICO ==========
+// SLUG AUTOMÁTICO
 (function autoSlug() {
   const empresa = $('#empresa');
   const slug = $('#slug');
@@ -117,7 +115,7 @@ function extrairUrlEmbed(html) {
   empresa.addEventListener('input', () => { if (!touched || slug.value === '') slug.value = slugify(empresa.value); });
 })();
 
-// ========== LOCALIZAÇÃO ==========
+// LOCALIZAÇÃO
 (function localizacao() {
   const input = $('#localizacao');
   if (!input) return;
@@ -135,7 +133,7 @@ function extrairUrlEmbed(html) {
   });
 })();
 
-// ========== FORM SUBMIT ==========
+// FORM SUBMIT
 (function form() {
   const form = $('#linkForm');
   if (!form) return;
