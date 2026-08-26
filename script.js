@@ -1,144 +1,183 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-const DOMINIO = 'https://whatslink-48tc.onrender.com';
+const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
 
-function gerarSlug(texto) {
-  return texto.toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)+/g, '')
-    .slice(0, 40);
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+
+function showToast(msg, icon = 'check_circle') {
+  const t = $('#toast');
+  if (!t) return;
+  t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
 }
 
-function formatarWhatsApp(valor) {
-  let nums = valor.replace(/\D/g, '').slice(0, 13);
-  if (nums.length > 11) {
-    if (nums.length >= 13) return `+${nums.slice(0,2)} (${nums.slice(2,4)}) ${nums.slice(4,9)}-${nums.slice(9,13)}`;
-    if (nums.length >= 12) return `+${nums.slice(0,2)} (${nums.slice(2,4)}) ${nums.slice(4,9)}-${nums.slice(9)}`;
+function slugify(text) {
+  return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+// CARROSSEL
+(function carousel() {
+  const track = $('#carouselTrack');
+  if (!track) return;
+  const cards = $$('.theme-card');
+  const prev = $('#prevBtn');
+  const next = $('#nextBtn');
+  const dotsWrap = $('#carouselDots');
+  let index = 0;
+  const visible = () => window.innerWidth < 720 ? 1 : 4;
+  const maxIndex = () => Math.max(0, cards.length - visible());
+
+  cards.forEach((_, i) => {
+    const d = document.createElement('span');
+    if (i === 0) d.classList.add('active');
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap?.appendChild(d);
+  });
+  const dots = dotsWrap ? [...dotsWrap.children] : [];
+
+  function update() {
+    const cardW = cards[0].offsetWidth + 18;
+    track.style.transform = `translateX(-${index * cardW}px)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
   }
-  if (nums.length >= 11) return `(${nums.slice(0,2)}) ${nums.slice(2,7)}-${nums.slice(7,11)}`;
-  if (nums.length >= 10) return `(${nums.slice(0,2)}) ${nums.slice(2,6)}-${nums.slice(6,10)}`;
-  if (nums.length >= 7) return `(${nums.slice(0,2)}) ${nums.slice(2,7)}-${nums.slice(7)}`;
-  if (nums.length >= 3) return `(${nums.slice(0,2)}) ${nums.slice(2)}`;
-  if (nums.length >= 1) return `(${nums}`;
-  return nums;
-}
+  function goTo(i) {
+    index = Math.min(Math.max(i, 0), maxIndex());
+    update();
+  }
 
-function validarWhatsApp(valor) {
-  const nums = valor.replace(/\D/g, '');
-  if (!nums) return { valido: false, mensagem: 'Digite o número' };
-  if (nums.length < 10) return { valido: false, mensagem: 'Número incompleto' };
-  let numeroLimpo = nums;
-  if (nums.length === 12 || nums.length === 13) numeroLimpo = nums.slice(2);
-  return { valido: true, numeroLimpo };
-}
+  prev?.addEventListener('click', () => goTo(index - 1));
+  next?.addEventListener('click', () => goTo(index + 1));
 
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('linkForm');
-  const empresa = document.getElementById('empresa');
-  const whatsapp = document.getElementById('whatsapp');
-  const mensagem = document.getElementById('mensagem');
-  const slug = document.getElementById('slug');
-  const logoUrl = document.getElementById('logoUrl');
-  const bannerUrl = document.getElementById('bannerUrl');
-  const descricao = document.getElementById('descricao');
-  const localizacao = document.getElementById('localizacao');
-  const instagram = document.getElementById('instagram');
-  const facebook = document.getElementById('facebook');
-  const site = document.getElementById('site');
-  const horario = document.getElementById('horario');
-  const submitBtn = document.getElementById('submitBtn');
-  const resultDiv = document.getElementById('result');
-  const generatedUrl = document.getElementById('generatedUrl');
-  const copyBtn = document.getElementById('copyBtn');
-  const previewBtn = document.getElementById('previewBtn');
+  function setTheme(theme) {
+    $('#tema').value = theme;
+    $$('.theme-option').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+    cards.forEach(c => c.classList.toggle('active', c.dataset.theme === theme));
+  }
 
-  let slugManuallyEdited = false;
-
-  empresa.addEventListener('input', function() {
-    if (!slugManuallyEdited) slug.value = gerarSlug(empresa.value);
+  cards.forEach(card => {
+    card.addEventListener('click', () => setTheme(card.dataset.theme));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter') setTheme(card.dataset.theme); });
+  });
+  $$('.theme-option').forEach(btn => {
+    btn.addEventListener('click', () => setTheme(btn.dataset.theme));
   });
 
-  slug.addEventListener('input', function() {
-    slugManuallyEdited = true;
-    slug.value = gerarSlug(slug.value);
-  });
+  window.addEventListener('resize', update);
+  update();
+})();
 
-  whatsapp.addEventListener('input', function() {
-    whatsapp.value = formatarWhatsApp(whatsapp.value);
+// MASCARA WHATSAPP
+(function mask() {
+  const input = $('#whatsapp');
+  if (!input) return;
+  input.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 6) {
+      if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else if (v.length > 2) {
+      v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+    } else if (v.length > 0) {
+      v = v.replace(/(\d*)/, '($1');
+    }
+    e.target.value = v;
   });
+})();
 
-  form.addEventListener('submit', async function(e) {
+// SLUG AUTOMÁTICO
+(function autoSlug() {
+  const empresa = $('#empresa');
+  const slug = $('#slug');
+  if (!empresa || !slug) return;
+  let touched = false;
+  slug.addEventListener('input', () => touched = true);
+  empresa.addEventListener('input', () => {
+    if (!touched || slug.value === '') slug.value = slugify(empresa.value);
+  });
+})();
+
+// FORM SUBMIT
+(function form() {
+  const form = $('#linkForm');
+  if (!form) return;
+  const submitBtn = $('#submitBtn');
+  const btnText = submitBtn.querySelector('.btn-text');
+  const loader = submitBtn.querySelector('.btn-loader');
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!form.checkValidity()) {
+      showToast('Preencha os campos obrigatórios', 'error');
+      form.reportValidity();
+      return;
+    }
 
-    const payload = {
-      empresa: empresa.value.trim(),
-      whatsapp: whatsapp.value.trim(),
-      slug: slug.value.trim(),
-      mensagem: mensagem.value.trim() || '',
-      logo_url: logoUrl.value.trim() || '',
-      banner_url: bannerUrl.value.trim() || '',
-      descricao: descricao.value.trim() || '',
-      localizacao: localizacao.value.trim() || '',
-      instagram: instagram.value.trim() || '',
-      facebook: facebook.value.trim() || '',
-      site: site.value.trim() || '',
-      horario: horario.value.trim() || ''
+    const data = {
+      empresa: $('#empresa').value.trim(),
+      whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
+      logo_url: $('#logoUrl').value.trim(),
+      banner_url: $('#bannerUrl').value.trim(),
+      mensagem: $('#mensagem').value.trim(),
+      descricao: $('#descricao').value.trim(),
+      localizacao: $('#localizacao').value.trim(),
+      instagram: $('#instagram').value.trim().replace('@', ''),
+      facebook: $('#facebook').value.trim(),
+      site: $('#site').value.trim(),
+      horario: $('#horario').value.trim(),
+      tema: $('#tema').value,
+      slug: slugify($('#slug').value.trim())
     };
 
-    console.log('Payload:', payload);
-
-    if (!payload.empresa) { alert('Informe o nome da empresa'); return; }
-    if (!payload.whatsapp) { alert('Informe o WhatsApp'); return; }
-    if (!payload.slug) { alert('Informe o nome do link'); return; }
-
-    const validacao = validarWhatsApp(payload.whatsapp);
-    if (!validacao.valido) { alert(validacao.mensagem); return; }
-    payload.whatsapp = validacao.numeroLimpo;
-
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Gerando...';
+    btnText.style.opacity = '0';
+    loader.style.display = 'grid';
 
     try {
-      const response = await fetch(API_URL, {
+      const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(data)
       });
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      const result = await res.json();
+      if (result.error) throw new Error(result.error);
 
-      const fullUrl = DOMINIO + '/redirect.html?slug=' + data.slug;
-      generatedUrl.value = fullUrl;
-      resultDiv.style.display = 'block';
+      const finalUrl = BASE_URL + data.slug;
+      $('#generatedUrl').value = finalUrl;
+      $('#result').style.display = 'block';
+      $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast('Link criado com sucesso!');
 
-      previewBtn.onclick = function() {
-        window.open(fullUrl, '_blank');
+      $('#copyBtn').onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(finalUrl);
+          showToast('Link copiado!');
+        } catch {
+          $('#generatedUrl').select();
+          document.execCommand('copy');
+          showToast('Link copiado!');
+        }
       };
 
-      submitBtn.textContent = 'Link gerado!';
-      setTimeout(function() {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Gerar link grátis';
-      }, 3000);
+      $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
+
+      $('#shareBtn')?.addEventListener('click', async () => {
+        if (navigator.share) {
+          try { await navigator.share({ title: data.empresa, url: finalUrl }); } catch {}
+        } else {
+          $('#copyBtn').click();
+        }
+      });
+
+      localStorage.setItem('whatslink_last', JSON.stringify(data));
 
     } catch (err) {
-      alert('Erro: ' + err.message);
+      showToast('Erro ao criar link: ' + err.message, 'error');
+    } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Gerar link grátis';
+      btnText.style.opacity = '1';
+      loader.style.display = 'none';
     }
   });
-
-  copyBtn.addEventListener('click', async function() {
-    try {
-      await navigator.clipboard.writeText(generatedUrl.value);
-      copyBtn.textContent = 'Copiado!';
-      setTimeout(function() { copyBtn.textContent = 'Copiar'; }, 2000);
-    } catch {
-      generatedUrl.select();
-      document.execCommand('copy');
-      copyBtn.textContent = 'Copiado!';
-      setTimeout(function() { copyBtn.textContent = 'Copiar'; }, 2000);
-    }
-  });
-});
+})();
