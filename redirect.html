@@ -42,8 +42,12 @@
       </div>
 
       <div class="location-block" id="locationBlock" style="display:none;">
-        <div class="map-container"><iframe id="mapIframe" src="" width="100%" height="220" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
-        <a href="#" id="mapLink" target="_blank" class="map-link"><span class="material-icons-round">open_in_new</span> Abrir no Google Maps</a>
+        <div class="map-container" id="mapContainer">
+          <iframe id="mapIframe" src="" width="100%" height="220" style="border:0; border-radius:18px;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <a href="#" id="mapLink" target="_blank" class="map-link">
+          <span class="material-icons-round">open_in_new</span> Abrir no Google Maps
+        </a>
       </div>
 
       <div class="info-block" id="horarioBlock" style="display:none;">
@@ -63,6 +67,46 @@
       const data = await response.json();
       if (data.error) throw new Error(data.error);
       return data;
+    }
+
+    // Função para converter link do Google Maps em embed
+    function converterParaEmbed(url) {
+      if (!url) return '';
+      
+      // Se já for um link de embed, retorna como está
+      if (url.includes('output=embed')) return url;
+      
+      // Se for link curto do Google Maps (goo.gl/maps)
+      if (url.includes('goo.gl/maps') || url.includes('maps.app.goo.gl')) {
+        // Para links curtos, usamos o modo de busca
+        return `https://www.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
+      }
+      
+      // Se for link normal do Google Maps
+      if (url.includes('google.com/maps') || url.includes('google.com.br/maps')) {
+        // Tenta extrair a query
+        const match = url.match(/[?&]q=([^&]+)/);
+        if (match) {
+          const query = decodeURIComponent(match[1]);
+          return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+        }
+        
+        // Se tiver coordenadas (@latitude,longitude)
+        const coordMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+        if (coordMatch) {
+          return `https://www.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&output=embed`;
+        }
+        
+        // Se for um place
+        const placeMatch = url.match(/place\/([^/]+)/);
+        if (placeMatch) {
+          const place = placeMatch[1].replace(/\+/g, ' ');
+          return `https://www.google.com/maps?q=${encodeURIComponent(place)}&output=embed`;
+        }
+      }
+      
+      // Se for um endereço simples, usa como busca
+      return `https://www.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
     }
 
     (async function() {
@@ -156,13 +200,29 @@
         }
         if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
 
-        // Localização
+        // ========== LOCALIZAÇÃO CORRIGIDA ==========
         if (link.localizacao && link.localizacao.trim() !== '') {
-          document.getElementById('locationBlock').style.display = 'block';
+          const locationBlock = document.getElementById('locationBlock');
+          locationBlock.style.display = 'block';
+          
+          // Link para abrir no Google Maps
           document.getElementById('mapLink').href = link.localizacao;
-          if (link.localizacao.includes('google.com/maps')) {
-            document.getElementById('mapIframe').src = link.localizacao;
-          }
+          
+          // Converter URL para formato embed
+          const embedUrl = converterParaEmbed(link.localizacao);
+          console.log('URL Embed:', embedUrl);
+          
+          const iframe = document.getElementById('mapIframe');
+          iframe.src = embedUrl;
+          
+          // Se o iframe falhar, mostra fallback
+          iframe.onerror = function() {
+            document.getElementById('mapContainer').innerHTML = 
+              '<div style="padding:20px; text-align:center; background:#f8fafc;">' +
+              '<span class="material-icons-round" style="font-size:40px; color:#94a3b8;">location_on</span>' +
+              '<p style="margin-top:8px; color:#64748b; font-size:13px;">Clique abaixo para ver no Google Maps</p>' +
+              '</div>';
+          };
         }
 
         // Horário
