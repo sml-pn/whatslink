@@ -1,5 +1,5 @@
 // ============================================================
-// WHATSLINK API - COMPLETA E SEGURA
+// WHATSLINK API - COMPLETA COM 21 COLUNAS
 // ============================================================
 
 const SHEET_NAME = 'Sheet1';
@@ -58,7 +58,7 @@ function inicializarPlanilhas() {
       'id', 'empresa', 'whatsapp', 'whatsapp2', 'slug', 'mensagem',
       'logo_url', 'banner_url', 'descricao', 'localizacao',
       'instagram', 'facebook', 'site', 'horario', 'tema',
-      'botao_whatsapp', 'cliques', 'created_at', 'user_email', 'edit_token'
+      'botao_whatsapp', 'botao_whatsapp2', 'cliques', 'created_at', 'user_email', 'edit_token'
     ]);
     sheet.protect().setDescription('Protegido - Acesso via API');
   }
@@ -79,23 +79,16 @@ function doPost(e) {
 
   try {
     inicializarPlanilhas();
-    
     const data = JSON.parse(e.postData.contents);
     const action = data.action || 'criar';
 
     switch (action) {
-      case 'login_google':
-        return loginGoogle(data);
-      case 'criar':
-        return criarLink(data);
-      case 'editar':
-        return editarLink(data);
-      case 'buscar_meus_links':
-        return buscarMeusLinks(data);
-      case 'verificar_token':
-        return verificarToken(data);
-      default:
-        return response({ error: 'Ação inválida' });
+      case 'login_google': return loginGoogle(data);
+      case 'criar': return criarLink(data);
+      case 'editar': return editarLink(data);
+      case 'buscar_meus_links': return buscarMeusLinks(data);
+      case 'verificar_token': return verificarToken(data);
+      default: return response({ error: 'Ação inválida' });
     }
 
   } catch (error) {
@@ -107,7 +100,6 @@ function loginGoogle(data) {
   try {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
     const lastRow = usersSheet.getLastRow();
-    
     let userData = null;
     
     if (lastRow > 1) {
@@ -206,29 +198,32 @@ function criarLink(data) {
     const emailCripto = criptografar(data.user_email || '');
 
     const row = [
-      id,
-      String(data.empresa || ''),
-      whatsappCripto,
-      whatsapp2Cripto,
-      slug,
-      mensagemCripto,
-      String(data.logo_url || ''),
-      String(data.banner_url || ''),
-      String(data.descricao || ''),
-      String(data.localizacao || ''),
-      String(data.instagram || ''),
-      String(data.facebook || ''),
-      String(data.site || ''),
-      String(data.horario || ''),
-      String(data.tema || 'verde'),
-      String(data.botao_whatsapp || 'Chamar no WhatsApp'),
-      0,
-      now,
-      emailCripto,
-      editToken
+      id,                                                    // A
+      String(data.empresa || ''),                            // B
+      whatsappCripto,                                        // C
+      whatsapp2Cripto,                                       // D
+      slug,                                                  // E
+      mensagemCripto,                                        // F
+      String(data.logo_url || ''),                           // G
+      String(data.banner_url || ''),                         // H
+      String(data.descricao || ''),                          // I
+      String(data.localizacao || ''),                        // J
+      String(data.instagram || ''),                          // K
+      String(data.facebook || ''),                           // L
+      String(data.site || ''),                               // M
+      String(data.horario || ''),                            // N
+      String(data.tema || 'verde'),                          // O
+      String(data.botao_whatsapp || 'Chamar no WhatsApp'),   // P
+      String(data.botao_whatsapp2 || ''),                    // Q
+      0,                                                     // R
+      now,                                                   // S
+      emailCripto,                                           // T
+      editToken                                              // U
     ];
 
-    sheet.getRange(lastRow + 1, 1, 1, 20).setValues([row]);
+    sheet.getRange(lastRow + 1, 1, 1, 21).setValues([row]);
+    sheet.getRange(lastRow + 1, 3).setNumberFormat('@');
+    sheet.getRange(lastRow + 1, 4).setNumberFormat('@');
 
     return response({
       success: true,
@@ -257,10 +252,10 @@ function editarLink(data) {
     let userEmail = '';
     
     for (let i = 2; i <= lastRow; i++) {
-      const rowData = sheet.getRange(i, 1, 1, 20).getValues()[0];
-      if (rowData[0] === data.id && rowData[19] === data.edit_token) {
+      const rowData = sheet.getRange(i, 1, 1, 21).getValues()[0];
+      if (rowData[0] === data.id && rowData[20] === data.edit_token) {
         linkRow = i;
-        userEmail = descriptografar(rowData[18]);
+        userEmail = descriptografar(rowData[19]);
         break;
       }
     }
@@ -317,6 +312,7 @@ function editarLink(data) {
     if (data.horario !== undefined) sheet.getRange(linkRow, 14).setValue(String(data.horario));
     if (data.tema !== undefined) sheet.getRange(linkRow, 15).setValue(String(data.tema));
     if (data.botao_whatsapp !== undefined) sheet.getRange(linkRow, 16).setValue(String(data.botao_whatsapp));
+    if (data.botao_whatsapp2 !== undefined) sheet.getRange(linkRow, 17).setValue(String(data.botao_whatsapp2));
 
     editCount++;
     usersSheet.getRange(userRow, 6).setValue(editCount);
@@ -347,16 +343,16 @@ function buscarMeusLinks(data) {
     const links = [];
 
     for (let i = 2; i <= lastRow; i++) {
-      const rowData = sheet.getRange(i, 1, 1, 20).getValues()[0];
-      if (rowData[18] === emailCripto) {
+      const rowData = sheet.getRange(i, 1, 1, 21).getValues()[0];
+      if (rowData[19] === emailCripto) {
         links.push({
           id: rowData[0],
           empresa: rowData[1],
           slug: rowData[4],
           tema: rowData[14],
-          cliques: rowData[16],
-          created_at: rowData[17],
-          edit_token: rowData[19]
+          cliques: rowData[17],
+          created_at: rowData[18],
+          edit_token: rowData[20]
         });
       }
     }
@@ -380,7 +376,7 @@ function doGet(e) {
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ error: 'Link não encontrado' });
 
-    const data = sheet.getRange(1, 1, lastRow, 20).getValues();
+    const data = sheet.getRange(1, 1, lastRow, 21).getValues();
 
     for (let i = 1; i < data.length; i++) {
       if (String(data[i][4]) === slug) {
@@ -401,11 +397,12 @@ function doGet(e) {
           horario: String(data[i][13] || ''),
           tema: String(data[i][14] || 'verde'),
           botao_whatsapp: String(data[i][15] || 'Chamar no WhatsApp'),
-          cliques: parseInt(data[i][16]) || 0,
-          created_at: String(data[i][17] || '')
+          botao_whatsapp2: String(data[i][16] || ''),
+          cliques: parseInt(data[i][17]) || 0,
+          created_at: String(data[i][18] || '')
         };
 
-        sheet.getRange(i + 1, 17).setValue(link.cliques + 1);
+        sheet.getRange(i + 1, 18).setValue(link.cliques + 1);
 
         return response(link);
       }
