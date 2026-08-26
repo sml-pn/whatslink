@@ -151,6 +151,13 @@
 
 .btn-view:hover { background: var(--whatsapp-hover); }
 
+.btn-edit {
+  background: #f1f5f9;
+  color: var(--text);
+}
+
+.btn-edit:hover { background: #e2e8f0; }
+
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -161,4 +168,132 @@
   font-size: 48px;
   display: block;
   margin-bottom: 16px;
+}
+
+/* ============ RESULTADO (sucesso) ============ */
+.result-box {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 20px;
+  animation: fadeInUp .5s ease;
+}
+
+.result-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.result-head span { color: #16a34a; font-size: 28px; }
+.result-head strong { display: block; font-size: 14px; }
+.result-head p { font-size: 12px; color: #15803d; }
+
+.link-row {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.link-row input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  background: white;
+  font-size: 13px;
+}
+
+.link-row button {
+  padding: 0 18px;
+  background: var(--text);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+}
+
+#previewBtn {
+  flex: 1;
+  padding: 12px;
+  background: white;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ============ MODAL DE EDIÇÃO ============ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--muted);
+}
+
+/* Responsivo */
+@media (max-width: 720px) {
+  .link-card {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .modal-content {
+    padding: 20px;
+  }
 }
