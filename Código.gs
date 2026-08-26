@@ -1,5 +1,5 @@
 // ============================================================
-// WHATSLINK API - COMPLETA COM 21 COLUNAS
+// WHATSLINK API - VERSÃO COMPLETA COM 21 COLUNAS
 // ============================================================
 
 const SHEET_NAME = 'Sheet1';
@@ -7,6 +7,7 @@ const USERS_SHEET = 'Users';
 const CHAVE_CRIPTO = 'WhatsLink_Secure_Key_2026';
 const MAX_EDICOES_POR_DIA = 5;
 
+// ========== GUARDAR CHAVE SECRETA ==========
 function guardarChaveSecreta() {
   PropertiesService.getScriptProperties().setProperty(
     'GOOGLE_CLIENT_SECRET',
@@ -15,10 +16,12 @@ function guardarChaveSecreta() {
   Logger.log('Chave secreta guardada com sucesso!');
 }
 
+// ========== OBTER CHAVE SECRETA ==========
 function obterChaveSecreta() {
   return PropertiesService.getScriptProperties().getProperty('GOOGLE_CLIENT_SECRET');
 }
 
+// ========== CRIPTOGRAFIA ==========
 function criptografar(texto) {
   if (!texto) return '';
   const textoStr = String(texto);
@@ -30,6 +33,7 @@ function criptografar(texto) {
   return Utilities.base64Encode(resultado);
 }
 
+// ========== DESCRIPTOGRAFIA ==========
 function descriptografar(textoCriptografado) {
   if (!textoCriptografado) return '';
   try {
@@ -45,10 +49,12 @@ function descriptografar(textoCriptografado) {
   }
 }
 
+// ========== GERAR ID ==========
 function gerarId() {
   return new Date().getTime().toString(36) + Math.random().toString(36).substr(2, 8);
 }
 
+// ========== INICIALIZAR PLANILHAS ==========
 function inicializarPlanilhas() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   
@@ -72,6 +78,7 @@ function inicializarPlanilhas() {
   }
 }
 
+// ========== FUNÇÃO PRINCIPAL - POST ==========
 function doPost(e) {
   if (!e || !e.postData || !e.postData.contents) {
     return response({ error: 'Requisição inválida' });
@@ -83,12 +90,20 @@ function doPost(e) {
     const action = data.action || 'criar';
 
     switch (action) {
-      case 'login_google': return loginGoogle(data);
-      case 'criar': return criarLink(data);
-      case 'editar': return editarLink(data);
-      case 'buscar_meus_links': return buscarMeusLinks(data);
-      case 'verificar_token': return verificarToken(data);
-      default: return response({ error: 'Ação inválida' });
+      case 'login_google':
+        return loginGoogle(data);
+      case 'criar':
+        return criarLink(data);
+      case 'editar':
+        return editarLink(data);
+      case 'buscar_meus_links':
+        return buscarMeusLinks(data);
+      case 'buscar_link':
+        return buscarLinkPorId(data);
+      case 'verificar_token':
+        return verificarToken(data);
+      default:
+        return response({ error: 'Ação inválida' });
     }
 
   } catch (error) {
@@ -96,10 +111,12 @@ function doPost(e) {
   }
 }
 
+// ========== LOGIN COM GOOGLE ==========
 function loginGoogle(data) {
   try {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
     const lastRow = usersSheet.getLastRow();
+    
     let userData = null;
     
     if (lastRow > 1) {
@@ -140,6 +157,7 @@ function loginGoogle(data) {
   }
 }
 
+// ========== VERIFICAR TOKEN ==========
 function verificarToken(data) {
   try {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
@@ -169,6 +187,7 @@ function verificarToken(data) {
   }
 }
 
+// ========== CRIAR LINK (21 COLUNAS) ==========
 function criarLink(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
@@ -198,27 +217,27 @@ function criarLink(data) {
     const emailCripto = criptografar(data.user_email || '');
 
     const row = [
-      id,                                                    // A
-      String(data.empresa || ''),                            // B
-      whatsappCripto,                                        // C
-      whatsapp2Cripto,                                       // D
-      slug,                                                  // E
-      mensagemCripto,                                        // F
-      String(data.logo_url || ''),                           // G
-      String(data.banner_url || ''),                         // H
-      String(data.descricao || ''),                          // I
-      String(data.localizacao || ''),                        // J
-      String(data.instagram || ''),                          // K
-      String(data.facebook || ''),                           // L
-      String(data.site || ''),                               // M
-      String(data.horario || ''),                            // N
-      String(data.tema || 'verde'),                          // O
-      String(data.botao_whatsapp || 'Chamar no WhatsApp'),   // P
-      String(data.botao_whatsapp2 || ''),                    // Q
-      0,                                                     // R
-      now,                                                   // S
-      emailCripto,                                           // T
-      editToken                                              // U
+      id,                                                    // A - id
+      String(data.empresa || ''),                            // B - empresa
+      whatsappCripto,                                        // C - whatsapp (CRIPTOGRAFADO)
+      whatsapp2Cripto,                                       // D - whatsapp2 (CRIPTOGRAFADO)
+      slug,                                                  // E - slug
+      mensagemCripto,                                        // F - mensagem (CRIPTOGRAFADA)
+      String(data.logo_url || ''),                           // G - logo_url
+      String(data.banner_url || ''),                         // H - banner_url
+      String(data.descricao || ''),                          // I - descricao
+      String(data.localizacao || ''),                        // J - localizacao
+      String(data.instagram || ''),                          // K - instagram
+      String(data.facebook || ''),                           // L - facebook
+      String(data.site || ''),                               // M - site
+      String(data.horario || ''),                            // N - horario
+      String(data.tema || 'verde'),                          // O - tema
+      String(data.botao_whatsapp || 'Chamar no WhatsApp'),   // P - botao_whatsapp
+      String(data.botao_whatsapp2 || ''),                    // Q - botao_whatsapp2
+      0,                                                     // R - cliques
+      now,                                                   // S - created_at
+      emailCripto,                                           // T - user_email (CRIPTOGRAFADO)
+      editToken                                              // U - edit_token
     ];
 
     sheet.getRange(lastRow + 1, 1, 1, 21).setValues([row]);
@@ -238,6 +257,50 @@ function criarLink(data) {
   }
 }
 
+// ========== BUSCAR LINK POR ID (NOVA FUNÇÃO) ==========
+function buscarLinkPorId(data) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    const lastRow = sheet.getLastRow();
+    
+    if (lastRow < 2) return response({ error: 'Nenhum link encontrado' });
+    
+    for (let i = 2; i <= lastRow; i++) {
+      const rowData = sheet.getRange(i, 1, 1, 21).getValues()[0];
+      if (rowData[0] === data.id && rowData[20] === data.edit_token) {
+        const link = {
+          id: String(rowData[0]),
+          empresa: String(rowData[1]),
+          whatsapp: descriptografar(String(rowData[2])),
+          whatsapp2: descriptografar(String(rowData[3])),
+          slug: String(rowData[4]),
+          mensagem: descriptografar(String(rowData[5])),
+          logo_url: String(rowData[6]),
+          banner_url: String(rowData[7]),
+          descricao: String(rowData[8]),
+          localizacao: String(rowData[9]),
+          instagram: String(rowData[10]),
+          facebook: String(rowData[11]),
+          site: String(rowData[12]),
+          horario: String(rowData[13]),
+          tema: String(rowData[14]),
+          botao_whatsapp: String(rowData[15]),
+          botao_whatsapp2: String(rowData[16]),
+          cliques: parseInt(rowData[17]) || 0,
+          created_at: String(rowData[18]),
+          user_email: descriptografar(String(rowData[19])),
+          edit_token: String(rowData[20])
+        };
+        return response(link);
+      }
+    }
+    return response({ error: 'Link não encontrado ou token inválido' });
+  } catch (error) {
+    return response({ error: error.message });
+  }
+}
+
+// ========== EDITAR LINK (5 EDIÇÕES POR DIA) ==========
 function editarLink(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
@@ -332,6 +395,7 @@ function editarLink(data) {
   }
 }
 
+// ========== BUSCAR LINKS DO USUÁRIO ==========
 function buscarMeusLinks(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
@@ -364,6 +428,7 @@ function buscarMeusLinks(data) {
   }
 }
 
+// ========== BUSCAR LINK (GET - PÁGINA DE RECEPÇÃO) ==========
 function doGet(e) {
   try {
     inicializarPlanilhas();
@@ -415,6 +480,7 @@ function doGet(e) {
   }
 }
 
+// ========== FUNÇÃO AUXILIAR DE RESPOSTA ==========
 function response(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
