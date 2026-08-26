@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Link - WhatsLink</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#25D366" />
+  
+  <!-- FAVICON -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
+  
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=Manrope:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/edit.css" />
+  
+  <style>
+    .criar-container { max-width: 680px; margin: 0 auto; padding: 20px; }
+    
+    /* Login */
+    .login-required {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+      max-width: 420px;
+      margin: 60px auto;
+      border: 1px solid var(--border);
+    }
+    .login-required .login-icon {
+      width: 64px;
+      height: 64px;
+      background: #f0fdf4;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      font-size: 32px;
+      color: var(--whatsapp);
+    }
+    .login-required h2 { font-size: 22px; margin-bottom: 8px; }
+    .login-required p { color: var(--muted); margin-bottom: 24px; font-size: 14px; line-height: 1.6; }
+    .login-benefits {
+      text-align: left;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 12px;
+    }
+    .login-benefits li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 4px 0;
+    }
+    .login-benefits li .material-icons-round {
+      font-size: 16px;
+      color: var(--whatsapp);
+    }
+    
+    /* Barra do usuário */
+    .user-info-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .user-info-left { display: flex; align-items: center; gap: 12px; }
+    .user-info-left img { width: 42px; height: 42px; border-radius: 50%; }
+    .user-info-left strong { font-size: 14px; display: block; }
+    .user-info-left span { font-size: 12px; color: var(--muted); }
+    
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--muted);
+      transition: .2s;
+    }
+    .logout-btn:hover { background: #f8fafc; }
+    
+    .g_id_signin { width: 100%; min-height: 48px; display: flex; justify-content: center; }
+    .g_id_signin iframe { width: 100% !important; max-width: 280px; }
+    
+    /* Banner de aviso */
+    .email-notice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #1e40af;
+    }
+    .email-notice .material-icons-round { font-size: 18px; }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="main-header">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><span class="material-icons-round">link</span></div>
+      Whats<span>Link</span>
+    </a>
+    <a href="index.html" class="back-link">
+      <span class="material-icons-round" style="font-size:18px;">arrow_back</span>
+      Voltar para página inicial
+    </a>
+  </header>
+
+  <div class="criar-container">
+    <!-- ============ TELA DE LOGIN ============ -->
+    <div class="login-required" id="loginRequired">
+      <div class="login-icon"><span class="material-icons-round">lock</span></div>
+      <h2>🔐 Faça login para criar seu link</h2>
+      <p>Use sua conta Google para que possamos salvar seus links e permitir edição posterior.</p>
+      
+      <ul class="login-benefits" style="list-style:none; padding:0;">
+        <li><span class="material-icons-round">check_circle</span> Seus links ficam vinculados ao seu email</li>
+        <li><span class="material-icons-round">check_circle</span> Edite suas informações até 5x por dia</li>
+        <li><span class="material-icons-round">check_circle</span> Acesse "Meus Links" de qualquer dispositivo</li>
+        <li><span class="material-icons-round">check_circle</span> Seus dados ficam protegidos e criptografados</li>
+      </ul>
+      
+      <div id="g_id_onload" data-client_id="324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false"></div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
+    </div>
+
+    <!-- ============ USUÁRIO LOGADO + FORMULÁRIO ============ -->
+    <div id="formArea" style="display:none;">
+      <!-- Barra do usuário -->
+      <div class="user-info-bar">
+        <div class="user-info-left">
+          <img id="userPhoto" src="" alt="Foto" />
+          <div>
+            <strong id="userName"></strong>
+            <span id="userEmail"></span>
+          </div>
+        </div>
+        <button class="logout-btn" id="logoutBtn">
+          <span class="material-icons-round" style="font-size:16px;">logout</span>
+          Sair
+        </button>
+      </div>
+
+      <!-- Aviso de email vinculado -->
+      <div class="email-notice">
+        <span class="material-icons-round">info</span>
+        <span>Seu link será vinculado ao email <strong id="emailVinculado"></strong>. Você poderá editá-lo em "Meus Links".</span>
+      </div>
+
+      <!-- Card do formulário -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><span class="material-icons-round">edit_note</span></div>
+          <div>
+            <h2>Criar meu link</h2>
+            <p class="card-subtitle">Preencha os dados abaixo. Leva 30 segundos.</p>
+          </div>
+        </div>
+        
+        <form id="linkForm" novalidate>
+          <!-- ============ INFORMAÇÕES PRINCIPAIS ============ -->
+          <div class="form-group-title">
+            <span class="material-icons-round">business</span>
+            Informações principais
+          </div>
+          
+          <div class="field">
+            <label for="empresa">Nome da empresa *</label>
+            <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
+            <span class="field-hint">Aparece no topo da sua página de recepção</span>
+          </div>
+          
+          <div class="field">
+            <label for="whatsapp">WhatsApp principal *</label>
+            <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" inputmode="tel" />
+            <span class="field-hint">Número principal que receberá as mensagens</span>
+          </div>
+          
+          <div class="field">
+            <label for="botaoWhatsapp">Nome do botão principal *</label>
+            <input type="text" id="botaoWhatsapp" placeholder="Ex: Falar com Vendas" value="Chamar no WhatsApp" required />
+            <span class="field-hint">Exemplos: "Falar com Vendas", "Atendimento", "Agendar Consulta", "Fazer Pedido"</span>
+          </div>
+          
+          <div class="field">
+            <label for="whatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
+            <input type="tel" id="whatsapp2" placeholder="(85) 98888-8888" maxlength="18" inputmode="tel" />
+            <span class="field-hint">Segundo número para atendimento diferenciado (suporte, outra unidade, etc.)</span>
+          </div>
+          
+          <div class="field">
+            <label for="botaoWhatsapp2">Nome do botão secundário <span class="optional">opcional</span></label>
+            <input type="text" id="botaoWhatsapp2" placeholder="Ex: Falar com Suporte" />
+            <span class="field-hint">Exemplos: "Falar com Suporte", "Unidade Centro", "Unidade Sul", "WhatsApp do Gerente"</span>
+          </div>
+          
+          <div class="grid-2">
+            <div class="field">
+              <label for="logoUrl">Logo (URL) <span class="optional">opcional</span></label>
+              <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
+              <span class="field-hint">Imagem circular na sua página</span>
+            </div>
+            <div class="field">
+              <label for="bannerUrl">Banner (URL) <span class="optional">opcional</span></label>
+              <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
+              <span class="field-hint">Imagem ampla no topo</span>
+            </div>
+          </div>
+          
+          <!-- ============ MENSAGEM E CONTEÚDO ============ -->
+          <div class="form-group-title">
+            <span class="material-icons-round">chat_bubble</span>
+            Mensagem & Conteúdo
+          </div>
+          
+          <div class="field">
+            <label for="mensagem">Mensagem automática <span class="optional">opcional</span></label>
+            <textarea id="mensagem" rows="3" placeholder="Ex: Olá! Vim pelo seu link e gostaria de mais informações..."></textarea>
+            <span class="field-hint">
+              <strong>O que é:</strong> Texto que já aparece pronto no WhatsApp do cliente quando ele clicar no botão.<br>
+              <strong>Para que serve:</strong> Facilita o primeiro contato, pois o cliente não precisa digitar nada.
+            </span>
+          </div>
+          
+          <div class="field">
+            <label for="descricao">Descrição da empresa <span class="optional">opcional</span></label>
+            <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação, crossfit e aulas personalizadas..."></textarea>
+            <span class="field-hint">
+              <strong>O que é:</strong> Texto que aparece abaixo do nome da empresa na sua página.<br>
+              <strong>Para que serve:</strong> Apresenta seu negócio e convence o visitante a chamar no WhatsApp.
+            </span>
+          </div>
+          
+          <!-- ============ LINKS E CONTATO ============ -->
+          <div class="form-group-title">
+            <span class="material-icons-round">share_location</span>
+            Links & Contato
+          </div>
+          
+          <div class="field">
+            <label for="localizacao">Localização (Google Maps) <span class="optional">opcional</span></label>
+            <input type="text" id="localizacao" placeholder="Cole aqui o HTML copiado do Google Maps" />
+            <span class="field-hint" style="display:flex; align-items:flex-start; gap:6px; margin-top:8px; background:#f0f9ff; padding:12px; border-radius:10px; border:1px solid #bae6fd;">
+              <span class="material-icons-round" style="font-size:20px; color:#0284c7;">info</span>
+              <span style="color:#0369a1; line-height:1.6;">
+                <strong style="display:block; margin-bottom:6px;">📋 Como obter o link de incorporação:</strong>
+                <strong>1.</strong> Abra o <a href="https://www.google.com/maps" target="_blank" style="color:#0284c7; text-decoration:underline; font-weight:600;">Google Maps</a><br>
+                <strong>2.</strong> Pesquise o endereço da sua empresa<br>
+                <strong>3.</strong> Clique em <strong>"Compartilhar"</strong><br>
+                <strong>4.</strong> Clique em <strong>"Incorporar um mapa"</strong><br>
+                <strong>5.</strong> Na janela que abrir, <strong>ignore o tamanho</strong> (pode deixar "Médio")<br>
+                <strong>6.</strong> Clique em <strong>"Copiar HTML"</strong><br>
+                <strong>7.</strong> <strong>Cole todo o código aqui</strong> — extraímos o link automaticamente! ✨
+              </span>
+            </span>
+          </div>
+          
+          <div class="grid-2">
+            <div class="field">
+              <label for="instagram">Instagram <span class="optional">opcional</span></label>
+              <div class="input-icon-group">
+                <span class="input-icon">@</span>
+                <input type="text" id="instagram" placeholder="suaempresa" />
+              </div>
+              <span class="field-hint">Seu perfil (sem o @)</span>
+            </div>
+            <div class="field">
+              <label for="horario">Horário de funcionamento <span class="optional">opcional</span></label>
+              <input type="text" id="horario" placeholder="Seg a Sex: 8h às 18h" />
+              <span class="field-hint">Mostre quando seus clientes podem falar com você</span>
+            </div>
+          </div>
+          
+          <div class="grid-2">
+            <div class="field">
+              <label for="facebook">Facebook <span class="optional">opcional</span></label>
+              <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
+              <span class="field-hint">Link da sua página no Facebook</span>
+            </div>
+            <div class="field">
+              <label for="site">Site <span class="optional">opcional</span></label>
+              <input type="url" id="site" placeholder="https://suaempresa.com" />
+              <span class="field-hint">Seu site oficial ou blog</span>
+            </div>
+          </div>
+          
+          <!-- ============ APARÊNCIA ============ -->
+          <div class="form-group-title">
+            <span class="material-icons-round">palette</span>
+            Aparência
+          </div>
+          
+          <div class="field">
+            <label>Tema da página *</label>
+            <span class="field-hint" style="margin-bottom:8px;">Escolha o visual que combina com sua marca</span>
+            <input type="hidden" id="tema" value="verde" />
+            <div class="theme-selector" id="themeSelector">
+              <button type="button" class="theme-option active" data-theme="verde" style="background:linear-gradient(135deg,#25D366,#128C7E);" aria-label="Verde"><span class="material-icons-round">check</span></button>
+              <button type="button" class="theme-option" data-theme="azul" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);" aria-label="Azul"><span class="material-icons-round">check</span></button>
+              <button type="button" class="theme-option" data-theme="roxo" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);" aria-label="Roxo"><span class="material-icons-round">check</span></button>
+              <button type="button" class="theme-option" data-theme="laranja" style="background:linear-gradient(135deg,#f97316,#ea580c);" aria-label="Laranja"><span class="material-icons-round">check</span></button>
+              <button type="button" class="theme-option" data-theme="preto" style="background:linear-gradient(135deg,#d4af37,#c19b2e);" aria-label="Preto"><span class="material-icons-round">check</span></button>
+              <button type="button" class="theme-option" data-theme="cardapio" style="background:linear-gradient(135deg,#ff8f00,#ffb300);" aria-label="Cardápio"><span class="material-icons-round">check</span></button>
+            </div>
+          </div>
+          
+          <div class="field">
+            <label for="slug">Nome do link *</label>
+            <div class="slug-group">
+              <span>whatslink-48tc.onrender.com/</span>
+              <input type="text" id="slug" placeholder="academia-top-fit" required pattern="[a-z0-9-]+" />
+            </div>
+            <span class="field-hint">Gera automaticamente a partir do nome da empresa</span>
+          </div>
+          
+          <button type="submit" id="submitBtn">
+            <span class="material-icons-round">send</span>
+            <span class="btn-text">Gerar link grátis</span>
+            <div class="btn-loader" style="display:none;"><div class="spinner"></div></div>
+          </button>
+        </form>
+        
+        <!-- RESULTADO -->
+        <div id="result" style="display:none;">
+          <div class="result-box">
+            <div class="result-head">
+              <span class="material-icons-round">check_circle</span>
+              <div>
+                <strong>Link criado com sucesso!</strong>
+                <p>Vinculado ao email: <span id="resultEmail"></span></p>
+              </div>
+            </div>
+            <div class="link-row">
+              <input type="text" id="generatedUrl" readonly />
+              <button id="copyBtn"><span class="material-icons-round">content_copy</span> Copiar</button>
+            </div>
+            <div class="result-actions">
+              <button id="previewBtn"><span class="material-icons-round">visibility</span> Ver página</button>
+              <a href="edit.html" style="flex:1; padding:12px; background:var(--text); color:white; border-radius:12px; text-decoration:none; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px;">
+                <span class="material-icons-round" style="font-size:18px;">list</span>
+                Meus Links
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+    const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
+    let currentUser = null;
+
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+
+    function showToast(msg, icon = 'check_circle') {
+      const t = $('#toast');
+      if (!t) return;
+      t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function slugify(text) {
+      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+    }
+
+    function extrairUrlEmbed(html) {
+      if (!html) return '';
+      if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
+      const srcMatch = html.match(/src=["']([^"']+)["']/);
+      if (srcMatch && srcMatch[1]) return srcMatch[1];
+      const urlMatch = html.match(/https?:\/\/[^\s"']+/);
+      if (urlMatch && urlMatch[0]) return urlMatch[0];
+      return html.trim();
+    }
+
+    // ============ LOGIN GOOGLE ============
+    function handleCredentialResponse(response) {
+      try {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        currentUser = {
+          email: payload.email,
+          nome: payload.name,
+          foto: payload.picture
+        };
+        localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
+        
+        document.getElementById('loginRequired').style.display = 'none';
+        document.getElementById('formArea').style.display = 'block';
+        document.getElementById('userPhoto').src = currentUser.foto;
+        document.getElementById('userName').textContent = currentUser.nome;
+        document.getElementById('userEmail').textContent = currentUser.email;
+        document.getElementById('emailVinculado').textContent = currentUser.email;
+        
+        showToast('Login realizado! Agora crie seu link.');
+      } catch (err) {
+        showToast('Erro ao fazer login', 'error');
+      }
+    }
+
+    // ============ LOGOUT ============
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('whatslink_user');
+      currentUser = null;
+      document.getElementById('formArea').style.display = 'none';
+      document.getElementById('loginRequired').style.display = 'block';
+      showToast('Você saiu da sua conta');
+    });
+
+    // ============ VERIFICAR SESSÃO ============
+    const savedUser = localStorage.getItem('whatslink_user');
+    if (savedUser) {
+      currentUser = JSON.parse(savedUser);
+      document.getElementById('loginRequired').style.display = 'none';
+      document.getElementById('formArea').style.display = 'block';
+      document.getElementById('userPhoto').src = currentUser.foto;
+      document.getElementById('userName').textContent = currentUser.nome;
+      document.getElementById('userEmail').textContent = currentUser.email;
+      document.getElementById('emailVinculado').textContent = currentUser.email;
+    }
+
+    // ============ MÁSCARA WHATSAPP PRINCIPAL ============
+    document.getElementById('whatsapp').addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 6) {
+        if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+      } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
+      else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
+      e.target.value = v;
+    });
+
+    // ============ MÁSCARA WHATSAPP SECUNDÁRIO ============
+    document.getElementById('whatsapp2').addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 6) {
+        if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+      } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
+      else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
+      e.target.value = v;
+    });
+
+    // ============ SLUG AUTOMÁTICO ============
+    const empresa = document.getElementById('empresa');
+    const slug = document.getElementById('slug');
+    let slugTouched = false;
+    slug.addEventListener('input', () => slugTouched = true);
+    empresa.addEventListener('input', () => {
+      if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
+    });
+
+    // ============ LOCALIZAÇÃO ============
+    document.getElementById('localizacao').addEventListener('paste', (e) => {
+      setTimeout(() => {
+        const valor = document.getElementById('localizacao').value;
+        const urlExtraida = extrairUrlEmbed(valor);
+        if (urlExtraida !== valor) {
+          document.getElementById('localizacao').value = urlExtraida;
+          showToast('Link extraído automaticamente!');
+        }
+      }, 100);
+    });
+    document.getElementById('localizacao').addEventListener('blur', () => {
+      const valor = document.getElementById('localizacao').value;
+      const urlExtraida = extrairUrlEmbed(valor);
+      if (urlExtraida !== valor) {
+        document.getElementById('localizacao').value = urlExtraida;
+        showToast('Link extraído automaticamente!');
+      }
+    });
+
+    // ============ SELEÇÃO DE TEMA ============
+    $$('.theme-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('tema').value = btn.dataset.theme;
+        $$('.theme-option').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // ============ FORM SUBMIT ============
+    document.getElementById('linkForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!currentUser) {
+        showToast('Faça login primeiro', 'error');
+        document.getElementById('loginRequired').style.display = 'block';
+        document.getElementById('formArea').style.display = 'none';
+        return;
+      }
+
+      const data = {
+        empresa: document.getElementById('empresa').value.trim(),
+        whatsapp: document.getElementById('whatsapp').value.trim().replace(/\D/g, ''),
+        whatsapp2: document.getElementById('whatsapp2').value.trim().replace(/\D/g, ''),
+        botao_whatsapp: document.getElementById('botaoWhatsapp').value.trim() || 'Chamar no WhatsApp',
+        botao_whatsapp2: document.getElementById('botaoWhatsapp2').value.trim(),
+        logo_url: document.getElementById('logoUrl').value.trim(),
+        banner_url: document.getElementById('bannerUrl').value.trim(),
+        mensagem: document.getElementById('mensagem').value.trim(),
+        descricao: document.getElementById('descricao').value.trim(),
+        localizacao: extrairUrlEmbed(document.getElementById('localizacao').value.trim()),
+        instagram: document.getElementById('instagram').value.trim().replace('@', ''),
+        facebook: document.getElementById('facebook').value.trim(),
+        site: document.getElementById('site').value.trim(),
+        horario: document.getElementById('horario').value.trim(),
+        tema: document.getElementById('tema').value,
+        slug: slugify(document.getElementById('slug').value.trim()),
+        user_email: currentUser.email
+      };
+
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = submitBtn.querySelector('.btn-text');
+      const loader = submitBtn.querySelector('.btn-loader');
+      
+      submitBtn.disabled = true;
+      btnText.style.opacity = '0';
+      loader.style.display = 'grid';
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.error) throw new Error(result.error);
+
+        const finalUrl = BASE_URL + data.slug;
+        document.getElementById('generatedUrl').value = finalUrl;
+        document.getElementById('resultEmail').textContent = currentUser.email;
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast('Link criado com sucesso!');
+
+        document.getElementById('copyBtn').onclick = async () => {
+          try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
+          catch { document.getElementById('generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
+        };
+        document.getElementById('previewBtn').onclick = () => window.open(finalUrl, '_blank');
+
+      } catch (err) {
+        showToast('Erro: ' + err.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        btnText.style.opacity = '1';
+        loader.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
