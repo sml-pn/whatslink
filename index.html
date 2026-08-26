@@ -4,45 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <!-- ============ SEO BÁSICO ============ -->
+  <!-- SEO -->
   <title>WhatsLink - Crie sua página profissional para WhatsApp grátis</title>
-  <meta name="description" content="Crie uma página de recepção personalizada para seu WhatsApp. 6 temas profissionais, logo, banner, localização, redes sociais. 100% grátis e sem cadastro." />
-  <meta name="keywords" content="link whatsapp, página de recepção, whatsapp profissional, bio whatsapp, link personalizado, cardápio digital" />
-  <meta name="author" content="WhatsLink" />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="description" content="Crie uma página de recepção personalizada para seu WhatsApp. 6 temas profissionais, múltiplos números, botões personalizados. 100% grátis." />
   <meta name="theme-color" content="#25D366" />
-  <meta name="language" content="pt-BR" />
-  <link rel="canonical" href="https://whatslink-48tc.onrender.com/" />
   
-  <!-- ============ OPEN GRAPH ============ -->
+  <!-- Open Graph -->
   <meta property="og:title" content="WhatsLink - Página profissional para WhatsApp grátis" />
-  <meta property="og:description" content="Crie links personalizados com 6 temas exclusivos. 100% grátis." />
+  <meta property="og:description" content="6 temas exclusivos, múltiplos WhatsApps, botões personalizados. 100% grátis." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://whatslink-48tc.onrender.com/" />
   <meta property="og:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="WhatsLink" />
-  <meta property="og:locale" content="pt_BR" />
   
-  <!-- ============ TWITTER CARDS ============ -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="WhatsLink - Página profissional para WhatsApp grátis" />
-  <meta name="twitter:description" content="Crie links personalizados com 6 temas exclusivos. 100% grátis." />
-  <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
-  
-  <!-- ============ FAVICON ============ -->
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   
-  <!-- ============ FONTES ============ -->
+  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=Manrope:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   
-  <!-- ============ CSS ============ -->
+  <!-- CSS -->
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/index.css" />
 </head>
@@ -77,7 +62,7 @@
           Mais de 12.000 empresas usando
         </div>
         <h1>Crie sua <span>página profissional</span><br>para WhatsApp</h1>
-        <p>6 temas exclusivos. Personalize com sua logo e compartilhe.<br><strong>Alta conversão. 100% gratuito.</strong></p>
+        <p>6 temas exclusivos. Múltiplos números e botões personalizados.<br><strong>100% gratuito.</strong></p>
         <div class="hero-actions">
           <a href="#criar" class="btn-primary">
             <span class="material-icons-round">rocket_launch</span>
@@ -87,7 +72,7 @@
         </div>
       </section>
 
-      <!-- CARROSSEL -->
+      <!-- CARROSSEL DE TEMAS -->
       <section id="temas" class="themes-section">
         <div class="section-head">
           <h2>Temas profissionais</h2>
@@ -190,25 +175,33 @@
             <div class="field">
               <label for="empresa">Nome da empresa *</label>
               <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
-              <span class="field-hint">Aparece no topo da sua página de recepção</span>
+              <span class="field-hint">Aparece no topo da sua página</span>
             </div>
             
+            <!-- WHATSAPP PRINCIPAL -->
             <div class="field">
               <label for="whatsapp">WhatsApp principal *</label>
               <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" inputmode="tel" />
-              <span class="field-hint">Número que receberá as mensagens dos clientes</span>
+              <span class="field-hint">Número principal de atendimento</span>
             </div>
             
+            <div class="field">
+              <label for="botaoWhatsapp">Nome do botão principal *</label>
+              <input type="text" id="botaoWhatsapp" placeholder="Ex: Falar com Vendas" value="Chamar no WhatsApp" required />
+              <span class="field-hint">Ex: "Falar com Vendas", "Atendimento", "Agendar Consulta"</span>
+            </div>
+            
+            <!-- WHATSAPP SECUNDÁRIO -->
             <div class="field">
               <label for="whatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
               <input type="tel" id="whatsapp2" placeholder="(85) 98888-8888" maxlength="18" inputmode="tel" />
-              <span class="field-hint">Adicione um segundo número de atendimento (vendas, suporte, etc.)</span>
+              <span class="field-hint">Segundo número para atendimento diferenciado</span>
             </div>
             
             <div class="field">
-              <label for="botaoWhatsapp">Nome do botão do WhatsApp *</label>
-              <input type="text" id="botaoWhatsapp" placeholder="Ex: Chamar no WhatsApp" value="Chamar no WhatsApp" required />
-              <span class="field-hint">Texto que aparecerá no botão principal da sua página</span>
+              <label for="botaoWhatsapp2">Nome do botão secundário <span class="optional">opcional</span></label>
+              <input type="text" id="botaoWhatsapp2" placeholder="Ex: Falar com Suporte" />
+              <span class="field-hint">Ex: "Falar com Suporte", "Unidade Centro", "Unidade Sul"</span>
             </div>
             
             <div class="field">
@@ -221,12 +214,10 @@
               <div class="field">
                 <label for="logoUrl">Logo (URL) <span class="optional">opcional</span></label>
                 <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
-                <span class="field-hint">Imagem que aparece no círculo da sua página</span>
               </div>
               <div class="field">
                 <label for="bannerUrl">Banner (URL) <span class="optional">opcional</span></label>
                 <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
-                <span class="field-hint">Imagem ampla no topo da sua página</span>
               </div>
             </div>
             
@@ -240,17 +231,17 @@
               <label for="mensagem">Mensagem automática <span class="optional">opcional</span></label>
               <textarea id="mensagem" rows="3" placeholder="Ex: Olá! Vim pelo seu link e gostaria de mais informações..."></textarea>
               <span class="field-hint">
-                <strong>O que é:</strong> Texto que já aparece pronto no WhatsApp do cliente quando ele clicar no botão.<br>
-                <strong>Para que serve:</strong> Facilita o primeiro contato, pois o cliente não precisa digitar nada.
+                <strong>O que é:</strong> Texto que já aparece pronto no WhatsApp do cliente.<br>
+                <strong>Para que serve:</strong> Facilita o primeiro contato, o cliente não precisa digitar.
               </span>
             </div>
             
             <div class="field">
               <label for="descricao">Descrição da empresa <span class="optional">opcional</span></label>
-              <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação, crossfit e aulas personalizadas..."></textarea>
+              <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação, crossfit..."></textarea>
               <span class="field-hint">
-                <strong>O que é:</strong> Texto que aparece abaixo do nome da empresa na sua página.<br>
-                <strong>Para que serve:</strong> Apresenta seu negócio e convence o visitante a chamar no WhatsApp.
+                <strong>O que é:</strong> Texto abaixo do nome da empresa.<br>
+                <strong>Para que serve:</strong> Apresenta seu negócio e convence o visitante.
               </span>
             </div>
             
@@ -285,12 +276,10 @@
                   <span class="input-icon">@</span>
                   <input type="text" id="instagram" placeholder="suaempresa" />
                 </div>
-                <span class="field-hint">Seu perfil do Instagram (sem o @)</span>
               </div>
               <div class="field">
-                <label for="horario">Horário de funcionamento <span class="optional">opcional</span></label>
+                <label for="horario">Horário <span class="optional">opcional</span></label>
                 <input type="text" id="horario" placeholder="Seg a Sex: 8h às 18h" />
-                <span class="field-hint">Mostre quando seus clientes podem falar com você</span>
               </div>
             </div>
             
@@ -298,12 +287,10 @@
               <div class="field">
                 <label for="facebook">Facebook <span class="optional">opcional</span></label>
                 <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
-                <span class="field-hint">Link da sua página no Facebook</span>
               </div>
               <div class="field">
                 <label for="site">Site <span class="optional">opcional</span></label>
                 <input type="url" id="site" placeholder="https://suaempresa.com" />
-                <span class="field-hint">Seu site oficial ou blog</span>
               </div>
             </div>
             
@@ -332,7 +319,6 @@
                 <span>whatslink-48tc.onrender.com/</span>
                 <input type="text" id="slug" placeholder="academia-top-fit" required pattern="[a-z0-9-]+" />
               </div>
-              <span class="field-hint">Gera automaticamente a partir do nome da empresa</span>
             </div>
             
             <button type="submit" id="submitBtn">
