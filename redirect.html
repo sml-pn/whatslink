@@ -70,44 +70,45 @@
     }
 
     // Função para converter link do Google Maps em embed
-    function converterParaEmbed(url) {
-      if (!url) return '';
-      
-      // Se já for um link de embed, retorna como está
-      if (url.includes('output=embed')) return url;
-      
-      // Se for link curto do Google Maps (goo.gl/maps)
-      if (url.includes('goo.gl/maps') || url.includes('maps.app.goo.gl')) {
-        // Para links curtos, usamos o modo de busca
-        return `https://www.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
-      }
-      
-      // Se for link normal do Google Maps
-      if (url.includes('google.com/maps') || url.includes('google.com.br/maps')) {
-        // Tenta extrair a query
-        const match = url.match(/[?&]q=([^&]+)/);
-        if (match) {
-          const query = decodeURIComponent(match[1]);
-          return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
-        }
-        
-        // Se tiver coordenadas (@latitude,longitude)
-        const coordMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-        if (coordMatch) {
-          return `https://www.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&output=embed`;
-        }
-        
-        // Se for um place
-        const placeMatch = url.match(/place\/([^/]+)/);
-        if (placeMatch) {
-          const place = placeMatch[1].replace(/\+/g, ' ');
-          return `https://www.google.com/maps?q=${encodeURIComponent(place)}&output=embed`;
-        }
-      }
-      
-      // Se for um endereço simples, usa como busca
-      return `https://www.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
+function converterParaEmbed(url) {
+  if (!url) return '';
+  
+  // Se já for um link de embed, retorna como está
+  if (url.includes('output=embed')) return url;
+  
+  // Se for link curto do Google Maps (maps.app.goo.gl ou goo.gl/maps)
+  if (url.includes('maps.app.goo.gl') || url.includes('goo.gl/maps')) {
+    // Para links curtos, usamos o link diretamente no iframe
+    // O Google Maps aceita links curtos em iframes
+    return `https://maps.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
+  }
+  
+  // Se for link normal do Google Maps
+  if (url.includes('google.com/maps') || url.includes('google.com.br/maps')) {
+    // Tenta extrair a query
+    const match = url.match(/[?&]q=([^&]+)/);
+    if (match) {
+      const query = decodeURIComponent(match[1]);
+      return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
     }
+    
+    // Se tiver coordenadas (@latitude,longitude)
+    const coordMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (coordMatch) {
+      return `https://www.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&output=embed`;
+    }
+    
+    // Se for um place
+    const placeMatch = url.match(/place\/([^/]+)/);
+    if (placeMatch) {
+      const place = placeMatch[1].replace(/\+/g, ' ');
+      return `https://www.google.com/maps?q=${encodeURIComponent(place)}&output=embed`;
+    }
+  }
+  
+  // Se for um endereço simples, usa como busca
+  return `https://www.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
+}
 
     (async function() {
       const params = new URLSearchParams(window.location.search);
