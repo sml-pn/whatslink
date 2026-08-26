@@ -25,40 +25,32 @@
   <link rel="stylesheet" href="css/redirect/cardapio.css" />
   
   <style>
-    /* Efeito shimmer nos elementos enquanto carrega */
-    .shimmer {
-      position: relative;
-      overflow: hidden;
-      background: #e2e8f0 !important;
+    /* Placeholder leve - sem animação pesada */
+    .loading-placeholder {
+      background: #e2e8f0;
       color: transparent !important;
       border-radius: 8px;
-      animation: shimmerEffect 1.5s infinite;
+      user-select: none;
+      pointer-events: none;
     }
     
-    .shimmer::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
-      animation: shimmerSlide 1.5s infinite;
+    .company-name.loading-placeholder {
+      min-height: 28px;
+      width: 60%;
+      margin: 0 auto 6px;
     }
     
-    @keyframes shimmerEffect {
-      0% { opacity: .7; }
-      50% { opacity: 1; }
-      100% { opacity: .7; }
+    .whatsapp-btn.loading-placeholder {
+      min-height: 56px;
+      border-radius: 999px;
+      opacity: .5;
     }
     
-    @keyframes shimmerSlide {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+    .logo-circle.loading-placeholder,
+    .avatar-circle.loading-placeholder {
+      background: #e2e8f0 !important;
+      border: none;
     }
-    
-    /* Elementos com shimmer inicial */
-    .company-name.shimmer { min-height: 28px; width: 60%; margin: 0 auto 6px; }
-    .company-desc.shimmer { min-height: 16px; width: 80%; margin: 0 auto 22px; }
-    .whatsapp-btn.shimmer { min-height: 56px; border-radius: 999px; }
-    .logo-circle.shimmer, .avatar-circle.shimmer { border: none; }
   </style>
 </head>
 <body class="reception-body">
@@ -72,23 +64,23 @@
 
     <!-- CONTEÚDO -->
     <div class="reception-content">
-      <div class="logo-circle shimmer" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
-      <div class="avatar-circle shimmer" id="avatarCircle"><span id="avatarLetter">A</span></div>
+      <div class="logo-circle" id="logoCircle" style="display:none;"><img id="logoCircleImg" src="" alt="Logo" /></div>
+      <div class="avatar-circle loading-placeholder" id="avatarCircle"><span id="avatarLetter"></span></div>
 
-      <h1 class="company-name shimmer" id="empresaNome">&nbsp;</h1>
-      <p class="company-desc shimmer" id="descricaoTexto" style="display:none;"></p>
+      <h1 class="company-name loading-placeholder" id="empresaNome"></h1>
+      <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
 
       <div class="divider" id="divider" style="display:none;"></div>
 
-      <button id="whatsappBtn" class="whatsapp-btn shimmer">
+      <button id="whatsappBtn" class="whatsapp-btn loading-placeholder">
         <i class="fab fa-whatsapp"></i>
-        <span id="whatsappBtnText">&nbsp;</span>
+        <span id="whatsappBtnText"></span>
         <span class="btn-pulse"></span>
       </button>
 
       <button id="whatsappBtn2" class="whatsapp-btn" style="display:none; margin-top:10px;">
         <i class="fab fa-whatsapp"></i>
-        <span id="whatsappBtn2Text">&nbsp;</span>
+        <span id="whatsappBtn2Text"></span>
       </button>
 
       <div class="social-links" id="socialLinks" style="display:none;">
@@ -124,7 +116,7 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     
-    function fetchComTimeout(url, options = {}, timeout = 8000) {
+    function fetchComTimeout(url, options = {}, timeout = 10000) {
       return Promise.race([
         fetch(url, options),
         new Promise((_, reject) =>
@@ -133,14 +125,14 @@
       ]);
     }
 
-    function removerShimmer() {
-      document.querySelectorAll('.shimmer').forEach(el => {
-        el.classList.remove('shimmer');
+    function removerPlaceholders() {
+      document.querySelectorAll('.loading-placeholder').forEach(el => {
+        el.classList.remove('loading-placeholder');
       });
     }
 
     function mostrarErro(mensagem) {
-      removerShimmer();
+      removerPlaceholders();
       document.getElementById('container').innerHTML = `
         <div class="error-state">
           <span class="material-icons-round">error</span>
@@ -151,10 +143,17 @@
     }
 
     async function buscarLink(slug) {
-      const response = await fetchComTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`);
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
-      return data;
+      try {
+        const response = await fetchComTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`);
+        if (!response.ok) throw new Error('Erro na requisição');
+        const text = await response.text();
+        if (!text) throw new Error('Resposta vazia');
+        const data = JSON.parse(text);
+        if (data.error) throw new Error(data.error);
+        return data;
+      } catch (err) {
+        throw err;
+      }
     }
 
     function detectarTipoLink(url) {
@@ -189,7 +188,7 @@
 
       try {
         const link = await buscarLink(slug);
-        removerShimmer();
+        removerPlaceholders();
         
         const tema = link.tema || 'verde';
         const container = document.getElementById('container');
