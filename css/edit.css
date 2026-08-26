@@ -1,8 +1,7 @@
 /* ============================================
-   WHATSLINK - PÁGINA DE EDIÇÃO
+   WHATSLINK - PÁGINA DE EDIÇÃO/CRIAÇÃO
    ============================================ */
 
-/* Navbar */
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -50,14 +49,12 @@
 
 .back-link:hover { color: var(--text); }
 
-/* Container */
 .edit-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Login */
 .login-box {
   background: white;
   border-radius: 20px;
@@ -84,7 +81,6 @@
   min-width: 200px;
 }
 
-/* Área do usuário */
 .user-area {
   display: flex;
   align-items: center;
@@ -119,7 +115,6 @@
   gap: 4px;
 }
 
-/* Lista de links */
 .link-card {
   background: white;
   border-radius: 16px;
