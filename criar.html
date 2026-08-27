@@ -164,7 +164,6 @@
     
     .email-notice .material-icons-round { font-size: 18px; flex-shrink: 0; }
 
-    /* Preview de imagens */
     .image-preview {
       margin-top: 8px;
       border-radius: 12px;
@@ -393,7 +392,7 @@
             <span class="field-hint" style="margin-bottom:8px;">Escolha o visual que combina com sua marca</span>
             <input type="hidden" id="tema" value="verde" />
             <div class="theme-selector-grid" id="themeSelector">
-              <div class="theme-card-option active" data-theme="verde">
+              <div class="theme-card-option active" data-theme="verde" tabindex="0">
                 <div class="theme-preview-mini preview-mini-verde">
                   <div class="preview-dot"></div>
                   <div class="preview-line"></div>
@@ -401,7 +400,7 @@
                 <h4>Verde Glass</h4>
                 <p>Vidro translúcido + partículas</p>
               </div>
-              <div class="theme-card-option" data-theme="azul">
+              <div class="theme-card-option" data-theme="azul" tabindex="0">
                 <div class="theme-preview-mini preview-mini-azul">
                   <div class="preview-dot"></div>
                   <div class="preview-line"></div>
@@ -409,7 +408,7 @@
                 <h4>Azul Corporate</h4>
                 <p>Grid tech + profissional</p>
               </div>
-              <div class="theme-card-option" data-theme="roxo">
+              <div class="theme-card-option" data-theme="roxo" tabindex="0">
                 <div class="theme-preview-mini preview-mini-roxo">
                   <div class="preview-dot"></div>
                   <div class="preview-line"></div>
@@ -417,7 +416,7 @@
                 <h4>Roxo Gradient</h4>
                 <p>Blobs + gradiente animado</p>
               </div>
-              <div class="theme-card-option" data-theme="laranja">
+              <div class="theme-card-option" data-theme="laranja" tabindex="0">
                 <div class="theme-preview-mini preview-mini-laranja">
                   <div class="preview-dot"></div>
                   <div class="preview-line"></div>
@@ -425,7 +424,7 @@
                 <h4>Laranja Energia</h4>
                 <p>Ondas + calor acolhedor</p>
               </div>
-              <div class="theme-card-option" data-theme="preto">
+              <div class="theme-card-option" data-theme="preto" tabindex="0">
                 <div class="theme-preview-mini preview-mini-preto">
                   <div class="preview-dot"></div>
                   <div class="preview-line"></div>
@@ -433,7 +432,7 @@
                 <h4>Preto Luxury</h4>
                 <p>Dourado + sofisticado</p>
               </div>
-              <div class="theme-card-option" data-theme="cardapio">
+              <div class="theme-card-option" data-theme="cardapio" tabindex="0">
                 <div class="theme-preview-mini preview-mini-cardapio">
                   <div class="preview-dot"></div>
                   <div class="preview-line"></div>
@@ -519,9 +518,9 @@
       return html.trim();
     }
 
-    // ============ PREVIEW DE IMAGENS ============
-    $('#logoUrl').addEventListener('input', (e) => {
-      const url = e.target.value.trim();
+    // ============ PREVIEW DE LOGO ============
+    function atualizarPreviewLogo() {
+      const url = $('#logoUrl').value.trim();
       const preview = $('#logoPreview');
       const img = $('#logoPreviewImg');
       if (url && url.startsWith('http')) {
@@ -531,23 +530,14 @@
       } else {
         preview.style.display = 'none';
       }
-    });
+    }
 
-    $('#logoUrl').addEventListener('paste', () => {
-      setTimeout(() => {
-        const url = $('#logoUrl').value.trim();
-        const preview = $('#logoPreview');
-        const img = $('#logoPreviewImg');
-        if (url && url.startsWith('http')) {
-          img.src = url;
-          img.onload = () => { preview.style.display = 'block'; };
-          img.onerror = () => { preview.style.display = 'none'; };
-        }
-      }, 100);
-    });
+    $('#logoUrl').addEventListener('input', atualizarPreviewLogo);
+    $('#logoUrl').addEventListener('paste', () => setTimeout(atualizarPreviewLogo, 100));
 
-    $('#bannerUrl').addEventListener('input', (e) => {
-      const url = e.target.value.trim();
+    // ============ PREVIEW DE BANNER ============
+    function atualizarPreviewBanner() {
+      const url = $('#bannerUrl').value.trim();
       const preview = $('#bannerPreview');
       const img = $('#bannerPreviewImg');
       if (url && url.startsWith('http')) {
@@ -557,38 +547,38 @@
       } else {
         preview.style.display = 'none';
       }
-    });
+    }
 
-    $('#bannerUrl').addEventListener('paste', () => {
-      setTimeout(() => {
-        const url = $('#bannerUrl').value.trim();
-        const preview = $('#bannerPreview');
-        const img = $('#bannerPreviewImg');
-        if (url && url.startsWith('http')) {
-          img.src = url;
-          img.onload = () => { preview.style.display = 'block'; };
-          img.onerror = () => { preview.style.display = 'none'; };
-        }
-      }, 100);
-    });
+    $('#bannerUrl').addEventListener('input', atualizarPreviewBanner);
+    $('#bannerUrl').addEventListener('paste', () => setTimeout(atualizarPreviewBanner, 100));
 
     // ============ INICIALIZAR GOOGLE IDENTITY ============
     window.onload = function() {
-      google.accounts.id.initialize({
-        client_id: '324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com',
-        callback: handleCredentialResponse,
-        auto_select: false
-      });
+      if (typeof google !== 'undefined') {
+        google.accounts.id.initialize({
+          client_id: '324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com',
+          callback: handleCredentialResponse,
+          auto_select: false
+        });
+      }
     };
 
+    // ============ BOTÃO GOOGLE ============
     $('#googleLoginBtn').addEventListener('click', () => {
-      google.accounts.id.prompt();
+      if (typeof google !== 'undefined') {
+        google.accounts.id.prompt();
+      }
     });
 
+    // ============ CALLBACK DO LOGIN ============
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
+        currentUser = {
+          email: payload.email,
+          nome: payload.name,
+          foto: payload.picture
+        };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
         mostrarFormulario();
         showToast('Login realizado com sucesso!');
@@ -663,11 +653,22 @@
       }, 100);
     });
 
+    // ============ SELEÇÃO DE TEMA ============
     $$('.theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
-        $('#tema').value = card.dataset.theme;
+        const temaSelecionado = card.dataset.theme;
+        $('#tema').value = temaSelecionado;
         $$('.theme-card-option').forEach(c => c.classList.remove('active'));
         card.classList.add('active');
+        const nomeTema = card.querySelector('h4').textContent;
+        showToast('Tema: ' + nomeTema, 'palette');
+      });
+      
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
       });
     });
 
@@ -707,6 +708,8 @@
         slug: slugify($('#slug').value.trim()),
         user_email: currentUser.email
       };
+
+      console.log('Enviando dados:', data);
 
       const submitBtn = $('#submitBtn');
       const btnText = submitBtn.querySelector('.btn-text');
