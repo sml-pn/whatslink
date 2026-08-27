@@ -75,7 +75,6 @@
       color: var(--whatsapp);
     }
     
-    /* BOTÃO GOOGLE CUSTOMIZADO */
     .google-login-btn {
       display: flex;
       align-items: center;
@@ -108,15 +107,7 @@
       transform: scale(.98);
     }
     
-    .google-login-btn svg {
-      flex-shrink: 0;
-    }
-    
-    /* Esconder o botão original do Google */
-    #g_id_onload,
-    .g_id_signin {
-      display: none !important;
-    }
+    .google-login-btn svg { flex-shrink: 0; }
     
     .user-info-bar {
       display: flex;
@@ -187,7 +178,6 @@
   </header>
 
   <div class="criar-container">
-    <!-- TELA DE LOGIN -->
     <div class="login-required" id="loginRequired">
       <div class="login-icon"><span class="material-icons-round">lock</span></div>
       <h2>🔐 Faça login para criar seu link</h2>
@@ -200,11 +190,6 @@
         <li><span class="material-icons-round">check_circle</span> Seus dados ficam protegidos e criptografados</li>
       </ul>
       
-      <!-- Botão Google Original (escondido, mas necessário para o fluxo) -->
-      <div id="g_id_onload" data-client_id="324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false"></div>
-      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="continue_with" data-shape="pill" data-logo_alignment="left" data-width="300"></div>
-      
-      <!-- Botão Google Customizado -->
       <button id="googleLoginBtn" class="google-login-btn" type="button">
         <svg width="20" height="20" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -216,7 +201,6 @@
       </button>
     </div>
 
-    <!-- FORMULÁRIO -->
     <div id="formArea" style="display:none;">
       <div class="user-info-bar">
         <div class="user-info-left">
@@ -504,10 +488,29 @@
       return html.trim();
     }
 
+    // ============ INICIALIZAR GOOGLE IDENTITY ============
+    window.onload = function() {
+      google.accounts.id.initialize({
+        client_id: '324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com',
+        callback: handleCredentialResponse,
+        auto_select: false
+      });
+    };
+
+    // ============ BOTÃO CUSTOMIZADO ============
+    $('#googleLoginBtn').addEventListener('click', () => {
+      google.accounts.id.prompt();
+    });
+
+    // ============ CALLBACK DO LOGIN ============
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
+        currentUser = {
+          email: payload.email,
+          nome: payload.name,
+          foto: payload.picture
+        };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
         mostrarFormulario();
         showToast('Login realizado com sucesso!');
@@ -529,19 +532,6 @@
       $('#formArea').style.display = 'none';
       $('#loginRequired').style.display = 'block';
     }
-
-    // BOTÃO GOOGLE CUSTOMIZADO
-    $('#googleLoginBtn').addEventListener('click', () => {
-      const googleFrame = document.querySelector('.g_id_signin iframe');
-      if (googleFrame) {
-        googleFrame.click();
-      } else {
-        // Fallback: aguardar carregar
-        setTimeout(() => {
-          document.querySelector('.g_id_signin iframe')?.click();
-        }, 500);
-      }
-    });
 
     $('#logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
