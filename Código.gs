@@ -1,5 +1,5 @@
 // ============================================================
-// WHATSLINK API - VERSÃO CORRIGIDA
+// WHATSLINK API - VERSÃO FINAL CORRIGIDA
 // ============================================================
 
 const SHEET_NAME = 'Sheet1';
@@ -12,7 +12,7 @@ function guardarChaveSecreta() {
     'GOOGLE_CLIENT_SECRET',
     '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'
   );
-  Logger.log('Chave secreta guardada!');
+  Logger.log('Chave secreta guardada com sucesso!');
 }
 
 function obterChaveSecreta() {
@@ -65,13 +65,15 @@ function inicializarPlanilhas() {
       'instagram', 'facebook', 'site', 'horario', 'tema',
       'botao_whatsapp', 'botao_whatsapp2', 'cliques', 'created_at', 'user_email', 'edit_token'
     ]);
-    sheet.protect().setDescription('Protegido');
+    sheet.protect().setDescription('Protegido - Acesso via API');
   }
   
   if (!ss.getSheetByName(USERS_SHEET)) {
     const usersSheet = ss.insertSheet(USERS_SHEET);
-    usersSheet.appendRow(['id', 'email', 'nome', 'foto', 'created_at', 'edit_count', 'last_edit_date']);
-    usersSheet.protect().setDescription('Usuários');
+    usersSheet.appendRow([
+      'id', 'email', 'nome', 'foto', 'created_at', 'edit_count', 'last_edit_date'
+    ]);
+    usersSheet.protect().setDescription('Usuários - Acesso via API');
   }
 }
 
@@ -79,10 +81,12 @@ function doPost(e) {
   if (!e || !e.postData || !e.postData.contents) {
     return response({ error: 'Requisição inválida' });
   }
+
   try {
     inicializarPlanilhas();
     const data = JSON.parse(e.postData.contents);
     const action = data.action || 'criar';
+
     switch (action) {
       case 'login_google': return loginGoogle(data);
       case 'criar': return criarLink(data);
@@ -137,7 +141,7 @@ function loginGoogle(data) {
       };
     }
 
-    return response({ success: true, user: userData });
+    return response({ success: true, user: userData, message: 'Login realizado com sucesso!' });
   } catch (error) {
     return response({ error: 'Erro no login: ' + error.message });
   }
@@ -186,7 +190,9 @@ function criarLink(data) {
     const lastRow = sheet.getLastRow();
     if (lastRow > 1) {
       const slugs = sheet.getRange(2, 5, lastRow - 1, 1).getValues().flat();
-      if (slugs.includes(slug)) return response({ error: 'Este link já existe' });
+      if (slugs.includes(slug)) {
+        return response({ error: 'Este link já existe' });
+      }
     }
 
     const id = gerarId();
@@ -222,7 +228,13 @@ function criarLink(data) {
     sheet.getRange(lastRow + 1, 3).setNumberFormat('@');
     sheet.getRange(lastRow + 1, 4).setNumberFormat('@');
 
-    return response({ success: true, slug: slug, id: id, edit_token: editToken });
+    return response({
+      success: true,
+      slug: slug,
+      id: id,
+      edit_token: editToken,
+      message: 'Link criado com sucesso!'
+    });
   } catch (error) {
     return response({ error: 'Erro ao criar: ' + error.message });
   }
@@ -232,9 +244,12 @@ function buscarLinkPorId(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (!sheet) return response({ error: 'Planilha Sheet1 não encontrada' });
+    
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ error: 'Nenhum link encontrado' });
+    
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
+    
     for (let i = 1; i < allData.length; i++) {
       const rowData = allData[i];
       if (rowData[0] === data.id && rowData[20] === data.edit_token) {
@@ -275,13 +290,16 @@ function editarLink(data) {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
     if (!sheet || !usersSheet) return response({ error: 'Planilhas não encontradas' });
     
-    if (!data.id || !data.edit_token) return response({ error: 'ID e token são necessários' });
+    if (!data.id || !data.edit_token) {
+      return response({ error: 'ID e token de edição são necessários' });
+    }
 
     const lastRow = sheet.getLastRow();
     let linkRow = -1;
     let userEmail = '';
     
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
+    
     for (let i = 1; i < allData.length; i++) {
       if (allData[i][0] === data.id && allData[i][20] === data.edit_token) {
         linkRow = i + 1;
@@ -290,7 +308,9 @@ function editarLink(data) {
       }
     }
 
-    if (linkRow === -1) return response({ error: 'Link não encontrado ou token inválido' });
+    if (linkRow === -1) {
+      return response({ error: 'Link não encontrado ou token inválido' });
+    }
 
     const today = new Date().toISOString().split('T')[0];
     const usersLastRow = usersSheet.getLastRow();
@@ -310,9 +330,21 @@ function editarLink(data) {
       }
     }
 
-    if (userRow === -1) return response({ error: 'Usuário não encontrado. Email: ' + userEmail });
-    if (lastEditDate !== today) editCount = 0;
-    if (editCount >= MAX_EDICOES_POR_DIA) return response({ error: `Limite de ${MAX_EDICOES_POR_DIA} edições atingido. Volte amanhã!` });
+    if (userRow === -1) {
+      return response({ error: 'Usuário não encontrado. Email: ' + userEmail });
+    }
+
+    if (lastEditDate !== today) {
+      editCount = 0;
+    }
+
+    if (editCount >= MAX_EDICOES_POR_DIA) {
+      return response({ 
+        error: `Você atingiu o limite de ${MAX_EDICOES_POR_DIA} edições hoje. Volte amanhã!`,
+        edit_count: editCount,
+        max_edicoes: MAX_EDICOES_POR_DIA
+      });
+    }
 
     if (data.empresa !== undefined) sheet.getRange(linkRow, 2).setValue(String(data.empresa));
     if (data.whatsapp !== undefined) sheet.getRange(linkRow, 3).setValue(criptografar(String(data.whatsapp).replace(/\D/g, '')));
@@ -335,7 +367,13 @@ function editarLink(data) {
     usersSheet.getRange(userRow, 7).setValue(today);
 
     const edicoesRestantes = MAX_EDICOES_POR_DIA - editCount;
-    return response({ success: true, message: `Link atualizado! Você ainda tem ${edicoesRestantes} edições hoje.` });
+
+    return response({ 
+      success: true, 
+      message: `Link atualizado! Você ainda tem ${edicoesRestantes} edições hoje.`,
+      edit_count: editCount,
+      edicoes_restantes: edicoesRestantes
+    });
   } catch (error) {
     return response({ error: 'Erro ao editar: ' + error.message });
   }
@@ -345,11 +383,14 @@ function buscarMeusLinks(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (!sheet) return response({ error: 'Planilha Sheet1 não encontrada' });
+    
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ links: [] });
+
     const emailCripto = criptografar(normalizarEmail(data.email || ''));
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
     const links = [];
+
     for (let i = 1; i < allData.length; i++) {
       const rowData = allData[i];
       if (rowData[19] === emailCripto) {
@@ -364,6 +405,7 @@ function buscarMeusLinks(data) {
         });
       }
     }
+
     return response({ success: true, links: links });
   } catch (error) {
     return response({ error: 'Erro: ' + error.message });
@@ -375,11 +417,15 @@ function doGet(e) {
     inicializarPlanilhas();
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (!sheet) return response({ error: 'Planilha Sheet1 não encontrada' });
+    
     const slug = e.parameter && e.parameter.slug ? e.parameter.slug : '';
     if (!slug) return response({ error: 'Slug não informado' });
+
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ error: 'Link não encontrado' });
+
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
+
     for (let i = 1; i < allData.length; i++) {
       if (String(allData[i][4]) === slug) {
         const link = {
@@ -403,10 +449,12 @@ function doGet(e) {
           cliques: parseInt(allData[i][17]) || 0,
           created_at: String(allData[i][18] || '')
         };
+
         sheet.getRange(i + 1, 18).setValue(link.cliques + 1);
         return response(link);
       }
     }
+
     return response({ error: 'Link não encontrado' });
   } catch (error) {
     return response({ error: 'Erro: ' + error.message });
