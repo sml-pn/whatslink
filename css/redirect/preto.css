@@ -1,22 +1,22 @@
 /* =========================================================
-   WHATSLINK - TEMA PRETO LUXURY
-   FULL BLEED MOBILE • LUXO + DOURADO
+   WHATSLINK - TEMA CARDÁPIO DIGITAL
+   FULL BLEED MOBILE • RESTAURANTE + DELIVERY
    ========================================================= */
 
-.theme-preto {
-  --theme: #d4af37;
-  --theme-dark: #c19b2e;
-  --theme-rgb: 212, 175, 55;
-  --bg-main: #0a0a0a;
-  --bg-card: #111111;
-  --text-main: #f5f0e6;
-  --text-secondary: #b8a87c;
-  --text-muted: #7a6f50;
-  --border: rgba(212,175,55,.12);
-  --border-theme: rgba(212,175,55,.35);
-  --glass: rgba(212,175,55,.04);
-  --radius-lg: 12px;
-  --radius-md: 8px;
+.theme-cardapio {
+  --theme: #ff8f00;
+  --theme-dark: #ffb300;
+  --theme-rgb: 255, 143, 0;
+  --bg-main: #1a1008;
+  --bg-card: #241708;
+  --text-main: #ffffff;
+  --text-secondary: #ffcc80;
+  --text-muted: #9a7340;
+  --border: rgba(255,143,0,.15);
+  --border-theme: rgba(255,143,0,.35);
+  --glass: rgba(255,143,0,.05);
+  --radius-lg: 14px;
+  --radius-md: 10px;
 }
 
 * {
@@ -31,7 +31,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: #0a0a0a;
+  background: #1a1008;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -43,8 +43,9 @@ html, body {
   padding: 0;
   display: block;
   background:
-    radial-gradient(circle at 50% 20%, rgba(var(--theme-rgb), .06), transparent 55%),
-    #0a0a0a;
+    radial-gradient(circle at 40% 15%, rgba(var(--theme-rgb), .1), transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(var(--theme-rgb), .06), transparent 45%),
+    linear-gradient(160deg, #1a1008 0%, #120a04 60%, #0a0502 100%);
   color: var(--text-main);
 }
 
@@ -56,9 +57,10 @@ html, body {
   margin: 0;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #111111 0%, #0a0a0a 100%);
-  font-family: 'Cormorant Garamond', serif;
-  animation: pageEnter .8s ease both;
+  background: linear-gradient(180deg, rgba(var(--theme-rgb), .05), transparent 25%),
+    linear-gradient(180deg, #241708 0%, #1a1008 50%, #0a0502 100%);
+  font-family: 'Outfit', sans-serif;
+  animation: pageEnter .5s ease both;
 }
 
 @keyframes pageEnter {
@@ -66,35 +68,37 @@ html, body {
   to { opacity: 1; }
 }
 
-/* Borda dourada sutil */
+/* Textura de madeira sutil */
 .reception-page::before {
   content: '';
   position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(212,175,55,.12);
-  border-radius: 4px;
+  inset: 0;
+  opacity: .04;
+  background-image: 
+    repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,143,0,.2) 20px, rgba(255,143,0,.2) 21px),
+    repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,143,0,.15) 20px, rgba(255,143,0,.15) 21px);
   pointer-events: none;
-  z-index: 5;
+  z-index: 0;
 }
 
-/* Brilho dourado */
+/* Brilho quente */
 .reception-page::after {
   content: '';
   position: absolute;
-  width: 300px;
-  height: 300px;
-  top: 15%;
-  right: -130px;
+  width: 320px;
+  height: 320px;
+  bottom: -80px;
+  right: -100px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--theme-rgb), .08), transparent 70%);
-  filter: blur(30px);
+  background: radial-gradient(circle, rgba(var(--theme-rgb), .12), transparent 70%);
+  filter: blur(25px);
   pointer-events: none;
   z-index: 0;
-  animation: glowPulse 6s ease-in-out infinite;
+  animation: glowPulse 7s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: .5; }
+  0%, 100% { opacity: .6; }
   50% { opacity: 1; }
 }
 
@@ -127,9 +131,9 @@ html, body {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(17,17,17,.4) 40%,
-    rgba(17,17,17,.7) 60%,
-    rgba(17,17,17,.9) 80%,
+    rgba(36,23,8,.35) 40%,
+    rgba(36,23,8,.65) 60%,
+    rgba(36,23,8,.9) 80%,
     var(--bg-card) 100%
   );
   pointer-events: none;
@@ -148,7 +152,7 @@ html, body {
   height: 100%;
   display: block;
   object-fit: cover;
-  filter: blur(15px) brightness(.5) saturate(1.1);
+  filter: blur(16px) brightness(.5) saturate(1.4);
   transform: scale(1.1);
 }
 
@@ -157,8 +161,8 @@ html, body {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(17,17,17,.2) 0%,
-    rgba(17,17,17,.6) 50%,
+    rgba(36,23,8,.2) 0%,
+    rgba(36,23,8,.55) 50%,
     var(--bg-card) 100%
   );
   z-index: 2;
@@ -170,13 +174,14 @@ html, body {
   display: none;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 40%, rgba(var(--theme-rgb), .08), transparent 60%), #111111;
+  background: radial-gradient(circle at 50% 40%, rgba(var(--theme-rgb), .12), transparent 60%), #241708;
 }
 
 .color-banner .material-icons-round {
-  font-size: 52px;
+  font-size: 54px;
   color: var(--theme);
-  opacity: .6;
+  opacity: .7;
+  filter: drop-shadow(0 0 18px rgba(var(--theme-rgb), .4));
 }
 
 /* Conteúdo */
@@ -184,7 +189,7 @@ html, body {
   position: relative;
   z-index: 10;
   margin-top: -50px;
-  padding: 0 20px 24px;
+  padding: 0 16px 24px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -198,7 +203,7 @@ html, body {
   width: 80px;
   height: 80px;
   flex-shrink: 0;
-  margin: 0 auto 14px;
+  margin: 0 auto 10px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -206,55 +211,57 @@ html, body {
   overflow: hidden;
   position: relative;
   z-index: 20;
-  background: #111111;
-  border: 2px solid var(--theme);
-  box-shadow: 0 0 0 5px rgba(10,10,10,.7), 0 0 30px rgba(var(--theme-rgb), .15);
-  animation: avatarEnter .8s cubic-bezier(.2,.8,.2,1) both;
+  background: var(--bg-card);
+  border: 3px solid var(--theme);
+  box-shadow: 0 0 0 5px rgba(26,16,8,.6), 0 8px 25px rgba(0,0,0,.5);
+  animation: avatarEnter .5s cubic-bezier(.2,.8,.2,1) both;
 }
 
 @keyframes avatarEnter {
-  from { opacity: 0; transform: scale(.7) translateY(10px); }
+  from { opacity: 0; transform: scale(.8) translateY(8px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .logo-circle img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
-.avatar-circle { color: var(--theme); font-size: 28px; font-weight: 700; }
+.avatar-circle { color: var(--theme); font-size: 28px; font-weight: 800; }
 
 /* Nome */
 .company-name {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   padding: 0 6px;
   text-align: center;
-  color: var(--theme);
+  color: var(--theme-dark);
   font-size: 22px;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: .04em;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: .02em;
+  text-transform: uppercase;
   word-break: break-word;
   overflow-wrap: break-word;
-  animation: fadeUp .6s ease .1s both;
+  animation: fadeUp .5s ease .08s both;
 }
 
 /* Descrição */
 .company-desc {
-  margin: 0 auto 16px;
-  padding: 0 10px;
+  margin: 0 auto 14px;
+  padding: 0 8px;
   text-align: center;
   color: var(--text-secondary);
   font-size: 11px;
-  letter-spacing: .15em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   line-height: 1.5;
   word-break: break-word;
   overflow-wrap: break-word;
-  animation: fadeUp .6s ease .16s both;
+  animation: fadeUp .5s ease .14s both;
 }
 
 .divider {
   width: 50px;
-  height: 1px;
-  margin: 0 auto 16px;
+  height: 2px;
+  margin: 0 auto 14px;
+  border-radius: 999px;
   background: linear-gradient(90deg, transparent, var(--theme), transparent);
 }
 
@@ -264,31 +271,30 @@ html, body {
   min-height: 50px;
   margin: 0;
   padding: 6px;
-  border: 1px solid var(--theme);
-  border-radius: 8px;
+  border: 0;
+  border-radius: 12px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 9px;
-  color: var(--theme);
-  font-family: 'Cormorant Garamond', serif;
+  color: #1a1008;
+  font-family: 'Outfit', sans-serif;
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: .12em;
+  letter-spacing: .06em;
   text-transform: uppercase;
   cursor: pointer;
-  background: rgba(212,175,55,.08);
-  box-shadow: 0 6px 20px rgba(212,175,55,.1);
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-  animation: fadeUp .6s ease .22s both;
+  background: linear-gradient(110deg, #ffb300, #ff8f00);
+  box-shadow: 0 8px 24px rgba(var(--theme-rgb), .2);
+  transition: transform .2s ease, box-shadow .2s ease;
+  animation: fadeUp .5s ease .2s both;
   -webkit-tap-highlight-color: transparent;
 }
 
 .whatsapp-btn:hover {
-  background: rgba(212,175,55,.15);
-  box-shadow: 0 8px 24px rgba(212,175,55,.2);
+  box-shadow: 0 10px 30px rgba(var(--theme-rgb), .3);
 }
 
 .whatsapp-btn:active { transform: scale(.97); }
@@ -300,11 +306,11 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(212,175,55,.15);
+  background: rgba(26,16,8,.15);
   flex-shrink: 0;
 }
 
-.whatsapp-icon i { font-size: 15px; color: var(--theme); }
+.whatsapp-icon i { font-size: 16px; color: #1a1008; }
 
 .btn-shine {
   position: absolute;
@@ -313,8 +319,8 @@ html, body {
   width: 40%;
   height: 100%;
   transform: skewX(-20deg);
-  background: linear-gradient(90deg, transparent, rgba(212,175,55,.15), transparent);
-  animation: buttonShine 5s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+  animation: buttonShine 4s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -325,8 +331,9 @@ html, body {
 
 .whatsapp-btn.secondary {
   margin-top: 8px;
-  background: transparent;
-  border: 1px solid rgba(212,175,55,.25);
+  background: rgba(255,143,0,.1);
+  border: 1px solid rgba(var(--theme-rgb), .35);
+  color: var(--theme-dark);
   box-shadow: none;
 }
 
@@ -336,7 +343,7 @@ html, body {
   display: flex;
   gap: 7px;
   margin-top: 8px;
-  animation: fadeUp .6s ease .28s both;
+  animation: fadeUp .5s ease .28s both;
 }
 
 .social-btn {
@@ -344,18 +351,18 @@ html, body {
   flex: 1;
   min-width: 0;
   padding: 6px 5px;
-  border-radius: 8px;
-  border: 1px solid rgba(212,175,55,.2);
-  background: transparent;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255,143,0,.05);
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: .06em;
+  letter-spacing: .04em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all .2s ease;
@@ -375,10 +382,10 @@ html, body {
   width: 100%;
   margin-top: 8px;
   overflow: hidden;
-  border: 1px solid rgba(212,175,55,.2);
-  border-radius: 8px;
-  background: rgba(212,175,55,.03);
-  animation: fadeUp .6s ease .34s both;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255,143,0,.04);
+  animation: fadeUp .5s ease .34s both;
 }
 
 .section-label {
@@ -389,7 +396,7 @@ html, body {
   color: var(--text-secondary);
   font-size: 9px;
   font-weight: 600;
-  letter-spacing: .08em;
+  letter-spacing: .06em;
   text-transform: uppercase;
 }
 
@@ -418,13 +425,13 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  border-top: 1px solid rgba(212,175,55,.2);
+  border-top: 1px solid var(--border);
   color: var(--text-secondary);
-  background: transparent;
+  background: rgba(255,143,0,.02);
   text-decoration: none;
   font-size: 9px;
   font-weight: 500;
-  letter-spacing: .05em;
+  letter-spacing: .04em;
 }
 
 .map-link .material-icons-round { font-size: 13px; }
@@ -449,7 +456,7 @@ html, body {
   justify-content: center;
   border-radius: 50%;
   color: var(--fallback-theme);
-  background: rgba(255,255,255,.05);
+  background: rgba(255,143,0,.08);
 }
 
 .location-fallback-icon .material-icons-round { font-size: 20px; }
@@ -468,7 +475,7 @@ html, body {
   padding: 8px 14px;
   border-radius: 999px;
   background: var(--fallback-theme);
-  color: #0a0a0a;
+  color: #1a1008;
   text-decoration: none;
   font-size: 9px;
   font-weight: 700;
@@ -483,10 +490,10 @@ html, body {
   display: flex;
   align-items: flex-start;
   gap: 9px;
-  border: 1px solid rgba(212,175,55,.2);
-  border-radius: 8px;
-  background: rgba(212,175,55,.03);
-  animation: fadeUp .6s ease .4s both;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255,143,0,.04);
+  animation: fadeUp .5s ease .4s both;
 }
 
 .info-icon {
@@ -498,7 +505,7 @@ html, body {
   align-items: center;
   justify-content: center;
   color: var(--theme);
-  background: rgba(212,175,55,.08);
+  background: rgba(var(--theme-rgb), .08);
 }
 
 .info-icon .material-icons-round { font-size: 15px; }
@@ -507,10 +514,10 @@ html, body {
 
 .info-block h3 {
   margin: 0 0 2px;
-  color: var(--theme);
+  color: var(--theme-dark);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: .06em;
+  letter-spacing: .04em;
   text-transform: uppercase;
 }
 
@@ -525,13 +532,13 @@ html, body {
 
 /* Assinatura */
 .powered-by {
-  margin: 20px 0 0;
-  padding: 14px 0 2px;
-  border-top: 1px solid rgba(212,175,55,.08);
+  margin: 18px 0 0;
+  padding: 12px 0 2px;
+  border-top: 1px solid rgba(255,143,0,.08);
   text-align: center;
-  color: #5a4f2e;
+  color: #6b4f28;
   font-size: 8px;
-  letter-spacing: .1em;
+  letter-spacing: .06em;
   text-transform: uppercase;
   line-height: 1.5;
 }
@@ -543,7 +550,7 @@ html, body {
 }
 
 .powered-by .heart { font-size: 8px; }
-.powered-by .dot { margin: 0 3px; color: #3d3624; }
+.powered-by .dot { margin: 0 3px; color: #4a3818; }
 
 /* Erro */
 .error-state {
@@ -572,7 +579,7 @@ html, body {
 
 .error-icon .material-icons-round { font-size: 28px; }
 
-.error-state h2 { margin: 0 0 6px; color: var(--theme); font-size: 16px; }
+.error-state h2 { margin: 0 0 6px; color: var(--theme-dark); font-size: 16px; }
 .error-state p {
   max-width: 260px;
   margin: 0 0 14px;
@@ -584,14 +591,12 @@ html, body {
 
 .error-state a {
   padding: 9px 16px;
-  border-radius: 4px;
+  border-radius: 8px;
   background: var(--theme);
-  color: #0a0a0a;
+  color: #1a1008;
   text-decoration: none;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
 }
 
 @keyframes fadeUp {
@@ -600,10 +605,10 @@ html, body {
 }
 
 @media (max-width: 320px) {
-  .reception-content { padding: 0 14px 20px; }
-  .company-name { font-size: 20px; }
-  .company-desc { font-size: 10px; letter-spacing: .08em; }
-  .whatsapp-btn { font-size: 12px; min-height: 46px; }
+  .reception-content { padding: 0 12px 20px; }
+  .company-name { font-size: 19px; }
+  .company-desc { font-size: 10px; }
+  .whatsapp-btn { font-size: 13px; min-height: 46px; }
   .social-btn { font-size: 9px; }
 }
 
