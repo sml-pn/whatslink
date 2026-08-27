@@ -32,7 +32,6 @@
   </header>
 
   <div class="edit-container">
-    <!-- LOGIN -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
@@ -40,7 +39,6 @@
       <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
     </div>
 
-    <!-- USUÁRIO -->
     <div id="userArea" style="display:none;">
       <div class="user-area">
         <img id="userPhoto" src="" alt="Foto" />
@@ -52,14 +50,12 @@
       </div>
     </div>
 
-    <!-- LISTA DE LINKS -->
     <div id="linksArea" style="display:none;">
       <h2 style="margin-bottom:16px;">Meus Links</h2>
       <div id="linksList"></div>
     </div>
   </div>
 
-  <!-- MODAL DE EDIÇÃO -->
   <div class="modal-overlay" id="editModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -146,13 +142,55 @@
         <div class="field">
           <label>Tema da página</label>
           <input type="hidden" id="editTema" value="verde" />
-          <div class="theme-selector" id="editThemeSelector">
-            <button type="button" class="theme-option active" data-theme="verde" style="background:linear-gradient(135deg,#25D366,#128C7E);"><span class="material-icons-round">check</span></button>
-            <button type="button" class="theme-option" data-theme="azul" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);"><span class="material-icons-round">check</span></button>
-            <button type="button" class="theme-option" data-theme="roxo" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);"><span class="material-icons-round">check</span></button>
-            <button type="button" class="theme-option" data-theme="laranja" style="background:linear-gradient(135deg,#f97316,#ea580c);"><span class="material-icons-round">check</span></button>
-            <button type="button" class="theme-option" data-theme="preto" style="background:linear-gradient(135deg,#d4af37,#c19b2e);"><span class="material-icons-round">check</span></button>
-            <button type="button" class="theme-option" data-theme="cardapio" style="background:linear-gradient(135deg,#ff8f00,#ffb300);"><span class="material-icons-round">check</span></button>
+          <div class="theme-selector-grid" id="editThemeSelector">
+            <div class="theme-card-option active" data-theme="verde">
+              <div class="theme-preview-mini preview-mini-verde">
+                <div class="preview-dot"></div>
+                <div class="preview-line"></div>
+              </div>
+              <h4>Verde Glass</h4>
+              <p>Vidro translúcido + partículas</p>
+            </div>
+            <div class="theme-card-option" data-theme="azul">
+              <div class="theme-preview-mini preview-mini-azul">
+                <div class="preview-dot"></div>
+                <div class="preview-line"></div>
+              </div>
+              <h4>Azul Corporate</h4>
+              <p>Grid tech + profissional</p>
+            </div>
+            <div class="theme-card-option" data-theme="roxo">
+              <div class="theme-preview-mini preview-mini-roxo">
+                <div class="preview-dot"></div>
+                <div class="preview-line"></div>
+              </div>
+              <h4>Roxo Gradient</h4>
+              <p>Blobs + gradiente animado</p>
+            </div>
+            <div class="theme-card-option" data-theme="laranja">
+              <div class="theme-preview-mini preview-mini-laranja">
+                <div class="preview-dot"></div>
+                <div class="preview-line"></div>
+              </div>
+              <h4>Laranja Energia</h4>
+              <p>Ondas + calor acolhedor</p>
+            </div>
+            <div class="theme-card-option" data-theme="preto">
+              <div class="theme-preview-mini preview-mini-preto">
+                <div class="preview-dot"></div>
+                <div class="preview-line"></div>
+              </div>
+              <h4>Preto Luxury</h4>
+              <p>Dourado + sofisticado</p>
+            </div>
+            <div class="theme-card-option" data-theme="cardapio">
+              <div class="theme-preview-mini preview-mini-cardapio">
+                <div class="preview-dot"></div>
+                <div class="preview-line"></div>
+              </div>
+              <h4>Cardápio Digital</h4>
+              <p>Madeira + restaurante</p>
+            </div>
           </div>
         </div>
         
@@ -261,7 +299,6 @@
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
-        // Preencher formulário
         $('#editId').value = data.id;
         $('#editToken').value = token;
         $('#editEmpresa').value = data.empresa;
@@ -280,40 +317,34 @@
         $('#editLocalizacao').value = data.localizacao || '';
         $('#editTema').value = data.tema || 'verde';
 
-        // Marcar tema
-        $$('#editThemeSelector .theme-option').forEach(btn => {
+        $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
         });
 
-        // Abrir modal
         $('#editModal').classList.add('active');
       } catch (err) {
         showToast('Erro ao carregar link: ' + err.message, 'error');
       }
     };
 
-    // Fechar modal
     $('#closeEditModal').addEventListener('click', () => {
       $('#editModal').classList.remove('active');
     });
 
-    // Fechar ao clicar fora
     $('#editModal').addEventListener('click', (e) => {
       if (e.target === $('#editModal')) {
         $('#editModal').classList.remove('active');
       }
     });
 
-    // Seleção de tema no modal
-    $$('#editThemeSelector .theme-option').forEach(btn => {
+    $$('#editThemeSelector .theme-card-option').forEach(btn => {
       btn.addEventListener('click', () => {
         $('#editTema').value = btn.dataset.theme;
-        $$('#editThemeSelector .theme-option').forEach(b => b.classList.remove('active'));
+        $$('#editThemeSelector .theme-card-option').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       });
     });
 
-    // Salvar edição
     $('#editForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -349,13 +380,12 @@
 
         showToast(result.message || 'Link atualizado!');
         $('#editModal').classList.remove('active');
-        buscarMeusLinks(); // recarrega lista
+        buscarMeusLinks();
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
       }
     });
 
-    // Logout
     $('#logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
       currentUser = null;
@@ -364,7 +394,6 @@
       $('#linksArea').style.display = 'none';
     });
 
-    // Verificar sessão
     const savedUser = localStorage.getItem('whatslink_user');
     if (savedUser) {
       currentUser = JSON.parse(savedUser);
