@@ -1,6 +1,6 @@
 /* =========================================================
-   WHATSLINK - TEMA VERDE
-   MOBILE-FIRST - OTIMIZADO PARA CELULAR
+   WHATSLINK - TEMA VERDE GLASS
+   MOBILE-FIRST • SEM BORDAS • BANNER ESFUMAÇADO
    ========================================================= */
 
 /* ============ VARIÁVEIS ============ */
@@ -20,7 +20,7 @@
   --radius-md: 14px;
 }
 
-/* ============ CORREÇÕES GLOBAIS MOBILE ============ */
+/* ============ GLOBAIS ============ */
 * {
   margin: 0;
   padding: 0;
@@ -33,6 +33,7 @@ html, body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+  background: #050507;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -54,22 +55,17 @@ html, body {
   overflow-x: hidden;
 }
 
-/* ============ PÁGINA PRINCIPAL ============ */
+/* ============ PÁGINA (FULL BLEED NO MOBILE) ============ */
 .reception-page {
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
   min-height: 100vh;
-  margin: 0 auto;
+  margin: 0;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #171026 0%, #0d0b12 35%, #07070a 75%, #050507 100%);
+  background: linear-gradient(180deg, #171026 0%, #0d0b12 30%, #07070a 70%, #050507 100%);
   font-family: 'Outfit', sans-serif;
   animation: pageEnter .6s ease both;
-}
-
-@keyframes pageEnter {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============ FUNDO DECORATIVO ============ */
@@ -99,27 +95,20 @@ html, body {
   z-index: 0;
 }
 
-/* ============ HEADER ============ */
+/* ============ HEADER COM BANNER ESFUMAÇADO ============ */
 .header-visual {
   width: 100%;
-  height: 200px;
+  height: 220px;
   position: relative;
   overflow: hidden;
   z-index: 1;
 }
 
-.header-visual::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 25%, rgba(7,7,10,.3) 50%, #0d0b12 100%);
-  pointer-events: none;
-}
-
-/* ============ BANNER ============ */
+/* BANNER IMAGEM - SEM MARGENS, COM DILUIÇÃO */
 .banner-image {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .banner-image img {
@@ -127,9 +116,26 @@ html, body {
   height: 100%;
   display: block;
   object-fit: cover;
-  transform: scale(1.02);
 }
 
+/* OVERLAY ESFUMAÇADO SOBRE O BANNER */
+.header-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(13,11,18,.2) 40%,
+    rgba(13,11,18,.5) 60%,
+    rgba(13,11,18,.8) 80%,
+    var(--bg-card) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* LOGO COMO FUNDO */
 .logo-banner {
   width: 100%;
   height: 100%;
@@ -142,16 +148,24 @@ html, body {
   height: 100%;
   display: block;
   object-fit: cover;
-  filter: blur(20px) brightness(.6) saturate(1.2);
+  filter: blur(18px) brightness(.55) saturate(1.2);
   transform: scale(1.15);
 }
 
-.glass-overlay {
+/* OVERLAY PARA LOGO BANNER */
+.logo-banner .glass-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(13,11,18,.2), rgba(13,11,18,.55) 50%, #0d0b12 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(13,11,18,.1) 0%,
+    rgba(13,11,18,.45) 50%,
+    var(--bg-card) 100%
+  );
+  z-index: 2;
 }
 
+/* BANNER DE COR */
 .color-banner {
   width: 100%;
   height: 100%;
@@ -161,18 +175,11 @@ html, body {
   background: radial-gradient(circle at 50% 40%, rgba(var(--theme-rgb), .15), transparent 60%), #0d0b12;
 }
 
-.color-banner .material-icons-round {
-  font-size: 56px;
-  color: var(--theme);
-  opacity: .75;
-  filter: drop-shadow(0 0 20px rgba(var(--theme-rgb), .4));
-}
-
-/* ============ CONTEÚDO ============ */
+/* ============ CONTEÚDO (SOBREPÕE O BANNER) ============ */
 .reception-content {
   position: relative;
-  z-index: 5;
-  margin-top: -40px;
+  z-index: 10;
+  margin-top: -60px;
   padding: 0 16px 24px;
   display: flex;
   flex-direction: column;
@@ -181,11 +188,11 @@ html, body {
   box-sizing: border-box;
 }
 
-/* ============ AVATAR ============ */
+/* ============ AVATAR SOBRE O BANNER ============ */
 .logo-circle,
 .avatar-circle {
-  width: 76px;
-  height: 76px;
+  width: 84px;
+  height: 84px;
   flex-shrink: 0;
   margin: 0 auto 12px;
   border-radius: 50%;
@@ -194,10 +201,12 @@ html, body {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  z-index: 10;
+  z-index: 20;
   background: linear-gradient(145deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
   border: 3px solid rgba(var(--theme-rgb), .7);
-  box-shadow: 0 0 0 5px rgba(13,11,18,.7), 0 0 30px rgba(var(--theme-rgb), .2);
+  box-shadow: 
+    0 0 0 5px rgba(13,11,18,.6),
+    0 0 35px rgba(var(--theme-rgb), .25);
   animation: avatarEnter .6s cubic-bezier(.2,.8,.2,1) both;
 }
 
@@ -215,7 +224,7 @@ html, body {
 
 .avatar-circle {
   color: white;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
 }
 
@@ -225,7 +234,7 @@ html, body {
   padding: 0 6px;
   text-align: center;
   color: #fff;
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -.01em;
@@ -641,18 +650,14 @@ html, body {
     font-size: 9px;
     padding: 6px 4px;
   }
-  
-  .social-btn i,
-  .social-btn .material-icons-round {
-    font-size: 14px;
-  }
 }
 
-/* ============ TELAS GRANDES ============ */
+/* ============ DESKTOP ============ */
 @media (min-width: 768px) {
   .reception-body {
     padding: 20px 0;
     align-items: center;
+    min-height: 100vh;
   }
   
   .reception-page {
@@ -660,11 +665,12 @@ html, body {
     max-width: 480px;
     min-height: calc(100vh - 40px);
     border-radius: 24px;
-    box-shadow: 0 25px 80px rgba(0,0,0,.6);
+    box-shadow: 0 25px 80px rgba(0,0,0,.7);
   }
   
   .header-visual {
-    height: 230px;
+    height: 240px;
+    border-radius: 24px 24px 0 0;
   }
   
   .reception-content {
