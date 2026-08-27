@@ -36,7 +36,7 @@
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
       <div id="g_id_onload" data-client_id="324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false"></div>
-      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="continue_with" data-shape="pill" data-logo_alignment="left" data-width="300"></div>
     </div>
 
     <div id="userArea" style="display:none;">
@@ -230,6 +230,7 @@
         $('#userPhoto').src = currentUser.foto;
         $('#userName').textContent = currentUser.nome;
         buscarMeusLinks();
+        showToast('Login realizado com sucesso!');
       } catch (err) {
         showToast('Erro ao fazer login', 'error');
       }
