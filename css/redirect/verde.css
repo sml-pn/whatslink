@@ -1,5 +1,5 @@
 /* ============================================
-   WHATSLINK - TEMA VERDE GLASS
+   WHATSLINK - TEMA VERDE GLASS (CYBERPUNK)
    ============================================ */
 
 .theme-verde {
@@ -7,8 +7,8 @@
   --theme-2: #128C7E;
   --bg-color: #0a0a0f;
   --text-primary: #ffffff;
-  --text-secondary: rgba(255,255,255,.6);
-  --glass-bg: rgba(16,16,25,.8);
+  --text-secondary: rgba(255,255,255,.65);
+  --glass-bg: rgba(16,16,25,.85);
   --glass-border: rgba(37,211,102,.4);
   --curve-height: 40px;
 }
@@ -34,7 +34,6 @@
   flex-direction: column;
 }
 
-/* Grid de fundo (cyberpunk) */
 .reception-page::before {
   content: '';
   position: absolute;
@@ -55,6 +54,7 @@
   z-index: 1;
 }
 
+.banner-image { width: 100%; height: 100%; }
 .banner-image img {
   width: 100%;
   height: 100%;
@@ -62,6 +62,7 @@
   transform: scale(1.08);
 }
 
+.logo-banner { width: 100%; height: 100%; position: relative; overflow: hidden; }
 .logo-banner img {
   width: 100%;
   height: 100%;
@@ -108,18 +109,17 @@
   z-index: -1;
 }
 
-/* Avatar com glow */
 .logo-circle, .avatar-circle {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--theme);
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--theme);
+  color: white;
   font-size: 34px;
   font-weight: 800;
   background: var(--glass-bg);
@@ -135,9 +135,10 @@
   font-weight: 700;
   color: var(--theme);
   margin-bottom: 4px;
-  letter-spacing: .15em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(37,211,102,.5), 0 0 20px rgba(37,211,102,.3);
+  line-height: 1.3;
 }
 
 .company-desc {
@@ -146,14 +147,15 @@
   font-size: 11px;
   margin-bottom: 20px;
   text-transform: uppercase;
-  letter-spacing: .25em;
+  letter-spacing: .06em;
+  line-height: 1.5;
+  padding: 0 10px;
 }
 
-/* Botão com glow */
 .whatsapp-btn {
   width: 100%;
   padding: 16px;
-  color: var(--theme);
+  color: white;
   border: 1px solid rgba(37,211,102,.6);
   border-radius: 14px;
   font-size: 14px;
@@ -167,11 +169,11 @@
   box-shadow: 0 0 24px rgba(37,211,102,.25), inset 0 0 18px rgba(37,211,102,.06);
   transition: .22s;
   text-transform: uppercase;
-  letter-spacing: .1em;
+  letter-spacing: .05em;
   position: relative;
 }
 .whatsapp-btn:hover {
-  background: rgba(37,211,102,.1);
+  background: rgba(37,211,102,.15);
   box-shadow: 0 0 40px rgba(37,211,102,.4), inset 0 0 25px rgba(37,211,102,.1);
 }
 .btn-pulse {
@@ -188,9 +190,9 @@
 .social-btn {
   flex: 1;
   padding: 10px;
-  border: 1px solid rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 10px;
-  color: rgba(255,255,255,.35);
+  color: rgba(255,255,255,.55);
   font-weight: 600;
   font-size: 11px;
   cursor: pointer;
@@ -201,9 +203,10 @@
   background: rgba(14,14,20,.7);
   transition: .2s;
   text-transform: uppercase;
-  letter-spacing: .05em;
+  letter-spacing: .04em;
+  line-height: 1.3;
 }
-.social-btn:hover { color: rgba(255,255,255,.6); background: rgba(20,20,28,.8); }
+.social-btn:hover { color: white; background: rgba(20,20,28,.8); }
 
 .location-block {
   margin-top: 12px;
@@ -218,6 +221,7 @@
   text-decoration: none; font-weight: 600; font-size: 11px;
   border-top: 1px solid rgba(37,211,102,.3);
   text-transform: uppercase;
+  line-height: 1.3;
 }
 
 .info-block {
@@ -227,16 +231,24 @@
   border-radius: 10px; margin-top: 12px;
   color: var(--text-primary);
 }
-.info-block h3 { font-size: 12px; font-weight: 700; color: var(--theme); text-transform: uppercase; }
-.info-block p { color: var(--text-secondary); font-size: 12px; margin-top: 2px; }
-.info-block .material-icons-round { color: var(--theme); }
+.info-block h3 { font-size: 12px; font-weight: 700; color: var(--theme); text-transform: uppercase; line-height: 1.3; }
+.info-block p { color: var(--text-secondary); font-size: 12px; margin-top: 2px; line-height: 1.4; }
+.info-block .material-icons-round { color: var(--theme); font-size: 18px; }
 
 .powered-by {
-  text-align: center; color: rgba(37,211,102,.4);
-  font-size: 9px; margin-top: 32px;
-  letter-spacing: .2em; text-transform: uppercase;
-  padding-top: 12px;
-  border-top: 1px solid rgba(37,211,102,.1);
+  text-align: center;
+  color: rgba(255,255,255,.6);
+  font-size: 11px;
+  margin-top: 40px;
+  letter-spacing: .06em;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  line-height: 1.4;
+}
+.powered-by a {
+  color: var(--theme);
+  text-decoration: underline;
+  font-weight: 700;
 }
 
 .error-state {
