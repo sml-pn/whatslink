@@ -362,77 +362,89 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-    const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
-    let currentUser = null;
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+  const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
+  let currentUser = null;
 
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => [...document.querySelectorAll(s)];
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
 
-    function showToast(msg, icon = 'check_circle') {
-      const t = $('#toast');
-      if (!t) return;
-      t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
+  function showToast(msg, icon = 'check_circle') {
+    const t = $('#toast');
+    if (!t) return;
+    t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function slugify(text) {
+    return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  function extrairUrlEmbed(html) {
+    if (!html) return '';
+    if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
+    const srcMatch = html.match(/src=["']([^"']+)["']/);
+    if (srcMatch && srcMatch[1]) return srcMatch[1];
+    const urlMatch = html.match(/https?:\/\/[^\s"']+/);
+    if (urlMatch && urlMatch[0]) return urlMatch[0];
+    return html.trim();
+  }
+
+  function handleCredentialResponse(response) {
+    try {
+      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+      currentUser = {
+        email: payload.email,
+        nome: payload.name,
+        foto: payload.picture
+      };
+      localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
+      mostrarFormulario();
+      showToast('Login realizado!');
+    } catch (err) {
+      showToast('Erro ao fazer login', 'error');
     }
+  }
 
-    function slugify(text) {
-      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
-    }
+  function mostrarFormulario() {
+    $('#loginRequired').style.display = 'none';
+    $('#formArea').style.display = 'block';
+    $('#userPhoto').src = currentUser.foto || '';
+    $('#userName').textContent = currentUser.nome || '';
+    $('#userEmailDisplay').textContent = currentUser.email || '';
+    $('#emailVinculado').textContent = currentUser.email || '';
+  }
 
-    function extrairUrlEmbed(html) {
-      if (!html) return '';
-      if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
-      const srcMatch = html.match(/src=["']([^"']+)["']/);
-      if (srcMatch && srcMatch[1]) return srcMatch[1];
-      const urlMatch = html.match(/https?:\/\/[^\s"']+/);
-      if (urlMatch && urlMatch[0]) return urlMatch[0];
-      return html.trim();
-    }
+  function mostrarLogin() {
+    $('#formArea').style.display = 'none';
+    $('#loginRequired').style.display = 'block';
+  }
 
-    function handleCredentialResponse(response) {
-      try {
-        const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = {
-          email: payload.email,
-          nome: payload.name,
-          foto: payload.picture
-        };
-        localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
-        document.getElementById('loginRequired').style.display = 'none';
-        document.getElementById('formArea').style.display = 'block';
-        document.getElementById('userPhoto').src = currentUser.foto;
-        document.getElementById('userName').textContent = currentUser.nome;
-        document.getElementById('userEmail').textContent = currentUser.email;
-        document.getElementById('emailVinculado').textContent = currentUser.email;
-        showToast('Login realizado! Agora crie seu link.');
-      } catch (err) {
-        showToast('Erro ao fazer login', 'error');
-      }
-    }
+  $('#logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('whatslink_user');
+    currentUser = null;
+    mostrarLogin();
+    showToast('Você saiu da sua conta');
+  });
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+  // Restaurar sessão
+  const savedUser = localStorage.getItem('whatslink_user');
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      mostrarFormulario();
+    } catch {
       localStorage.removeItem('whatslink_user');
       currentUser = null;
-      document.getElementById('formArea').style.display = 'none';
-      document.getElementById('loginRequired').style.display = 'block';
-      showToast('Você saiu da sua conta');
-    });
-
-    const savedUser = localStorage.getItem('whatslink_user');
-    if (savedUser) {
-      currentUser = JSON.parse(savedUser);
-      document.getElementById('loginRequired').style.display = 'none';
-      document.getElementById('formArea').style.display = 'block';
-      document.getElementById('userPhoto').src = currentUser.foto;
-      document.getElementById('userName').textContent = currentUser.nome;
-      document.getElementById('userEmail').textContent = currentUser.email;
-      document.getElementById('emailVinculado').textContent = currentUser.email;
     }
+  }
 
-    document.getElementById('whatsapp').addEventListener('input', (e) => {
+  // Máscara WhatsApp
+  function formatarWhatsApp(input) {
+    if (!input) return;
+    input.addEventListener('input', (e) => {
       let v = e.target.value.replace(/\D/g, '').slice(0, 11);
       if (v.length > 6) {
         if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
@@ -441,120 +453,125 @@
       else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
       e.target.value = v;
     });
+  }
+  formatarWhatsApp($('#whatsapp'));
+  formatarWhatsApp($('#whatsapp2'));
 
-    document.getElementById('whatsapp2').addEventListener('input', (e) => {
-      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-      if (v.length > 6) {
-        if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-        else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-      } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
-      else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
-      e.target.value = v;
-    });
+  // Slug automático
+  const empresa = $('#empresa');
+  const slug = $('#slug');
+  let slugTouched = false;
+  slug.addEventListener('input', () => slugTouched = true);
+  empresa.addEventListener('input', () => {
+    if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
+  });
 
-    const empresa = document.getElementById('empresa');
-    const slug = document.getElementById('slug');
-    let slugTouched = false;
-    slug.addEventListener('input', () => slugTouched = true);
-    empresa.addEventListener('input', () => {
-      if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
-    });
-
-    document.getElementById('localizacao').addEventListener('paste', (e) => {
-      setTimeout(() => {
-        const valor = document.getElementById('localizacao').value;
-        const urlExtraida = extrairUrlEmbed(valor);
-        if (urlExtraida !== valor) {
-          document.getElementById('localizacao').value = urlExtraida;
-          showToast('Link extraído automaticamente!');
-        }
-      }, 100);
-    });
-    document.getElementById('localizacao').addEventListener('blur', () => {
-      const valor = document.getElementById('localizacao').value;
+  // Localização
+  $('#localizacao').addEventListener('paste', (e) => {
+    setTimeout(() => {
+      const valor = $('#localizacao').value;
       const urlExtraida = extrairUrlEmbed(valor);
       if (urlExtraida !== valor) {
-        document.getElementById('localizacao').value = urlExtraida;
+        $('#localizacao').value = urlExtraida;
         showToast('Link extraído automaticamente!');
       }
-    });
+    }, 100);
+  });
 
-    $$('.theme-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.getElementById('tema').value = btn.dataset.theme;
-        $$('.theme-option').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+  // Tema
+  $$('.theme-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $('#tema').value = btn.dataset.theme;
+      $$('.theme-option').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Enviar formulário
+  $('#linkForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // VERIFICAÇÃO DUPLA: Se currentUser for null, tenta localStorage
+    if (!currentUser) {
+      const saved = localStorage.getItem('whatslink_user');
+      if (saved) {
+        try {
+          currentUser = JSON.parse(saved);
+          mostrarFormulario();
+        } catch {
+          currentUser = null;
+        }
+      }
+    }
+
+    // Se ainda for null, exige login
+    if (!currentUser || !currentUser.email) {
+      showToast('Sessão expirada. Faça login novamente.', 'error');
+      mostrarLogin();
+      return;
+    }
+
+    const data = {
+      empresa: $('#empresa').value.trim(),
+      whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
+      whatsapp2: $('#whatsapp2').value.trim().replace(/\D/g, ''),
+      botao_whatsapp: $('#botaoWhatsapp').value.trim() || 'Chamar no WhatsApp',
+      botao_whatsapp2: $('#botaoWhatsapp2').value.trim(),
+      logo_url: $('#logoUrl').value.trim(),
+      banner_url: $('#bannerUrl').value.trim(),
+      mensagem: $('#mensagem').value.trim(),
+      descricao: $('#descricao').value.trim(),
+      localizacao: extrairUrlEmbed($('#localizacao').value.trim()),
+      instagram: $('#instagram').value.trim().replace('@', ''),
+      facebook: $('#facebook').value.trim(),
+      site: $('#site').value.trim(),
+      horario: $('#horario').value.trim(),
+      tema: $('#tema').value,
+      slug: slugify($('#slug').value.trim()),
+      user_email: currentUser.email
+    };
+
+    console.log('Dados enviados:', JSON.stringify(data, null, 2));
+    console.log('Email do usuário:', currentUser.email);
+
+    const submitBtn = $('#submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const loader = submitBtn.querySelector('.btn-loader');
+    
+    submitBtn.disabled = true;
+    btnText.style.opacity = '0';
+    loader.style.display = 'grid';
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
       });
-    });
+      const result = await res.json();
+      if (result.error) throw new Error(result.error);
 
-    document.getElementById('linkForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      if (!currentUser) {
-        showToast('Faça login primeiro', 'error');
-        document.getElementById('loginRequired').style.display = 'block';
-        document.getElementById('formArea').style.display = 'none';
-        return;
-      }
+      const finalUrl = BASE_URL + data.slug;
+      $('#generatedUrl').value = finalUrl;
+      $('#resultEmail').textContent = currentUser.email;
+      $('#result').style.display = 'block';
+      $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast('Link criado com sucesso!');
 
-      const data = {
-        empresa: document.getElementById('empresa').value.trim(),
-        whatsapp: document.getElementById('whatsapp').value.trim().replace(/\D/g, ''),
-        whatsapp2: document.getElementById('whatsapp2').value.trim().replace(/\D/g, ''),
-        botao_whatsapp: document.getElementById('botaoWhatsapp').value.trim() || 'Chamar no WhatsApp',
-        botao_whatsapp2: document.getElementById('botaoWhatsapp2').value.trim(),
-        logo_url: document.getElementById('logoUrl').value.trim(),
-        banner_url: document.getElementById('bannerUrl').value.trim(),
-        mensagem: document.getElementById('mensagem').value.trim(),
-        descricao: document.getElementById('descricao').value.trim(),
-        localizacao: extrairUrlEmbed(document.getElementById('localizacao').value.trim()),
-        instagram: document.getElementById('instagram').value.trim().replace('@', ''),
-        facebook: document.getElementById('facebook').value.trim(),
-        site: document.getElementById('site').value.trim(),
-        horario: document.getElementById('horario').value.trim(),
-        tema: document.getElementById('tema').value,
-        slug: slugify(document.getElementById('slug').value.trim()),
-        user_email: currentUser.email
+      $('#copyBtn').onclick = async () => {
+        try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
+        catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
       };
+      $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
 
-      const submitBtn = document.getElementById('submitBtn');
-      const btnText = submitBtn.querySelector('.btn-text');
-      const loader = submitBtn.querySelector('.btn-loader');
-      
-      submitBtn.disabled = true;
-      btnText.style.opacity = '0';
-      loader.style.display = 'grid';
-
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        if (result.error) throw new Error(result.error);
-
-        const finalUrl = BASE_URL + data.slug;
-        document.getElementById('generatedUrl').value = finalUrl;
-        document.getElementById('resultEmail').textContent = currentUser.email;
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        showToast('Link criado com sucesso!');
-
-        document.getElementById('copyBtn').onclick = async () => {
-          try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
-          catch { document.getElementById('generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
-        };
-        document.getElementById('previewBtn').onclick = () => window.open(finalUrl, '_blank');
-
-      } catch (err) {
-        showToast('Erro: ' + err.message, 'error');
-      } finally {
-        submitBtn.disabled = false;
-        btnText.style.opacity = '1';
-        loader.style.display = 'none';
-      }
-    });
-  </script>
+    } catch (err) {
+      showToast('Erro: ' + err.message, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      btnText.style.opacity = '1';
+      loader.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>
