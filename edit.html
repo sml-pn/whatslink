@@ -54,7 +54,6 @@
     
     .google-login-btn svg { flex-shrink: 0; }
     
-    /* Preview de imagens no modal */
     .image-preview {
       margin-top: 8px;
       border-radius: 12px;
@@ -218,7 +217,7 @@
           <label>Tema da página</label>
           <input type="hidden" id="editTema" value="verde" />
           <div class="theme-selector-grid" id="editThemeSelector">
-            <div class="theme-card-option active" data-theme="verde">
+            <div class="theme-card-option active" data-theme="verde" tabindex="0">
               <div class="theme-preview-mini preview-mini-verde">
                 <div class="preview-dot"></div>
                 <div class="preview-line"></div>
@@ -226,7 +225,7 @@
               <h4>Verde Glass</h4>
               <p>Vidro translúcido + partículas</p>
             </div>
-            <div class="theme-card-option" data-theme="azul">
+            <div class="theme-card-option" data-theme="azul" tabindex="0">
               <div class="theme-preview-mini preview-mini-azul">
                 <div class="preview-dot"></div>
                 <div class="preview-line"></div>
@@ -234,7 +233,7 @@
               <h4>Azul Corporate</h4>
               <p>Grid tech + profissional</p>
             </div>
-            <div class="theme-card-option" data-theme="roxo">
+            <div class="theme-card-option" data-theme="roxo" tabindex="0">
               <div class="theme-preview-mini preview-mini-roxo">
                 <div class="preview-dot"></div>
                 <div class="preview-line"></div>
@@ -242,7 +241,7 @@
               <h4>Roxo Gradient</h4>
               <p>Blobs + gradiente animado</p>
             </div>
-            <div class="theme-card-option" data-theme="laranja">
+            <div class="theme-card-option" data-theme="laranja" tabindex="0">
               <div class="theme-preview-mini preview-mini-laranja">
                 <div class="preview-dot"></div>
                 <div class="preview-line"></div>
@@ -250,7 +249,7 @@
               <h4>Laranja Energia</h4>
               <p>Ondas + calor acolhedor</p>
             </div>
-            <div class="theme-card-option" data-theme="preto">
+            <div class="theme-card-option" data-theme="preto" tabindex="0">
               <div class="theme-preview-mini preview-mini-preto">
                 <div class="preview-dot"></div>
                 <div class="preview-line"></div>
@@ -258,7 +257,7 @@
               <h4>Preto Luxury</h4>
               <p>Dourado + sofisticado</p>
             </div>
-            <div class="theme-card-option" data-theme="cardapio">
+            <div class="theme-card-option" data-theme="cardapio" tabindex="0">
               <div class="theme-preview-mini preview-mini-cardapio">
                 <div class="preview-dot"></div>
                 <div class="preview-line"></div>
@@ -297,16 +296,20 @@
 
     // ============ INICIALIZAR GOOGLE IDENTITY ============
     window.onload = function() {
-      google.accounts.id.initialize({
-        client_id: '324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com',
-        callback: handleCredentialResponse,
-        auto_select: false
-      });
+      if (typeof google !== 'undefined') {
+        google.accounts.id.initialize({
+          client_id: '324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com',
+          callback: handleCredentialResponse,
+          auto_select: false
+        });
+      }
     };
 
-    // ============ BOTÃO CUSTOMIZADO ============
+    // ============ BOTÃO GOOGLE ============
     $('#googleLoginBtn').addEventListener('click', () => {
-      google.accounts.id.prompt();
+      if (typeof google !== 'undefined') {
+        google.accounts.id.prompt();
+      }
     });
 
     // ============ CALLBACK DO LOGIN ============
@@ -326,9 +329,9 @@
       }
     }
 
-    // ============ PREVIEW DE IMAGENS NO MODAL ============
-    $('#editLogo').addEventListener('input', (e) => {
-      const url = e.target.value.trim();
+    // ============ PREVIEW DE LOGO NO MODAL ============
+    function atualizarPreviewEditLogo() {
+      const url = $('#editLogo').value.trim();
       const preview = $('#editLogoPreview');
       const img = $('#editLogoPreviewImg');
       if (url && url.startsWith('http')) {
@@ -338,23 +341,14 @@
       } else {
         preview.style.display = 'none';
       }
-    });
+    }
 
-    $('#editLogo').addEventListener('paste', () => {
-      setTimeout(() => {
-        const url = $('#editLogo').value.trim();
-        const preview = $('#editLogoPreview');
-        const img = $('#editLogoPreviewImg');
-        if (url && url.startsWith('http')) {
-          img.src = url;
-          img.onload = () => { preview.style.display = 'block'; };
-          img.onerror = () => { preview.style.display = 'none'; };
-        }
-      }, 100);
-    });
+    $('#editLogo').addEventListener('input', atualizarPreviewEditLogo);
+    $('#editLogo').addEventListener('paste', () => setTimeout(atualizarPreviewEditLogo, 100));
 
-    $('#editBanner').addEventListener('input', (e) => {
-      const url = e.target.value.trim();
+    // ============ PREVIEW DE BANNER NO MODAL ============
+    function atualizarPreviewEditBanner() {
+      const url = $('#editBanner').value.trim();
       const preview = $('#editBannerPreview');
       const img = $('#editBannerPreviewImg');
       if (url && url.startsWith('http')) {
@@ -364,20 +358,10 @@
       } else {
         preview.style.display = 'none';
       }
-    });
+    }
 
-    $('#editBanner').addEventListener('paste', () => {
-      setTimeout(() => {
-        const url = $('#editBanner').value.trim();
-        const preview = $('#editBannerPreview');
-        const img = $('#editBannerPreviewImg');
-        if (url && url.startsWith('http')) {
-          img.src = url;
-          img.onload = () => { preview.style.display = 'block'; };
-          img.onerror = () => { preview.style.display = 'none'; };
-        }
-      }, 100);
-    });
+    $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
+    $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
 
     async function buscarMeusLinks() {
       try {
@@ -461,7 +445,7 @@
         $('#editLocalizacao').value = data.localizacao || '';
         $('#editTema').value = data.tema || 'verde';
 
-        // Mostrar previews se houver URLs
+        // Mostrar previews
         if (data.logo_url) {
           $('#editLogoPreviewImg').src = data.logo_url;
           $('#editLogoPreview').style.display = 'block';
@@ -471,6 +455,7 @@
           $('#editBannerPreview').style.display = 'block';
         }
 
+        // Marcar tema
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
         });
@@ -491,11 +476,22 @@
       }
     });
 
-    $$('#editThemeSelector .theme-card-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        $('#editTema').value = btn.dataset.theme;
-        $$('#editThemeSelector .theme-card-option').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+    // ============ SELEÇÃO DE TEMA NO MODAL ============
+    $$('#editThemeSelector .theme-card-option').forEach(card => {
+      card.addEventListener('click', () => {
+        const temaSelecionado = card.dataset.theme;
+        $('#editTema').value = temaSelecionado;
+        $$('#editThemeSelector .theme-card-option').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const nomeTema = card.querySelector('h4').textContent;
+        showToast('Tema: ' + nomeTema, 'palette');
+      });
+      
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
       });
     });
 
