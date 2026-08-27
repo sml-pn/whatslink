@@ -53,6 +53,31 @@
     }
     
     .google-login-btn svg { flex-shrink: 0; }
+    
+    /* Preview de imagens no modal */
+    .image-preview {
+      margin-top: 8px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      display: none;
+    }
+    
+    .image-preview img {
+      width: 100%;
+      max-height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .logo-preview img {
+      max-height: 70px;
+      width: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 8px auto;
+    }
   </style>
 </head>
 <body>
@@ -139,10 +164,16 @@
           <div class="field">
             <label for="editLogo">Logo (URL)</label>
             <input type="url" id="editLogo" />
+            <div class="image-preview logo-preview" id="editLogoPreview">
+              <img id="editLogoPreviewImg" src="" alt="Preview da logo" />
+            </div>
           </div>
           <div class="field">
             <label for="editBanner">Banner (URL)</label>
             <input type="url" id="editBanner" />
+            <div class="image-preview" id="editBannerPreview">
+              <img id="editBannerPreviewImg" src="" alt="Preview do banner" />
+            </div>
           </div>
         </div>
         
@@ -295,6 +326,59 @@
       }
     }
 
+    // ============ PREVIEW DE IMAGENS NO MODAL ============
+    $('#editLogo').addEventListener('input', (e) => {
+      const url = e.target.value.trim();
+      const preview = $('#editLogoPreview');
+      const img = $('#editLogoPreviewImg');
+      if (url && url.startsWith('http')) {
+        img.src = url;
+        img.onload = () => { preview.style.display = 'block'; };
+        img.onerror = () => { preview.style.display = 'none'; };
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+
+    $('#editLogo').addEventListener('paste', () => {
+      setTimeout(() => {
+        const url = $('#editLogo').value.trim();
+        const preview = $('#editLogoPreview');
+        const img = $('#editLogoPreviewImg');
+        if (url && url.startsWith('http')) {
+          img.src = url;
+          img.onload = () => { preview.style.display = 'block'; };
+          img.onerror = () => { preview.style.display = 'none'; };
+        }
+      }, 100);
+    });
+
+    $('#editBanner').addEventListener('input', (e) => {
+      const url = e.target.value.trim();
+      const preview = $('#editBannerPreview');
+      const img = $('#editBannerPreviewImg');
+      if (url && url.startsWith('http')) {
+        img.src = url;
+        img.onload = () => { preview.style.display = 'block'; };
+        img.onerror = () => { preview.style.display = 'none'; };
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+
+    $('#editBanner').addEventListener('paste', () => {
+      setTimeout(() => {
+        const url = $('#editBanner').value.trim();
+        const preview = $('#editBannerPreview');
+        const img = $('#editBannerPreviewImg');
+        if (url && url.startsWith('http')) {
+          img.src = url;
+          img.onload = () => { preview.style.display = 'block'; };
+          img.onerror = () => { preview.style.display = 'none'; };
+        }
+      }, 100);
+    });
+
     async function buscarMeusLinks() {
       try {
         const response = await fetch(API_URL, {
@@ -376,6 +460,16 @@
         $('#editSite').value = data.site || '';
         $('#editLocalizacao').value = data.localizacao || '';
         $('#editTema').value = data.tema || 'verde';
+
+        // Mostrar previews se houver URLs
+        if (data.logo_url) {
+          $('#editLogoPreviewImg').src = data.logo_url;
+          $('#editLogoPreview').style.display = 'block';
+        }
+        if (data.banner_url) {
+          $('#editBannerPreviewImg').src = data.banner_url;
+          $('#editBannerPreview').style.display = 'block';
+        }
 
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
