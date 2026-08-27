@@ -19,102 +19,6 @@
   
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/edit.css" />
-  
-  <style>
-    .criar-container { max-width: 680px; margin: 0 auto; padding: 20px; }
-    
-    .login-required {
-      background: white;
-      border-radius: 24px;
-      padding: 48px 40px;
-      text-align: center;
-      box-shadow: 0 4px 24px rgba(0,0,0,.06);
-      max-width: 420px;
-      margin: 60px auto;
-      border: 1px solid var(--border);
-    }
-    .login-required .login-icon {
-      width: 64px;
-      height: 64px;
-      background: #f0fdf4;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 16px;
-      font-size: 32px;
-      color: var(--whatsapp);
-    }
-    .login-required h2 { font-size: 22px; margin-bottom: 8px; }
-    .login-required p { color: var(--muted); margin-bottom: 24px; font-size: 14px; line-height: 1.6; }
-    .login-benefits {
-      text-align: left;
-      margin-bottom: 24px;
-      padding: 16px;
-      background: #f8fafc;
-      border-radius: 12px;
-    }
-    .login-benefits li {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--muted);
-      padding: 4px 0;
-    }
-    .login-benefits li .material-icons-round {
-      font-size: 16px;
-      color: var(--whatsapp);
-    }
-    
-    .user-info-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: white;
-      padding: 14px 18px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      margin-bottom: 20px;
-      box-shadow: var(--shadow-sm);
-    }
-    .user-info-left { display: flex; align-items: center; gap: 12px; }
-    .user-info-left img { width: 42px; height: 42px; border-radius: 50%; }
-    .user-info-left strong { font-size: 14px; display: block; }
-    .user-info-left span { font-size: 12px; color: var(--muted); }
-    
-    .logout-btn {
-      background: none;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--muted);
-      transition: .2s;
-    }
-    .logout-btn:hover { background: #f8fafc; }
-    
-    .g_id_signin { width: 100%; min-height: 48px; display: flex; justify-content: center; }
-    .g_id_signin iframe { width: 100% !important; max-width: 280px; }
-    
-    .email-notice {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 16px;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      font-size: 13px;
-      color: #1e40af;
-    }
-    .email-notice .material-icons-round { font-size: 18px; }
-  </style>
 </head>
 <body>
   <header class="main-header">
@@ -201,13 +105,13 @@
           <div class="field">
             <label for="whatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
             <input type="tel" id="whatsapp2" placeholder="(85) 98888-8888" maxlength="18" inputmode="tel" />
-            <span class="field-hint">Segundo número para atendimento diferenciado (suporte, outra unidade, etc.)</span>
+            <span class="field-hint">Segundo número para atendimento diferenciado</span>
           </div>
           
           <div class="field">
             <label for="botaoWhatsapp2">Nome do botão secundário <span class="optional">opcional</span></label>
             <input type="text" id="botaoWhatsapp2" placeholder="Ex: Falar com Suporte" />
-            <span class="field-hint">Exemplos: "Falar com Suporte", "Unidade Centro", "Unidade Sul", "WhatsApp do Gerente"</span>
+            <span class="field-hint">Exemplos: "Falar com Suporte", "Unidade Centro", "Unidade Sul"</span>
           </div>
           
           <div class="grid-2">
@@ -232,17 +136,17 @@
             <label for="mensagem">Mensagem automática <span class="optional">opcional</span></label>
             <textarea id="mensagem" rows="3" placeholder="Ex: Olá! Vim pelo seu link e gostaria de mais informações..."></textarea>
             <span class="field-hint">
-              <strong>O que é:</strong> Texto que já aparece pronto no WhatsApp do cliente quando ele clicar no botão.<br>
-              <strong>Para que serve:</strong> Facilita o primeiro contato, pois o cliente não precisa digitar nada.
+              <strong>O que é:</strong> Texto que já aparece pronto no WhatsApp do cliente.<br>
+              <strong>Para que serve:</strong> Facilita o primeiro contato.
             </span>
           </div>
           
           <div class="field">
             <label for="descricao">Descrição da empresa <span class="optional">opcional</span></label>
-            <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação, crossfit e aulas personalizadas..."></textarea>
+            <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação..."></textarea>
             <span class="field-hint">
-              <strong>O que é:</strong> Texto que aparece abaixo do nome da empresa na sua página.<br>
-              <strong>Para que serve:</strong> Apresenta seu negócio e convence o visitante a chamar no WhatsApp.
+              <strong>O que é:</strong> Texto abaixo do nome da empresa.<br>
+              <strong>Para que serve:</strong> Apresenta seu negócio.
             </span>
           </div>
           
@@ -262,7 +166,7 @@
                 <strong>2.</strong> Pesquise o endereço da sua empresa<br>
                 <strong>3.</strong> Clique em <strong>"Compartilhar"</strong><br>
                 <strong>4.</strong> Clique em <strong>"Incorporar um mapa"</strong><br>
-                <strong>5.</strong> Na janela que abrir, <strong>ignore o tamanho</strong> (pode deixar "Médio")<br>
+                <strong>5.</strong> <strong>Ignore o tamanho</strong> (pode deixar "Médio")<br>
                 <strong>6.</strong> Clique em <strong>"Copiar HTML"</strong><br>
                 <strong>7.</strong> <strong>Cole todo o código aqui</strong> — extraímos o link automaticamente! ✨
               </span>
@@ -281,7 +185,7 @@
             <div class="field">
               <label for="horario">Horário de funcionamento <span class="optional">opcional</span></label>
               <input type="text" id="horario" placeholder="Seg a Sex: 8h às 18h" />
-              <span class="field-hint">Mostre quando seus clientes podem falar com você</span>
+              <span class="field-hint">Mostre quando seus clientes podem falar</span>
             </div>
           </div>
           
@@ -289,12 +193,10 @@
             <div class="field">
               <label for="facebook">Facebook <span class="optional">opcional</span></label>
               <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
-              <span class="field-hint">Link da sua página no Facebook</span>
             </div>
             <div class="field">
               <label for="site">Site <span class="optional">opcional</span></label>
               <input type="url" id="site" placeholder="https://suaempresa.com" />
-              <span class="field-hint">Seu site oficial ou blog</span>
             </div>
           </div>
           
@@ -307,13 +209,55 @@
             <label>Tema da página *</label>
             <span class="field-hint" style="margin-bottom:8px;">Escolha o visual que combina com sua marca</span>
             <input type="hidden" id="tema" value="verde" />
-            <div class="theme-selector" id="themeSelector">
-              <button type="button" class="theme-option active" data-theme="verde" style="background:linear-gradient(135deg,#25D366,#128C7E);" aria-label="Verde"><span class="material-icons-round">check</span></button>
-              <button type="button" class="theme-option" data-theme="azul" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);" aria-label="Azul"><span class="material-icons-round">check</span></button>
-              <button type="button" class="theme-option" data-theme="roxo" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);" aria-label="Roxo"><span class="material-icons-round">check</span></button>
-              <button type="button" class="theme-option" data-theme="laranja" style="background:linear-gradient(135deg,#f97316,#ea580c);" aria-label="Laranja"><span class="material-icons-round">check</span></button>
-              <button type="button" class="theme-option" data-theme="preto" style="background:linear-gradient(135deg,#d4af37,#c19b2e);" aria-label="Preto"><span class="material-icons-round">check</span></button>
-              <button type="button" class="theme-option" data-theme="cardapio" style="background:linear-gradient(135deg,#ff8f00,#ffb300);" aria-label="Cardápio"><span class="material-icons-round">check</span></button>
+            <div class="theme-selector-grid" id="themeSelector">
+              <div class="theme-card-option active" data-theme="verde">
+                <div class="theme-preview-mini preview-mini-verde">
+                  <div class="preview-dot"></div>
+                  <div class="preview-line"></div>
+                </div>
+                <h4>Verde Glass</h4>
+                <p>Vidro translúcido + partículas</p>
+              </div>
+              <div class="theme-card-option" data-theme="azul">
+                <div class="theme-preview-mini preview-mini-azul">
+                  <div class="preview-dot"></div>
+                  <div class="preview-line"></div>
+                </div>
+                <h4>Azul Corporate</h4>
+                <p>Grid tech + profissional</p>
+              </div>
+              <div class="theme-card-option" data-theme="roxo">
+                <div class="theme-preview-mini preview-mini-roxo">
+                  <div class="preview-dot"></div>
+                  <div class="preview-line"></div>
+                </div>
+                <h4>Roxo Gradient</h4>
+                <p>Blobs + gradiente animado</p>
+              </div>
+              <div class="theme-card-option" data-theme="laranja">
+                <div class="theme-preview-mini preview-mini-laranja">
+                  <div class="preview-dot"></div>
+                  <div class="preview-line"></div>
+                </div>
+                <h4>Laranja Energia</h4>
+                <p>Ondas + calor acolhedor</p>
+              </div>
+              <div class="theme-card-option" data-theme="preto">
+                <div class="theme-preview-mini preview-mini-preto">
+                  <div class="preview-dot"></div>
+                  <div class="preview-line"></div>
+                </div>
+                <h4>Preto Luxury</h4>
+                <p>Dourado + sofisticado</p>
+              </div>
+              <div class="theme-card-option" data-theme="cardapio">
+                <div class="theme-preview-mini preview-mini-cardapio">
+                  <div class="preview-dot"></div>
+                  <div class="preview-line"></div>
+                </div>
+                <h4>Cardápio Digital</h4>
+                <p>Madeira + restaurante</p>
+              </div>
             </div>
           </div>
           
@@ -395,11 +339,7 @@
   function handleCredentialResponse(response) {
     try {
       const payload = JSON.parse(atob(response.credential.split('.')[1]));
-      currentUser = {
-        email: payload.email,
-        nome: payload.name,
-        foto: payload.picture
-      };
+      currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
       localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
       mostrarFormulario();
       showToast('Login realizado!');
@@ -474,11 +414,11 @@
     }, 100);
   });
 
-  $$('.theme-option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      $('#tema').value = btn.dataset.theme;
-      $$('.theme-option').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  $$('.theme-card-option').forEach(card => {
+    card.addEventListener('click', () => {
+      $('#tema').value = card.dataset.theme;
+      $$('.theme-card-option').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
     });
   });
 
@@ -488,12 +428,8 @@
     if (!currentUser) {
       const saved = localStorage.getItem('whatslink_user');
       if (saved) {
-        try {
-          currentUser = JSON.parse(saved);
-          mostrarFormulario();
-        } catch {
-          currentUser = null;
-        }
+        try { currentUser = JSON.parse(saved); mostrarFormulario(); }
+        catch { currentUser = null; }
       }
     }
 
@@ -522,8 +458,6 @@
       slug: slugify($('#slug').value.trim()),
       user_email: currentUser.email
     };
-
-    console.log('Dados enviados:', JSON.stringify(data, null, 2));
 
     const submitBtn = $('#submitBtn');
     const btnText = submitBtn.querySelector('.btn-text');
