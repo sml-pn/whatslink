@@ -19,6 +19,160 @@
   
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/edit.css" />
+  
+  <style>
+    .criar-container { max-width: 680px; margin: 0 auto; padding: 20px; width: 100%; box-sizing: border-box; }
+    
+    .login-required {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 32px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+      max-width: 420px;
+      margin: 60px auto;
+      border: 1px solid var(--border);
+      width: 100%;
+      box-sizing: border-box;
+      overflow: visible;
+    }
+    
+    .login-required .login-icon {
+      width: 64px;
+      height: 64px;
+      background: #f0fdf4;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      font-size: 32px;
+      color: var(--whatsapp);
+    }
+    
+    .login-required h2 { font-size: 22px; margin-bottom: 8px; }
+    .login-required p { color: var(--muted); margin-bottom: 24px; font-size: 14px; line-height: 1.6; }
+    
+    .login-benefits {
+      text-align: left;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 12px;
+      list-style: none;
+    }
+    
+    .login-benefits li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 4px 0;
+    }
+    
+    .login-benefits li .material-icons-round {
+      font-size: 16px;
+      color: var(--whatsapp);
+    }
+    
+    /* BOTÃO GOOGLE CUSTOMIZADO */
+    .google-login-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+      font-family: 'Inter', sans-serif;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    
+    .google-login-btn:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+    
+    .google-login-btn:active {
+      transform: scale(.98);
+    }
+    
+    .google-login-btn svg {
+      flex-shrink: 0;
+    }
+    
+    /* Esconder o botão original do Google */
+    #g_id_onload,
+    .g_id_signin {
+      display: none !important;
+    }
+    
+    .user-info-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .user-info-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .user-info-left img { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; }
+    .user-info-left strong { font-size: 14px; display: block; }
+    .user-info-left span { font-size: 12px; color: var(--muted); word-break: break-all; }
+    
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--muted);
+      transition: .2s;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .logout-btn:hover { background: #f8fafc; }
+    
+    .email-notice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #1e40af;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .email-notice .material-icons-round { font-size: 18px; flex-shrink: 0; }
+  </style>
 </head>
 <body>
   <header class="main-header">
@@ -46,8 +200,20 @@
         <li><span class="material-icons-round">check_circle</span> Seus dados ficam protegidos e criptografados</li>
       </ul>
       
+      <!-- Botão Google Original (escondido, mas necessário para o fluxo) -->
       <div id="g_id_onload" data-client_id="324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false"></div>
       <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="continue_with" data-shape="pill" data-logo_alignment="left" data-width="300"></div>
+      
+      <!-- Botão Google Customizado -->
+      <button id="googleLoginBtn" class="google-login-btn" type="button">
+        <svg width="20" height="20" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Continuar com Google
+      </button>
     </div>
 
     <!-- FORMULÁRIO -->
@@ -363,6 +529,19 @@
       $('#formArea').style.display = 'none';
       $('#loginRequired').style.display = 'block';
     }
+
+    // BOTÃO GOOGLE CUSTOMIZADO
+    $('#googleLoginBtn').addEventListener('click', () => {
+      const googleFrame = document.querySelector('.g_id_signin iframe');
+      if (googleFrame) {
+        googleFrame.click();
+      } else {
+        // Fallback: aguardar carregar
+        setTimeout(() => {
+          document.querySelector('.g_id_signin iframe')?.click();
+        }, 500);
+      }
+    });
 
     $('#logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
