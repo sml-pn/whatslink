@@ -163,6 +163,31 @@
     }
     
     .email-notice .material-icons-round { font-size: 18px; flex-shrink: 0; }
+
+    /* Preview de imagens */
+    .image-preview {
+      margin-top: 8px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      display: none;
+    }
+    
+    .image-preview img {
+      width: 100%;
+      max-height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .logo-preview img {
+      max-height: 80px;
+      width: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 8px auto;
+    }
   </style>
 </head>
 <body>
@@ -271,11 +296,17 @@
               <label for="logoUrl">Logo (URL) <span class="optional">opcional</span></label>
               <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
               <span class="field-hint">Imagem circular na sua página</span>
+              <div class="image-preview logo-preview" id="logoPreview">
+                <img id="logoPreviewImg" src="" alt="Preview da logo" />
+              </div>
             </div>
             <div class="field">
               <label for="bannerUrl">Banner (URL) <span class="optional">opcional</span></label>
               <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
               <span class="field-hint">Imagem ampla no topo</span>
+              <div class="image-preview" id="bannerPreview">
+                <img id="bannerPreviewImg" src="" alt="Preview do banner" />
+              </div>
             </div>
           </div>
           
@@ -488,6 +519,59 @@
       return html.trim();
     }
 
+    // ============ PREVIEW DE IMAGENS ============
+    $('#logoUrl').addEventListener('input', (e) => {
+      const url = e.target.value.trim();
+      const preview = $('#logoPreview');
+      const img = $('#logoPreviewImg');
+      if (url && url.startsWith('http')) {
+        img.src = url;
+        img.onload = () => { preview.style.display = 'block'; };
+        img.onerror = () => { preview.style.display = 'none'; };
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+
+    $('#logoUrl').addEventListener('paste', () => {
+      setTimeout(() => {
+        const url = $('#logoUrl').value.trim();
+        const preview = $('#logoPreview');
+        const img = $('#logoPreviewImg');
+        if (url && url.startsWith('http')) {
+          img.src = url;
+          img.onload = () => { preview.style.display = 'block'; };
+          img.onerror = () => { preview.style.display = 'none'; };
+        }
+      }, 100);
+    });
+
+    $('#bannerUrl').addEventListener('input', (e) => {
+      const url = e.target.value.trim();
+      const preview = $('#bannerPreview');
+      const img = $('#bannerPreviewImg');
+      if (url && url.startsWith('http')) {
+        img.src = url;
+        img.onload = () => { preview.style.display = 'block'; };
+        img.onerror = () => { preview.style.display = 'none'; };
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+
+    $('#bannerUrl').addEventListener('paste', () => {
+      setTimeout(() => {
+        const url = $('#bannerUrl').value.trim();
+        const preview = $('#bannerPreview');
+        const img = $('#bannerPreviewImg');
+        if (url && url.startsWith('http')) {
+          img.src = url;
+          img.onload = () => { preview.style.display = 'block'; };
+          img.onerror = () => { preview.style.display = 'none'; };
+        }
+      }, 100);
+    });
+
     // ============ INICIALIZAR GOOGLE IDENTITY ============
     window.onload = function() {
       google.accounts.id.initialize({
@@ -497,20 +581,14 @@
       });
     };
 
-    // ============ BOTÃO CUSTOMIZADO ============
     $('#googleLoginBtn').addEventListener('click', () => {
       google.accounts.id.prompt();
     });
 
-    // ============ CALLBACK DO LOGIN ============
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = {
-          email: payload.email,
-          nome: payload.name,
-          foto: payload.picture
-        };
+        currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
         mostrarFormulario();
         showToast('Login realizado com sucesso!');
