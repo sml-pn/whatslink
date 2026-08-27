@@ -52,14 +52,7 @@
       transform: scale(.98);
     }
     
-    .google-login-btn svg {
-      flex-shrink: 0;
-    }
-    
-    #g_id_onload,
-    .g_id_signin {
-      display: none !important;
-    }
+    .google-login-btn svg { flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -78,9 +71,6 @@
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
-      
-      <div id="g_id_onload" data-client_id="324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false"></div>
-      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="continue_with" data-shape="pill" data-logo_alignment="left" data-width="300"></div>
       
       <button id="googleLoginBtn" class="google-login-btn" type="button">
         <svg width="20" height="20" viewBox="0 0 48 48">
@@ -274,6 +264,21 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
 
+    // ============ INICIALIZAR GOOGLE IDENTITY ============
+    window.onload = function() {
+      google.accounts.id.initialize({
+        client_id: '324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com',
+        callback: handleCredentialResponse,
+        auto_select: false
+      });
+    };
+
+    // ============ BOTÃO CUSTOMIZADO ============
+    $('#googleLoginBtn').addEventListener('click', () => {
+      google.accounts.id.prompt();
+    });
+
+    // ============ CALLBACK DO LOGIN ============
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
@@ -289,18 +294,6 @@
         showToast('Erro ao fazer login', 'error');
       }
     }
-
-    // BOTÃO GOOGLE CUSTOMIZADO
-    $('#googleLoginBtn').addEventListener('click', () => {
-      const googleFrame = document.querySelector('.g_id_signin iframe');
-      if (googleFrame) {
-        googleFrame.click();
-      } else {
-        setTimeout(() => {
-          document.querySelector('.g_id_signin iframe')?.click();
-        }, 500);
-      }
-    });
 
     async function buscarMeusLinks() {
       try {
