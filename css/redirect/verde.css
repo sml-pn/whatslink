@@ -1,6 +1,6 @@
 /* =========================================================
    WHATSLINK - TEMA VERDE GLASS
-   MOBILE-FIRST • SEM BORDAS • BANNER ESFUMAÇADO
+   FULL BLEED GARANTIDO - SEM BORDAS - BANNER ESFUMAÇADO
    ========================================================= */
 
 /* ============ VARIÁVEIS ============ */
@@ -20,7 +20,7 @@
   --radius-md: 14px;
 }
 
-/* ============ GLOBAIS ============ */
+/* ============ RESET GLOBAL ============ */
 * {
   margin: 0;
   padding: 0;
@@ -30,37 +30,35 @@
 html, body {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   background: #050507;
   -webkit-text-size-adjust: 100%;
 }
 
-/* ============ BODY ============ */
+/* ============ BODY (SEM FLEX, OCUPA TODA TELA) ============ */
 .reception-body {
   width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
+  min-height: 100vh; /* fallback */
+  min-height: 100dvh; /* altura dinâmica para mobile */
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: block; /* MUDEI DE FLEX PARA BLOCK */
   background:
     radial-gradient(circle at 15% 20%, rgba(var(--theme-rgb), .10), transparent 42%),
     radial-gradient(circle at 85% 70%, rgba(var(--theme-rgb), .07), transparent 40%),
     #050507;
   color: var(--text-main);
-  overflow-x: hidden;
 }
 
-/* ============ PÁGINA (FULL BLEED NO MOBILE) ============ */
+/* ============ PÁGINA PRINCIPAL ============ */
 .reception-page {
   width: 100%;
   max-width: 100%;
   min-height: 100vh;
-  margin: 0;
+  min-height: 100dvh;
+  margin: 0 auto;
   position: relative;
   overflow: hidden;
   background: linear-gradient(180deg, #171026 0%, #0d0b12 30%, #07070a 70%, #050507 100%);
@@ -104,7 +102,6 @@ html, body {
   z-index: 1;
 }
 
-/* BANNER IMAGEM - SEM MARGENS, COM DILUIÇÃO */
 .banner-image {
   width: 100%;
   height: 100%;
@@ -118,7 +115,6 @@ html, body {
   object-fit: cover;
 }
 
-/* OVERLAY ESFUMAÇADO SOBRE O BANNER */
 .header-visual::after {
   content: '';
   position: absolute;
@@ -135,7 +131,6 @@ html, body {
   z-index: 2;
 }
 
-/* LOGO COMO FUNDO */
 .logo-banner {
   width: 100%;
   height: 100%;
@@ -152,7 +147,6 @@ html, body {
   transform: scale(1.15);
 }
 
-/* OVERLAY PARA LOGO BANNER */
 .logo-banner .glass-overlay {
   position: absolute;
   inset: 0;
@@ -165,7 +159,6 @@ html, body {
   z-index: 2;
 }
 
-/* BANNER DE COR */
 .color-banner {
   width: 100%;
   height: 100%;
@@ -175,7 +168,7 @@ html, body {
   background: radial-gradient(circle at 50% 40%, rgba(var(--theme-rgb), .15), transparent 60%), #0d0b12;
 }
 
-/* ============ CONTEÚDO (SOBREPÕE O BANNER) ============ */
+/* ============ CONTEÚDO ============ */
 .reception-content {
   position: relative;
   z-index: 10;
@@ -571,6 +564,7 @@ html, body {
 /* ============ ERRO ============ */
 .error-state {
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 30px 20px;
   box-sizing: border-box;
   display: flex;
@@ -632,34 +626,20 @@ html, body {
   .reception-content {
     padding: 0 12px 20px;
   }
-  
-  .company-name {
-    font-size: 17px;
-  }
-  
-  .company-desc {
-    font-size: 12px;
-  }
-  
-  .whatsapp-btn {
-    font-size: 13px;
-    min-height: 48px;
-  }
-  
-  .social-btn {
-    font-size: 9px;
-    padding: 6px 4px;
-  }
+  .company-name { font-size: 17px; }
+  .company-desc { font-size: 12px; }
+  .whatsapp-btn { font-size: 13px; min-height: 48px; }
+  .social-btn { font-size: 9px; padding: 6px 4px; }
 }
 
 /* ============ DESKTOP ============ */
 @media (min-width: 768px) {
   .reception-body {
-    padding: 20px 0;
+    display: flex;
     align-items: center;
-    min-height: 100vh;
+    justify-content: center;
+    padding: 20px;
   }
-  
   .reception-page {
     width: 480px;
     max-width: 480px;
@@ -667,12 +647,10 @@ html, body {
     border-radius: 24px;
     box-shadow: 0 25px 80px rgba(0,0,0,.7);
   }
-  
   .header-visual {
     height: 240px;
     border-radius: 24px 24px 0 0;
   }
-  
   .reception-content {
     padding: 0 24px 28px;
   }
