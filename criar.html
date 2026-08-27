@@ -413,7 +413,7 @@
     $('#formArea').style.display = 'block';
     $('#userPhoto').src = currentUser.foto || '';
     $('#userName').textContent = currentUser.nome || '';
-    $('#userEmailDisplay').textContent = currentUser.email || '';
+    $('#userEmail').textContent = currentUser.email || '';
     $('#emailVinculado').textContent = currentUser.email || '';
   }
 
@@ -429,7 +429,6 @@
     showToast('Você saiu da sua conta');
   });
 
-  // Restaurar sessão
   const savedUser = localStorage.getItem('whatslink_user');
   if (savedUser) {
     try {
@@ -441,7 +440,6 @@
     }
   }
 
-  // Máscara WhatsApp
   function formatarWhatsApp(input) {
     if (!input) return;
     input.addEventListener('input', (e) => {
@@ -457,7 +455,6 @@
   formatarWhatsApp($('#whatsapp'));
   formatarWhatsApp($('#whatsapp2'));
 
-  // Slug automático
   const empresa = $('#empresa');
   const slug = $('#slug');
   let slugTouched = false;
@@ -466,7 +463,6 @@
     if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
   });
 
-  // Localização
   $('#localizacao').addEventListener('paste', (e) => {
     setTimeout(() => {
       const valor = $('#localizacao').value;
@@ -478,7 +474,6 @@
     }, 100);
   });
 
-  // Tema
   $$('.theme-option').forEach(btn => {
     btn.addEventListener('click', () => {
       $('#tema').value = btn.dataset.theme;
@@ -487,11 +482,9 @@
     });
   });
 
-  // Enviar formulário
   $('#linkForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // VERIFICAÇÃO DUPLA: Se currentUser for null, tenta localStorage
     if (!currentUser) {
       const saved = localStorage.getItem('whatslink_user');
       if (saved) {
@@ -504,7 +497,6 @@
       }
     }
 
-    // Se ainda for null, exige login
     if (!currentUser || !currentUser.email) {
       showToast('Sessão expirada. Faça login novamente.', 'error');
       mostrarLogin();
@@ -532,7 +524,6 @@
     };
 
     console.log('Dados enviados:', JSON.stringify(data, null, 2));
-    console.log('Email do usuário:', currentUser.email);
 
     const submitBtn = $('#submitBtn');
     const btnText = submitBtn.querySelector('.btn-text');
