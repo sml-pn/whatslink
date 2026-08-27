@@ -1,5 +1,5 @@
 // ============================================================
-// WHATSLINK API - VERSÃO OTIMIZADA COM 21 COLUNAS
+// WHATSLINK API - VERSÃO CORRIGIDA
 // ============================================================
 
 const SHEET_NAME = 'Sheet1';
@@ -12,11 +12,16 @@ function guardarChaveSecreta() {
     'GOOGLE_CLIENT_SECRET',
     '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'
   );
-  Logger.log('Chave secreta guardada com sucesso!');
+  Logger.log('Chave secreta guardada!');
 }
 
 function obterChaveSecreta() {
   return PropertiesService.getScriptProperties().getProperty('GOOGLE_CLIENT_SECRET');
+}
+
+// ========== NORMALIZAR EMAIL ==========
+function normalizarEmail(email) {
+  return String(email || '').toLowerCase().trim();
 }
 
 function criptografar(texto) {
@@ -60,15 +65,13 @@ function inicializarPlanilhas() {
       'instagram', 'facebook', 'site', 'horario', 'tema',
       'botao_whatsapp', 'botao_whatsapp2', 'cliques', 'created_at', 'user_email', 'edit_token'
     ]);
-    sheet.protect().setDescription('Protegido - Acesso via API');
+    sheet.protect().setDescription('Protegido');
   }
   
   if (!ss.getSheetByName(USERS_SHEET)) {
     const usersSheet = ss.insertSheet(USERS_SHEET);
-    usersSheet.appendRow([
-      'id', 'email', 'nome', 'foto', 'created_at', 'edit_count', 'last_edit_date'
-    ]);
-    usersSheet.protect().setDescription('Usuários - Acesso via API');
+    usersSheet.appendRow(['id', 'email', 'nome', 'foto', 'created_at', 'edit_count', 'last_edit_date']);
+    usersSheet.protect().setDescription('Usuários');
   }
 }
 
@@ -76,12 +79,10 @@ function doPost(e) {
   if (!e || !e.postData || !e.postData.contents) {
     return response({ error: 'Requisição inválida' });
   }
-
   try {
     inicializarPlanilhas();
     const data = JSON.parse(e.postData.contents);
     const action = data.action || 'criar';
-
     switch (action) {
       case 'login_google': return loginGoogle(data);
       case 'criar': return criarLink(data);
@@ -101,13 +102,14 @@ function loginGoogle(data) {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
     if (!usersSheet) return response({ error: 'Planilha Users não encontrada' });
     
+    const email = normalizarEmail(data.email);
     const lastRow = usersSheet.getLastRow();
     let userData = null;
     
     if (lastRow > 1) {
       const users = usersSheet.getRange(2, 1, lastRow - 1, 7).getValues();
       for (let i = 0; i < users.length; i++) {
-        if (users[i][1] === data.email) {
+        if (normalizarEmail(users[i][1]) === email) {
           userData = {
             id: users[i][0],
             email: users[i][1],
@@ -124,10 +126,10 @@ function loginGoogle(data) {
     if (!userData) {
       const novoId = gerarId();
       const now = new Date().toISOString();
-      usersSheet.appendRow([novoId, data.email, data.nome, data.foto || '', now, 0, '']);
+      usersSheet.appendRow([novoId, email, data.nome, data.foto || '', now, 0, '']);
       userData = {
         id: novoId,
-        email: data.email,
+        email: email,
         nome: data.nome,
         foto: data.foto || '',
         edit_count: 0,
@@ -135,7 +137,7 @@ function loginGoogle(data) {
       };
     }
 
-    return response({ success: true, user: userData, message: 'Login realizado com sucesso!' });
+    return response({ success: true, user: userData });
   } catch (error) {
     return response({ error: 'Erro no login: ' + error.message });
   }
@@ -145,11 +147,12 @@ function verificarToken(data) {
   try {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
     if (!usersSheet) return response({ error: 'Planilha Users não encontrada' });
+    const email = normalizarEmail(data.email);
     const lastRow = usersSheet.getLastRow();
     if (lastRow > 1) {
       const users = usersSheet.getRange(2, 1, lastRow - 1, 7).getValues();
       for (let i = 0; i < users.length; i++) {
-        if (users[i][1] === data.email) {
+        if (normalizarEmail(users[i][1]) === email) {
           return response({
             success: true,
             user: {
@@ -183,14 +186,13 @@ function criarLink(data) {
     const lastRow = sheet.getLastRow();
     if (lastRow > 1) {
       const slugs = sheet.getRange(2, 5, lastRow - 1, 1).getValues().flat();
-      if (slugs.includes(slug)) {
-        return response({ error: 'Este link já existe' });
-      }
+      if (slugs.includes(slug)) return response({ error: 'Este link já existe' });
     }
 
     const id = gerarId();
     const now = new Date().toISOString();
     const editToken = gerarId();
+    const userEmail = normalizarEmail(data.user_email || '');
 
     const row = [
       id,
@@ -212,7 +214,7 @@ function criarLink(data) {
       String(data.botao_whatsapp2 || ''),
       0,
       now,
-      criptografar(data.user_email || ''),
+      criptografar(userEmail),
       editToken
     ];
 
@@ -220,13 +222,7 @@ function criarLink(data) {
     sheet.getRange(lastRow + 1, 3).setNumberFormat('@');
     sheet.getRange(lastRow + 1, 4).setNumberFormat('@');
 
-    return response({
-      success: true,
-      slug: slug,
-      id: id,
-      edit_token: editToken,
-      message: 'Link criado com sucesso!'
-    });
+    return response({ success: true, slug: slug, id: id, edit_token: editToken });
   } catch (error) {
     return response({ error: 'Erro ao criar: ' + error.message });
   }
@@ -236,17 +232,13 @@ function buscarLinkPorId(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (!sheet) return response({ error: 'Planilha Sheet1 não encontrada' });
-    
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ error: 'Nenhum link encontrado' });
-    
-    // Buscar todos os dados de uma vez (otimizado)
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
-    
     for (let i = 1; i < allData.length; i++) {
       const rowData = allData[i];
       if (rowData[0] === data.id && rowData[20] === data.edit_token) {
-        const link = {
+        return response({
           id: String(rowData[0]),
           empresa: String(rowData[1]),
           whatsapp: descriptografar(String(rowData[2])),
@@ -268,8 +260,7 @@ function buscarLinkPorId(data) {
           created_at: String(rowData[18]),
           user_email: descriptografar(String(rowData[19])),
           edit_token: String(rowData[20])
-        };
-        return response(link);
+        });
       }
     }
     return response({ error: 'Link não encontrado ou token inválido' });
@@ -284,28 +275,22 @@ function editarLink(data) {
     const usersSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(USERS_SHEET);
     if (!sheet || !usersSheet) return response({ error: 'Planilhas não encontradas' });
     
-    if (!data.id || !data.edit_token) {
-      return response({ error: 'ID e token de edição são necessários' });
-    }
+    if (!data.id || !data.edit_token) return response({ error: 'ID e token são necessários' });
 
     const lastRow = sheet.getLastRow();
     let linkRow = -1;
     let userEmail = '';
     
-    // Buscar todos os dados de uma vez
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
-    
     for (let i = 1; i < allData.length; i++) {
       if (allData[i][0] === data.id && allData[i][20] === data.edit_token) {
         linkRow = i + 1;
-        userEmail = descriptografar(String(allData[i][19]));
+        userEmail = normalizarEmail(descriptografar(String(allData[i][19])));
         break;
       }
     }
 
-    if (linkRow === -1) {
-      return response({ error: 'Link não encontrado ou token inválido' });
-    }
+    if (linkRow === -1) return response({ error: 'Link não encontrado ou token inválido' });
 
     const today = new Date().toISOString().split('T')[0];
     const usersLastRow = usersSheet.getLastRow();
@@ -316,7 +301,7 @@ function editarLink(data) {
     if (usersLastRow > 1) {
       const users = usersSheet.getRange(2, 1, usersLastRow - 1, 7).getValues();
       for (let i = 0; i < users.length; i++) {
-        if (users[i][1] === userEmail) {
+        if (normalizarEmail(users[i][1]) === userEmail) {
           userRow = i + 2;
           editCount = parseInt(users[i][5]) || 0;
           lastEditDate = users[i][6] || '';
@@ -325,21 +310,9 @@ function editarLink(data) {
       }
     }
 
-    if (userRow === -1) {
-      return response({ error: 'Usuário não encontrado' });
-    }
-
-    if (lastEditDate !== today) {
-      editCount = 0;
-    }
-
-    if (editCount >= MAX_EDICOES_POR_DIA) {
-      return response({ 
-        error: `Você atingiu o limite de ${MAX_EDICOES_POR_DIA} edições hoje. Volte amanhã!`,
-        edit_count: editCount,
-        max_edicoes: MAX_EDICOES_POR_DIA
-      });
-    }
+    if (userRow === -1) return response({ error: 'Usuário não encontrado. Email: ' + userEmail });
+    if (lastEditDate !== today) editCount = 0;
+    if (editCount >= MAX_EDICOES_POR_DIA) return response({ error: `Limite de ${MAX_EDICOES_POR_DIA} edições atingido. Volte amanhã!` });
 
     if (data.empresa !== undefined) sheet.getRange(linkRow, 2).setValue(String(data.empresa));
     if (data.whatsapp !== undefined) sheet.getRange(linkRow, 3).setValue(criptografar(String(data.whatsapp).replace(/\D/g, '')));
@@ -362,13 +335,7 @@ function editarLink(data) {
     usersSheet.getRange(userRow, 7).setValue(today);
 
     const edicoesRestantes = MAX_EDICOES_POR_DIA - editCount;
-
-    return response({ 
-      success: true, 
-      message: `Link atualizado! Você ainda tem ${edicoesRestantes} edições hoje.`,
-      edit_count: editCount,
-      edicoes_restantes: edicoesRestantes
-    });
+    return response({ success: true, message: `Link atualizado! Você ainda tem ${edicoesRestantes} edições hoje.` });
   } catch (error) {
     return response({ error: 'Erro ao editar: ' + error.message });
   }
@@ -378,14 +345,11 @@ function buscarMeusLinks(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (!sheet) return response({ error: 'Planilha Sheet1 não encontrada' });
-    
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ links: [] });
-
-    const emailCripto = criptografar(data.email || '');
+    const emailCripto = criptografar(normalizarEmail(data.email || ''));
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
     const links = [];
-
     for (let i = 1; i < allData.length; i++) {
       const rowData = allData[i];
       if (rowData[19] === emailCripto) {
@@ -400,7 +364,6 @@ function buscarMeusLinks(data) {
         });
       }
     }
-
     return response({ success: true, links: links });
   } catch (error) {
     return response({ error: 'Erro: ' + error.message });
@@ -412,15 +375,11 @@ function doGet(e) {
     inicializarPlanilhas();
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (!sheet) return response({ error: 'Planilha Sheet1 não encontrada' });
-    
     const slug = e.parameter && e.parameter.slug ? e.parameter.slug : '';
     if (!slug) return response({ error: 'Slug não informado' });
-
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return response({ error: 'Link não encontrado' });
-
     const allData = sheet.getRange(1, 1, lastRow, 21).getValues();
-
     for (let i = 1; i < allData.length; i++) {
       if (String(allData[i][4]) === slug) {
         const link = {
@@ -444,12 +403,10 @@ function doGet(e) {
           cliques: parseInt(allData[i][17]) || 0,
           created_at: String(allData[i][18] || '')
         };
-
         sheet.getRange(i + 1, 18).setValue(link.cliques + 1);
         return response(link);
       }
     }
-
     return response({ error: 'Link não encontrado' });
   } catch (error) {
     return response({ error: 'Erro: ' + error.message });
