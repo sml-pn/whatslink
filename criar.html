@@ -33,12 +33,13 @@
   </header>
 
   <div class="criar-container">
+    <!-- TELA DE LOGIN -->
     <div class="login-required" id="loginRequired">
       <div class="login-icon"><span class="material-icons-round">lock</span></div>
       <h2>🔐 Faça login para criar seu link</h2>
       <p>Use sua conta Google para que possamos salvar seus links e permitir edição posterior.</p>
       
-      <ul class="login-benefits" style="list-style:none; padding:0;">
+      <ul class="login-benefits">
         <li><span class="material-icons-round">check_circle</span> Seus links ficam vinculados ao seu email</li>
         <li><span class="material-icons-round">check_circle</span> Edite suas informações até 5x por dia</li>
         <li><span class="material-icons-round">check_circle</span> Acesse "Meus Links" de qualquer dispositivo</li>
@@ -46,9 +47,10 @@
       </ul>
       
       <div id="g_id_onload" data-client_id="324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false"></div>
-      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="continue_with" data-shape="pill" data-logo_alignment="left" data-width="300"></div>
     </div>
 
+    <!-- FORMULÁRIO -->
     <div id="formArea" style="display:none;">
       <div class="user-info-bar">
         <div class="user-info-left">
@@ -306,197 +308,197 @@
   <div id="toast" class="toast"></div>
 
   <script>
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-  const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
-  let currentUser = null;
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+    const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
+    let currentUser = null;
 
-  const $ = (s) => document.querySelector(s);
-  const $$ = (s) => [...document.querySelectorAll(s)];
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
 
-  function showToast(msg, icon = 'check_circle') {
-    const t = $('#toast');
-    if (!t) return;
-    t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  function slugify(text) {
-    return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
-  }
-
-  function extrairUrlEmbed(html) {
-    if (!html) return '';
-    if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
-    const srcMatch = html.match(/src=["']([^"']+)["']/);
-    if (srcMatch && srcMatch[1]) return srcMatch[1];
-    const urlMatch = html.match(/https?:\/\/[^\s"']+/);
-    if (urlMatch && urlMatch[0]) return urlMatch[0];
-    return html.trim();
-  }
-
-  function handleCredentialResponse(response) {
-    try {
-      const payload = JSON.parse(atob(response.credential.split('.')[1]));
-      currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
-      localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
-      mostrarFormulario();
-      showToast('Login realizado!');
-    } catch (err) {
-      showToast('Erro ao fazer login', 'error');
+    function showToast(msg, icon = 'check_circle') {
+      const t = $('#toast');
+      if (!t) return;
+      t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
     }
-  }
 
-  function mostrarFormulario() {
-    $('#loginRequired').style.display = 'none';
-    $('#formArea').style.display = 'block';
-    $('#userPhoto').src = currentUser.foto || '';
-    $('#userName').textContent = currentUser.nome || '';
-    $('#userEmail').textContent = currentUser.email || '';
-    $('#emailVinculado').textContent = currentUser.email || '';
-  }
+    function slugify(text) {
+      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+    }
 
-  function mostrarLogin() {
-    $('#formArea').style.display = 'none';
-    $('#loginRequired').style.display = 'block';
-  }
+    function extrairUrlEmbed(html) {
+      if (!html) return '';
+      if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
+      const srcMatch = html.match(/src=["']([^"']+)["']/);
+      if (srcMatch && srcMatch[1]) return srcMatch[1];
+      const urlMatch = html.match(/https?:\/\/[^\s"']+/);
+      if (urlMatch && urlMatch[0]) return urlMatch[0];
+      return html.trim();
+    }
 
-  $('#logoutBtn').addEventListener('click', () => {
-    localStorage.removeItem('whatslink_user');
-    currentUser = null;
-    mostrarLogin();
-    showToast('Você saiu da sua conta');
-  });
+    function handleCredentialResponse(response) {
+      try {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
+        localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
+        mostrarFormulario();
+        showToast('Login realizado com sucesso!');
+      } catch (err) {
+        showToast('Erro ao fazer login', 'error');
+      }
+    }
 
-  const savedUser = localStorage.getItem('whatslink_user');
-  if (savedUser) {
-    try {
-      currentUser = JSON.parse(savedUser);
-      mostrarFormulario();
-    } catch {
+    function mostrarFormulario() {
+      $('#loginRequired').style.display = 'none';
+      $('#formArea').style.display = 'block';
+      $('#userPhoto').src = currentUser.foto || '';
+      $('#userName').textContent = currentUser.nome || '';
+      $('#userEmail').textContent = currentUser.email || '';
+      $('#emailVinculado').textContent = currentUser.email || '';
+    }
+
+    function mostrarLogin() {
+      $('#formArea').style.display = 'none';
+      $('#loginRequired').style.display = 'block';
+    }
+
+    $('#logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
       currentUser = null;
-    }
-  }
-
-  function formatarWhatsApp(input) {
-    if (!input) return;
-    input.addEventListener('input', (e) => {
-      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-      if (v.length > 6) {
-        if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-        else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-      } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
-      else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
-      e.target.value = v;
-    });
-  }
-  formatarWhatsApp($('#whatsapp'));
-  formatarWhatsApp($('#whatsapp2'));
-
-  const empresa = $('#empresa');
-  const slug = $('#slug');
-  let slugTouched = false;
-  slug.addEventListener('input', () => slugTouched = true);
-  empresa.addEventListener('input', () => {
-    if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
-  });
-
-  $('#localizacao').addEventListener('paste', (e) => {
-    setTimeout(() => {
-      const valor = $('#localizacao').value;
-      const urlExtraida = extrairUrlEmbed(valor);
-      if (urlExtraida !== valor) {
-        $('#localizacao').value = urlExtraida;
-        showToast('Link extraído automaticamente!');
-      }
-    }, 100);
-  });
-
-  $$('.theme-card-option').forEach(card => {
-    card.addEventListener('click', () => {
-      $('#tema').value = card.dataset.theme;
-      $$('.theme-card-option').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-    });
-  });
-
-  $('#linkForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    if (!currentUser) {
-      const saved = localStorage.getItem('whatslink_user');
-      if (saved) {
-        try { currentUser = JSON.parse(saved); mostrarFormulario(); }
-        catch { currentUser = null; }
-      }
-    }
-
-    if (!currentUser || !currentUser.email) {
-      showToast('Sessão expirada. Faça login novamente.', 'error');
       mostrarLogin();
-      return;
+      showToast('Você saiu da sua conta');
+    });
+
+    const savedUser = localStorage.getItem('whatslink_user');
+    if (savedUser) {
+      try {
+        currentUser = JSON.parse(savedUser);
+        mostrarFormulario();
+      } catch {
+        localStorage.removeItem('whatslink_user');
+        currentUser = null;
+      }
     }
 
-    const data = {
-      empresa: $('#empresa').value.trim(),
-      whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
-      whatsapp2: $('#whatsapp2').value.trim().replace(/\D/g, ''),
-      botao_whatsapp: $('#botaoWhatsapp').value.trim() || 'Chamar no WhatsApp',
-      botao_whatsapp2: $('#botaoWhatsapp2').value.trim(),
-      logo_url: $('#logoUrl').value.trim(),
-      banner_url: $('#bannerUrl').value.trim(),
-      mensagem: $('#mensagem').value.trim(),
-      descricao: $('#descricao').value.trim(),
-      localizacao: extrairUrlEmbed($('#localizacao').value.trim()),
-      instagram: $('#instagram').value.trim().replace('@', ''),
-      facebook: $('#facebook').value.trim(),
-      site: $('#site').value.trim(),
-      horario: $('#horario').value.trim(),
-      tema: $('#tema').value,
-      slug: slugify($('#slug').value.trim()),
-      user_email: currentUser.email
-    };
-
-    const submitBtn = $('#submitBtn');
-    const btnText = submitBtn.querySelector('.btn-text');
-    const loader = submitBtn.querySelector('.btn-loader');
-    
-    submitBtn.disabled = true;
-    btnText.style.opacity = '0';
-    loader.style.display = 'grid';
-
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(data)
+    function formatarWhatsApp(input) {
+      if (!input) return;
+      input.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+        if (v.length > 6) {
+          if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+          else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+        } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
+        else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
+        e.target.value = v;
       });
-      const result = await res.json();
-      if (result.error) throw new Error(result.error);
-
-      const finalUrl = BASE_URL + data.slug;
-      $('#generatedUrl').value = finalUrl;
-      $('#resultEmail').textContent = currentUser.email;
-      $('#result').style.display = 'block';
-      $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      showToast('Link criado com sucesso!');
-
-      $('#copyBtn').onclick = async () => {
-        try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
-        catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
-      };
-      $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
-
-    } catch (err) {
-      showToast('Erro: ' + err.message, 'error');
-    } finally {
-      submitBtn.disabled = false;
-      btnText.style.opacity = '1';
-      loader.style.display = 'none';
     }
-  });
-</script>
+    formatarWhatsApp($('#whatsapp'));
+    formatarWhatsApp($('#whatsapp2'));
+
+    const empresa = $('#empresa');
+    const slug = $('#slug');
+    let slugTouched = false;
+    slug.addEventListener('input', () => slugTouched = true);
+    empresa.addEventListener('input', () => {
+      if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
+    });
+
+    $('#localizacao').addEventListener('paste', (e) => {
+      setTimeout(() => {
+        const valor = $('#localizacao').value;
+        const urlExtraida = extrairUrlEmbed(valor);
+        if (urlExtraida !== valor) {
+          $('#localizacao').value = urlExtraida;
+          showToast('Link extraído automaticamente!');
+        }
+      }, 100);
+    });
+
+    $$('.theme-card-option').forEach(card => {
+      card.addEventListener('click', () => {
+        $('#tema').value = card.dataset.theme;
+        $$('.theme-card-option').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+
+    $('#linkForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!currentUser) {
+        const saved = localStorage.getItem('whatslink_user');
+        if (saved) {
+          try { currentUser = JSON.parse(saved); mostrarFormulario(); }
+          catch { currentUser = null; }
+        }
+      }
+
+      if (!currentUser || !currentUser.email) {
+        showToast('Sessão expirada. Faça login novamente.', 'error');
+        mostrarLogin();
+        return;
+      }
+
+      const data = {
+        empresa: $('#empresa').value.trim(),
+        whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
+        whatsapp2: $('#whatsapp2').value.trim().replace(/\D/g, ''),
+        botao_whatsapp: $('#botaoWhatsapp').value.trim() || 'Chamar no WhatsApp',
+        botao_whatsapp2: $('#botaoWhatsapp2').value.trim(),
+        logo_url: $('#logoUrl').value.trim(),
+        banner_url: $('#bannerUrl').value.trim(),
+        mensagem: $('#mensagem').value.trim(),
+        descricao: $('#descricao').value.trim(),
+        localizacao: extrairUrlEmbed($('#localizacao').value.trim()),
+        instagram: $('#instagram').value.trim().replace('@', ''),
+        facebook: $('#facebook').value.trim(),
+        site: $('#site').value.trim(),
+        horario: $('#horario').value.trim(),
+        tema: $('#tema').value,
+        slug: slugify($('#slug').value.trim()),
+        user_email: currentUser.email
+      };
+
+      const submitBtn = $('#submitBtn');
+      const btnText = submitBtn.querySelector('.btn-text');
+      const loader = submitBtn.querySelector('.btn-loader');
+
+      submitBtn.disabled = true;
+      btnText.style.opacity = '0';
+      loader.style.display = 'grid';
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.error) throw new Error(result.error);
+
+        const finalUrl = BASE_URL + data.slug;
+        $('#generatedUrl').value = finalUrl;
+        $('#resultEmail').textContent = currentUser.email;
+        $('#result').style.display = 'block';
+        $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast('Link criado com sucesso!');
+
+        $('#copyBtn').onclick = async () => {
+          try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
+          catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
+        };
+        $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
+
+      } catch (err) {
+        showToast('Erro: ' + err.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        btnText.style.opacity = '1';
+        loader.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
