@@ -28,6 +28,10 @@
     .reception-page {
       width:100%; max-width:480px; min-height:100dvh; margin:0 auto;
       background:#111113; position:relative; display:flex; flex-direction:column;
+      opacity:0; transform:scale(.95); transition: opacity .4s ease, transform .4s cubic-bezier(.2,.8,.2,1);
+    }
+    .reception-page.loaded {
+      opacity:1; transform:scale(1);
     }
     @media(min-width:600px) {
       .reception-page { margin:32px auto; min-height:auto; border-radius:32px; border:1px solid rgba(255,255,255,.06); box-shadow:0 20px 80px rgba(0,0,0,.6); }
@@ -36,28 +40,44 @@
     .loading-placeholder::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent); transform:translateX(-100%); animation:shimmer 1.2s infinite; }
     @keyframes shimmer { to { transform:translateX(100%); } }
     .hidden { display:none !important; }
+
+    /* Overlay de carregamento */
+    #loading-overlay {
+      position:fixed; inset:0; z-index:9999; background:#08080a;
+      display:flex; align-items:center; justify-content:center;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    #loading-overlay.fade-out { opacity:0; visibility:hidden; pointer-events:none; }
+    .spinner {
+      width:50px; height:50px; border-radius:50%;
+      border:4px solid rgba(255,255,255,.1);
+      border-top-color: var(--theme, #25D366);
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body class="reception-body">
+  <!-- Overlay de carregamento -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
   <main class="reception-page theme-verde" id="container">
-    <!-- Camadas de efeito (neblina e poeira) -->
+    <!-- Camadas de efeito -->
     <div class="fog-layer" aria-hidden="true"></div>
     <div class="dust-layer" aria-hidden="true"></div>
+    <!-- Camadas extras para temas específicos podem ser adicionadas via CSS -->
 
-    <!-- Cabeçalho (somente usado quando houver banner) -->
     <div class="header-visual" id="headerVisual">
       <div class="banner-image hidden" id="bannerDiv"><img id="bannerImg" src="" alt="Banner" loading="eager" decoding="async" /></div>
       <div class="color-banner hidden" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
     </div>
 
-    <!-- Conteúdo -->
     <section class="reception-content" id="receptionContent">
-      <!-- Logo circular (usada tanto no topo sem banner, quanto sobreposta ao banner) -->
       <div class="logo-circle hidden" id="logoCircle">
         <img id="logoCircleImg" src="" alt="Logo" loading="eager" decoding="async" />
       </div>
-
-      <!-- Avatar com letra (fallback quando não há logo) -->
       <div class="avatar-circle loading-placeholder hidden" id="avatarCircle">
         <span id="avatarLetter"></span>
       </div>
@@ -100,7 +120,6 @@
   <script>
     'use strict';
 
-    // ==================== CONFIGURAÇÃO ====================
     const CONFIG = {
       API_URL: 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec',
       TIMEOUT_MS: 10000,
@@ -112,7 +131,6 @@
       THEME_RGB: { verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0' }
     };
 
-    // ==================== UTILITÁRIOS ====================
     const $ = id => document.getElementById(id);
     const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -170,7 +188,7 @@
       return CONFIG.THEMES.includes(tema);
     }
 
-    // ==================== CACHE ====================
+    // Cache
     function getCachedData(slug) {
       try {
         const cacheKey = `whatslink_cache_${slug}`;
@@ -191,11 +209,9 @@
       } catch (e) {}
     }
 
-    // ==================== CARREGAMENTO DE TEMA ====================
     function carregarCssTema(tema) {
       if (!isValidTheme(tema)) tema = CONFIG.DEFAULT_THEME;
       $$('link[data-theme-css]').forEach(el => el.remove());
-
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = `css/redirect/${tema}.css`;
@@ -207,7 +223,6 @@
       document.head.appendChild(link);
     }
 
-    // ==================== API ====================
     async function fetchWithRetry(url, options = {}, retries = CONFIG.MAX_RETRIES) {
       for (let attempt = 1; attempt <= retries; attempt++) {
         try {
@@ -228,7 +243,6 @@
     async function buscarLink(slug) {
       const cached = getCachedData(slug);
       if (cached) { log('info', 'Dados carregados do cache'); return cached; }
-
       const response = await fetchWithRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
       const text = await response.text();
       if (!text) throw new Error('Resposta vazia');
@@ -239,7 +253,6 @@
       return data;
     }
 
-    // ==================== RENDERIZAÇÃO ====================
     function removeLoaders() {
       $$('.loading-placeholder').forEach(el => el.classList.remove('loading-placeholder'));
     }
@@ -260,39 +273,32 @@
       const temBanner = sanitizeUrl(data.banner_url) !== '';
       const temLogo = sanitizeUrl(data.logo_url) !== '';
 
-      // Limpa tudo
+      // Limpa
       $('headerVisual').classList.add('hidden');
       $('bannerDiv').classList.add('hidden');
       $('colorBannerDiv').classList.add('hidden');
       $('logoCircle').classList.add('hidden');
       $('avatarCircle').classList.add('hidden');
-      container.classList.remove('no-banner');
+      container.classList.remove('no-banner', 'has-banner');
 
       if (temBanner) {
-        // TEM BANNER: mostra banner e logo circular sobreposta
         $('headerVisual').classList.remove('hidden');
         $('bannerDiv').classList.remove('hidden');
         $('bannerImg').src = sanitizeUrl(data.banner_url);
-
         if (temLogo) {
           $('logoCircleImg').src = sanitizeUrl(data.logo_url);
           $('logoCircle').classList.remove('hidden');
-          // Ajusta margem do conteúdo para sobrepor o banner
-          container.classList.add('has-banner');
         } else {
           $('avatarLetter').textContent = (data.empresa || 'W').charAt(0).toUpperCase();
           $('avatarCircle').classList.remove('hidden');
-          container.classList.add('has-banner');
         }
+        container.classList.add('has-banner');
       } else {
-        // SEM BANNER
         container.classList.add('no-banner');
         if (temLogo) {
-          // Logo circular no topo, sem banner
           $('logoCircleImg').src = sanitizeUrl(data.logo_url);
           $('logoCircle').classList.remove('hidden');
         } else {
-          // Avatar com letra no topo
           $('avatarLetter').textContent = (data.empresa || 'W').charAt(0).toUpperCase();
           $('avatarCircle').classList.remove('hidden');
         }
@@ -386,9 +392,16 @@
       renderizarLocalizacao(data, tema);
       renderizarHorario(data);
       removeLoaders();
+
+      // Ativa animação de aparição
+      requestAnimationFrame(() => {
+        $('container').classList.add('loaded');
+        // Esconde overlay de carregamento
+        const overlay = $('loading-overlay');
+        if (overlay) overlay.classList.add('fade-out');
+      });
     }
 
-    // ==================== INICIALIZAÇÃO ====================
     (async function init() {
       try {
         const slug = new URLSearchParams(location.search).get('slug')?.trim();
@@ -398,6 +411,9 @@
       } catch (error) {
         log('error', 'Falha ao carregar link', error);
         showError(error.message || 'Não foi possível carregar este link');
+        // Mesmo em erro, esconder overlay
+        const overlay = $('loading-overlay');
+        if (overlay) overlay.classList.add('fade-out');
       }
     })();
   </script>
