@@ -14,7 +14,6 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- CSS base (crítico para carregamento inicial) -->
   <style>
     :root { --theme:#25D366; --theme-dark:#128C7E; --theme-rgb:37,211,102; }
     * { box-sizing:border-box; margin:0; padding:0; }
@@ -33,7 +32,7 @@
     @media(min-width:600px) {
       .reception-page { margin:32px auto; min-height:auto; border-radius:32px; border:1px solid rgba(255,255,255,.06); box-shadow:0 20px 80px rgba(0,0,0,.6); }
     }
-    .loading-placeholder { position:relative; overflow:hidden; background:#1a1a1e!important; color:transparent!important; }
+    .loading-placeholder { position:relative; overflow:hidden; background:#1a1a1e!important; color:transparent!important; border-color:transparent!important; }
     .loading-placeholder::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent); transform:translateX(-100%); animation:shimmer 1.2s infinite; }
     @keyframes shimmer { to { transform:translateX(100%); } }
   </style>
@@ -44,14 +43,12 @@
     <div class="fog-layer" aria-hidden="true"></div>
     <div class="dust-layer" aria-hidden="true"></div>
 
-    <!-- Cabeçalho -->
     <div class="header-visual" id="headerVisual">
       <div class="banner-image" id="bannerDiv" style="display:none"><img id="bannerImg" src="" alt="Banner" /></div>
       <div class="logo-banner" id="logoBannerDiv" style="display:none"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
       <div class="color-banner" id="colorBannerDiv" style="display:none"><span class="material-icons-round">storefront</span></div>
     </div>
 
-    <!-- Conteúdo -->
     <section class="reception-content">
       <div class="logo-circle" id="logoCircle" style="display:none"><img id="logoCircleImg" src="" alt="Logo" /></div>
       <div class="avatar-circle loading-placeholder" id="avatarCircle"><span id="avatarLetter"></span></div>
@@ -89,7 +86,7 @@
     const THEME_RGB = { verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0' };
     const $ = id => document.getElementById(id);
 
-    // Função para carregar CSS dinamicamente
+    // Carrega o CSS do tema dinamicamente
     function carregarCssTema(tema) {
       document.querySelectorAll('link[data-theme-css]').forEach(el => el.remove());
       const link = document.createElement('link');
@@ -103,26 +100,28 @@
       document.head.appendChild(link);
     }
 
-    // Funções auxiliares
     function fetchTimeout(url, ms=10000) {
-      const c = new AbortController();
-      const t = setTimeout(() => c.abort(), ms);
-      return fetch(url, { signal: c.signal }).finally(() => clearTimeout(t));
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), ms);
+      return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timeout));
     }
 
     function removeLoaders() {
       document.querySelectorAll('.loading-placeholder').forEach(e => e.classList.remove('loading-placeholder'));
     }
 
-    function errBox(msg) {
+    function showError(message) {
       removeLoaders();
-      $('container').innerHTML = `
-        <div class="error-state">
-          <div class="error-icon"><span class="material-icons-round">error_outline</span></div>
-          <h2>Link não encontrado</h2>
-          <p>${msg}</p>
-          <a href="/">Voltar</a>
-        </div>`;
+      const container = $('container');
+      if (container) {
+        container.innerHTML = `
+          <div class="error-state">
+            <div class="error-icon"><span class="material-icons-round">error_outline</span></div>
+            <h2>Link não encontrado</h2>
+            <p>${message}</p>
+            <a href="/">Voltar</a>
+          </div>`;
+      }
     }
 
     function detectarTipoLink(url) {
@@ -148,7 +147,6 @@
       return v;
     }
 
-    // Inicialização
     (async () => {
       const params = new URLSearchParams(location.search);
       const slug = params.get('slug')?.trim();
@@ -175,30 +173,32 @@
         const temBanner = !!data.banner_url?.trim();
         const temLogo = !!data.logo_url?.trim();
 
-        // Cabeçalho
+        // ===== LÓGICA DE CABEÇALHO =====
         if (temBanner) {
+          // TEM BANNER: mostra banner e logo circular sobreposta
           $('bannerImg').src = data.banner_url;
           $('bannerDiv').style.display = 'block';
           container.classList.remove('no-banner');
+
+          if (temLogo) {
+            $('logoCircleImg').src = data.logo_url;
+            $('logoCircle').style.display = 'flex';
+            $('avatarCircle').style.display = 'none';
+          } else {
+            $('avatarLetter').textContent = (data.empresa || 'W').charAt(0).toUpperCase();
+            $('avatarCircle').style.display = 'flex';
+          }
         } else if (temLogo) {
+          // NÃO TEM BANNER, MAS TEM LOGO: logo sobe para o header
           $('logoBannerImg').src = data.logo_url;
           $('logoBannerDiv').style.display = 'block';
           container.classList.add('no-banner');
-          // Oculta avatar inferior
           $('logoCircle').style.display = 'none';
           $('avatarCircle').style.display = 'none';
         } else {
-          $('colorBannerDiv').style.display = 'flex';
+          // SEM BANNER E SEM LOGO: banner colorido + avatar letra
+          $('colorBannerDiv').style.display = 'grid';
           container.classList.add('no-banner');
-        }
-
-        // Logo inferior ou avatar
-        if (temLogo && temBanner) {
-          // Se tem banner e logo, mostramos avatar circular
-          $('logoCircleImg').src = data.logo_url;
-          $('logoCircle').style.display = 'flex';
-          $('avatarCircle').style.display = 'none';
-        } else if (!temLogo) {
           $('avatarLetter').textContent = (data.empresa || 'W').charAt(0).toUpperCase();
           $('avatarCircle').style.display = 'flex';
         }
@@ -275,7 +275,7 @@
         }
 
       } catch (err) {
-        errBox(err.message || 'Link não encontrado');
+        showError(err.message || 'Link não encontrado');
       }
     })();
   </script>
