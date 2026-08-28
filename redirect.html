@@ -29,11 +29,10 @@
     .reception-page {
       width:100%; max-width:480px; min-height:100dvh; margin:0 auto;
       background:#111113; position:relative; display:flex; flex-direction:column;
-      opacity:0; transform:translateY(10px);
-      transition:opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1);
-      will-change:opacity, transform;
+      opacity:0; transition:opacity .3s ease;
+      will-change:opacity;
     }
-    .reception-page.loaded { opacity:1; transform:translateY(0); }
+    .reception-page.loaded { opacity:1; }
     @media (min-width:600px) {
       .reception-page { margin:32px auto; min-height:auto; border-radius:32px; border:1px solid rgba(255,255,255,.06); }
     }
@@ -101,17 +100,14 @@
 </head>
 <body class="reception-body">
   <main class="reception-page theme-verde" id="container">
-    <!-- Camadas de efeito -->
     <div class="fog-layer" aria-hidden="true"></div>
     <div class="dust-layer" aria-hidden="true"></div>
 
-    <!-- Cabeçalho -->
     <div class="header-visual" id="headerVisual">
       <div class="banner-image hidden" id="bannerDiv"><img id="bannerImg" src="" alt="Banner" /></div>
       <div class="color-banner hidden" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
     </div>
 
-    <!-- Conteúdo -->
     <section class="reception-content">
       <div class="logo-circle hidden" id="logoCircle"><img id="logoCircleImg" src="" alt="Logo" /></div>
       <div class="avatar-circle hidden" id="avatarCircle"><span id="avatarLetter"></span></div>
@@ -157,8 +153,8 @@
 
     const CONFIG = {
       API_URL: 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec',
-      TIMEOUT_MS: 10000,
-      MAX_RETRIES: 2,
+      TIMEOUT_MS: 8000,
+      MAX_RETRIES: 1,
       THEMES: ['verde', 'azul', 'roxo', 'laranja', 'preto', 'cardapio'],
       DEFAULT_THEME: 'verde',
       THEME_COLORS: { verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00' },
@@ -217,32 +213,25 @@
     }
 
     function carregarCssTema(tema) {
-      return new Promise((resolve, reject) => {
-        const safe = isValidTheme(tema) ? tema : CONFIG.DEFAULT_THEME;
-        const href = `css/redirect/${safe}.css`;
+      const safe = isValidTheme(tema) ? tema : CONFIG.DEFAULT_THEME;
+      const href = `css/redirect/${safe}.css`;
 
-        if (document.querySelector(`link[href="${href}"]`)) {
-          resolve(safe);
-          return;
-        }
+      if (document.querySelector(`link[href="${href}"]`)) {
+        return Promise.resolve(safe);
+      }
 
-        $$('link[data-theme-css]').forEach(el => el.remove());
+      $$('link[data-theme-css]').forEach(el => el.remove());
 
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = href;
-        link.dataset.themeCss = 'true';
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.dataset.themeCss = 'true';
+      document.head.appendChild(link);
 
-        link.onload = () => resolve(safe);
-        link.onerror = () => {
-          if (safe !== CONFIG.DEFAULT_THEME) {
-            carregarCssTema(CONFIG.DEFAULT_THEME).then(resolve).catch(reject);
-          } else {
-            reject(new Error('Não foi possível carregar o CSS do tema'));
-          }
-        };
-
-        document.head.appendChild(link);
+      // Aguarda um pequeno intervalo para o navegador começar a aplicar o CSS,
+      // mas não bloqueia a renderização por muito tempo.
+      return new Promise(resolve => {
+        setTimeout(() => resolve(safe), 50);
       });
     }
 
@@ -257,7 +246,7 @@
           return response;
         } catch (error) {
           if (attempt === retries) throw error;
-          await new Promise(resolve => setTimeout(resolve, 400 * (attempt + 1)));
+          await new Promise(resolve => setTimeout(resolve, 300));
         }
       }
     }
@@ -278,7 +267,6 @@
           </div>
         </div>`;
       container.classList.add('loaded');
-      container.style.opacity = '';
     }
 
     function renderizarHeader(data, container) {
@@ -378,7 +366,7 @@
 
     async function init() {
       const container = $('container');
-      // Mantém invisível até tudo pronto
+      // Mantém invisível até que os dados e o CSS estejam prontos
       container.style.opacity = '0';
 
       const slug = new URLSearchParams(location.search).get('slug')?.trim();
@@ -391,6 +379,8 @@
         if (data.error) throw new Error(data.error);
 
         const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
+
+        // Carrega o CSS (não bloqueia por muito tempo; aguarda apenas 50ms para aplicar)
         await carregarCssTema(tema);
 
         document.documentElement.style.setProperty('--theme', CONFIG.THEME_COLORS[tema]);
@@ -412,7 +402,7 @@
         renderizarHorario(data);
         removeLoaders();
 
-        // Revela suavemente
+        // Revela com transição curta
         requestAnimationFrame(() => {
           container.classList.add('loaded');
           container.style.opacity = '';
