@@ -14,19 +14,12 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- CSS base inline (mantido como fallback e estilos essenciais) -->
+  <!-- CSS base (crítico para carregamento inicial) -->
   <style>
     :root { --theme:#25D366; --theme-dark:#128C7E; --theme-rgb:37,211,102; }
-    * { box-sizing:border-box; }
-    html, body { margin:0; padding:0; width:100%; background:#08080a; overflow-x:clip; }
-    body {
-      font-family:'Outfit',sans-serif;
-      color:#fff;
-      min-height:100dvh;
-      display:flex;
-      justify-content:center;
-      -webkit-font-smoothing:antialiased;
-    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html, body { width:100%; background:#08080a; overflow-x:hidden; }
+    body { font-family:'Outfit',sans-serif; color:#fff; min-height:100dvh; display:flex; justify-content:center; -webkit-font-smoothing:antialiased; }
     .reception-body {
       background:
         radial-gradient(600px circle at 0% 0%, rgba(var(--theme-rgb),.15), transparent 40%),
@@ -34,217 +27,31 @@
         #08080a;
     }
     .reception-page {
-      width:100%;
-      max-width:480px;
-      min-height:100dvh;
-      margin:0 auto;
-      background:#111113;
-      border:0;
-      position:relative;
-      display:flex;
-      flex-direction:column;
+      width:100%; max-width:480px; min-height:100dvh; margin:0 auto;
+      background:#111113; position:relative; display:flex; flex-direction:column;
     }
     @media(min-width:600px) {
-      .reception-page {
-        margin:32px auto;
-        min-height:auto;
-        border-radius:32px;
-        border:1px solid rgba(255,255,255,.06);
-        box-shadow:0 20px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.02) inset;
-      }
+      .reception-page { margin:32px auto; min-height:auto; border-radius:32px; border:1px solid rgba(255,255,255,.06); box-shadow:0 20px 80px rgba(0,0,0,.6); }
     }
-
-    /* Header */
-    .header-visual { width:100%; height:300px; position:relative; background:#0f0f10; overflow:hidden; flex-shrink:0; }
-    .header-visual::after {
-      content:'';
-      position:absolute;
-      inset:0;
-      background:linear-gradient(to bottom, rgba(17,17,19,0) 20%, #111113 92%);
-      z-index:2;
-    }
-    .banner-image { width:100%; height:100%; }
-    .banner-image img { width:100%; height:100%; object-fit:cover; }
-    .logo-banner { width:100%; height:100%; position:relative; }
-    .logo-banner img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:blur(40px) saturate(1.4) brightness(.6);
-      transform:scale(1.3);
-    }
-    .glass-overlay { position:absolute; inset:0; background:rgba(17,17,19,.4); backdrop-filter:blur(20px); }
-    .color-banner {
-      width:100%;
-      height:100%;
-      display:none;
-      place-items:center;
-      background:radial-gradient(circle at 50% 30%, rgba(var(--theme-rgb),.25), transparent 60%), #141416;
-    }
-    .color-banner .material-icons-round { font-size:80px; color:var(--theme); opacity:.9; }
-
-    /* Content */
-    .reception-content { padding:0 24px 32px; margin-top:-56px; position:relative; z-index:5; display:flex; flex-direction:column; align-items:center; }
-
-    /* Avatar */
-    .logo-circle, .avatar-circle {
-      width:96px;
-      height:96px;
-      border-radius:999px;
-      flex-shrink:0;
-      border:4px solid #111113;
-      box-shadow:0 12px 24px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.08);
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      animation:pop .6s cubic-bezier(.2,.8,.2,1) both;
-    }
-    .logo-circle img { width:100%; height:100%; object-fit:cover; background:#fff; }
-    .avatar-circle {
-      background:linear-gradient(135deg, var(--theme), var(--theme-dark));
-      color:#fff;
-      font-size:38px;
-      font-weight:700;
-      letter-spacing:-.02em;
-    }
-    @keyframes pop {
-      from { transform:scale(.7) translateY(16px); opacity:0; }
-      to { transform:scale(1) translateY(0); opacity:1; }
-    }
-
-    .company-name { font-size:26px; font-weight:700; letter-spacing:-.03em; line-height:1.1; margin:16px 0 8px; text-align:center; animation:fadeUp .6s .1s both; }
-    .company-desc { font-size:15px; line-height:1.6; color:#9f9fa9; text-align:center; max-width:32ch; margin:0 0 24px; animation:fadeUp .6s .15s both; }
-    .divider { width:24px; height:3px; border-radius:999px; background:var(--theme); margin:0 0 24px; opacity:.8; }
-
-    /* Buttons */
-    .whatsapp-btn {
-      width:100%;
-      height:56px;
-      border:0;
-      border-radius:999px;
-      cursor:pointer;
-      background:linear-gradient(135deg, var(--theme) 0%, var(--theme-dark) 100%);
-      color:#fff;
-      font-family:inherit;
-      font-size:15px;
-      font-weight:600;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-      box-shadow:0 8px 20px rgba(var(--theme-rgb),.3), 0 0 0 1px rgba(255,255,255,.1) inset;
-      position:relative;
-      overflow:hidden;
-      transition:all .2s ease;
-      animation:fadeUp .6s .2s both;
-    }
-    .whatsapp-btn:hover { transform:translateY(-2px); box-shadow:0 12px 28px rgba(var(--theme-rgb),.35); filter:brightness(1.05); }
-    .whatsapp-btn:active { transform:translateY(0) scale(.98); }
-    .whatsapp-icon { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.2); display:grid; place-items:center; font-size:16px; }
-    .btn-shine {
-      position:absolute;
-      top:0;
-      left:-100%;
-      width:60%;
-      height:100%;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
-      transform:skewX(-20deg);
-      animation:shine 4s infinite;
-    }
-    .whatsapp-btn.secondary {
-      margin-top:12px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:none;
-      color:#e4e4e7;
-      backdrop-filter:blur(12px);
-    }
-    .whatsapp-btn.secondary:hover { background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.12); }
-    @keyframes shine { 0%,60% { left:-100%; } 80%,100% { left:150%; } }
-
-    /* Socials */
-    .social-links { width:100%; display:flex; gap:10px; margin-top:16px; animation:fadeUp .6s .25s both; }
-    .social-btn {
-      flex:1;
-      height:46px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.05);
-      color:#a1a1aa;
-      font-family:inherit;
-      font-size:13px;
-      font-weight:500;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      cursor:pointer;
-      transition:.2s;
-    }
-    .social-btn:hover { background:rgba(255,255,255,.08); color:#fff; transform:translateY(-1px); border-color:rgba(255,255,255,.12); }
-    .social-btn i { font-size:16px; }
-
-    /* Cards */
-    .location-block, .info-block {
-      width:100%;
-      margin-top:20px;
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,.06);
-      background:rgba(255,255,255,.03);
-      backdrop-filter:blur(12px);
-      overflow:hidden;
-      animation:fadeUp .6s .3s both;
-    }
-    .section-label { padding:16px 18px 10px; display:flex; align-items:center; gap:8px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#71717a; }
-    .section-label .material-icons-round { font-size:16px; color:var(--theme); }
-    .map-container { padding:0 8px 8px; }
-    .map-container iframe { border-radius:16px!important; filter:grayscale(.2) contrast(1.1); }
-    .map-link { height:48px; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; font-size:13px; font-weight:500; color:#a1a1aa; border-top:1px solid rgba(255,255,255,.06); transition:.2s; }
-    .map-link:hover { color:var(--theme); background:rgba(var(--theme-rgb),.04); }
-
-    .location-fallback { padding:28px 20px; text-align:center; }
-    .location-fallback-icon { width:48px; height:48px; border-radius:50%; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; margin:0 auto 12px; }
-    .location-fallback p { color:#71717a; font-size:13px; margin:0 0 16px; }
-    .location-fallback a { display:inline-flex; align-items:center; gap:6px; padding:10px 18px; border-radius:999px; background:var(--theme); color:#fff; text-decoration:none; font-size:13px; font-weight:600; }
-
-    .info-block { padding:16px; display:flex; gap:14px; align-items:flex-start; }
-    .info-icon { width:36px; height:36px; border-radius:10px; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; flex-shrink:0; }
-    .info-content h3 { margin:0 0 4px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#71717a; }
-    .info-content p { margin:0; font-size:14px; line-height:1.5; color:#d4d4d8; white-space:pre-line; }
-
-    .powered-by { margin-top:28px; font-size:11px; color:#52525b; display:flex; align-items:center; gap:6px; }
-    .powered-by a { color:#71717a; text-decoration:none; font-weight:600; transition:.2s; }
-    .powered-by a:hover { color:var(--theme); }
-    .powered-by .heart { color:var(--theme); }
-
-    /* Loading */
-    .loading-placeholder { position:relative; overflow:hidden; background:#1a1a1e!important; color:transparent!important; border-color:transparent!important; }
-    .loading-placeholder::after {
-      content:'';
-      position:absolute;
-      inset:0;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
-      transform:translateX(-100%);
-      animation:shimmer 1.2s infinite;
-    }
+    .loading-placeholder { position:relative; overflow:hidden; background:#1a1a1e!important; color:transparent!important; }
+    .loading-placeholder::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent); transform:translateX(-100%); animation:shimmer 1.2s infinite; }
     @keyframes shimmer { to { transform:translateX(100%); } }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-
-    .error-state { min-height:100dvh; display:grid; place-items:center; padding:40px 24px; text-align:center; }
-    .error-icon { width:64px; height:64px; border-radius:50%; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; margin:0 auto 16px; }
-    .error-state h2 { margin:0 0 8px; font-size:20px; }
-    .error-state p { color:#a1a1aa; font-size:14px; max-width:28ch; margin:0 0 20px; }
-    .error-state a { padding:12px 20px; border-radius:999px; background:#fff; color:#000; text-decoration:none; font-weight:600; font-size:13px; }
   </style>
 </head>
 <body class="reception-body">
   <main class="reception-page theme-verde" id="container">
+    <!-- Camadas de efeito -->
+    <div class="fog-layer" aria-hidden="true"></div>
+    <div class="dust-layer" aria-hidden="true"></div>
+
+    <!-- Cabeçalho -->
     <div class="header-visual" id="headerVisual">
       <div class="banner-image" id="bannerDiv" style="display:none"><img id="bannerImg" src="" alt="Banner" /></div>
       <div class="logo-banner" id="logoBannerDiv" style="display:none"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
       <div class="color-banner" id="colorBannerDiv" style="display:none"><span class="material-icons-round">storefront</span></div>
     </div>
+
+    <!-- Conteúdo -->
     <section class="reception-content">
       <div class="logo-circle" id="logoCircle" style="display:none"><img id="logoCircleImg" src="" alt="Logo" /></div>
       <div class="avatar-circle loading-placeholder" id="avatarCircle"><span id="avatarLetter"></span></div>
@@ -277,90 +84,199 @@
   </main>
 
   <script>
-    const API_URL='https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-    const THEME_COLORS={verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00'};
-    const THEME_RGB={verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0'};
-    const $=id=>document.getElementById(id);
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+    const THEME_COLORS = { verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00' };
+    const THEME_RGB = { verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0' };
+    const $ = id => document.getElementById(id);
 
-    function fetchTimeout(url,ms=10000){ const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(t)); }
-    function removeLoaders(){ document.querySelectorAll('.loading-placeholder').forEach(e=>e.classList.remove('loading-placeholder')); }
-    function errBox(m){ removeLoaders(); $('container').innerHTML=`<div class="error-state"><div class="error-icon"><span class="material-icons-round">error_outline</span></div><h2>Link não encontrado</h2><p>${m}</p><a href="/">Voltar</a></div>`; }
-    async function getData(slug){ const r=await fetchTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`); if(!r.ok) throw new Error('Falha na conexão'); const t=await r.text(); if(!t) throw new Error('Link vazio'); const j=JSON.parse(t); if(j.error) throw new Error(j.error); return j; }
-
-    // Função para carregar dinamicamente o CSS do tema selecionado
+    // Função para carregar CSS dinamicamente
     function carregarCssTema(tema) {
-      // Remove CSS de tema anterior (qualquer <link> com data-theme-css)
       document.querySelectorAll('link[data-theme-css]').forEach(el => el.remove());
-
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = `css/redirect/${tema}.css`;  // ajuste o caminho se necessário
+      link.href = `css/redirect/${tema}.css`;
       link.dataset.themeCss = 'true';
-      link.onerror = () => console.error('Erro ao carregar CSS do tema:', tema);
+      link.onerror = () => {
+        console.error('Erro ao carregar CSS do tema:', tema);
+        if (tema !== 'verde') carregarCssTema('verde');
+      };
       document.head.appendChild(link);
     }
 
-    function mapType(u){ if(!u) return 'vazio'; if(u.includes('/embed')||u.includes('output=embed')) return 'embed'; if(u.includes('goo.gl')) return 'curto'; if(u.includes('google.com/maps')) return 'normal'; return 'outro'; }
-    function mapCard(url,c){ return `<div class="location-fallback"><div class="location-fallback-icon"><span class="material-icons-round">location_on</span></div><p>Ver no Google Maps</p><a href="${url}" target="_blank" rel="noopener noreferrer" style="background:${c}"><span class="material-icons-round">map</span>Abrir Maps</a></div>`; }
-    function zap(n){ let v=String(n||'').replace(/\D/g,''); if(v.length>=10&&v.length<=11) v='55'+v; return v; }
+    // Funções auxiliares
+    function fetchTimeout(url, ms=10000) {
+      const c = new AbortController();
+      const t = setTimeout(() => c.abort(), ms);
+      return fetch(url, { signal: c.signal }).finally(() => clearTimeout(t));
+    }
 
-    (async()=>{
-      const slug=new URLSearchParams(location.search).get('slug')?.trim();
-      if(!slug){ location.replace('/'); return; }
-      try{
-        const link=await getData(slug); removeLoaders();
-        const tema=['verde','azul','roxo','laranja','preto','cardapio'].includes(link.tema)?link.tema:'verde';
+    function removeLoaders() {
+      document.querySelectorAll('.loading-placeholder').forEach(e => e.classList.remove('loading-placeholder'));
+    }
 
-        // Define cores base via variáveis CSS (fallback e personalização)
-        document.documentElement.style.setProperty('--theme',THEME_COLORS[tema]);
-        document.documentElement.style.setProperty('--theme-rgb',THEME_RGB[tema]);
+    function errBox(msg) {
+      removeLoaders();
+      $('container').innerHTML = `
+        <div class="error-state">
+          <div class="error-icon"><span class="material-icons-round">error_outline</span></div>
+          <h2>Link não encontrado</h2>
+          <p>${msg}</p>
+          <a href="/">Voltar</a>
+        </div>`;
+    }
 
-        // Carrega o CSS completo do tema (efeitos, animações, etc.)
+    function detectarTipoLink(url) {
+      if (!url) return 'vazio';
+      if (url.includes('/embed') || url.includes('output=embed')) return 'embed';
+      if (url.includes('goo.gl')) return 'curto';
+      if (url.includes('google.com/maps')) return 'normal';
+      return 'outro';
+    }
+
+    function criarCardLocalizacao(url, cor) {
+      return `
+        <div class="location-fallback">
+          <div class="location-fallback-icon"><span class="material-icons-round">location_on</span></div>
+          <p>Ver no Google Maps</p>
+          <a href="${url}" target="_blank" rel="noopener noreferrer" style="background:${cor}"><span class="material-icons-round">map</span>Abrir Maps</a>
+        </div>`;
+    }
+
+    function formatarWhatsApp(numero) {
+      let v = String(numero || '').replace(/\D/g, '');
+      if (v.length >= 10 && v.length <= 11) v = '55' + v;
+      return v;
+    }
+
+    // Inicialização
+    (async () => {
+      const params = new URLSearchParams(location.search);
+      const slug = params.get('slug')?.trim();
+      if (!slug) { location.replace('/'); return; }
+
+      try {
+        const response = await fetchTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`);
+        if (!response.ok) throw new Error('Falha na conexão');
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+
+        removeLoaders();
+
+        const tema = ['verde','azul','roxo','laranja','preto','cardapio'].includes(data.tema) ? data.tema : 'verde';
         carregarCssTema(tema);
 
-        $('container').className=`reception-page theme-${tema}`;
-        $('themeColorMeta').content=THEME_COLORS[tema];
-        document.title=`${link.empresa||'WhatsApp'} | WhatsApp`;
+        document.documentElement.style.setProperty('--theme', THEME_COLORS[tema]);
+        document.documentElement.style.setProperty('--theme-rgb', THEME_RGB[tema]);
+        $('container').className = `reception-page theme-${tema}`;
+        $('themeColorMeta').content = THEME_COLORS[tema];
+        document.title = `${data.empresa || 'WhatsApp'} | WhatsApp`;
 
-        const hasBanner=!!link.banner_url?.trim(), hasLogo=!!link.logo_url?.trim();
-        if(hasBanner){ $('bannerImg').src=link.banner_url; $('bannerDiv').style.display='block'; }
-        else if(hasLogo){ $('logoBannerImg').src=link.logo_url; $('logoBannerDiv').style.display='block'; }
-        else $('colorBannerDiv').style.display='grid';
+        const container = $('container');
+        const temBanner = !!data.banner_url?.trim();
+        const temLogo = !!data.logo_url?.trim();
 
-        if(hasLogo){
-          $('logoCircleImg').src=link.logo_url; $('logoCircle').style.display='flex'; $('avatarCircle').style.display='none';
-          $('logoCircleImg').onerror=()=>{ $('logoCircle').style.display='none'; $('avatarLetter').textContent=(link.empresa||'W')[0].toUpperCase(); $('avatarCircle').style.display='flex'; };
-        }else{ $('avatarLetter').textContent=(link.empresa||'W')[0].toUpperCase(); $('avatarCircle').style.display='flex'; }
-
-        $('empresaNome').textContent=link.empresa||'';
-        if(link.descricao?.trim()){ $('descricaoTexto').textContent=link.descricao; $('descricaoTexto').style.display='block'; }
-        if(tema==='preto') $('divider').style.display='block';
-
-        const n1=zap(link.whatsapp); let u1=`https://wa.me/${n1}`; if(link.mensagem?.trim()) u1+=`?text=${encodeURIComponent(link.mensagem)}`;
-        $('whatsappBtnText').textContent=link.botao_whatsapp?.trim()||'Falar no WhatsApp';
-        $('whatsappBtn').onclick=()=>window.open(u1,'_blank','noopener,noreferrer');
-
-        if(String(link.whatsapp2||'').replace(/\D/g,'').length>=10){
-          const n2=zap(link.whatsapp2); let u2=`https://wa.me/${n2}`; if(link.mensagem?.trim()) u2+=`?text=${encodeURIComponent(link.mensagem)}`;
-          $('whatsappBtn2Text').textContent=link.botao_whatsapp2?.trim()||'Falar no WhatsApp';
-          $('whatsappBtn2').style.display='flex'; $('whatsappBtn2').onclick=()=>window.open(u2,'_blank','noopener,noreferrer');
+        // Cabeçalho
+        if (temBanner) {
+          $('bannerImg').src = data.banner_url;
+          $('bannerDiv').style.display = 'block';
+          container.classList.remove('no-banner');
+        } else if (temLogo) {
+          $('logoBannerImg').src = data.logo_url;
+          $('logoBannerDiv').style.display = 'block';
+          container.classList.add('no-banner');
+          // Oculta avatar inferior
+          $('logoCircle').style.display = 'none';
+          $('avatarCircle').style.display = 'none';
+        } else {
+          $('colorBannerDiv').style.display = 'flex';
+          container.classList.add('no-banner');
         }
 
-        let social=false;
-        if(link.instagram?.trim()){ $('instagramBtn').style.display='flex'; $('instagramBtn').onclick=()=>window.open(`https://instagram.com/${link.instagram.replace('@','').trim()}`,'_blank','noopener,noreferrer'); social=true; }
-        if(link.facebook?.trim()){ $('facebookBtn').style.display='flex'; $('facebookBtn').onclick=()=>window.open(link.facebook,'_blank','noopener,noreferrer'); social=true; }
-        if(link.site?.trim()){ $('siteBtn').style.display='flex'; $('siteBtn').onclick=()=>window.open(link.site,'_blank','noopener,noreferrer'); social=true; }
-        if(social) $('socialLinks').style.display='flex';
-
-        if(link.localizacao?.trim()){
-          const url=link.localizacao.trim(); $('locationBlock').style.display='block'; $('mapLink').href=url;
-          const type=mapType(url), iframe=$('mapIframe'), box=$('mapContainer');
-          if(type==='embed'){ iframe.src=url; }
-          else if(type==='curto'||type==='outro'){ iframe.style.display='none'; box.innerHTML=mapCard(url, THEME_COLORS[tema]); }
-          else{ let e=url; if(!e.includes('output=embed')) e+=(e.includes('?')?'&':'?')+'output=embed'; iframe.src=e; }
+        // Logo inferior ou avatar
+        if (temLogo && temBanner) {
+          // Se tem banner e logo, mostramos avatar circular
+          $('logoCircleImg').src = data.logo_url;
+          $('logoCircle').style.display = 'flex';
+          $('avatarCircle').style.display = 'none';
+        } else if (!temLogo) {
+          $('avatarLetter').textContent = (data.empresa || 'W').charAt(0).toUpperCase();
+          $('avatarCircle').style.display = 'flex';
         }
-        if(link.horario?.trim()){ $('horarioBlock').style.display='flex'; $('horarioTexto').textContent=link.horario; }
-      }catch(e){ errBox(e.message||'Link não encontrado'); }
+
+        // Nome e descrição
+        $('empresaNome').textContent = data.empresa || '';
+        if (data.descricao?.trim()) {
+          $('descricaoTexto').textContent = data.descricao;
+          $('descricaoTexto').style.display = 'block';
+        }
+        if (tema === 'preto') $('divider').style.display = 'block';
+
+        // WhatsApp principal
+        const wa1 = formatarWhatsApp(data.whatsapp);
+        let url1 = `https://wa.me/${wa1}`;
+        if (data.mensagem?.trim()) url1 += `?text=${encodeURIComponent(data.mensagem)}`;
+        $('whatsappBtnText').textContent = data.botao_whatsapp?.trim() || 'Falar no WhatsApp';
+        $('whatsappBtn').onclick = () => window.open(url1, '_blank', 'noopener,noreferrer');
+
+        // WhatsApp secundário
+        if (String(data.whatsapp2 || '').replace(/\D/g,'').length >= 10) {
+          const wa2 = formatarWhatsApp(data.whatsapp2);
+          let url2 = `https://wa.me/${wa2}`;
+          if (data.mensagem?.trim()) url2 += `?text=${encodeURIComponent(data.mensagem)}`;
+          $('whatsappBtn2Text').textContent = data.botao_whatsapp2?.trim() || 'Falar no WhatsApp';
+          $('whatsappBtn2').style.display = 'flex';
+          $('whatsappBtn2').onclick = () => window.open(url2, '_blank', 'noopener,noreferrer');
+        }
+
+        // Redes sociais
+        let temSocial = false;
+        if (data.instagram?.trim()) {
+          $('instagramBtn').style.display = 'flex';
+          $('instagramBtn').onclick = () => window.open(`https://instagram.com/${data.instagram.replace('@','').trim()}`, '_blank');
+          temSocial = true;
+        }
+        if (data.facebook?.trim()) {
+          $('facebookBtn').style.display = 'flex';
+          $('facebookBtn').onclick = () => window.open(data.facebook, '_blank');
+          temSocial = true;
+        }
+        if (data.site?.trim()) {
+          $('siteBtn').style.display = 'flex';
+          $('siteBtn').onclick = () => window.open(data.site, '_blank');
+          temSocial = true;
+        }
+        if (temSocial) $('socialLinks').style.display = 'flex';
+
+        // Localização
+        if (data.localizacao?.trim()) {
+          const locUrl = data.localizacao.trim();
+          $('locationBlock').style.display = 'block';
+          $('mapLink').href = locUrl;
+          const tipo = detectarTipoLink(locUrl);
+          const iframe = $('mapIframe');
+          const mapBox = $('mapContainer');
+
+          if (tipo === 'embed') {
+            iframe.src = locUrl;
+          } else if (tipo === 'curto' || tipo === 'outro') {
+            iframe.style.display = 'none';
+            mapBox.innerHTML = criarCardLocalizacao(locUrl, THEME_COLORS[tema]);
+          } else {
+            let embedUrl = locUrl;
+            if (!embedUrl.includes('output=embed')) embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'output=embed';
+            iframe.src = embedUrl;
+          }
+        }
+
+        // Horário
+        if (data.horario?.trim()) {
+          $('horarioBlock').style.display = 'flex';
+          $('horarioTexto').textContent = data.horario;
+        }
+
+      } catch (err) {
+        errBox(err.message || 'Link não encontrado');
+      }
     })();
   </script>
 </body>
