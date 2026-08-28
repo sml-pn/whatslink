@@ -2,25 +2,61 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
   <title>WhatsApp</title>
+
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
-  
+
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
-  
-  <!-- Fontes e ícones -->
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E"
+  />
+
+  <link
+    rel="apple-touch-icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E"
+  />
+
+  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
-  <!-- CSS BASE (comum a todos) -->
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Ícones -->
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <!-- CSS base -->
   <link rel="stylesheet" href="css/base.css" />
-  
-  <!-- RESET CRÍTICO E PLACEHOLDER -->
+
+  <!-- Temas -->
+  <link rel="stylesheet" href="css/redirect/verde.css" />
+  <link rel="stylesheet" href="css/redirect/azul.css" />
+  <link rel="stylesheet" href="css/redirect/roxo.css" />
+  <link rel="stylesheet" href="css/redirect/laranja.css" />
+  <link rel="stylesheet" href="css/redirect/preto.css" />
+  <link rel="stylesheet" href="css/redirect/cardapio.css" />
+
+  <!-- RESET CRÍTICO PARA EVITAR FOUC E LARGURA ERRADA -->
   <style>
     html, body {
       width: 100%;
@@ -40,47 +76,51 @@
       max-width: 100%;
       margin: 0 auto;
     }
-    .loading-placeholder {
-      opacity: 0.4;
-      background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: 8px;
-    }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
   </style>
 </head>
 
 <body class="reception-body">
-  <main class="reception-page" id="container">
+
+  <main class="reception-page theme-verde" id="container">
+
     <!-- HEADER / BANNER -->
     <div class="header-visual" id="headerVisual">
+
       <div class="banner-image" id="bannerDiv" style="display:none;">
         <img id="bannerImg" src="" alt="Banner" />
       </div>
+
       <div class="logo-banner" id="logoBannerDiv" style="display:none;">
         <img id="logoBannerImg" src="" alt="Logo" />
         <div class="glass-overlay"></div>
       </div>
+
       <div class="color-banner" id="colorBannerDiv" style="display:none;">
         <span class="material-icons-round">storefront</span>
       </div>
+
     </div>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <section class="reception-content">
+
       <!-- LOGO -->
       <div class="logo-circle" id="logoCircle" style="display:none;">
         <img id="logoCircleImg" src="" alt="Logo" />
       </div>
+
+      <!-- AVATAR COM LETRA -->
       <div class="avatar-circle loading-placeholder" id="avatarCircle">
         <span id="avatarLetter"></span>
       </div>
+
+      <!-- NOME -->
       <h1 class="company-name loading-placeholder" id="empresaNome"></h1>
+
+      <!-- DESCRIÇÃO -->
       <p class="company-desc" id="descricaoTexto" style="display:none;"></p>
+
+      <!-- DIVISOR -->
       <div class="divider" id="divider" style="display:none;"></div>
 
       <!-- WHATSAPP PRINCIPAL -->
@@ -137,18 +177,21 @@
 
       <!-- ASSINATURA -->
       <p class="powered-by">
-        Criado com <span class="heart">❤️</span>
+        Criado com
+        <span class="heart">❤️</span>
         <a href="https://whatslink-48tc.onrender.com/" target="_blank" rel="noopener noreferrer">WhatsLink</a>
-        <span class="dot">•</span> 100% grátis
+        <span class="dot">•</span>
+        100% grátis
       </p>
+
     </section>
+
   </main>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-    const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
+    const API_URL =
+      'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
 
-    // ============ AUXILIARES ============
     function fetchComTimeout(url, options = {}, timeout = 10000) {
       return Promise.race([
         fetch(url, options),
@@ -177,6 +220,16 @@
         </div>`;
     }
 
+    async function buscarLink(slug) {
+      const response = await fetchComTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`);
+      if (!response.ok) throw new Error('Erro na requisição');
+      const text = await response.text();
+      if (!text) throw new Error('Resposta vazia');
+      const data = JSON.parse(text);
+      if (data.error) throw new Error(data.error);
+      return data;
+    }
+
     function detectarTipoLink(url) {
       if (!url) return 'vazio';
       if (url.includes('google.com/maps/embed') || url.includes('output=embed')) return 'embed';
@@ -199,33 +252,6 @@
         </div>`;
     }
 
-    // ============ BUSCAR LINK ============
-    async function buscarLink(slug) {
-      const response = await fetchComTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`);
-      if (!response.ok) throw new Error('Erro na requisição');
-      const text = await response.text();
-      if (!text) throw new Error('Resposta vazia');
-      const data = JSON.parse(text);
-      if (data.error) throw new Error(data.error);
-      return data;
-    }
-
-    // ============ CARREGAR CSS DO TEMA ============
-    function carregarCssTema(tema) {
-      // Remove qualquer CSS de tema anterior (exceto base.css)
-      document.querySelectorAll('link[data-theme-css]').forEach(el => el.remove());
-      
-      // Cria e adiciona o link do tema
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = `css/redirect/${tema}.css`;
-      link.dataset.themeCss = 'true';
-      document.head.appendChild(link);
-      
-      console.log(`🎨 Tema "${tema}" carregado.`);
-    }
-
-    // ============ EXECUTAR ============
     (async function() {
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('slug');
@@ -241,14 +267,8 @@
 
         const tema = link.tema || 'verde';
         const container = document.getElementById('container');
-        
-        // Aplica a classe do tema
-        container.className = `reception-page theme-${tema}`;
-        
-        // Carrega o CSS do tema
-        carregarCssTema(tema);
+        container.className = 'reception-page theme-' + tema;
 
-        // Muda a cor do theme-color
         const coresTema = {
           verde: '#25D366', azul: '#3b82f6', roxo: '#8b5cf6',
           laranja: '#f97316', preto: '#d4af37', cardapio: '#ff8f00'
@@ -258,7 +278,6 @@
 
         document.title = (link.empresa || 'WhatsApp') + ' | WhatsApp';
 
-        // ===== PREENCHER DADOS =====
         const temBanner = link.banner_url && link.banner_url.trim() !== '';
         const temLogo = link.logo_url && link.logo_url.trim() !== '';
 
@@ -289,11 +308,10 @@
           document.getElementById('descricaoTexto').style.display = 'block';
         }
 
-        if (tema === 'preto' || tema === 'cardapio') {
+        if (tema === 'preto') {
           document.getElementById('divider').style.display = 'block';
         }
 
-        // WhatsApp principal
         let waNumber = String(link.whatsapp || '').replace(/\D/g, '');
         if (waNumber.length === 10 || waNumber.length === 11) waNumber = '55' + waNumber;
         let waUrl = 'https://wa.me/' + waNumber;
@@ -301,14 +319,14 @@
           waUrl += '?text=' + encodeURIComponent(link.mensagem);
         }
 
-        const botaoPrincipal = link.botao_whatsapp && link.botao_whatsapp.trim() !== ''
-          ? link.botao_whatsapp : 'Falar no WhatsApp';
+        const botaoPrincipal =
+          link.botao_whatsapp && link.botao_whatsapp.trim() !== ''
+            ? link.botao_whatsapp : 'Falar no WhatsApp';
         document.getElementById('whatsappBtnText').textContent = botaoPrincipal;
         document.getElementById('whatsappBtn').addEventListener('click', function() {
           window.open(waUrl, '_blank', 'noopener,noreferrer');
         });
 
-        // WhatsApp secundário
         if (link.whatsapp2 && String(link.whatsapp2).replace(/\D/g, '') !== '') {
           let waNumber2 = String(link.whatsapp2).replace(/\D/g, '');
           if (waNumber2.length === 10 || waNumber2.length === 11) waNumber2 = '55' + waNumber2;
@@ -316,8 +334,9 @@
           if (link.mensagem && link.mensagem.trim() !== '') {
             waUrl2 += '?text=' + encodeURIComponent(link.mensagem);
           }
-          const texto2 = link.botao_whatsapp2 && link.botao_whatsapp2.trim() !== ''
-            ? link.botao_whatsapp2 : 'Falar no WhatsApp';
+          const texto2 =
+            link.botao_whatsapp2 && link.botao_whatsapp2.trim() !== ''
+              ? link.botao_whatsapp2 : 'Falar no WhatsApp';
           document.getElementById('whatsappBtn2Text').textContent = texto2;
           document.getElementById('whatsappBtn2').style.display = 'flex';
           document.getElementById('whatsappBtn2').addEventListener('click', function() {
@@ -325,7 +344,6 @@
           });
         }
 
-        // Redes sociais
         let temSocial = false;
         if (link.instagram && link.instagram.trim() !== '') {
           document.getElementById('instagramBtn').style.display = 'flex';
@@ -350,7 +368,6 @@
         }
         if (temSocial) document.getElementById('socialLinks').style.display = 'flex';
 
-        // Localização
         if (link.localizacao && link.localizacao.trim() !== '') {
           const locUrl = link.localizacao.trim();
           const tipoLink = detectarTipoLink(locUrl);
@@ -365,7 +382,7 @@
           } else if (tipoLink === 'curto' || tipoLink === 'outro') {
             mapIframe.style.display = 'none';
             mapContainer.innerHTML = criarCardLocalizacao(locUrl, corTema);
-          } else {
+          } else if (tipoLink === 'normal') {
             let embedUrl = locUrl;
             if (!embedUrl.includes('output=embed')) {
               embedUrl = embedUrl + (embedUrl.includes('?') ? '&' : '?') + 'output=embed';
@@ -375,18 +392,16 @@
           }
         }
 
-        // Horário
         if (link.horario && link.horario.trim() !== '') {
           document.getElementById('horarioBlock').style.display = 'flex';
           document.getElementById('horarioTexto').textContent = link.horario;
         }
-
-        console.log('✅ Página carregada com tema:', tema);
 
       } catch (err) {
         mostrarErro(err.message || 'Link não encontrado');
       }
     })();
   </script>
+
 </body>
 </html>
