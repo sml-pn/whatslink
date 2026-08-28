@@ -1,6 +1,6 @@
 /* =========================================================
    WHATSLINK - TEMA VERDE GLASS
-   FULL BLEED MOBILE - VIDRO + PARTÍCULAS
+   FULL BLEED MOBILE • VIDRO + PARTÍCULAS
    ========================================================= */
 
 .theme-verde {
@@ -69,7 +69,7 @@ html, body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ============ PARTÍCULAS FLUTUANTES ============ */
+/* Partículas flutuantes */
 .reception-page::before {
   content: '';
   position: absolute;
@@ -93,7 +93,6 @@ html, body {
   100% { transform: translateY(0); background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
 }
 
-/* ============ VIDRO REFLETINDO ============ */
 .reception-page::after {
   content: '';
   position: absolute;
@@ -108,7 +107,7 @@ html, body {
   z-index: 0;
 }
 
-/* ============ HEADER ============ */
+/* Cabeçalho */
 .header-visual {
   width: 100%;
   height: 220px;
@@ -190,7 +189,7 @@ html, body {
   filter: drop-shadow(0 0 20px rgba(var(--theme-rgb), .4));
 }
 
-/* ============ CONTEÚDO ============ */
+/* Conteúdo */
 .reception-content {
   position: relative;
   z-index: 10;
@@ -203,7 +202,7 @@ html, body {
   box-sizing: border-box;
 }
 
-/* ============ AVATAR ============ */
+/* Avatar circular */
 .logo-circle,
 .avatar-circle {
   width: 84px;
@@ -232,7 +231,6 @@ html, body {
 
 .avatar-circle { color: white; font-size: 28px; font-weight: 700; }
 
-/* ============ NOME ============ */
 .company-name {
   margin: 0 0 5px;
   padding: 0 6px;
@@ -247,7 +245,6 @@ html, body {
   animation: fadeUp .5s ease .08s both;
 }
 
-/* ============ DESCRIÇÃO ============ */
 .company-desc {
   margin: 0 auto 16px;
   padding: 0 8px;
@@ -260,7 +257,6 @@ html, body {
   animation: fadeUp .5s ease .14s both;
 }
 
-/* ============ DIVISOR ============ */
 .divider {
   width: 44px;
   height: 2px;
@@ -269,7 +265,6 @@ html, body {
   background: linear-gradient(90deg, transparent, var(--theme), transparent);
 }
 
-/* ============ BOTÃO WHATSAPP ============ */
 .whatsapp-btn {
   width: 100%;
   min-height: 52px;
@@ -302,9 +297,7 @@ html, body {
   box-shadow: 0 10px 32px rgba(37,211,102,.2);
 }
 
-.whatsapp-btn:active {
-  transform: scale(.97);
-}
+.whatsapp-btn:active { transform: scale(.97); }
 
 .whatsapp-icon {
   width: 30px;
@@ -343,7 +336,6 @@ html, body {
   box-shadow: none;
 }
 
-/* ============ REDES SOCIAIS ============ */
 .social-links {
   width: 100%;
   display: flex;
@@ -383,7 +375,6 @@ html, body {
 
 .social-btn:active { transform: scale(.95); }
 
-/* ============ LOCALIZAÇÃO ============ */
 .location-block {
   width: 100%;
   margin-top: 8px;
@@ -442,7 +433,6 @@ html, body {
 
 .map-link .material-icons-round { font-size: 14px; }
 
-/* ============ FALLBACK LOCALIZAÇÃO ============ */
 .location-fallback {
   min-height: 150px;
   padding: 18px 14px;
@@ -488,7 +478,6 @@ html, body {
   font-weight: 600;
 }
 
-/* ============ HORÁRIO ============ */
 .info-block {
   width: 100%;
   box-sizing: border-box;
@@ -537,7 +526,6 @@ html, body {
   word-break: break-word;
 }
 
-/* ============ ASSINATURA ============ */
 .powered-by {
   margin: 20px 0 0;
   padding: 14px 0 2px;
@@ -558,7 +546,6 @@ html, body {
 .powered-by .heart { font-size: 9px; }
 .powered-by .dot { margin: 0 3px; color: #45454d; }
 
-/* ============ ERRO ============ */
 .error-state {
   min-height: 100vh;
   min-height: 100dvh;
@@ -586,7 +573,6 @@ html, body {
 .error-icon .material-icons-round { font-size: 30px; }
 
 .error-state h2 { margin: 0 0 6px; color: white; font-size: 17px; }
-
 .error-state p {
   max-width: 280px;
   margin: 0 0 16px;
@@ -606,22 +592,19 @@ html, body {
   font-weight: 700;
 }
 
-/* ============ ANIMAÇÕES ============ */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ============ TELAS MUITO PEQUENAS ============ */
 @media (max-width: 320px) {
   .reception-content { padding: 0 12px 20px; }
   .company-name { font-size: 17px; }
   .company-desc { font-size: 12px; }
   .whatsapp-btn { font-size: 13px; min-height: 48px; }
-  .social-btn { font-size: 9px; padding: 6px 4px; }
+  .social-btn { font-size: 9px; }
 }
 
-/* ============ DESKTOP ============ */
 @media (min-width: 768px) {
   .reception-body {
     display: flex;
@@ -643,7 +626,6 @@ html, body {
   .reception-content { padding: 0 24px 28px; }
 }
 
-/* ============ REDUÇÃO DE MOVIMENTO ============ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
