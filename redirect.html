@@ -6,296 +6,234 @@
   <title>WhatsApp</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" id="themeColorMeta" />
-  <meta name="color-scheme" content="dark" />
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <link rel="stylesheet" href="css/base.css" />
+<style>
+  :root{ --theme:#25D366; --theme-dark:#128C7E; --theme-rgb:37,211,102; }
+  *{box-sizing:border-box} html,body{margin:0;padding:0;width:100%;background:#08080a;overflow-x:clip}
+  body{font-family:'Outfit',sans-serif; color:#fff; min-height:100dvh; display:flex; justify-content:center; -webkit-font-smoothing:antialiased}
 
-  <!-- CRITICAL CSS - Robusto / Anti-FOUC / Anti-CLS -->
-  <style>
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{width:100%;max-width:100%;margin:0;padding:0;overflow-x:clip;background:#050507}
-    body{min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-   .reception-page{width:100%;max-width:520px;margin:0 auto;isolation:isolate}
-   .loading-placeholder{
-      position:relative; overflow:hidden; opacity:.9; pointer-events:none; user-select:none;
-      background:#1c1c22!important; color:transparent!important; border-color:transparent!important; border-radius:12px;
-    }
-   .loading-placeholder::after{
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
-      transform:translateX(-100%); animation:shimmer 1.4s infinite linear;
-    }
-    @keyframes shimmer{to{transform:translateX(100%)}}
-    img{max-width:100%; display:block}
-    [hidden]{display:none!important}
-  </style>
+ .reception-body{
+    background:
+      radial-gradient(600px circle at 0% 0%, rgba(var(--theme-rgb),.15), transparent 40%),
+      radial-gradient(800px circle at 100% 100%, rgba(var(--theme-rgb),.08), transparent),
+      #08080a;
+  }
+ .reception-page{
+    width:100%; max-width:480px; min-height:100dvh; margin:0 auto;
+    background:#111113; border:0; position:relative;
+    display:flex; flex-direction:column;
+  }
+  @media(min-width:600px){
+   .reception-page{margin:32px auto; min-height:auto; border-radius:32px; border:1px solid rgba(255,255,255,.06); box-shadow:0 20px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.02) inset;}
+  }
+
+  /* Header */
+ .header-visual{width:100%; height:300px; position:relative; background:#0f0f10; overflow:hidden; flex-shrink:0}
+ .header-visual::after{content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(17,17,19,0) 20%, #111113 92%); z-index:2}
+ .banner-image{width:100%; height:100%}.banner-image img{width:100%; height:100%; object-fit:cover}
+ .logo-banner{width:100%; height:100%; position:relative}
+ .logo-banner img{width:100%; height:100%; object-fit:cover; filter:blur(40px) saturate(1.4) brightness(.6); transform:scale(1.3)}
+ .glass-overlay{position:absolute; inset:0; background:rgba(17,17,19,.4); backdrop-filter:blur(20px)}
+ .color-banner{width:100%; height:100%; display:none; place-items:center; background:radial-gradient(circle at 50% 30%, rgba(var(--theme-rgb),.25), transparent 60%), #141416}
+ .color-banner.material-icons-round{font-size:80px; color:var(--theme); opacity:.9}
+
+  /* Content */
+ .reception-content{padding:0 24px 32px; margin-top:-56px; position:relative; z-index:5; display:flex; flex-direction:column; align-items:center}
+
+  /* Avatar */
+ .logo-circle,.avatar-circle{
+    width:96px; height:96px; border-radius:999px; flex-shrink:0;
+    border:4px solid #111113; box-shadow:0 12px 24px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.08);
+    overflow:hidden; display:flex; align-items:center; justify-content:center;
+    animation:pop.6s cubic-bezier(.2,.8,.2,1) both;
+  }
+ .logo-circle img{width:100%; height:100%; object-fit:cover; background:#fff}
+ .avatar-circle{background:linear-gradient(135deg, var(--theme), var(--theme-dark)); color:#fff; font-size:38px; font-weight:700; letter-spacing:-.02em}
+  @keyframes pop{from{transform:scale(.7) translateY(16px); opacity:0} to{transform:scale(1) translateY(0); opacity:1}}
+
+ .company-name{font-size:26px; font-weight:700; letter-spacing:-.03em; line-height:1.1; margin:16px 0 8px; text-align:center; animation:fadeUp.6s.1s both}
+ .company-desc{font-size:15px; line-height:1.6; color:#9f9fa9; text-align:center; max-width:32ch; margin:0 0 24px; animation:fadeUp.6s.15s both}
+ .divider{width:24px; height:3px; border-radius:999px; background:var(--theme); margin:0 0 24px; opacity:.8}
+
+  /* Buttons */
+ .whatsapp-btn{
+    width:100%; height:56px; border:0; border-radius:999px; cursor:pointer;
+    background:linear-gradient(135deg, var(--theme) 0%, var(--theme-dark) 100%);
+    color:#fff; font-family:inherit; font-size:15px; font-weight:600;
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    box-shadow:0 8px 20px rgba(var(--theme-rgb),.3), 0 0 0 1px rgba(255,255,255,.1) inset;
+    position:relative; overflow:hidden; transition:all.2s ease;
+    animation:fadeUp.6s.2s both;
+  }
+ .whatsapp-btn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(var(--theme-rgb),.35); filter:brightness(1.05)}
+ .whatsapp-btn:active{transform:translateY(0) scale(.98)}
+ .whatsapp-icon{width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.2); display:grid; place-items:center; font-size:16px}
+ .btn-shine{position:absolute; top:0; left:-100%; width:60%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); transform:skewX(-20deg); animation:shine 4s infinite}
+
+ .whatsapp-btn.secondary{
+    margin-top:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
+    box-shadow:none; color:#e4e4e7; backdrop-filter:blur(12px);
+  }
+ .whatsapp-btn.secondary:hover{background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.12)}
+  @keyframes shine{0%,60%{left:-100%} 80%,100%{left:150%}}
+
+  /* Socials */
+ .social-links{width:100%; display:flex; gap:10px; margin-top:16px; animation:fadeUp.6s.25s both}
+ .social-btn{
+    flex:1; height:46px; border-radius:999px; border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.05); color:#a1a1aa; font-family:inherit; font-size:13px; font-weight:500;
+    display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:.2s;
+  }
+ .social-btn:hover{background:rgba(255,255,255,.08); color:#fff; transform:translateY(-1px); border-color:rgba(255,255,255,.12)}
+ .social-btn i{font-size:16px}
+
+  /* Cards */
+ .location-block,.info-block{
+    width:100%; margin-top:20px; border-radius:24px; border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.03); backdrop-filter:blur(12px); overflow:hidden;
+    animation:fadeUp.6s.3s both;
+  }
+ .section-label{padding:16px 18px 10px; display:flex; align-items:center; gap:8px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#71717a}
+ .section-label.material-icons-round{font-size:16px; color:var(--theme)}
+ .map-container{padding:0 8px 8px}.map-container iframe{border-radius:16px!important; filter:grayscale(.2) contrast(1.1)}
+ .map-link{height:48px; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; font-size:13px; font-weight:500; color:#a1a1aa; border-top:1px solid rgba(255,255,255,.06); transition:.2s}
+ .map-link:hover{color:var(--theme); background:rgba(var(--theme-rgb),.04)}
+
+ .location-fallback{padding:28px 20px; text-align:center}
+ .location-fallback-icon{width:48px; height:48px; border-radius:50%; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; margin:0 auto 12px}
+ .location-fallback p{color:#71717a; font-size:13px; margin:0 0 16px}
+ .location-fallback a{display:inline-flex; align-items:center; gap:6px; padding:10px 18px; border-radius:999px; background:var(--theme); color:#fff; text-decoration:none; font-size:13px; font-weight:600}
+
+ .info-block{padding:16px; display:flex; gap:14px; align-items:flex-start}
+ .info-icon{width:36px; height:36px; border-radius:10px; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; flex-shrink:0}
+ .info-content h3{margin:0 0 4px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#71717a}
+ .info-content p{margin:0; font-size:14px; line-height:1.5; color:#d4d4d8; white-space:pre-line}
+
+ .powered-by{margin-top:28px; font-size:11px; color:#52525b; display:flex; align-items:center; gap:6px}
+ .powered-by a{color:#71717a; text-decoration:none; font-weight:600; transition:.2s}.powered-by a:hover{color:var(--theme)}
+ .powered-by.heart{color:var(--theme)}
+
+  /* Loading */
+ .loading-placeholder{position:relative; overflow:hidden; background:#1a1a1e!important; color:transparent!important; border-color:transparent!important}
+ .loading-placeholder::after{content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent); transform:translateX(-100%); animation:shimmer 1.2s infinite}
+  @keyframes shimmer{to{transform:translateX(100%)}} @keyframes fadeUp{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)}}
+
+ .error-state{min-height:100dvh; display:grid; place-items:center; padding:40px 24px; text-align:center}
+ .error-icon{width:64px; height:64px; border-radius:50%; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; margin:0 auto 16px}
+ .error-state h2{margin:0 0 8px; font-size:20px}.error-state p{color:#a1a1aa; font-size:14px; max-width:28ch; margin:0 0 20px}
+ .error-state a{padding:12px 20px; border-radius:999px; background:#fff; color:#000; text-decoration:none; font-weight:600; font-size:13px}
+</style>
 </head>
 <body class="reception-body">
-  <main class="reception-page theme-verde" id="container" aria-live="polite">
+  <main class="reception-page theme-verde" id="container">
     <div class="header-visual" id="headerVisual">
-      <div class="banner-image" id="bannerDiv" style="display:none"><img id="bannerImg" src="" alt="Banner da empresa" decoding="async" /></div>
-      <div class="logo-banner" id="logoBannerDiv" style="display:none"><img id="logoBannerImg" src="" alt="Logo da empresa" decoding="async" /><div class="glass-overlay" aria-hidden="true"></div></div>
-      <div class="color-banner" id="colorBannerDiv" style="display:none" aria-hidden="true"><span class="material-icons-round">storefront</span></div>
+      <div class="banner-image" id="bannerDiv" style="display:none"><img id="bannerImg" src="" alt="Banner" /></div>
+      <div class="logo-banner" id="logoBannerDiv" style="display:none"><img id="logoBannerImg" src="" alt="Logo" /><div class="glass-overlay"></div></div>
+      <div class="color-banner" id="colorBannerDiv" style="display:none"><span class="material-icons-round">storefront</span></div>
     </div>
-
     <section class="reception-content">
       <div class="logo-circle" id="logoCircle" style="display:none"><img id="logoCircleImg" src="" alt="Logo" /></div>
-      <div class="avatar-circle loading-placeholder" id="avatarCircle" aria-hidden="true"><span id="avatarLetter"></span></div>
-
+      <div class="avatar-circle loading-placeholder" id="avatarCircle"><span id="avatarLetter"></span></div>
       <h1 class="company-name loading-placeholder" id="empresaNome"></h1>
       <p class="company-desc" id="descricaoTexto" style="display:none"></p>
-      <div class="divider" id="divider" style="display:none" aria-hidden="true"></div>
+      <div class="divider" id="divider" style="display:none"></div>
 
-      <button id="whatsappBtn" type="button" class="whatsapp-btn loading-placeholder" aria-label="Falar no WhatsApp">
-        <span class="whatsapp-icon" aria-hidden="true"><i class="fab fa-whatsapp"></i></span>
-        <span id="whatsappBtnText"></span><span class="btn-shine" aria-hidden="true"></span>
-      </button>
-
-      <button id="whatsappBtn2" type="button" class="whatsapp-btn secondary" style="display:none" aria-label="Falar no segundo WhatsApp">
-        <span class="whatsapp-icon" aria-hidden="true"><i class="fab fa-whatsapp"></i></span>
-        <span id="whatsappBtn2Text"></span>
-      </button>
+      <button id="whatsappBtn" type="button" class="whatsapp-btn loading-placeholder"><span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span><span id="whatsappBtnText"></span><span class="btn-shine"></span></button>
+      <button id="whatsappBtn2" type="button" class="whatsapp-btn secondary" style="display:none"><span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span><span id="whatsappBtn2Text"></span></button>
 
       <div class="social-links" id="socialLinks" style="display:none">
-        <button id="instagramBtn" type="button" class="social-btn instagram" style="display:none"><i class="fab fa-instagram"></i><span>Instagram</span></button>
-        <button id="facebookBtn" type="button" class="social-btn facebook" style="display:none"><i class="fab fa-facebook-f"></i><span>Facebook</span></button>
-        <button id="siteBtn" type="button" class="social-btn site" style="display:none"><span class="material-icons-round">public</span><span>Site</span></button>
+        <button id="instagramBtn" type="button" class="social-btn" style="display:none"><i class="fab fa-instagram"></i><span>Instagram</span></button>
+        <button id="facebookBtn" type="button" class="social-btn" style="display:none"><i class="fab fa-facebook-f"></i><span>Facebook</span></button>
+        <button id="siteBtn" type="button" class="social-btn" style="display:none"><span class="material-icons-round">public</span><span>Site</span></button>
       </div>
 
       <div class="location-block" id="locationBlock" style="display:none">
         <div class="section-label"><span class="material-icons-round">location_on</span><span>Localização</span></div>
-        <div class="map-container" id="mapContainer"><iframe id="mapIframe" title="Mapa" src="" width="100%" height="220" style="border:0;border-radius:16px;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
-        <a href="#" id="mapLink" target="_blank" rel="noopener noreferrer" class="map-link"><span class="material-icons-round">open_in_new</span><span>Abrir no Google Maps</span></a>
+        <div class="map-container" id="mapContainer"><iframe id="mapIframe" title="Mapa" src="" width="100%" height="200" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+        <a href="#" id="mapLink" target="_blank" rel="noopener noreferrer" class="map-link"><span class="material-icons-round">open_in_new</span>Abrir no Maps</a>
       </div>
 
       <div class="info-block" id="horarioBlock" style="display:none">
         <div class="info-icon"><span class="material-icons-round">schedule</span></div>
-        <div class="info-content"><h3>Horário de atendimento</h3><p id="horarioTexto"></p></div>
+        <div class="info-content"><h3>Horário</h3><p id="horarioTexto"></p></div>
       </div>
 
-      <p class="powered-by">Criado com <span class="heart">❤</span> <a href="https://whatslink-48tc.onrender.com/" target="_blank" rel="noopener noreferrer">WhatsLink</a> <span class="dot">•</span> 100% grátis</p>
+      <p class="powered-by">Feito com <span class="heart">♥</span> <a href="https://whatslink-48tc.onrender.com/" target="_blank" rel="noopener noreferrer">WhatsLink</a></p>
     </section>
   </main>
 
-  <noscript><style>.loading-placeholder::after{display:none}</style><p style="color:#fff;text-align:center;padding:20px">Ative o JavaScript para visualizar este link.</p></noscript>
-
 <script>
-(() => {
-  'use strict';
+const API_URL='https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+const THEME_COLORS={verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00'};
+const THEME_RGB={verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0'};
+const $=id=>document.getElementById(id);
 
-  const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec',
-    TIMEOUT: 10000,
-    THEMES: ['verde','azul','roxo','laranja','preto','cardapio'],
-    COLORS: { verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00' },
-    DEFAULT_THEME: 'verde'
-  };
+function fetchTimeout(url,ms=10000){ const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms); return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(t)); }
+function removeLoaders(){ document.querySelectorAll('.loading-placeholder').forEach(e=>e.classList.remove('loading-placeholder')); }
+function errBox(m){ removeLoaders(); $('container').innerHTML=`<div class="error-state"><div class="error-icon"><span class="material-icons-round">error_outline</span></div><h2>Link não encontrado</h2><p>${m}</p><a href="/">Voltar</a></div>`; }
+async function getData(slug){ const r=await fetchTimeout(`${API_URL}?slug=${encodeURIComponent(slug)}`); if(!r.ok) throw new Error('Falha na conexão'); const t=await r.text(); if(!t) throw new Error('Link vazio'); const j=JSON.parse(t); if(j.error) throw new Error(j.error); return j; }
+function mapType(u){ if(!u) return 'vazio'; if(u.includes('/embed')||u.includes('output=embed')) return 'embed'; if(u.includes('goo.gl')) return 'curto'; if(u.includes('google.com/maps')) return 'normal'; return 'outro'; }
+function mapCard(url,c){ return `<div class="location-fallback"><div class="location-fallback-icon"><span class="material-icons-round">location_on</span></div><p>Ver no Google Maps</p><a href="${url}" target="_blank" rel="noopener noreferrer" style="background:${c}"><span class="material-icons-round">map</span>Abrir Maps</a></div>`; }
+function zap(n){ let v=String(n||'').replace(/\D/g,''); if(v.length>=10&&v.length<=11) v='55'+v; return v; }
 
-  const $ = id => document.getElementById(id);
-  const safeText = (el, text) => { if(el) el.textContent = text?? ''; };
-  const escapeHtml = str => String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+(async()=>{
+  const slug=new URLSearchParams(location.search).get('slug')?.trim();
+  if(!slug){ location.replace('/'); return; }
+  try{
+    const link=await getData(slug); removeLoaders();
+    const tema=['verde','azul','roxo','laranja','preto','cardapio'].includes(link.tema)?link.tema:'verde';
+    document.documentElement.style.setProperty('--theme',THEME_COLORS[tema]);
+    document.documentElement.style.setProperty('--theme-rgb',THEME_RGB[tema]);
+    $('container').className=`reception-page theme-${tema}`;
+    $('themeColorMeta').content=THEME_COLORS[tema];
+    document.title=`${link.empresa||'WhatsApp'} | WhatsApp`;
 
-  function fetchWithTimeout(url, options={}, timeout=CONFIG.TIMEOUT){
-    const controller = new AbortController();
-    const timer = setTimeout(()=>controller.abort(), timeout);
-    return fetch(url,{...options, signal:controller.signal}).finally(()=>clearTimeout(timer));
-  }
+    const hasBanner=!!link.banner_url?.trim(), hasLogo=!!link.logo_url?.trim();
+    if(hasBanner){ $('bannerImg').src=link.banner_url; $('bannerDiv').style.display='block'; }
+    else if(hasLogo){ $('logoBannerImg').src=link.logo_url; $('logoBannerDiv').style.display='block'; }
+    else $('colorBannerDiv').style.display='grid';
 
-  async function fetchWithRetry(url, retries=1){
-    for(let i=0;i<=retries;i++){
-      try{
-        const res = await fetchWithTimeout(url);
-        if(!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res;
-      }catch(err){
-        if(i===retries) throw err;
-        if(err.name==='AbortError') throw new Error('Tempo esgotado. Verifique sua conexão.');
-        await new Promise(r=>setTimeout(r, 600));
-      }
+    if(hasLogo){
+      $('logoCircleImg').src=link.logo_url; $('logoCircle').style.display='flex'; $('avatarCircle').style.display='none';
+      $('logoCircleImg').onerror=()=>{ $('logoCircle').style.display='none'; $('avatarLetter').textContent=(link.empresa||'W')[0].toUpperCase(); $('avatarCircle').style.display='flex'; };
+    }else{ $('avatarLetter').textContent=(link.empresa||'W')[0].toUpperCase(); $('avatarCircle').style.display='flex'; }
+
+    $('empresaNome').textContent=link.empresa||'';
+    if(link.descricao?.trim()){ $('descricaoTexto').textContent=link.descricao; $('descricaoTexto').style.display='block'; }
+    if(tema==='preto') $('divider').style.display='block';
+
+    const n1=zap(link.whatsapp); let u1=`https://wa.me/${n1}`; if(link.mensagem?.trim()) u1+=`?text=${encodeURIComponent(link.mensagem)}`;
+    $('whatsappBtnText').textContent=link.botao_whatsapp?.trim()||'Falar no WhatsApp';
+    $('whatsappBtn').onclick=()=>window.open(u1,'_blank','noopener,noreferrer');
+
+    if(String(link.whatsapp2||'').replace(/\D/g,'').length>=10){
+      const n2=zap(link.whatsapp2); let u2=`https://wa.me/${n2}`; if(link.mensagem?.trim()) u2+=`?text=${encodeURIComponent(link.mensagem)}`;
+      $('whatsappBtn2Text').textContent=link.botao_whatsapp2?.trim()||'Falar no WhatsApp';
+      $('whatsappBtn2').style.display='flex'; $('whatsappBtn2').onclick=()=>window.open(u2,'_blank','noopener,noreferrer');
     }
-  }
 
-  function loadThemeCss(tema){
-    return new Promise((resolve)=>{
-      const safeTema = CONFIG.THEMES.includes(tema)? tema : CONFIG.DEFAULT_THEME;
-      const href = `css/redirect/${safeTema}.css`;
-      if(document.querySelector(`link[href="${href}"]`)) return resolve(safeTema);
-      document.querySelectorAll('link[data-theme-css]').forEach(el=>el.remove());
-      const link = document.createElement('link');
-      link.rel='stylesheet'; link.href=href; link.dataset.themeCss='true';
-      link.onload=()=>resolve(safeTema);
-      link.onerror=()=>{
-        if(safeTema!==CONFIG.DEFAULT_THEME) loadThemeCss(CONFIG.DEFAULT_THEME).then(resolve);
-        else resolve(CONFIG.DEFAULT_THEME);
-      };
-      document.head.appendChild(link);
-    });
-  }
+    let social=false;
+    if(link.instagram?.trim()){ $('instagramBtn').style.display='flex'; $('instagramBtn').onclick=()=>window.open(`https://instagram.com/${link.instagram.replace('@','').trim()}`,'_blank','noopener,noreferrer'); social=true; }
+    if(link.facebook?.trim()){ $('facebookBtn').style.display='flex'; $('facebookBtn').onclick=()=>window.open(link.facebook,'_blank','noopener,noreferrer'); social=true; }
+    if(link.site?.trim()){ $('siteBtn').style.display='flex'; $('siteBtn').onclick=()=>window.open(link.site,'_blank','noopener,noreferrer'); social=true; }
+    if(social) $('socialLinks').style.display='flex';
 
-  function removePlaceholders(){ document.querySelectorAll('.loading-placeholder').forEach(el=>el.classList.remove('loading-placeholder')); }
-
-  function showError(msg){
-    removePlaceholders();
-    $('container').innerHTML = `<div class="error-state"><div class="error-icon"><span class="material-icons-round">error_outline</span></div><h2>Link não encontrado</h2><p>${escapeHtml(msg)}</p><a href="/">Ir para página inicial</a></div>`;
-  }
-
-  async function getLinkData(slug){
-    const res = await fetchWithRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
-    const text = await res.text();
-    if(!text) throw new Error('Resposta vazia da API');
-    let data;
-    try{ data = JSON.parse(text); }catch{ throw new Error('Resposta inválida da API'); }
-    if(data.error) throw new Error(data.error);
-    return data;
-  }
-
-  function detectMapType(url){
-    if(!url) return 'vazio';
-    if(url.includes('google.com/maps/embed')||url.includes('output=embed')) return 'embed';
-    if(url.includes('maps.app.goo.gl')||url.includes('goo.gl/maps')) return 'curto';
-    if(url.includes('google.com/maps')||url.includes('google.com.br/maps')) return 'normal';
-    return 'outro';
-  }
-
-  function createLocationCard(url, color){
-    return `<div class="location-fallback"><div class="location-fallback-icon"><span class="material-icons-round">location_on</span></div><p>Toque abaixo para visualizar a localização</p><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="--fallback-theme:${color}"><span class="material-icons-round">map</span>Abrir no Google Maps</a></div>`;
-  }
-
-  function formatZap(num){
-    let v = String(num||'').replace(/\D/g,'');
-    if(v.length===10||v.length===11) v='55'+v;
-    return v;
-  }
-
-  function buildWaUrl(number, message){
-    if(!number) return null;
-    let url = `https://wa.me/${number}`;
-    if(message?.trim()) url+=`?text=${encodeURIComponent(message.trim())}`;
-    return url;
-  }
-
-  async function init(){
-    const slug = new URLSearchParams(location.search).get('slug')?.trim();
-    if(!slug){ location.replace('/'); return; }
-    if(slug.length>120){ showError('Slug inválido'); return; }
-
-    try{
-      const link = await getLinkData(slug);
-      const temaRaw = (link.tema||'').toLowerCase().trim();
-      const tema = CONFIG.THEMES.includes(temaRaw)? temaRaw : CONFIG.DEFAULT_THEME;
-
-      await loadThemeCss(tema);
-      removePlaceholders();
-
-      $('container').className = `reception-page theme-${tema}`;
-      $('themeColorMeta').content = CONFIG.COLORS[tema] || CONFIG.COLORS.verde;
-      document.title = `${(link.empresa||'WhatsApp').trim()} | WhatsApp`;
-
-      // Banner / Logo com fallback robusto
-      const temBanner =!!link.banner_url?.trim();
-      const temLogo =!!link.logo_url?.trim();
-      const bannerImg = $('bannerImg'), logoBannerImg = $('logoBannerImg');
-
-      const showColorBanner = () => { $('colorBannerDiv').style.display='flex'; };
-
-      if(temBanner){
-        bannerImg.onerror = showColorBanner;
-        bannerImg.src = link.banner_url.trim();
-        $('bannerDiv').style.display='block';
-      } else if(temLogo){
-        logoBannerImg.onerror = showColorBanner;
-        logoBannerImg.src = link.logo_url.trim();
-        $('logoBannerDiv').style.display='block';
-      } else {
-        showColorBanner();
-      }
-
-      // Avatar circular
-      if(temLogo){
-        const circleImg = $('logoCircleImg');
-        circleImg.onerror = () => {
-          $('logoCircle').style.display='none';
-          $('avatarLetter').textContent = (link.empresa||'W').charAt(0).toUpperCase();
-          $('avatarCircle').style.display='flex';
-        };
-        circleImg.src = link.logo_url.trim();
-        $('logoCircle').style.display='flex';
-        $('avatarCircle').style.display='none';
-      } else {
-        safeText($('avatarLetter'), (link.empresa||'W').charAt(0).toUpperCase());
-        $('avatarCircle').style.display='flex';
-      }
-
-      safeText($('empresaNome'), link.empresa || '');
-      if(link.descricao?.trim()){ safeText($('descricaoTexto'), link.descricao.trim()); $('descricaoTexto').style.display='block'; }
-      if(tema==='preto') $('divider').style.display='block';
-
-      // WhatsApp Principal
-      const waNum = formatZap(link.whatsapp);
-      const waUrl = buildWaUrl(waNum, link.mensagem);
-      if(!waUrl) throw new Error('Número de WhatsApp inválido');
-      safeText($('whatsappBtnText'), link.botao_whatsapp?.trim() || 'Falar no WhatsApp');
-      $('whatsappBtn').addEventListener('click', ()=>window.open(waUrl,'_blank','noopener,noreferrer'));
-
-      // WhatsApp 2
-      if(String(link.whatsapp2||'').replace(/\D/g,'').length>=10){
-        const wa2Num = formatZap(link.whatsapp2);
-        const wa2Url = buildWaUrl(wa2Num, link.mensagem);
-        if(wa2Url){
-          safeText($('whatsappBtn2Text'), link.botao_whatsapp2?.trim() || 'Falar no WhatsApp');
-          $('whatsappBtn2').style.display='flex';
-          $('whatsappBtn2').addEventListener('click', ()=>window.open(wa2Url,'_blank','noopener,noreferrer'));
-        }
-      }
-
-      // Sociais
-      let hasSocial=false;
-      if(link.instagram?.trim()){
-        $('instagramBtn').style.display='flex';
-        const clean = link.instagram.trim().replace('@','').replace(/[^a-zA-Z0-9._]/g,'');
-        $('instagramBtn').addEventListener('click', ()=>window.open(`https://instagram.com/${clean}`,'_blank','noopener,noreferrer'));
-        hasSocial=true;
-      }
-      if(link.facebook?.trim()){
-        try{ new URL(link.facebook.trim()); $('facebookBtn').style.display='flex'; $('facebookBtn').addEventListener('click', ()=>window.open(link.facebook.trim(),'_blank','noopener,noreferrer')); hasSocial=true; }catch{}
-      }
-      if(link.site?.trim()){
-        try{ new URL(link.site.trim()); $('siteBtn').style.display='flex'; $('siteBtn').addEventListener('click', ()=>window.open(link.site.trim(),'_blank','noopener,noreferrer')); hasSocial=true; }catch{}
-      }
-      if(hasSocial) $('socialLinks').style.display='flex';
-
-      // Localização
-      if(link.localizacao?.trim()){
-        const locUrl = link.localizacao.trim();
-        try{
-          // valida se é URL
-          new URL(locUrl);
-          $('locationBlock').style.display='block';
-          $('mapLink').href = locUrl;
-          const type = detectMapType(locUrl);
-          const iframe = $('mapIframe'), container = $('mapContainer');
-          if(type==='embed'){ iframe.src=locUrl; iframe.style.display='block'; }
-          else if(type==='curto'||type==='outro'){ iframe.style.display='none'; container.innerHTML=createLocationCard(locUrl, CONFIG.COLORS[tema]); }
-          else{ let e=locUrl; if(!e.includes('output=embed')) e+=(e.includes('?')?'&':'?')+'output=embed'; iframe.src=e; iframe.style.display='block'; }
-        }catch{}
-      }
-
-      if(link.horario?.trim()){ $('horarioBlock').style.display='flex'; safeText($('horarioTexto'), link.horario.trim()); }
-
-    }catch(err){
-      showError(err.message||'Link não encontrado');
+    if(link.localizacao?.trim()){
+      const url=link.localizacao.trim(); $('locationBlock').style.display='block'; $('mapLink').href=url;
+      const type=mapType(url), iframe=$('mapIframe'), box=$('mapContainer');
+      if(type==='embed'){ iframe.src=url; }
+      else if(type==='curto'||type==='outro'){ iframe.style.display='none'; box.innerHTML=mapCard(url, THEME_COLORS[tema]); }
+      else{ let e=url; if(!e.includes('output=embed')) e+=(e.includes('?')?'&':'?')+'output=embed'; iframe.src=e; }
     }
-  }
-
-  init();
+    if(link.horario?.trim()){ $('horarioBlock').style.display='flex'; $('horarioTexto').textContent=link.horario; }
+  }catch(e){ errBox(e.message||'Link não encontrado'); }
 })();
 </script>
 </body>
