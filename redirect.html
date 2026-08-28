@@ -30,9 +30,7 @@
       background:#111113; position:relative; display:flex; flex-direction:column;
       opacity:0; transform:scale(.95); transition: opacity .4s ease, transform .4s cubic-bezier(.2,.8,.2,1);
     }
-    .reception-page.loaded {
-      opacity:1; transform:scale(1);
-    }
+    .reception-page.loaded { opacity:1; transform:scale(1); }
     @media(min-width:600px) {
       .reception-page { margin:32px auto; min-height:auto; border-radius:32px; border:1px solid rgba(255,255,255,.06); box-shadow:0 20px 80px rgba(0,0,0,.6); }
     }
@@ -41,7 +39,6 @@
     @keyframes shimmer { to { transform:translateX(100%); } }
     .hidden { display:none !important; }
 
-    /* Overlay de carregamento */
     #loading-overlay {
       position:fixed; inset:0; z-index:9999; background:#08080a;
       display:flex; align-items:center; justify-content:center;
@@ -58,16 +55,11 @@
   </style>
 </head>
 <body class="reception-body">
-  <!-- Overlay de carregamento -->
-  <div id="loading-overlay">
-    <div class="spinner"></div>
-  </div>
+  <div id="loading-overlay"><div class="spinner"></div></div>
 
   <main class="reception-page theme-verde" id="container">
-    <!-- Camadas de efeito -->
     <div class="fog-layer" aria-hidden="true"></div>
     <div class="dust-layer" aria-hidden="true"></div>
-    <!-- Camadas extras para temas específicos podem ser adicionadas via CSS -->
 
     <div class="header-visual" id="headerVisual">
       <div class="banner-image hidden" id="bannerDiv"><img id="bannerImg" src="" alt="Banner" loading="eager" decoding="async" /></div>
@@ -118,19 +110,9 @@
   </main>
 
   <script>
-    'use strict';
-
-    const CONFIG = {
-      API_URL: 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec',
-      TIMEOUT_MS: 10000,
-      MAX_RETRIES: 3,
-      CACHE_DURATION_MS: 5 * 60 * 1000,
-      THEMES: ['verde', 'azul', 'roxo', 'laranja', 'preto', 'cardapio'],
-      DEFAULT_THEME: 'verde',
-      THEME_COLORS: { verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00' },
-      THEME_RGB: { verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0' }
-    };
-
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+    const THEME_COLORS = { verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00' };
+    const THEME_RGB = { verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0' };
     const $ = id => document.getElementById(id);
     const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -184,33 +166,10 @@
         </div>`;
     }
 
-    function isValidTheme(tema) {
-      return CONFIG.THEMES.includes(tema);
-    }
-
-    // Cache
-    function getCachedData(slug) {
-      try {
-        const cacheKey = `whatslink_cache_${slug}`;
-        const cached = localStorage.getItem(cacheKey);
-        if (!cached) return null;
-        const { data, timestamp } = JSON.parse(cached);
-        if (Date.now() - timestamp > CONFIG.CACHE_DURATION_MS) {
-          localStorage.removeItem(cacheKey);
-          return null;
-        }
-        return data;
-      } catch (e) { return null; }
-    }
-
-    function setCachedData(slug, data) {
-      try {
-        localStorage.setItem(`whatslink_cache_${slug}`, JSON.stringify({ data, timestamp: Date.now() }));
-      } catch (e) {}
-    }
+    function isValidTheme(tema) { return ['verde','azul','roxo','laranja','preto','cardapio'].includes(tema); }
 
     function carregarCssTema(tema) {
-      if (!isValidTheme(tema)) tema = CONFIG.DEFAULT_THEME;
+      if (!isValidTheme(tema)) tema = 'verde';
       $$('link[data-theme-css]').forEach(el => el.remove());
       const link = document.createElement('link');
       link.rel = 'stylesheet';
@@ -218,16 +177,16 @@
       link.dataset.themeCss = 'true';
       link.onerror = () => {
         log('error', `Falha ao carregar CSS do tema: ${tema}`);
-        if (tema !== CONFIG.DEFAULT_THEME) carregarCssTema(CONFIG.DEFAULT_THEME);
+        if (tema !== 'verde') carregarCssTema('verde');
       };
       document.head.appendChild(link);
     }
 
-    async function fetchWithRetry(url, options = {}, retries = CONFIG.MAX_RETRIES) {
+    async function fetchWithRetry(url, options = {}, retries = 3) {
       for (let attempt = 1; attempt <= retries; attempt++) {
         try {
           const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), CONFIG.TIMEOUT_MS);
+          const timeout = setTimeout(() => controller.abort(), 10000);
           const response = await fetch(url, { ...options, signal: controller.signal });
           clearTimeout(timeout);
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -241,15 +200,12 @@
     }
 
     async function buscarLink(slug) {
-      const cached = getCachedData(slug);
-      if (cached) { log('info', 'Dados carregados do cache'); return cached; }
-      const response = await fetchWithRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
+      const response = await fetchWithRetry(`${API_URL}?slug=${encodeURIComponent(slug)}`);
       const text = await response.text();
       if (!text) throw new Error('Resposta vazia');
       let data;
       try { data = JSON.parse(text); } catch (e) { throw new Error('Resposta inválida'); }
       if (data.error) throw new Error(data.error);
-      setCachedData(slug, data);
       return data;
     }
 
@@ -269,11 +225,10 @@
         </div>`;
     }
 
-    function renderizarHeader(data, container, tema) {
+    function renderizarHeader(data, container) {
       const temBanner = sanitizeUrl(data.banner_url) !== '';
       const temLogo = sanitizeUrl(data.logo_url) !== '';
 
-      // Limpa
       $('headerVisual').classList.add('hidden');
       $('bannerDiv').classList.add('hidden');
       $('colorBannerDiv').classList.add('hidden');
@@ -307,11 +262,11 @@
 
     function renderizarWhatsApp(data) {
       if (isValidWhatsApp(data.whatsapp)) {
-        const wa1 = formatarWhatsApp(data.whatsapp);
-        let url1 = `https://wa.me/${wa1}`;
-        if (data.mensagem) url1 += `?text=${encodeURIComponent(data.mensagem)}`;
+        const wa = formatarWhatsApp(data.whatsapp);
+        let url = `https://wa.me/${wa}`;
+        if (data.mensagem) url += `?text=${encodeURIComponent(data.mensagem)}`;
         $('whatsappBtnText').textContent = sanitizeString(data.botao_whatsapp, 50) || 'Falar no WhatsApp';
-        $('whatsappBtn').onclick = () => window.open(url1, '_blank', 'noopener,noreferrer');
+        $('whatsappBtn').onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
       } else {
         $('whatsappBtnText').textContent = 'WhatsApp indisponível';
       }
@@ -357,7 +312,7 @@
         $('mapIframe').style.display = 'block';
       } else if (tipo === 'curto' || tipo === 'outro') {
         $('mapIframe').style.display = 'none';
-        $('mapContainer').innerHTML = criarCardLocalizacao(locUrl, CONFIG.THEME_COLORS[tema]);
+        $('mapContainer').innerHTML = criarCardLocalizacao(locUrl, THEME_COLORS[tema]);
       } else {
         let embedUrl = locUrl;
         if (!embedUrl.includes('output=embed')) embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'output=embed';
@@ -374,16 +329,16 @@
 
     function renderizarPagina(data) {
       const slug = new URLSearchParams(location.search).get('slug')?.trim();
-      const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
+      const tema = isValidTheme(data.tema) ? data.tema : 'verde';
 
       carregarCssTema(tema);
-      document.documentElement.style.setProperty('--theme', CONFIG.THEME_COLORS[tema]);
-      document.documentElement.style.setProperty('--theme-rgb', CONFIG.THEME_RGB[tema]);
+      document.documentElement.style.setProperty('--theme', THEME_COLORS[tema]);
+      document.documentElement.style.setProperty('--theme-rgb', THEME_RGB[tema]);
       $('container').className = `reception-page theme-${tema}`;
-      $('themeColorMeta').content = CONFIG.THEME_COLORS[tema];
+      $('themeColorMeta').content = THEME_COLORS[tema];
       document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
 
-      renderizarHeader(data, $('container'), tema);
+      renderizarHeader(data, $('container'));
       $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
       if (data.descricao) { $('descricaoTexto').textContent = sanitizeString(data.descricao, 500); $('descricaoTexto').classList.remove('hidden'); }
       if (tema === 'preto') $('divider').classList.remove('hidden');
@@ -393,10 +348,8 @@
       renderizarHorario(data);
       removeLoaders();
 
-      // Ativa animação de aparição
       requestAnimationFrame(() => {
         $('container').classList.add('loaded');
-        // Esconde overlay de carregamento
         const overlay = $('loading-overlay');
         if (overlay) overlay.classList.add('fade-out');
       });
@@ -411,7 +364,6 @@
       } catch (error) {
         log('error', 'Falha ao carregar link', error);
         showError(error.message || 'Não foi possível carregar este link');
-        // Mesmo em erro, esconder overlay
         const overlay = $('loading-overlay');
         if (overlay) overlay.classList.add('fade-out');
       }
