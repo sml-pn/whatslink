@@ -20,18 +20,6 @@
     html, body { width:100%; background:#08080a; overflow-x:hidden; }
     body { font-family:'Outfit',sans-serif; color:#fff; min-height:100dvh; display:flex; justify-content:center; -webkit-font-smoothing:antialiased; }
 
-    /* Loader overlay */
-    #loading-overlay {
-      position:fixed; inset:0; z-index:9999; background:#08080a;
-      display:grid; place-items:center;
-      transition:opacity .45s ease, visibility .45s ease;
-      will-change:opacity;
-    }
-    #loading-overlay.fade-out { opacity:0; visibility:hidden; pointer-events:none; }
-    .spinner { width:40px; height:40px; border-radius:50%; border:3px solid rgba(255,255,255,.08); border-top-color:var(--theme); animation:spin .9s linear infinite; }
-    @keyframes spin { to { transform:rotate(360deg); } }
-
-    /* Container da página - ocupa espaço desde o início, opacidade 0 para evitar layout shift */
     .reception-body {
       background:
         radial-gradient(600px circle at 0% 0%, rgba(var(--theme-rgb),.14), transparent 40%),
@@ -42,7 +30,7 @@
       width:100%; max-width:480px; min-height:100dvh; margin:0 auto;
       background:#111113; position:relative; display:flex; flex-direction:column;
       opacity:0; transform:translateY(10px);
-      transition:opacity .55s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+      transition:opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1);
       will-change:opacity, transform;
     }
     .reception-page.loaded { opacity:1; transform:translateY(0); }
@@ -50,7 +38,6 @@
       .reception-page { margin:32px auto; min-height:auto; border-radius:32px; border:1px solid rgba(255,255,255,.06); }
     }
 
-    /* Cabeçalho com altura fixa – evita quebra quando o banner carrega */
     .header-visual {
       width:100%; height:280px; position:relative;
       background:radial-gradient(circle at 50% 30%, rgba(var(--theme-rgb),.22), transparent 60%), #151517;
@@ -65,7 +52,6 @@
     .banner-image img { width:100%; height:100%; object-fit:cover; display:block; }
     .color-banner { display:grid; place-items:center; color:var(--theme); font-size:72px; opacity:.9; }
 
-    /* Conteúdo com avatar sobreposto */
     .reception-content {
       padding:0 24px 32px; position:relative; z-index:5;
       display:flex; flex-direction:column; align-items:center; margin-top:-48px;
@@ -81,20 +67,6 @@
     .company-name { min-height:32px; font-size:26px; font-weight:700; letter-spacing:-.03em; margin:16px 0 8px; text-align:center; }
     .company-desc { min-height:20px; font-size:15px; color:#9f9fa9; text-align:center; max-width:32ch; margin:0 0 24px; }
 
-    /* Skeleton para carregamento */
-    .loading-placeholder {
-      position:relative; overflow:hidden; background:#1a1a1e!important; color:transparent!important; border-color:transparent!important; border-radius:12px;
-    }
-    .loading-placeholder::after {
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
-      transform:translateX(-100%); animation:shimmer 1.2s infinite linear;
-    }
-    @keyframes shimmer { 100% { transform:translateX(100%); } }
-
-    .hidden { display:none !important; }
-
-    /* Botões e cards */
     .whatsapp-btn {
       width:100%; height:56px; border:0; border-radius:999px;
       background:linear-gradient(135deg, var(--theme), #128C7E); color:#fff; font-weight:600;
@@ -123,26 +95,26 @@
     }
     .powered-by { margin-top:28px; font-size:11px; color:#52525b; }
     .powered-by a { color:#71717a; text-decoration:none; }
+
+    .hidden { display:none !important; }
   </style>
 </head>
 <body class="reception-body">
-  <div id="loading-overlay"><div class="spinner"></div></div>
-
   <main class="reception-page theme-verde" id="container">
-    <!-- Camadas de efeito (necessárias para os efeitos dos temas) -->
+    <!-- Camadas de efeito -->
     <div class="fog-layer" aria-hidden="true"></div>
     <div class="dust-layer" aria-hidden="true"></div>
 
     <!-- Cabeçalho -->
     <div class="header-visual" id="headerVisual">
       <div class="banner-image hidden" id="bannerDiv"><img id="bannerImg" src="" alt="Banner" /></div>
-      <div class="color-banner" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
+      <div class="color-banner hidden" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
     </div>
 
     <!-- Conteúdo -->
     <section class="reception-content">
       <div class="logo-circle hidden" id="logoCircle"><img id="logoCircleImg" src="" alt="Logo" /></div>
-      <div class="avatar-circle" id="avatarCircle"><span id="avatarLetter"></span></div>
+      <div class="avatar-circle hidden" id="avatarCircle"><span id="avatarLetter"></span></div>
       <h1 class="company-name" id="empresaNome"></h1>
       <p class="company-desc" id="descricaoTexto"></p>
       <div class="divider hidden" id="divider" style="width:24px; height:3px; border-radius:999px; background:var(--theme); margin:0 0 24px;"></div>
@@ -244,19 +216,16 @@
       return CONFIG.THEMES.includes(tema);
     }
 
-    // Carrega o CSS do tema e retorna uma Promise que resolve quando carregar
     function carregarCssTema(tema) {
       return new Promise((resolve, reject) => {
         const safe = isValidTheme(tema) ? tema : CONFIG.DEFAULT_THEME;
         const href = `css/redirect/${safe}.css`;
 
-        // Verifica se já está carregado
         if (document.querySelector(`link[href="${href}"]`)) {
           resolve(safe);
           return;
         }
 
-        // Remove qualquer CSS de tema anterior
         $$('link[data-theme-css]').forEach(el => el.remove());
 
         const link = document.createElement('link');
@@ -266,11 +235,8 @@
 
         link.onload = () => resolve(safe);
         link.onerror = () => {
-          // Se falhar e não for o tema padrão, tenta carregar o padrão
           if (safe !== CONFIG.DEFAULT_THEME) {
-            carregarCssTema(CONFIG.DEFAULT_THEME)
-              .then(resolve)
-              .catch(reject);
+            carregarCssTema(CONFIG.DEFAULT_THEME).then(resolve).catch(reject);
           } else {
             reject(new Error('Não foi possível carregar o CSS do tema'));
           }
@@ -296,12 +262,6 @@
       }
     }
 
-    const waitImg = img => new Promise(resolve => {
-      if (!img || !img.src) { resolve(); return; }
-      if (img.complete) { resolve(); return; }
-      img.onload = img.onerror = () => resolve();
-    });
-
     function removeLoaders() {
       $$('.loading-placeholder').forEach(el => el.classList.remove('loading-placeholder'));
     }
@@ -319,8 +279,6 @@
         </div>`;
       container.classList.add('loaded');
       container.style.opacity = '';
-      const overlay = $('loading-overlay');
-      if (overlay) overlay.classList.add('fade-out');
     }
 
     function renderizarHeader(data, container) {
@@ -419,36 +377,28 @@
     }
 
     async function init() {
-      const overlay = $('loading-overlay');
       const container = $('container');
-
-      // Garante que a página começa invisível, mas ocupa espaço
+      // Mantém invisível até tudo pronto
       container.style.opacity = '0';
 
       const slug = new URLSearchParams(location.search).get('slug')?.trim();
       if (!slug) { location.replace('/'); return; }
 
       try {
-        // Busca dados
         const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
         const text = await response.text();
         const data = JSON.parse(text);
         if (data.error) throw new Error(data.error);
 
-        // Define tema
         const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
-
-        // Carrega CSS do tema e aguarda
         await carregarCssTema(tema);
 
-        // Aplica cores e classe
         document.documentElement.style.setProperty('--theme', CONFIG.THEME_COLORS[tema]);
         document.documentElement.style.setProperty('--theme-rgb', CONFIG.THEME_RGB[tema]);
         $('themeColorMeta').content = CONFIG.THEME_COLORS[tema];
         container.className = `reception-page theme-${tema}`;
         document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
 
-        // Renderiza todo o conteúdo
         renderizarHeader(data, container);
         $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
         if (data.descricao) {
@@ -462,16 +412,11 @@
         renderizarHorario(data);
         removeLoaders();
 
-        // Aguarda imagens principais carregarem para evitar pulos de layout
-        await Promise.allSettled([waitImg($('bannerImg')), waitImg($('logoCircleImg'))]);
-
         // Revela suavemente
-        requestAnimationFrame(() => requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
           container.classList.add('loaded');
           container.style.opacity = '';
-          overlay.classList.add('fade-out');
-          setTimeout(() => overlay.remove(), 500);
-        }));
+        });
 
       } catch (error) {
         console.error('[WhatsLink] Erro:', error);
