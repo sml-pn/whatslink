@@ -77,6 +77,19 @@
       object-fit: cover;
       margin: 8px auto;
     }
+
+    /* Spinner no botão salvar */
+    .save-loader {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-left: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -141,7 +154,7 @@
         
         <div class="field">
           <label for="editWhatsapp">WhatsApp principal *</label>
-          <input type="tel" id="editWhatsapp" required maxlength="18" />
+          <input type="tel" id="editWhatsapp" required maxlength="18" inputmode="tel" />
         </div>
         
         <div class="field">
@@ -151,7 +164,7 @@
         
         <div class="field">
           <label for="editWhatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
-          <input type="tel" id="editWhatsapp2" maxlength="18" />
+          <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
         </div>
         
         <div class="field">
@@ -189,7 +202,10 @@
         <div class="grid-2">
           <div class="field">
             <label for="editInstagram">Instagram</label>
-            <input type="text" id="editInstagram" />
+            <div class="input-icon-group">
+              <span class="input-icon">@</span>
+              <input type="text" id="editInstagram" placeholder="suaempresa" />
+            </div>
           </div>
           <div class="field">
             <label for="editHorario">Horário</label>
@@ -210,7 +226,10 @@
         
         <div class="field">
           <label for="editLocalizacao">Localização (Google Maps)</label>
-          <input type="text" id="editLocalizacao" />
+          <input type="text" id="editLocalizacao" placeholder="Cole aqui o HTML copiado do Google Maps" />
+          <span class="field-hint" style="display:block; margin-top:6px; background:#f0f9ff; padding:10px; border-radius:8px; border:1px solid #bae6fd; color:#0369a1; line-height:1.5;">
+            Cole o código de incorporação do Google Maps ou o link direto. Nós extraímos automaticamente.
+          </span>
         </div>
         
         <div class="field">
@@ -268,9 +287,10 @@
           </div>
         </div>
         
-        <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+        <button type="submit" id="saveBtn" class="btn-primary" style="width:100%; justify-content:center;">
           <span class="material-icons-round">save</span>
           Salvar alterações
+          <span class="save-loader"></span>
         </button>
       </form>
     </div>
@@ -329,6 +349,44 @@
       }
     }
 
+    // ============ FORMATAR WHATSAPP ============
+    function formatarWhatsApp(input) {
+      if (!input) return;
+      input.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+        if (v.length > 6) {
+          if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+          else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+        } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
+        else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
+        e.target.value = v;
+      });
+    }
+    formatarWhatsApp($('#editWhatsapp'));
+    formatarWhatsApp($('#editWhatsapp2'));
+
+    // ============ EXTRAIR URL DO GOOGLE MAPS ============
+    function extrairUrlEmbed(html) {
+      if (!html) return '';
+      if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
+      const srcMatch = html.match(/src=["']([^"']+)["']/);
+      if (srcMatch && srcMatch[1]) return srcMatch[1];
+      const urlMatch = html.match(/https?:\/\/[^\s"']+/);
+      if (urlMatch && urlMatch[0]) return urlMatch[0];
+      return html.trim();
+    }
+
+    $('#editLocalizacao').addEventListener('paste', (e) => {
+      setTimeout(() => {
+        const valor = $('#editLocalizacao').value;
+        const urlExtraida = extrairUrlEmbed(valor);
+        if (urlExtraida !== valor) {
+          $('#editLocalizacao').value = urlExtraida;
+          showToast('Link extraído automaticamente!');
+        }
+      }, 100);
+    });
+
     // ============ PREVIEW DE LOGO NO MODAL ============
     function atualizarPreviewEditLogo() {
       const url = $('#editLogo').value.trim();
@@ -363,6 +421,7 @@
     $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
     $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
 
+    // ============ BUSCAR MEUS LINKS ============
     async function buscarMeusLinks() {
       try {
         const response = await fetch(API_URL, {
@@ -417,6 +476,7 @@
       $('#linksArea').style.display = 'block';
     }
 
+    // ============ ABRIR EDIÇÃO ============
     window.abrirEdicao = async function(id, token) {
       try {
         const response = await fetch(API_URL, {
@@ -495,8 +555,16 @@
       });
     });
 
+    // ============ SUBMETER FORMULÁRIO DE EDIÇÃO ============
     $('#editForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const saveBtn = $('#saveBtn');
+      const loader = saveBtn.querySelector('.save-loader');
+      
+      // Desabilitar botão e mostrar spinner
+      saveBtn.disabled = true;
+      loader.style.display = 'inline-block';
 
       const data = {
         action: 'editar',
@@ -515,7 +583,7 @@
         facebook: $('#editFacebook').value.trim(),
         site: $('#editSite').value.trim(),
         horario: $('#editHorario').value.trim(),
-        localizacao: $('#editLocalizacao').value.trim(),
+        localizacao: extrairUrlEmbed($('#editLocalizacao').value.trim()),
         tema: $('#editTema').value
       };
 
@@ -533,9 +601,14 @@
         buscarMeusLinks();
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
+      } finally {
+        // Reabilitar botão e esconder spinner
+        saveBtn.disabled = false;
+        loader.style.display = 'none';
       }
     });
 
+    // ============ LOGOUT ============
     $('#logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
       currentUser = null;
@@ -544,6 +617,7 @@
       $('#linksArea').style.display = 'none';
     });
 
+    // ============ RESTAURAR SESSÃO ============
     const savedUser = localStorage.getItem('whatslink_user');
     if (savedUser) {
       currentUser = JSON.parse(savedUser);
