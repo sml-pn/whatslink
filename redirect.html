@@ -406,6 +406,12 @@
         $('themeColorMeta').content = CONFIG.THEME_COLORS[tema];
         container.className = `reception-page theme-${tema}`;
         document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
+        // Evento de visualização do link
+gtag('event', 'view_link', {
+  'link_id': data.id,
+  'slug': slug,
+  'theme': tema
+});
 
         renderizarHeader(data, container);
         $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
