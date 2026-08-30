@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -7,12 +7,27 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" id="themeColorMeta" />
 
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://whatslink-48tc.onrender.com/redirect.html" id="ogUrl" />
+  <meta property="og:title" content="WhatsApp" id="ogTitle" />
+  <meta property="og:description" content="Entre em contato pelo WhatsApp." id="ogDescription" />
+  <meta property="og:image" content="https://whatslink-48tc.onrender.com/og-image.png" id="ogImage" />
+  <meta property="og:site_name" content="WhatsLink" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WhatsApp" id="twitterTitle" />
+  <meta name="twitter:description" content="Entre em contato pelo WhatsApp." id="twitterDescription" />
+  <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" id="twitterImage" />
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TTJX70ENFL"></script>
   <script>
@@ -275,22 +290,23 @@
     }
 
     function showError(message) {
-  removeLoaders();
-  const container = $('container');
-  container.innerHTML = `
-    <div style="min-height:100dvh; display:grid; place-items:center; padding:24px; text-align:center">
-      <div>
-        <div style="font-size:48px; margin-bottom:16px;">😕</div>
-        <h2 style="margin:0 0 8px; font-size:20px;">Algo deu errado</h2>
-        <p style="color:#a1a1aa; font-size:14px; max-width:28ch; margin:0 auto 20px;">${message || 'Não foi possível carregar os dados.'}</p>
-        <button onclick="location.reload()" style="padding:12px 20px; border-radius:999px; background:#fff; color:#000; border:none; cursor:pointer; font-weight:600; font-size:13px;">
-          Atualizar página
-        </button>
-      </div>
-    </div>`;
-  container.classList.add('loaded');
-  container.style.opacity = '';
-}
+      removeLoaders();
+      const container = $('container');
+      container.innerHTML = `
+        <div style="min-height:100dvh; display:grid; place-items:center; padding:24px; text-align:center">
+          <div>
+            <div style="font-size:48px; margin-bottom:16px;">😕</div>
+            <h2 style="margin:0 0 8px; font-size:20px;">Algo deu errado</h2>
+            <p style="color:#a1a1aa; font-size:14px; max-width:28ch; margin:0 auto 20px;">${message || 'Não foi possível carregar os dados.'}</p>
+            <button onclick="location.reload()" style="padding:12px 20px; border-radius:999px; background:#fff; color:#000; border:none; cursor:pointer; font-weight:600; font-size:13px;">
+              Atualizar página
+            </button>
+          </div>
+        </div>`;
+      container.classList.add('loaded');
+      container.style.opacity = '';
+    }
+
     function renderizarHeader(data, container) {
       const temBanner = sanitizeUrl(data.banner_url) !== '';
       const temLogo = sanitizeUrl(data.logo_url) !== '';
@@ -388,7 +404,6 @@
 
     async function init() {
       const container = $('container');
-      // Mantém invisível até tudo pronto
       container.style.opacity = '0';
 
       const slug = new URLSearchParams(location.search).get('slug')?.trim();
@@ -408,12 +423,28 @@
         $('themeColorMeta').content = CONFIG.THEME_COLORS[tema];
         container.className = `reception-page theme-${tema}`;
         document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
+
+        // Atualiza meta tags OG dinamicamente
+        const ogImage = data.logo_url || data.banner_url || 'https://whatslink-48tc.onrender.com/og-image.png';
+        const ogTitle = `${data.empresa || 'WhatsApp'} | WhatsApp`;
+        const ogDescription = data.descricao || 'Entre em contato pelo WhatsApp.';
+        const ogUrl = `https://whatslink-48tc.onrender.com/redirect.html?slug=${slug}`;
+
+        $('ogTitle')?.setAttribute('content', ogTitle);
+        $('ogDescription')?.setAttribute('content', ogDescription);
+        $('ogImage')?.setAttribute('content', ogImage);
+        $('ogUrl')?.setAttribute('content', ogUrl);
+
+        $('twitterTitle')?.setAttribute('content', ogTitle);
+        $('twitterDescription')?.setAttribute('content', ogDescription);
+        $('twitterImage')?.setAttribute('content', ogImage);
+
         // Evento de visualização do link
-gtag('event', 'view_link', {
-  'link_id': data.id,
-  'slug': slug,
-  'theme': tema
-});
+        gtag('event', 'view_link', {
+          'link_id': data.id,
+          'slug': slug,
+          'theme': tema
+        });
 
         renderizarHeader(data, container);
         $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
@@ -428,7 +459,6 @@ gtag('event', 'view_link', {
         renderizarHorario(data);
         removeLoaders();
 
-        // Revela suavemente
         requestAnimationFrame(() => {
           container.classList.add('loaded');
           container.style.opacity = '';
@@ -442,127 +472,124 @@ gtag('event', 'view_link', {
 
     init();
   </script>
+
   <!-- CONFIGURAÇÃO DO ANÚNCIO -->
-<script>
-  // Defina aqui o tipo de anúncio: 'script' ou 'iframe'
-  const AD_TYPE = 'iframe'; // ou 'iframe'
-  const AD_SRC = 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5';
-  const AD_WIDTH = 300;
-  const AD_HEIGHT = 250;
-</script>
+  <script>
+    const AD_TYPE = 'iframe';
+    const AD_SRC = 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5';
+    const AD_WIDTH = 300;
+    const AD_HEIGHT = 250;
+  </script>
 
-<!-- ABA DE ANÚNCIO FLUTUANTE -->
-<style>
-  .ad-float {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 9998;
-    width: 300px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.4);
-    overflow: hidden;
-    transition: all .3s ease;
-    font-family: 'Outfit', sans-serif;
-  }
-  .ad-float.minimized {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    background: #25D366;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 20px;
-  }
-  .ad-float-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: #f1f1f1;
-    border-bottom: 1px solid #ddd;
-  }
-  .ad-float-header span {
-    font-size: 12px;
-    color: #666;
-    font-weight: 600;
-  }
-  .ad-float-header button {
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    color: #666;
-    padding: 0 4px;
-    line-height: 1;
-  }
-  .ad-float-content {
-    width: 100%;
-    height: 250px;
-    border: none;
-  }
-  .ad-float.minimized .ad-float-header,
-  .ad-float.minimized .ad-float-content {
-    display: none;
-  }
-  .ad-float-mini-icon {
-    display: none;
-  }
-  .ad-float.minimized .ad-float-mini-icon {
-    display: block;
-  }
-  #adContainer {
-  min-height: 250px;
-  }
-</style>
-
-<div class="ad-float" id="adFloat">
-  <div class="ad-float-header">
-    <span>Anúncio</span>
-    <button id="adMinimizeBtn" title="Minimizar">−</button>
-  </div>
-  <div id="adContainer"></div>
-  <div class="ad-float-mini-icon" id="adMiniIcon">+</div>
-</div>
-
-<script>
-  // Função para carregar o anúncio conforme o tipo
-  function loadAd() {
-    const container = document.getElementById('adContainer');
-    if (AD_TYPE === 'script') {
-      const s = document.createElement('script');
-      s.src = AD_SRC;
-      s.async = true;
-      container.appendChild(s);
-    } else if (AD_TYPE === 'iframe') {
-      const iframe = document.createElement('iframe');
-      iframe.src = AD_SRC;
-      iframe.className = 'ad-float-content';
-      iframe.frameBorder = '0';
-      iframe.scrolling = 'no';
-      container.appendChild(iframe);
+  <!-- ABA DE ANÚNCIO FLUTUANTE -->
+  <style>
+    .ad-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9998;
+      width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+      overflow: hidden;
+      transition: all .3s ease;
+      font-family: 'Outfit', sans-serif;
     }
-  }
+    .ad-float.minimized {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+    }
+    .ad-float-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #f1f1f1;
+      border-bottom: 1px solid #ddd;
+    }
+    .ad-float-header span {
+      font-size: 12px;
+      color: #666;
+      font-weight: 600;
+    }
+    .ad-float-header button {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #666;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .ad-float-content {
+      width: 100%;
+      height: 250px;
+      border: none;
+    }
+    .ad-float.minimized .ad-float-header,
+    .ad-float.minimized .ad-float-content {
+      display: none;
+    }
+    .ad-float-mini-icon {
+      display: none;
+    }
+    .ad-float.minimized .ad-float-mini-icon {
+      display: block;
+    }
+    #adContainer {
+      min-height: 250px;
+    }
+  </style>
 
-  // Inicializar após o carregamento da página
-  window.addEventListener('load', loadAd);
+  <div class="ad-float" id="adFloat">
+    <div class="ad-float-header">
+      <span>Anúncio</span>
+      <button id="adMinimizeBtn" title="Minimizar">−</button>
+    </div>
+    <div id="adContainer"></div>
+    <div class="ad-float-mini-icon" id="adMiniIcon">+</div>
+  </div>
 
-  // Controles de minimizar/expandir
-  const adFloat = document.getElementById('adFloat');
-  const minimizeBtn = document.getElementById('adMinimizeBtn');
-  const miniIcon = document.getElementById('adMiniIcon');
+  <script>
+    function loadAd() {
+      const container = document.getElementById('adContainer');
+      if (AD_TYPE === 'script') {
+        const s = document.createElement('script');
+        s.src = AD_SRC;
+        s.async = true;
+        container.appendChild(s);
+      } else if (AD_TYPE === 'iframe') {
+        const iframe = document.createElement('iframe');
+        iframe.src = AD_SRC;
+        iframe.className = 'ad-float-content';
+        iframe.frameBorder = '0';
+        iframe.scrolling = 'no';
+        container.appendChild(iframe);
+      }
+    }
 
-  minimizeBtn.addEventListener('click', () => {
-    adFloat.classList.add('minimized');
-  });
+    window.addEventListener('load', loadAd);
 
-  miniIcon.addEventListener('click', () => {
-    adFloat.classList.remove('minimized');
-  });
-</script>
+    const adFloat = document.getElementById('adFloat');
+    const minimizeBtn = document.getElementById('adMinimizeBtn');
+    const miniIcon = document.getElementById('adMiniIcon');
+
+    minimizeBtn.addEventListener('click', () => {
+      adFloat.classList.add('minimized');
+    });
+
+    miniIcon.addEventListener('click', () => {
+      adFloat.classList.remove('minimized');
+    });
+  </script>
 </body>
 </html>
