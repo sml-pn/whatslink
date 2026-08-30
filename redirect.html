@@ -275,20 +275,22 @@
     }
 
     function showError(message) {
-      removeLoaders();
-      const container = $('container');
-      container.innerHTML = `
-        <div style="min-height:100dvh; display:grid; place-items:center; padding:24px; text-align:center">
-          <div>
-            <h2>Link não encontrado</h2>
-            <p style="color:#a1a1aa">${message}</p>
-            <a href="/" style="color:#fff">Voltar</a>
-          </div>
-        </div>`;
-      container.classList.add('loaded');
-      container.style.opacity = '';
-    }
-
+  removeLoaders();
+  const container = $('container');
+  container.innerHTML = `
+    <div style="min-height:100dvh; display:grid; place-items:center; padding:24px; text-align:center">
+      <div>
+        <div style="font-size:48px; margin-bottom:16px;">😕</div>
+        <h2 style="margin:0 0 8px; font-size:20px;">Algo deu errado</h2>
+        <p style="color:#a1a1aa; font-size:14px; max-width:28ch; margin:0 auto 20px;">${message || 'Não foi possível carregar os dados.'}</p>
+        <button onclick="location.reload()" style="padding:12px 20px; border-radius:999px; background:#fff; color:#000; border:none; cursor:pointer; font-weight:600; font-size:13px;">
+          Atualizar página
+        </button>
+      </div>
+    </div>`;
+  container.classList.add('loaded');
+  container.style.opacity = '';
+}
     function renderizarHeader(data, container) {
       const temBanner = sanitizeUrl(data.banner_url) !== '';
       const temLogo = sanitizeUrl(data.logo_url) !== '';
