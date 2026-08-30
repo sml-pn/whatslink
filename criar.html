@@ -6,187 +6,104 @@
   <title>Criar Link - WhatsLink</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
-  
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://whatslink-48tc.onrender.com/criar.html" />
+  <meta property="og:title" content="Criar Link - WhatsLink" />
+  <meta property="og:description" content="Preencha os dados e gere seu link de WhatsApp em segundos." />
+  <meta property="og:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
+  <meta property="og:site_name" content="WhatsLink" />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Criar Link - WhatsLink" />
+  <meta name="twitter:description" content="Preencha os dados e gere seu link de WhatsApp em segundos." />
+  <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
+
+  <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
-  
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2325D366'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2325D366'/%3E%3Ctext x='8' y='11' font-size='8' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- Ícones -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  
+
+  <!-- Estilos -->
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/edit.css" />
-  
+
   <style>
     .criar-container { max-width: 680px; margin: 0 auto; padding: 20px; width: 100%; box-sizing: border-box; }
-    
     .login-required {
-      background: white;
-      border-radius: 24px;
-      padding: 48px 32px;
-      text-align: center;
-      box-shadow: 0 4px 24px rgba(0,0,0,.06);
-      max-width: 420px;
-      margin: 60px auto;
-      border: 1px solid var(--border);
-      width: 100%;
-      box-sizing: border-box;
-      overflow: visible;
+      background: white; border-radius: 24px; padding: 48px 32px; text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06); max-width: 420px; margin: 60px auto;
+      border: 1px solid var(--border); width: 100%; box-sizing: border-box; overflow: visible;
     }
-    
     .login-required .login-icon {
-      width: 64px;
-      height: 64px;
-      background: #f0fdf4;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 16px;
-      font-size: 32px;
-      color: var(--whatsapp);
+      width: 64px; height: 64px; background: #f0fdf4; border-radius: 50%;
+      display: grid; place-items: center; margin: 0 auto 16px; font-size: 32px; color: var(--whatsapp);
     }
-    
     .login-required h2 { font-size: 22px; margin-bottom: 8px; }
     .login-required p { color: var(--muted); margin-bottom: 24px; font-size: 14px; line-height: 1.6; }
-    
     .login-benefits {
-      text-align: left;
-      margin-bottom: 24px;
-      padding: 16px;
-      background: #f8fafc;
-      border-radius: 12px;
-      list-style: none;
+      text-align: left; margin-bottom: 24px; padding: 16px; background: #f8fafc;
+      border-radius: 12px; list-style: none;
     }
-    
     .login-benefits li {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--muted);
-      padding: 4px 0;
+      display: flex; align-items: center; gap: 8px; font-size: 13px;
+      color: var(--muted); padding: 4px 0;
     }
-    
-    .login-benefits li .material-icons-round {
-      font-size: 16px;
-      color: var(--whatsapp);
-    }
-    
+    .login-benefits li .material-icons-round { font-size: 16px; color: var(--whatsapp); }
     .google-login-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      background: white;
-      border: 2px solid #e2e8f0;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .2s ease;
-      font-family: 'Inter', sans-serif;
-      color: #0f172a;
-      -webkit-tap-highlight-color: transparent;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; max-width: 300px; margin: 0 auto; padding: 14px 20px;
+      background: white; border: 2px solid #e2e8f0; border-radius: 999px;
+      font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s ease;
+      font-family: 'Inter', sans-serif; color: #0f172a; -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
     }
-    
-    .google-login-btn:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
-      box-shadow: 0 4px 12px rgba(0,0,0,.08);
-    }
-    
-    .google-login-btn:active {
-      transform: scale(.98);
-    }
-    
+    .google-login-btn:hover { background: #f8fafc; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .google-login-btn:active { transform: scale(.98); }
     .google-login-btn svg { flex-shrink: 0; }
-    
     .user-info-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: white;
-      padding: 14px 18px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      margin-bottom: 20px;
-      box-shadow: var(--shadow-sm);
-      width: 100%;
-      box-sizing: border-box;
+      display: flex; align-items: center; justify-content: space-between; background: white;
+      padding: 14px 18px; border-radius: 16px; border: 1px solid var(--border);
+      margin-bottom: 20px; box-shadow: var(--shadow-sm); width: 100%; box-sizing: border-box;
     }
-    
     .user-info-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .user-info-left img { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; }
     .user-info-left strong { font-size: 14px; display: block; }
     .user-info-left span { font-size: 12px; color: var(--muted); word-break: break-all; }
-    
     .logout-btn {
-      background: none;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--muted);
-      transition: .2s;
-      flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
+      background: none; border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px;
+      cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center;
+      gap: 4px; color: var(--muted); transition: .2s; flex-shrink: 0; -webkit-tap-highlight-color: transparent;
     }
-    
     .logout-btn:hover { background: #f8fafc; }
-    
     .email-notice {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 16px;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      font-size: 13px;
-      color: #1e40af;
-      width: 100%;
-      box-sizing: border-box;
+      display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #eff6ff;
+      border: 1px solid #bfdbfe; border-radius: 12px; margin-bottom: 20px; font-size: 13px;
+      color: #1e40af; width: 100%; box-sizing: border-box;
     }
-    
     .email-notice .material-icons-round { font-size: 18px; flex-shrink: 0; }
-
     .image-preview {
-      margin-top: 8px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #f8fafc;
-      display: none;
+      margin-top: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      background: #f8fafc; display: none;
     }
-    
-    .image-preview img {
-      width: 100%;
-      max-height: 150px;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .logo-preview img {
-      max-height: 80px;
-      width: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 8px auto;
-    }
+    .image-preview img { width: 100%; max-height: 150px; object-fit: cover; display: block; }
+    .logo-preview img { max-height: 80px; width: 80px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
   </style>
 </head>
 <body>
@@ -206,14 +123,12 @@
       <div class="login-icon"><span class="material-icons-round">lock</span></div>
       <h2>🔐 Faça login para criar seu link</h2>
       <p>Use sua conta Google para que possamos salvar seus links e permitir edição posterior.</p>
-      
       <ul class="login-benefits">
         <li><span class="material-icons-round">check_circle</span> Seus links ficam vinculados ao seu email</li>
         <li><span class="material-icons-round">check_circle</span> Edite suas informações até 5x por dia</li>
         <li><span class="material-icons-round">check_circle</span> Acesse "Meus Links" de qualquer dispositivo</li>
         <li><span class="material-icons-round">check_circle</span> Seus dados ficam protegidos e criptografados</li>
       </ul>
-      
       <button id="googleLoginBtn" class="google-login-btn" type="button">
         <svg width="20" height="20" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -365,14 +280,14 @@
               <span class="field-hint">Seu perfil (sem o @)</span>
             </div>
             <div class="field">
-  <label for="horario">Horário de funcionamento <span class="optional">opcional</span></label>
-  <textarea id="horario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
-  <span class="field-hint">
-    Coloque cada período em uma linha.<br>
-    Exemplo: <em>Seg a Sex: 8h às 18h</em><br>
-    <em>Sáb: 8h às 12h</em>
-  </span>
-</div>
+              <label for="horario">Horário de funcionamento <span class="optional">opcional</span></label>
+              <textarea id="horario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
+              <span class="field-hint">
+                Coloque cada período em uma linha.<br>
+                Exemplo: <em>Seg a Sex: 8h às 18h</em><br>
+                <em>Sáb: 8h às 12h</em>
+              </span>
+            </div>
           </div>
           
           <div class="grid-2">
@@ -514,12 +429,13 @@
 
     function extrairUrlEmbed(html) {
       if (!html) return '';
-      if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
-      const srcMatch = html.match(/src=["']([^"']+)["']/);
+      const trimmed = html.trim();
+      if (trimmed.startsWith('http') && !trimmed.includes('<')) return trimmed;
+      const srcMatch = trimmed.match(/src\s*=\s*["']?([^"'\s>]+)["']?/i);
       if (srcMatch && srcMatch[1]) return srcMatch[1];
-      const urlMatch = html.match(/https?:\/\/[^\s"']+/);
+      const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/);
       if (urlMatch && urlMatch[0]) return urlMatch[0];
-      return html.trim();
+      return trimmed;
     }
 
     // ============ PREVIEW DE LOGO ============
