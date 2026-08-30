@@ -6,87 +6,65 @@
   <title>Meus Links - WhatsLink</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
-  
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://whatslink-48tc.onrender.com/edit.html" />
+  <meta property="og:title" content="Meus Links - WhatsLink" />
+  <meta property="og:description" content="Gerencie e edite seus links criados no WhatsLink." />
+  <meta property="og:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
+  <meta property="og:site_name" content="WhatsLink" />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Meus Links - WhatsLink" />
+  <meta name="twitter:description" content="Gerencie e edite seus links criados no WhatsLink." />
+  <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
+
+  <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
-  
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2325D366'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2325D366'/%3E%3Ctext x='8' y='11' font-size='8' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- Ícones -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  
+
+  <!-- Estilos -->
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/edit.css" />
-  
+
   <style>
     .google-login-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      background: white;
-      border: 2px solid #e2e8f0;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .2s ease;
-      font-family: 'Inter', sans-serif;
-      color: #0f172a;
-      -webkit-tap-highlight-color: transparent;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; max-width: 300px; margin: 0 auto; padding: 14px 20px;
+      background: white; border: 2px solid #e2e8f0; border-radius: 999px;
+      font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s ease;
+      font-family: 'Inter', sans-serif; color: #0f172a; -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
     }
-    
-    .google-login-btn:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
-      box-shadow: 0 4px 12px rgba(0,0,0,.08);
-    }
-    
-    .google-login-btn:active {
-      transform: scale(.98);
-    }
-    
+    .google-login-btn:hover { background: #f8fafc; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .google-login-btn:active { transform: scale(.98); }
     .google-login-btn svg { flex-shrink: 0; }
-    
     .image-preview {
-      margin-top: 8px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #f8fafc;
-      display: none;
+      margin-top: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      background: #f8fafc; display: none;
     }
-    
-    .image-preview img {
-      width: 100%;
-      max-height: 120px;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .logo-preview img {
-      max-height: 70px;
-      width: 70px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 8px auto;
-    }
-
-    /* Spinner no botão salvar */
+    .image-preview img { width: 100%; max-height: 120px; object-fit: cover; display: block; }
+    .logo-preview img { max-height: 70px; width: 70px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
     .save-loader {
-      display: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
+      display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
+      border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite;
       margin-left: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -108,7 +86,6 @@
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
-      
       <button id="googleLoginBtn" class="google-login-btn" type="button">
         <svg width="20" height="20" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -146,32 +123,32 @@
       <form id="editForm" novalidate>
         <input type="hidden" id="editId" />
         <input type="hidden" id="editToken" />
-        
+
         <div class="field">
           <label for="editEmpresa">Nome da empresa *</label>
           <input type="text" id="editEmpresa" required />
         </div>
-        
+
         <div class="field">
           <label for="editWhatsapp">WhatsApp principal *</label>
           <input type="tel" id="editWhatsapp" required maxlength="18" inputmode="tel" />
         </div>
-        
+
         <div class="field">
           <label for="editBotao1">Nome do botão principal *</label>
           <input type="text" id="editBotao1" required />
         </div>
-        
+
         <div class="field">
           <label for="editWhatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
           <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
         </div>
-        
+
         <div class="field">
           <label for="editBotao2">Nome do botão secundário <span class="optional">opcional</span></label>
           <input type="text" id="editBotao2" />
         </div>
-        
+
         <div class="grid-2">
           <div class="field">
             <label for="editLogo">Logo (URL)</label>
@@ -188,17 +165,17 @@
             </div>
           </div>
         </div>
-        
+
         <div class="field">
           <label for="editMensagem">Mensagem automática</label>
           <textarea id="editMensagem" rows="2"></textarea>
         </div>
-        
+
         <div class="field">
           <label for="editDescricao">Descrição</label>
           <textarea id="editDescricao" rows="3"></textarea>
         </div>
-        
+
         <div class="grid-2">
           <div class="field">
             <label for="editInstagram">Instagram</label>
@@ -208,16 +185,16 @@
             </div>
           </div>
           <div class="field">
-  <label for="editHorario">Horário</label>
-  <textarea id="editHorario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
-  <span class="field-hint">
-    Coloque cada período em uma linha.<br>
-    Exemplo: <em>Seg a Sex: 8h às 18h</em><br>
-    <em>Sáb: 8h às 12h</em>
-  </span>
-</div>
+            <label for="editHorario">Horário</label>
+            <textarea id="editHorario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
+            <span class="field-hint">
+              Coloque cada período em uma linha.<br>
+              Exemplo: <em>Seg a Sex: 8h às 18h</em><br>
+              <em>Sáb: 8h às 12h</em>
+            </span>
+          </div>
         </div>
-        
+
         <div class="grid-2">
           <div class="field">
             <label for="editFacebook">Facebook</label>
@@ -228,7 +205,7 @@
             <input type="url" id="editSite" />
           </div>
         </div>
-        
+
         <div class="field">
           <label for="editLocalizacao">Localização (Google Maps)</label>
           <input type="text" id="editLocalizacao" placeholder="Cole aqui o HTML copiado do Google Maps" />
@@ -236,7 +213,7 @@
             Cole o código de incorporação do Google Maps ou o link direto. Nós extraímos automaticamente.
           </span>
         </div>
-        
+
         <div class="field">
           <label>Tema da página</label>
           <input type="hidden" id="editTema" value="verde" />
@@ -291,7 +268,7 @@
             </div>
           </div>
         </div>
-        
+
         <button type="submit" id="saveBtn" class="btn-primary" style="width:100%; justify-content:center;">
           <span class="material-icons-round">save</span>
           Salvar alterações
@@ -373,12 +350,13 @@
     // ============ EXTRAIR URL DO GOOGLE MAPS ============
     function extrairUrlEmbed(html) {
       if (!html) return '';
-      if (html.trim().startsWith('http') && !html.includes('<')) return html.trim();
-      const srcMatch = html.match(/src=["']([^"']+)["']/);
+      const trimmed = html.trim();
+      if (trimmed.startsWith('http') && !trimmed.includes('<')) return trimmed;
+      const srcMatch = trimmed.match(/src\s*=\s*["']?([^"'\s>]+)["']?/i);
       if (srcMatch && srcMatch[1]) return srcMatch[1];
-      const urlMatch = html.match(/https?:\/\/[^\s"']+/);
+      const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/);
       if (urlMatch && urlMatch[0]) return urlMatch[0];
-      return html.trim();
+      return trimmed;
     }
 
     $('#editLocalizacao').addEventListener('paste', (e) => {
@@ -510,7 +488,6 @@
         $('#editLocalizacao').value = data.localizacao || '';
         $('#editTema').value = data.tema || 'verde';
 
-        // Mostrar previews
         if (data.logo_url) {
           $('#editLogoPreviewImg').src = data.logo_url;
           $('#editLogoPreview').style.display = 'block';
@@ -520,7 +497,6 @@
           $('#editBannerPreview').style.display = 'block';
         }
 
-        // Marcar tema
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
         });
@@ -567,7 +543,6 @@
       const saveBtn = $('#saveBtn');
       const loader = saveBtn.querySelector('.save-loader');
       
-      // Desabilitar botão e mostrar spinner
       saveBtn.disabled = true;
       loader.style.display = 'inline-block';
 
@@ -607,7 +582,6 @@
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
       } finally {
-        // Reabilitar botão e esconder spinner
         saveBtn.disabled = false;
         loader.style.display = 'none';
       }
