@@ -402,8 +402,26 @@
       $('horarioTexto').textContent = sanitizeString(data.horario, 300);
     }
 
+    // Atualiza as meta tags OG dinamicamente
+    function atualizarMetaTags(data, slug) {
+      const ogTitle = `${data.empresa || 'WhatsApp'} | WhatsApp`;
+      const ogDescription = data.descricao || 'Entre em contato pelo WhatsApp.';
+      const ogImage = data.logo_url || data.banner_url || 'https://whatslink-48tc.onrender.com/og-image.png';
+      const ogUrl = `https://whatslink-48tc.onrender.com/redirect.html?slug=${encodeURIComponent(slug)}`;
+
+      $('ogTitle').setAttribute('content', ogTitle);
+      $('ogDescription').setAttribute('content', ogDescription);
+      $('ogImage').setAttribute('content', ogImage);
+      $('ogUrl').setAttribute('content', ogUrl);
+
+      $('twitterTitle').setAttribute('content', ogTitle);
+      $('twitterDescription').setAttribute('content', ogDescription);
+      $('twitterImage').setAttribute('content', ogImage);
+    }
+
     async function init() {
       const container = $('container');
+      // Mantém invisível até tudo pronto
       container.style.opacity = '0';
 
       const slug = new URLSearchParams(location.search).get('slug')?.trim();
@@ -424,27 +442,17 @@
         container.className = `reception-page theme-${tema}`;
         document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
 
-        // Atualiza meta tags OG dinamicamente
-        const ogImage = data.logo_url || data.banner_url || 'https://whatslink-48tc.onrender.com/og-image.png';
-        const ogTitle = `${data.empresa || 'WhatsApp'} | WhatsApp`;
-        const ogDescription = data.descricao || 'Entre em contato pelo WhatsApp.';
-        const ogUrl = `https://whatslink-48tc.onrender.com/redirect.html?slug=${slug}`;
-
-        $('ogTitle')?.setAttribute('content', ogTitle);
-        $('ogDescription')?.setAttribute('content', ogDescription);
-        $('ogImage')?.setAttribute('content', ogImage);
-        $('ogUrl')?.setAttribute('content', ogUrl);
-
-        $('twitterTitle')?.setAttribute('content', ogTitle);
-        $('twitterDescription')?.setAttribute('content', ogDescription);
-        $('twitterImage')?.setAttribute('content', ogImage);
+        // Atualiza meta tags OG
+        atualizarMetaTags(data, slug);
 
         // Evento de visualização do link
-        gtag('event', 'view_link', {
-          'link_id': data.id,
-          'slug': slug,
-          'theme': tema
-        });
+        if (typeof gtag === 'function') {
+          gtag('event', 'view_link', {
+            'link_id': data.id,
+            'slug': slug,
+            'theme': tema
+          });
+        }
 
         renderizarHeader(data, container);
         $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
@@ -459,6 +467,7 @@
         renderizarHorario(data);
         removeLoaders();
 
+        // Revela suavemente
         requestAnimationFrame(() => {
           container.classList.add('loaded');
           container.style.opacity = '';
