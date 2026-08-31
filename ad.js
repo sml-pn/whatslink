@@ -71,7 +71,7 @@
 
     const footer = document.createElement('div');
     footer.className = 'ad-footer';
-    footer.textContent = 'Visível só no desktop • X fecha este lado';
+    footer.textContent = 'Feche o anúncio no X';
     card.appendChild(footer);
 
     aside.appendChild(card);
