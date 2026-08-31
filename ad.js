@@ -12,7 +12,7 @@
     ads: [
       {
         id: 'adLeft',
-        type: 'iframe',   // mude para 'iframe' para teste; se preferir script, troque
+        type: 'script',   // mude para 'iframe' para teste; se preferir script, troque
         src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
         closeable: true,
         position: 'left',
