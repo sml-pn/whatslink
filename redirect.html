@@ -37,10 +37,11 @@
     gtag('config', 'G-TTJX70ENFL');
   </script>
 
-  <!-- Anúncio flutuante (CSS externo) -->
+  <!-- CSS dos anúncios (laterais + flutuante) -->
   <link rel="stylesheet" href="ad.css" />
 
   <style>
+    /* Seus estilos originais (mantidos intactos) */
     :root { --theme:#25D366; --theme-rgb:37,211,102; }
     * { box-sizing:border-box; margin:0; padding:0; }
     html, body { width:100%; background:#08080a; overflow-x:hidden; }
@@ -126,58 +127,101 @@
   </style>
 </head>
 <body class="reception-body">
-  <main class="reception-page theme-verde" id="container">
-    <!-- Camadas de efeito -->
-    <div class="fog-layer" aria-hidden="true"></div>
-    <div class="dust-layer" aria-hidden="true"></div>
 
-    <!-- Cabeçalho -->
-    <div class="header-visual" id="headerVisual">
-      <div class="banner-image hidden" id="bannerDiv"><img id="bannerImg" src="" alt="Banner" /></div>
-      <div class="color-banner hidden" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
-    </div>
+  <!-- NOVO: Wrapper para os anúncios laterais + conteúdo principal -->
+  <div class="ad-wrapper">
 
-    <!-- Conteúdo -->
-    <section class="reception-content">
-      <div class="logo-circle hidden" id="logoCircle"><img id="logoCircleImg" src="" alt="Logo" /></div>
-      <div class="avatar-circle hidden" id="avatarCircle"><span id="avatarLetter"></span></div>
-      <h1 class="company-name" id="empresaNome"></h1>
-      <p class="company-desc" id="descricaoTexto"></p>
-      <div class="divider hidden" id="divider" style="width:24px; height:3px; border-radius:999px; background:var(--theme); margin:0 0 24px;"></div>
-
-      <button id="whatsappBtn" type="button" class="whatsapp-btn">
-        <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
-        <span id="whatsappBtnText">Carregando...</span>
-        <span class="btn-shine"></span>
-      </button>
-      <button id="whatsappBtn2" type="button" class="whatsapp-btn secondary hidden">
-        <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
-        <span id="whatsappBtn2Text"></span>
-      </button>
-
-      <div class="social-links hidden" id="socialLinks">
-        <button id="instagramBtn" type="button" class="social-btn hidden"><i class="fab fa-instagram"></i><span>Instagram</span></button>
-        <button id="facebookBtn" type="button" class="social-btn hidden"><i class="fab fa-facebook-f"></i><span>Facebook</span></button>
-        <button id="siteBtn" type="button" class="social-btn hidden"><span class="material-icons-round">public</span><span>Site</span></button>
-      </div>
-
-      <div class="location-block hidden" id="locationBlock">
-        <div class="section-label"><span class="material-icons-round">location_on</span><span>Localização</span></div>
-        <div class="map-container" id="mapContainer">
-          <iframe id="mapIframe" title="Mapa" src="" width="100%" height="200" style="border:0" loading="lazy"></iframe>
+    <!-- ANÚNCIO LATERAL ESQUERDO -->
+    <aside class="ad-side" id="adLeft">
+      <div class="ad-card">
+        <div class="ad-header">
+          <span>Publicidade</span>
+          <button class="ad-close" data-target="adLeft" aria-label="Fechar anúncio esquerdo">✕</button>
         </div>
-        <a href="#" id="mapLink" target="_blank" rel="noopener noreferrer" class="map-link">Abrir no Maps</a>
+        <div class="ad-content">
+          <div class="label">ANÚNCIO ESQUERDA</div>
+          <div class="title">Anúncio 300×250</div>
+          <div class="sub">Placeholder • Monetag</div>
+          <div class="fake-banner">Banner Fake</div>
+        </div>
+        <div class="ad-footer">Visível só no desktop • X fecha só este lado</div>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL (SEU CÓDIGO ORIGINAL) -->
+    <main class="reception-page theme-verde" id="container">
+      <!-- Camadas de efeito -->
+      <div class="fog-layer" aria-hidden="true"></div>
+      <div class="dust-layer" aria-hidden="true"></div>
+
+      <!-- Cabeçalho -->
+      <div class="header-visual" id="headerVisual">
+        <div class="banner-image hidden" id="bannerDiv"><img id="bannerImg" src="" alt="Banner" /></div>
+        <div class="color-banner hidden" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
       </div>
 
-      <div class="info-block hidden" id="horarioBlock">
-        <div class="info-icon"><span class="material-icons-round">schedule</span></div>
-        <div class="info-content"><h3>Horário</h3><p id="horarioTexto"></p></div>
+      <!-- Conteúdo -->
+      <section class="reception-content">
+        <div class="logo-circle hidden" id="logoCircle"><img id="logoCircleImg" src="" alt="Logo" /></div>
+        <div class="avatar-circle hidden" id="avatarCircle"><span id="avatarLetter"></span></div>
+        <h1 class="company-name" id="empresaNome"></h1>
+        <p class="company-desc" id="descricaoTexto"></p>
+        <div class="divider hidden" id="divider" style="width:24px; height:3px; border-radius:999px; background:var(--theme); margin:0 0 24px;"></div>
+
+        <button id="whatsappBtn" type="button" class="whatsapp-btn">
+          <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
+          <span id="whatsappBtnText">Carregando...</span>
+          <span class="btn-shine"></span>
+        </button>
+        <button id="whatsappBtn2" type="button" class="whatsapp-btn secondary hidden">
+          <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
+          <span id="whatsappBtn2Text"></span>
+        </button>
+
+        <div class="social-links hidden" id="socialLinks">
+          <button id="instagramBtn" type="button" class="social-btn hidden"><i class="fab fa-instagram"></i><span>Instagram</span></button>
+          <button id="facebookBtn" type="button" class="social-btn hidden"><i class="fab fa-facebook-f"></i><span>Facebook</span></button>
+          <button id="siteBtn" type="button" class="social-btn hidden"><span class="material-icons-round">public</span><span>Site</span></button>
+        </div>
+
+        <div class="location-block hidden" id="locationBlock">
+          <div class="section-label"><span class="material-icons-round">location_on</span><span>Localização</span></div>
+          <div class="map-container" id="mapContainer">
+            <iframe id="mapIframe" title="Mapa" src="" width="100%" height="200" style="border:0" loading="lazy"></iframe>
+          </div>
+          <a href="#" id="mapLink" target="_blank" rel="noopener noreferrer" class="map-link">Abrir no Maps</a>
+        </div>
+
+        <div class="info-block hidden" id="horarioBlock">
+          <div class="info-icon"><span class="material-icons-round">schedule</span></div>
+          <div class="info-content"><h3>Horário</h3><p id="horarioTexto"></p></div>
+        </div>
+
+        <p class="powered-by">Feito com <span class="heart">♥</span> <a href="https://whatslink-48tc.onrender.com/" target="_blank" rel="noopener noreferrer">WhatsLink</a></p>
+      </section>
+    </main>
+
+    <!-- ANÚNCIO LATERAL DIREITO -->
+    <aside class="ad-side" id="adRight">
+      <div class="ad-card">
+        <div class="ad-header">
+          <span>Publicidade</span>
+          <button class="ad-close" data-target="adRight" aria-label="Fechar anúncio direito">✕</button>
+        </div>
+        <div class="ad-content" style="background:linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left-color:#e7c873; border-right-color:#e7c873;">
+          <div class="label" style="color:#c0a24a;">ANÚNCIO DIREITA</div>
+          <div class="title">Anúncio 300×250</div>
+          <div class="sub">Placeholder • Monetag</div>
+          <div class="icon-big">📢</div>
+        </div>
+        <div class="ad-footer">Visível só no desktop • X fecha só este lado</div>
       </div>
+    </aside>
 
-      <p class="powered-by">Feito com <span class="heart">♥</span> <a href="https://whatslink-48tc.onrender.com/" target="_blank" rel="noopener noreferrer">WhatsLink</a></p>
-    </section>
-  </main>
+  </div>
+  <!-- FIM DO WRAPPER -->
 
+  <!-- ===== SEUS SCRIPTS ORIGINAIS (mantidos) ===== -->
   <script>
     'use strict';
 
@@ -405,7 +449,6 @@
       $('horarioTexto').textContent = sanitizeString(data.horario, 300);
     }
 
-    // Atualiza as meta tags OG dinamicamente
     function atualizarMetaTags(data, slug) {
       const ogTitle = `${data.empresa || 'WhatsApp'} | WhatsApp`;
       const ogDescription = data.descricao || 'Entre em contato pelo WhatsApp.';
@@ -424,7 +467,6 @@
 
     async function init() {
       const container = $('container');
-      // Mantém invisível até tudo pronto
       container.style.opacity = '0';
 
       const slug = new URLSearchParams(location.search).get('slug')?.trim();
@@ -445,10 +487,8 @@
         container.className = `reception-page theme-${tema}`;
         document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
 
-        // Atualiza meta tags OG
         atualizarMetaTags(data, slug);
 
-        // Evento de visualização do link
         if (typeof gtag === 'function') {
           gtag('event', 'view_link', {
             'link_id': data.id,
@@ -470,7 +510,6 @@
         renderizarHorario(data);
         removeLoaders();
 
-        // Revela suavemente
         requestAnimationFrame(() => {
           container.classList.add('loaded');
           container.style.opacity = '';
@@ -485,7 +524,8 @@
     init();
   </script>
 
-  <!-- Anúncio flutuante (script externo) -->
+  <!-- Script para controlar o fechamento dos anúncios laterais (integrado ao ad.js) -->
   <script src="ad.js" defer></script>
+
 </body>
 </html>
