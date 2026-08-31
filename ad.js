@@ -1,110 +1,167 @@
-/* ============================================
-   CONFIGURAÇÃO DO ANÚNCIO FLUTUANTE (opcional)
-   Altere aqui se quiser manter o flutuante.
-   ============================================ */
-
-const AD_CONFIG = {
-  AD_TYPE: 'iframe',      // 'script' ou 'iframe'
-  AD_SRC: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
-  AD_WIDTH: 300,
-  AD_HEIGHT: 250,
-  MINIMIZED_COLOR: '#25D366'
-};
-
-/* ============================================
+/* ============================================================
    LÓGICA DOS ANÚNCIOS LATERAIS (fechar)
-   ============================================ */
+   Versão melhorada e robusta
+   ============================================================ */
 
 (function() {
-  // Seleciona todos os botões de fechar dos anúncios laterais
-  const closeButtons = document.querySelectorAll('.ad-close');
-  closeButtons.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      const targetId = this.dataset.target; // 'adLeft' ou 'adRight'
-      const side = document.getElementById(targetId);
-      if (side) {
-        side.classList.add('closed'); // Oculta o anúncio
-        // Opcional: dispara evento para Google Analytics
-        if (typeof gtag === 'function') {
-          gtag('event', 'close_ad', { 'ad_side': targetId });
-        }
-      }
-    });
-  });
+  'use strict';
 
-  // (Opcional) Função para reabrir todos os anúncios – descomente se quiser:
-  // window.reopenAds = function() {
-  //   document.querySelectorAll('.ad-side').forEach(el => el.classList.remove('closed'));
-  // };
-})();
+  // ---------- CONFIGURAÇÕES ----------
+  const CONFIG = {
+    // Armazenamento local para lembrar quais anúncios o usuário fechou
+    STORAGE_KEY: 'whatslink_closed_ads',
+    // Tempo (em dias) que a escolha deve ser lembrada
+    REMEMBER_DAYS: 7,
+    // Seletor dos contêineres laterais
+    AD_SIDE_SELECTOR: '.ad-side',
+    // Seletor dos botões de fechar
+    CLOSE_BUTTON_SELECTOR: '.ad-close',
+    // Atributo data-target nos botões
+    TARGET_ATTR: 'data-target'
+  };
 
-/* ============================================
-   LÓGICA DO ANÚNCIO FLUTUANTE (mantido)
-   ============================================ */
-
-(function() {
-  // Cria o contêiner da aba flutuante
-  const adFloat = document.createElement('div');
-  adFloat.className = 'ad-float';
-  adFloat.id = 'adFloat';
-
-  // Cabeçalho
-  const header = document.createElement('div');
-  header.className = 'ad-float-header';
-  header.innerHTML = `
-    <span>Anúncio</span>
-    <button id="adMinimizeBtn" title="Minimizar">Fechar</button>
-  `;
-
-  // Contêiner do anúncio
-  const adContainer = document.createElement('div');
-  adContainer.id = 'adContainer';
-
-  // Ícone mini (quando minimizado)
-  const miniIcon = document.createElement('div');
-  miniIcon.className = 'ad-float-mini-icon';
-  miniIcon.id = 'adMiniIcon';
-  miniIcon.textContent = '+';
-
-  // Monta estrutura
-  adFloat.appendChild(header);
-  adFloat.appendChild(adContainer);
-  adFloat.appendChild(miniIcon);
-
-  // Adiciona ao body
-  document.body.appendChild(adFloat);
-
-  // Função para carregar o anúncio flutuante conforme configuração
-  function loadAd() {
-    if (AD_CONFIG.AD_TYPE === 'script') {
-      const s = document.createElement('script');
-      s.src = AD_CONFIG.AD_SRC;
-      s.async = true;
-      adContainer.appendChild(s);
-    } else if (AD_CONFIG.AD_TYPE === 'iframe') {
-      const iframe = document.createElement('iframe');
-      iframe.src = AD_CONFIG.AD_SRC;
-      iframe.className = 'ad-float-content';
-      iframe.frameBorder = '0';
-      iframe.scrolling = 'no';
-      iframe.style.width = AD_CONFIG.AD_WIDTH + 'px';
-      iframe.style.height = AD_CONFIG.AD_HEIGHT + 'px';
-      adContainer.appendChild(iframe);
+  // ---------- FUNÇÕES AUXILIARES ----------
+  /**
+   * Obtém a lista de anúncios fechados do localStorage.
+   * @returns {Object} Objeto mapeando ID do anúncio -> timestamp
+   */
+  function getClosedAds() {
+    try {
+      const raw = localStorage.getItem(CONFIG.STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      console.warn('[WhatsLink Ads] Erro ao ler localStorage:', e);
+      return {};
     }
   }
 
-  // Controles de minimizar/expandir
-  const minimizeBtn = document.getElementById('adMinimizeBtn');
-  const mini = document.getElementById('adMiniIcon');
+  /**
+   * Salva a lista de anúncios fechados no localStorage.
+   * @param {Object} closedAds - Objeto mapeando ID do anúncio -> timestamp
+   */
+  function setClosedAds(closedAds) {
+    try {
+      localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(closedAds));
+    } catch (e) {
+      console.warn('[WhatsLink Ads] Erro ao salvar localStorage:', e);
+    }
+  }
 
-  minimizeBtn.addEventListener('click', () => {
-    adFloat.classList.add('minimized');
-  });
+  /**
+   * Verifica se um anúncio deve permanecer fechado.
+   * @param {string} adId - ID do contêiner do anúncio
+   * @returns {boolean} True se o anúncio deve ficar fechado, False caso contrário
+   */
+  function isAdClosed(adId) {
+    const closedAds = getClosedAds();
+    if (!closedAds[adId]) return false;
 
-  mini.addEventListener('click', () => {
-    adFloat.classList.remove('minimized');
-  });
+    const closedAt = new Date(closedAds[adId]);
+    const now = new Date();
+    const daysDiff = (now - closedAt) / (1000 * 60 * 60 * 24);
 
-  // Aguarda a página carregar para carregar o anúncio
-  window.addEventListener('load', loadAd);
+    return daysDiff < CONFIG.REMEMBER_DAYS;
+  }
+
+  /**
+   * Fecha um anúncio lateral, adiciona a classe CSS e registra no localStorage.
+   * @param {HTMLElement} adElement - Elemento do anúncio a ser fechado
+   * @param {string} adId - ID do contêiner
+   */
+  function closeAd(adElement, adId) {
+    if (!adElement) return;
+
+    adElement.classList.add('closed');
+
+    const closedAds = getClosedAds();
+    closedAds[adId] = new Date().toISOString();
+    setClosedAds(closedAds);
+
+    console.log(`[WhatsLink Ads] Anúncio ${adId} fechado.`);
+  }
+
+  /**
+   * Reabre um anúncio lateral.
+   * @param {string} adId - ID do contêiner
+   */
+  function reopenAd(adId) {
+    const adElement = document.getElementById(adId);
+    if (adElement) {
+      adElement.classList.remove('closed');
+
+      const closedAds = getClosedAds();
+      delete closedAds[adId];
+      setClosedAds(closedAds);
+
+      console.log(`[WhatsLink Ads] Anúncio ${adId} reaberto.`);
+    } else {
+      console.warn(`[WhatsLink Ads] Anúncio ${adId} não encontrado.`);
+    }
+  }
+
+  /**
+   * Dispara evento de fechamento para Google Analytics (se disponível).
+   * @param {string} adId - ID do anúncio fechado
+   */
+  function trackCloseEvent(adId) {
+    if (typeof gtag === 'function') {
+      gtag('event', 'close_ad', { 'ad_side': adId });
+    }
+  }
+
+  // ---------- INICIALIZAÇÃO ----------
+  function init() {
+    const adElements = document.querySelectorAll(CONFIG.AD_SIDE_SELECTOR);
+
+    if (adElements.length === 0) {
+      console.warn('[WhatsLink Ads] Nenhum elemento .ad-side encontrado.');
+      return;
+    }
+
+    adElements.forEach(adElement => {
+      const adId = adElement.id;
+
+      // Se o usuário já fechou este anúncio recentemente, oculta imediatamente
+      if (adId && isAdClosed(adId)) {
+        adElement.classList.add('closed');
+      }
+
+      // Configura botões de fechar dentro do anúncio
+      const closeButtons = adElement.querySelectorAll(CONFIG.CLOSE_BUTTON_SELECTOR);
+      closeButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          // Obtém o ID do anúncio: primeiro tenta data-target, depois o id do pai mais próximo .ad-side
+          const targetId = this.dataset[CONFIG.TARGET_ATTR] || adElement.id;
+
+          if (targetId) {
+            closeAd(adElement, targetId);
+            trackCloseEvent(targetId);
+          } else {
+            console.warn('[WhatsLink Ads] Botão de fechar sem data-target e sem contêiner .ad-side próximo.');
+          }
+        });
+      });
+    });
+
+    // Expor função global para reabrir todos os anúncios (opcional)
+    window.reopenAds = function() {
+      document.querySelectorAll(CONFIG.AD_SIDE_SELECTOR).forEach(el => {
+        const id = el.id;
+        if (id) reopenAd(id);
+        else el.classList.remove('closed');
+      });
+    };
+
+    // Expor função para reabrir um anúncio específico
+    window.reopenAd = reopenAd;
+  }
+
+  // Aguarda o DOM estar pronto e o possível carregamento do anúncio
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
