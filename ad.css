@@ -1,7 +1,8 @@
 /* ============================================
-   ANÚNCIOS LATERAIS (Desktop)
+   ANÚNCIOS LATERAIS (Desktop only)
    ============================================ */
 
+/* Container principal que alinha os três blocos */
 .ad-wrapper {
   display: flex;
   justify-content: center;
@@ -13,14 +14,16 @@
   margin: 0 auto;
 }
 
+/* Cada bloco lateral */
 .ad-side {
   flex-shrink: 0;
   width: 300px;
   min-height: 310px;
   position: sticky;
-  top: 20px;
+  top: 20px; /* Gruda no topo ao rolar */
 }
 
+/* Cartão do anúncio */
 .ad-card {
   background: #fff;
   border-radius: 12px;
@@ -31,6 +34,7 @@
   width: 100%;
 }
 
+/* Cabeçalho do anúncio */
 .ad-header {
   display: flex;
   align-items: center;
@@ -68,54 +72,33 @@
   color: #fff;
 }
 
+/* Área onde o anúncio será inserido */
 .ad-content {
   width: 100%;
-  height: 250px;
+  height: 250px; /* Ajuste conforme a altura do seu anúncio */
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  background: #f6f7fb; /* Cor de fundo neutra */
   border-bottom: 1px solid rgba(0,0,0,.05);
-  background: linear-gradient(135deg, #f6f7fb 0%, #eef0f6 100%);
   border-left: 1px dashed #c5cad6;
   border-right: 1px dashed #c5cad6;
+  overflow: hidden;
 }
-.ad-content .label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  color: #9aa0b2;
-  margin-bottom: 8px;
+/* Se o anúncio for um iframe, ele ocupará 100% da área */
+.ad-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
-.ad-content .title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #111827;
-}
-.ad-content .sub {
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 4px;
-}
-.ad-content .fake-banner {
-  margin-top: 16px;
-  width: 80%;
-  height: 36px;
-  border-radius: 8px;
-  background: #111827;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-}
-.ad-content .icon-big {
-  font-size: 40px;
-  margin-top: 8px;
+/* Se for imagem, ajuste */
+.ad-content img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
+/* Rodapé do anúncio */
 .ad-footer {
   padding: 10px 12px;
   background: #fafafa;
@@ -124,7 +107,7 @@
   color: #999;
 }
 
-/* Estado fechado (placeholder) */
+/* Estado "fechado" – exibe apenas uma mensagem cinza */
 .ad-side.closed .ad-card {
   border: 1px dashed rgba(255,255,255,.1);
   background: transparent;
@@ -146,15 +129,18 @@
   content: "anúncio fechado";
 }
 
-/* Responsivo: esconde anúncios laterais em telas < 1100px */
+/* ============================================
+   RESPONSIVIDADE: OCULTAR ANÚNCIOS EM MOBILE
+   ============================================ */
 @media (max-width: 1099px) {
   .ad-side {
-    display: none !important;
+    display: none !important; /* Some em telas menores que 1100px */
   }
   .ad-wrapper {
     padding: 0;
     gap: 0;
   }
+  /* O conteúdo principal ocupa toda a largura */
   .reception-page {
     max-width: 100%;
     margin: 0;
@@ -163,7 +149,7 @@
   }
 }
 
-/* Em telas >= 1100px, centraliza o conteúdo principal */
+/* Ajuste para desktop: conteúdo central com bordas arredondadas */
 @media (min-width: 1100px) {
   .reception-page {
     margin: 0;
@@ -172,9 +158,8 @@
 }
 
 /* ============================================
-   ANÚNCIO FLUTUANTE (mantido)
+   ANÚNCIO FLUTUANTE (opcional – mantido)
    ============================================ */
-
 .ad-float {
   position: fixed;
   bottom: 20px;
