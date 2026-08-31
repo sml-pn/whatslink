@@ -41,7 +41,9 @@
   <link rel="stylesheet" href="ad.css" />
 
   <style>
-    /* Seus estilos originais (mantidos intactos) */
+    /* ============================================
+       SEUS ESTILOS ORIGINAIS (mantidos intactos)
+       ============================================ */
     :root { --theme:#25D366; --theme-rgb:37,211,102; }
     * { box-sizing:border-box; margin:0; padding:0; }
     html, body { width:100%; background:#08080a; overflow-x:hidden; }
@@ -128,27 +130,44 @@
 </head>
 <body class="reception-body">
 
-  <!-- NOVO: Wrapper para os anúncios laterais + conteúdo principal -->
+  <!-- ============================================
+       WRAPPER PARA ANÚNCIOS LATERAIS + CONTEÚDO
+       ============================================ -->
   <div class="ad-wrapper">
 
-    <!-- ANÚNCIO LATERAL ESQUERDO -->
+    <!-- ==========================================
+         ANÚNCIO LATERAL ESQUERDO (Desktop only)
+         ========================================== -->
     <aside class="ad-side" id="adLeft">
       <div class="ad-card">
+        <!-- Cabeçalho com botão de fechar -->
         <div class="ad-header">
           <span>Publicidade</span>
           <button class="ad-close" data-target="adLeft" aria-label="Fechar anúncio esquerdo">✕</button>
         </div>
+
+        <!-- Área do anúncio – coloque AQUI o código do seu anúncio (ex: AdSense, Monetag, iframe, etc.) -->
         <div class="ad-content">
-          <div class="label">ANÚNCIO ESQUERDA</div>
-          <div class="title">Anúncio 300×250</div>
-          <div class="sub">Placeholder • Monetag</div>
-          <div class="fake-banner">Banner Fake</div>
+          <!-- Exemplo para iframe: -->
+          <!-- <iframe src="URL_DO_SEU_ANUNCIO" width="300" height="250" frameborder="0" scrolling="no"></iframe> -->
+
+          <!-- Exemplo para script: -->
+          <!-- <script async src="URL_DO_SEU_SCRIPT"></script> -->
+
+          <!-- Se for imagem estática: -->
+          <!-- <img src="banner.jpg" alt="Anúncio" width="300" height="250" /> -->
+
+          <!-- ATENÇÃO: Substitua o conteúdo acima pelo seu código real -->
         </div>
-        <div class="ad-footer">Visível só no desktop • X fecha só este lado</div>
+
+        <!-- Rodapé informativo (opcional) -->
+        <div class="ad-footer">Visível só no desktop • X fecha este lado</div>
       </div>
     </aside>
 
-    <!-- CONTEÚDO PRINCIPAL (SEU CÓDIGO ORIGINAL) -->
+    <!-- ==========================================
+         CONTEÚDO PRINCIPAL (SEU CÓDIGO ORIGINAL)
+         ========================================== -->
     <main class="reception-page theme-verde" id="container">
       <!-- Camadas de efeito -->
       <div class="fog-layer" aria-hidden="true"></div>
@@ -201,27 +220,42 @@
       </section>
     </main>
 
-    <!-- ANÚNCIO LATERAL DIREITO -->
+    <!-- ==========================================
+         ANÚNCIO LATERAL DIREITO (Desktop only)
+         ========================================== -->
     <aside class="ad-side" id="adRight">
       <div class="ad-card">
+        <!-- Cabeçalho com botão de fechar -->
         <div class="ad-header">
           <span>Publicidade</span>
           <button class="ad-close" data-target="adRight" aria-label="Fechar anúncio direito">✕</button>
         </div>
-        <div class="ad-content" style="background:linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left-color:#e7c873; border-right-color:#e7c873;">
-          <div class="label" style="color:#c0a24a;">ANÚNCIO DIREITA</div>
-          <div class="title">Anúncio 300×250</div>
-          <div class="sub">Placeholder • Monetag</div>
-          <div class="icon-big">📢</div>
+
+        <!-- Área do anúncio – coloque AQUI o código do seu anúncio (ex: AdSense, Monetag, iframe, etc.) -->
+        <div class="ad-content">
+          <!-- Exemplo para iframe: -->
+          <!-- <iframe src="URL_DO_SEU_ANUNCIO" width="300" height="250" frameborder="0" scrolling="no"></iframe> -->
+
+          <!-- Exemplo para script: -->
+          <!-- <script async src="URL_DO_SEU_SCRIPT"></script> -->
+
+          <!-- Se for imagem estática: -->
+          <!-- <img src="banner.jpg" alt="Anúncio" width="300" height="250" /> -->
+
+          <!-- ATENÇÃO: Substitua o conteúdo acima pelo seu código real -->
         </div>
-        <div class="ad-footer">Visível só no desktop • X fecha só este lado</div>
+
+        <!-- Rodapé informativo (opcional) -->
+        <div class="ad-footer">Visível só no desktop • X fecha este lado</div>
       </div>
     </aside>
 
   </div>
   <!-- FIM DO WRAPPER -->
 
-  <!-- ===== SEUS SCRIPTS ORIGINAIS (mantidos) ===== -->
+  <!-- ==========================================
+       SEUS SCRIPTS ORIGINAIS (mantidos intactos)
+       ========================================== -->
   <script>
     'use strict';
 
