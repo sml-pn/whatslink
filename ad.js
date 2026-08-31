@@ -26,7 +26,7 @@ const AD_CONFIG = {
   header.className = 'ad-float-header';
   header.innerHTML = `
     <span>Anúncio</span>
-    <button id="adMinimizeBtn" title="Minimizar">−</button>
+    <button id="adMinimizeBtn" title="Minimizar">Fechar</button>
   `;
 
   // Contêiner do anúncio
