@@ -1,9 +1,8 @@
 /* ============================================================
-   GERENCIADOR DE ANÚNCIOS LATERAIS (Ezoic, Adsterra, Script, Iframe)
-   - Cria um anúncio para cada item em AD_CONFIG.ads
-   - Posiciona automaticamente: left/right
-   - Sem persistência: o anúncio reaparece ao recarregar a página
-   - Suporte a fechamento pelo usuário (classe 'closed')
+   GERENCIADOR DE ANÚNCIOS LATERAIS
+   - Suporta iframe, script, adsterra, ezoic
+   - Fallback visual se o anúncio não carregar
+   - Fechamento temporário (reaparece ao recarregar)
    ============================================================ */
 
 (function() {
@@ -13,24 +12,24 @@
     ads: [
       {
         id: 'adLeft',
-        type: 'script',
+        type: 'iframe',   // mude para 'iframe' para teste; se preferir script, troque
         src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
         closeable: true,
-        position: 'left'   // posição: 'left' ou 'right'
+        position: 'left',
+        async: true       // para script, true = carrega assíncrono, false = síncrono
       },
       {
         id: 'adRight',
-        type: 'adsterra',
+        type: 'iframe',
         src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
         closeable: true,
-        position: 'right'
+        position: 'right',
+        async: true
       }
     ],
-
+    WRAPPER_SELECTOR: '.ad-wrapper',
     AD_SIDE_SELECTOR: '.ad-side',
-    CLOSE_BUTTON_SELECTOR: '.ad-close',
-    TARGET_ATTR: 'data-target',
-    WRAPPER_SELECTOR: '.ad-wrapper'   // onde os anúncios devem ser inseridos
+    CLOSE_BUTTON_SELECTOR: '.ad-close'
   };
 
   function log(msg, type = 'info') {
@@ -67,6 +66,11 @@
 
     const content = document.createElement('div');
     content.className = 'ad-content';
+    // Mensagem de carregando
+    const loading = document.createElement('span');
+    loading.className = 'ad-loading';
+    loading.textContent = 'Carregando...';
+    content.appendChild(loading);
     card.appendChild(content);
 
     const footer = document.createElement('div');
@@ -78,42 +82,82 @@
     return aside;
   }
 
+  function clearLoading(content) {
+    const load = content.querySelector('.ad-loading');
+    if (load) load.remove();
+  }
+
+  function showFallback(content, msg = 'Anúncio indisponível') {
+    clearLoading(content);
+    const fallback = document.createElement('span');
+    fallback.className = 'ad-fallback';
+    fallback.textContent = msg;
+    content.appendChild(fallback);
+  }
+
   function loadAdContent(container, ad) {
     const content = container.querySelector('.ad-content');
     if (!content) return;
 
     switch (ad.type) {
-      case 'script': loadScriptAd(content, ad.src); break;
-      case 'iframe': loadIframeAd(content, ad.src); break;
-      case 'adsterra': loadAdsterraAd(content, ad.src); break;
-      case 'ezoic': loadEzoicAd(content, ad); break;
-      default: log(`Tipo de anúncio desconhecido: ${ad.type}`, 'warn');
+      case 'iframe':
+        loadIframeAd(content, ad.src);
+        break;
+      case 'script':
+        loadScriptAd(content, ad.src, ad.async !== false);
+        break;
+      case 'adsterra':
+        // Adsterra pode ser script; use script síncrono por padrão
+        loadScriptAd(content, ad.src, false);
+        break;
+      case 'ezoic':
+        loadEzoicAd(content, ad);
+        break;
+      default:
+        showFallback(content, 'Tipo desconhecido');
     }
   }
 
-  function loadScriptAd(parent, src) {
-    const s = document.createElement('script');
-    s.src = src;
-    s.async = true;
-    parent.appendChild(s);
-  }
-
   function loadIframeAd(parent, src) {
+    clearLoading(parent);
+
     const iframe = document.createElement('iframe');
     iframe.src = src;
     iframe.frameBorder = '0';
     iframe.scrolling = 'no';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
+    iframe.setAttribute('loading', 'lazy');
+
+    iframe.onload = () => {
+      log('Iframe carregado com sucesso.');
+    };
+    iframe.onerror = () => {
+      showFallback(parent, 'Falha ao carregar anúncio');
+    };
+
     parent.appendChild(iframe);
   }
 
-  function loadAdsterraAd(parent, src) {
-    loadScriptAd(parent, src);
-    log('Adsterra carregado via script.');
+  function loadScriptAd(parent, src, async = false) {
+    clearLoading(parent);
+
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = async; // se async false, carrega síncrono (pode bloquear, mas necessário para algumas redes)
+    script.onload = () => {
+      log('Script carregado.');
+    };
+    script.onerror = () => {
+      showFallback(parent, 'Falha ao carregar script');
+    };
+
+    parent.appendChild(script);
   }
 
   function loadEzoicAd(parent, ad) {
+    clearLoading(parent);
     const placeholder = document.createElement('div');
     placeholder.id = ad.placeholderId || 'ezoic-pub-ad-placeholder-101';
     parent.appendChild(placeholder);
@@ -134,47 +178,46 @@
       e.stopPropagation();
       container.classList.add('closed');
       if (typeof gtag === 'function') gtag('event', 'close_ad', { 'ad_id': container.id });
-      log(`Anúncio ${container.id} fechado (temporário).`);
+      log(`Anúncio ${container.id} fechado.`);
     });
   }
 
   function init() {
-    if (!AD_CONFIG.ads || AD_CONFIG.ads.length === 0) return;
+    if (!AD_CONFIG.ads || AD_CONFIG.ads.length === 0) {
+      log('Nenhum anúncio configurado.', 'warn');
+      return;
+    }
 
     const wrapper = document.querySelector(AD_CONFIG.WRAPPER_SELECTOR);
-    if (!wrapper) {
-      log('Wrapper .ad-wrapper não encontrado. Anúncios serão adicionados ao body.', 'warn');
-      // fallback: adiciona ao body
+
+    if (wrapper) {
+      // Se já existirem anúncios, não duplicar
+      const existing = wrapper.querySelectorAll(AD_CONFIG.AD_SIDE_SELECTOR).length;
+      if (existing >= AD_CONFIG.ads.length) {
+        log('Anúncios já existem no wrapper; ignorando criação.', 'warn');
+        return;
+      }
+
       AD_CONFIG.ads.forEach(ad => {
         const container = createAdContainer(ad);
+        if (ad.position === 'right') {
+          wrapper.appendChild(container);
+        } else {
+          wrapper.insertBefore(container, wrapper.firstChild);
+        }
+        loadAdContent(container, ad);
+        setupCloseButton(container);
+      });
+    } else {
+      log('Wrapper .ad-wrapper não encontrado. Usando posição fixa.', 'warn');
+      AD_CONFIG.ads.forEach(ad => {
+        const container = createAdContainer(ad);
+        container.classList.add('ad-fixed');
         document.body.appendChild(container);
         loadAdContent(container, ad);
         setupCloseButton(container);
       });
-      return;
     }
-
-    // Verifica se já existem anúncios para não duplicar
-    const existing = wrapper.querySelectorAll(AD_CONFIG.AD_SIDE_SELECTOR).length;
-    if (existing >= AD_CONFIG.ads.length) {
-      log('Anúncios já existem no wrapper; ignorando criação.', 'warn');
-      return;
-    }
-
-    AD_CONFIG.ads.forEach(ad => {
-      const container = createAdContainer(ad);
-
-      if (ad.position === 'right') {
-        wrapper.appendChild(container); // último filho (direita)
-      } else {
-        wrapper.insertBefore(container, wrapper.firstChild); // primeiro filho (esquerda)
-      }
-
-      loadAdContent(container, ad);
-      setupCloseButton(container);
-    });
-
-    log('Anúncios laterais posicionados no wrapper.');
   }
 
   if (document.readyState === 'loading') {
