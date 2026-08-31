@@ -37,13 +37,10 @@
     gtag('config', 'G-TTJX70ENFL');
   </script>
 
-  <!-- CSS dos anúncios laterais (NÃO contém flutuante) -->
+  <!-- CSS dos anúncios laterais -->
   <link rel="stylesheet" href="ad.css" />
 
   <style>
-    /* ============================================================
-       SEUS ESTILOS ORIGINAIS – mantidos exatamente como estavam
-       ============================================================ */
     :root { --theme:#25D366; --theme-rgb:37,211,102; }
     * { box-sizing:border-box; margin:0; padding:0; }
     html, body { width:100%; background:#08080a; overflow-x:hidden; }
@@ -130,53 +127,33 @@
 </head>
 <body class="reception-body">
 
-  <!-- ============================================================
-       WRAPPER PARA ANÚNCIOS LATERAIS + CONTEÚDO
-       ============================================================ -->
+  <!-- Wrapper para anúncios laterais e conteúdo -->
   <div class="ad-wrapper">
 
-    <!-- ==========================================================
-         ANÚNCIO LATERAL ESQUERDO (Desktop only)
-         ========================================================== -->
+    <!-- Anúncio lateral esquerdo -->
     <aside class="ad-side" id="adLeft">
       <div class="ad-card">
-        <!-- Cabeçalho com botão de fechar -->
         <div class="ad-header">
           <span>Publicidade</span>
           <button class="ad-close" data-target="adLeft" aria-label="Fechar anúncio esquerdo">✕</button>
         </div>
-
-        <!-- Área do anúncio – substitua o comentário pelo seu código real -->
         <div class="ad-content">
-          <!--
-            *****************************************************
-            *  COLOQUE AQUI O CÓDIGO DO SEU ANÚNCIO (300x250)   *
-            *  Exemplo: iframe, script do AdSense, Monetag,     *
-            *  imagem estática, etc.                            *
-            *****************************************************
-          -->
+          <!-- Adicione aqui o código do anúncio esquerdo -->
         </div>
-
-        <!-- Rodapé informativo (opcional) -->
         <div class="ad-footer">Visível só no desktop • X fecha este lado</div>
       </div>
     </aside>
 
-    <!-- ==========================================================
-         CONTEÚDO PRINCIPAL (SEU CÓDIGO ORIGINAL)
-         ========================================================== -->
+    <!-- Conteúdo principal -->
     <main class="reception-page theme-verde" id="container">
-      <!-- Camadas de efeito (mantidas) -->
       <div class="fog-layer" aria-hidden="true"></div>
       <div class="dust-layer" aria-hidden="true"></div>
 
-      <!-- Cabeçalho -->
       <div class="header-visual" id="headerVisual">
         <div class="banner-image hidden" id="bannerDiv"><img id="bannerImg" src="" alt="Banner" /></div>
         <div class="color-banner hidden" id="colorBannerDiv"><span class="material-icons-round">storefront</span></div>
       </div>
 
-      <!-- Conteúdo -->
       <section class="reception-content">
         <div class="logo-circle hidden" id="logoCircle"><img id="logoCircleImg" src="" alt="Logo" /></div>
         <div class="avatar-circle hidden" id="avatarCircle"><span id="avatarLetter"></span></div>
@@ -217,39 +194,24 @@
       </section>
     </main>
 
-    <!-- ==========================================================
-         ANÚNCIO LATERAL DIREITO (Desktop only)
-         ========================================================== -->
+    <!-- Anúncio lateral direito -->
     <aside class="ad-side" id="adRight">
       <div class="ad-card">
-        <!-- Cabeçalho com botão de fechar -->
         <div class="ad-header">
           <span>Publicidade</span>
           <button class="ad-close" data-target="adRight" aria-label="Fechar anúncio direito">✕</button>
         </div>
-
-        <!-- Área do anúncio – substitua o comentário pelo seu código real -->
         <div class="ad-content">
-          <!--
-            *****************************************************
-            *  COLOQUE AQUI O CÓDIGO DO SEU ANÚNCIO (300x250)   *
-            *  Exemplo: iframe, script do AdSense, Monetag,     *
-            *  imagem estática, etc.                            *
-            *****************************************************
-          -->
+          <!-- Adicione aqui o código do anúncio direito -->
         </div>
-
-        <!-- Rodapé informativo (opcional) -->
         <div class="ad-footer">Visível só no desktop • X fecha este lado</div>
       </div>
     </aside>
 
   </div>
-  <!-- FIM DO WRAPPER -->
+  <!-- Fim do wrapper -->
 
-  <!-- ============================================================
-       SEUS SCRIPTS ORIGINAIS – mantidos intactos
-       ============================================================ -->
+  <!-- Scripts principais -->
   <script>
     'use strict';
 
@@ -552,7 +514,7 @@
     init();
   </script>
 
-  <!-- Script para controlar o fechamento dos anúncios laterais (NÃO contém flutuante) -->
+  <!-- Script dos anúncios laterais -->
   <script src="ad.js" defer></script>
 
 </body>
