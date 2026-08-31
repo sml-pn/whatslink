@@ -1,22 +1,49 @@
 /* ============================================
-   CONFIGURAÇÃO DO ANÚNCIO
-   Altere aqui: URL, tipo, dimensões, etc.
+   CONFIGURAÇÃO DO ANÚNCIO FLUTUANTE (opcional)
+   Altere aqui se quiser manter o flutuante.
    ============================================ */
 
 const AD_CONFIG = {
-  AD_TYPE: 'iframe', // 'script' ou 'iframe'
+  AD_TYPE: 'iframe',      // 'script' ou 'iframe'
   AD_SRC: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
   AD_WIDTH: 300,
   AD_HEIGHT: 250,
-  MINIMIZED_COLOR: '#25D366' // cor do botão minimizado
+  MINIMIZED_COLOR: '#25D366'
 };
 
 /* ============================================
-   NÃO PRECISA ALTERAR ABAIXO DISSO
+   LÓGICA DOS ANÚNCIOS LATERAIS (fechar)
    ============================================ */
 
 (function() {
-  // Cria o contêiner da aba
+  // Seleciona todos os botões de fechar dos anúncios laterais
+  const closeButtons = document.querySelectorAll('.ad-close');
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const targetId = this.dataset.target; // 'adLeft' ou 'adRight'
+      const side = document.getElementById(targetId);
+      if (side) {
+        side.classList.add('closed'); // Oculta o anúncio
+        // Opcional: dispara evento para Google Analytics
+        if (typeof gtag === 'function') {
+          gtag('event', 'close_ad', { 'ad_side': targetId });
+        }
+      }
+    });
+  });
+
+  // (Opcional) Função para reabrir todos os anúncios – descomente se quiser:
+  // window.reopenAds = function() {
+  //   document.querySelectorAll('.ad-side').forEach(el => el.classList.remove('closed'));
+  // };
+})();
+
+/* ============================================
+   LÓGICA DO ANÚNCIO FLUTUANTE (mantido)
+   ============================================ */
+
+(function() {
+  // Cria o contêiner da aba flutuante
   const adFloat = document.createElement('div');
   adFloat.className = 'ad-float';
   adFloat.id = 'adFloat';
@@ -47,7 +74,7 @@ const AD_CONFIG = {
   // Adiciona ao body
   document.body.appendChild(adFloat);
 
-  // Função para carregar o anúncio
+  // Função para carregar o anúncio flutuante conforme configuração
   function loadAd() {
     if (AD_CONFIG.AD_TYPE === 'script') {
       const s = document.createElement('script');
