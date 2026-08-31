@@ -1,9 +1,12 @@
 User-agent: *
 Allow: /
-Disallow: /redirect.html
-Disallow: /edit.html
-Disallow: /criar.html
-Disallow: /css/
 Disallow: /Código.gs
 
-Sitemap: https://whatslink-48tc.onrender.com/sitemap.xml
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
