@@ -1,5 +1,178 @@
 /* ============================================
-   ABA DE ANÚNCIO FLUTUANTE
+   ANÚNCIOS LATERAIS (Desktop)
+   ============================================ */
+
+.ad-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: 1160px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.ad-side {
+  flex-shrink: 0;
+  width: 300px;
+  min-height: 310px;
+  position: sticky;
+  top: 20px;
+}
+
+.ad-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35), 0 8px 20px rgba(0,0,0,.25);
+  border: 1px solid rgba(0,0,0,.05);
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+}
+
+.ad-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.ad-header span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: #888;
+  text-transform: uppercase;
+}
+.ad-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #111;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+}
+.ad-close:hover {
+  background: #000;
+  color: #fff;
+}
+
+.ad-content {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  background: linear-gradient(135deg, #f6f7fb 0%, #eef0f6 100%);
+  border-left: 1px dashed #c5cad6;
+  border-right: 1px dashed #c5cad6;
+}
+.ad-content .label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: #9aa0b2;
+  margin-bottom: 8px;
+}
+.ad-content .title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+.ad-content .sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+.ad-content .fake-banner {
+  margin-top: 16px;
+  width: 80%;
+  height: 36px;
+  border-radius: 8px;
+  background: #111827;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ad-content .icon-big {
+  font-size: 40px;
+  margin-top: 8px;
+}
+
+.ad-footer {
+  padding: 10px 12px;
+  background: #fafafa;
+  text-align: center;
+  font-size: 10px;
+  color: #999;
+}
+
+/* Estado fechado (placeholder) */
+.ad-side.closed .ad-card {
+  border: 1px dashed rgba(255,255,255,.1);
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 310px;
+  color: rgba(255,255,255,.25);
+  font-size: 11px;
+  letter-spacing: .02em;
+}
+.ad-side.closed .ad-card .ad-header,
+.ad-side.closed .ad-card .ad-content,
+.ad-side.closed .ad-card .ad-footer {
+  display: none;
+}
+.ad-side.closed .ad-card::after {
+  content: "anúncio fechado";
+}
+
+/* Responsivo: esconde anúncios laterais em telas < 1100px */
+@media (max-width: 1099px) {
+  .ad-side {
+    display: none !important;
+  }
+  .ad-wrapper {
+    padding: 0;
+    gap: 0;
+  }
+  .reception-page {
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+}
+
+/* Em telas >= 1100px, centraliza o conteúdo principal */
+@media (min-width: 1100px) {
+  .reception-page {
+    margin: 0;
+    border-radius: 28px;
+  }
+}
+
+/* ============================================
+   ANÚNCIO FLUTUANTE (mantido)
    ============================================ */
 
 .ad-float {
@@ -21,7 +194,7 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  background: #25D366; /* cor do botão minimizado */
+  background: #25D366;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,13 +210,11 @@
   background: #f1f1f1;
   border-bottom: 1px solid #ddd;
 }
-
 .ad-float-header span {
   font-size: 12px;
   color: #666;
   font-weight: 600;
 }
-
 .ad-float-header button {
   background: none;
   border: none;
@@ -56,7 +227,7 @@
 
 .ad-float-content {
   width: 100%;
-  height: 250px; /* altura padrão do anúncio */
+  height: 250px;
   border: none;
 }
 
@@ -64,16 +235,13 @@
 .ad-float.minimized .ad-float-content {
   display: none;
 }
-
 .ad-float-mini-icon {
   display: none;
 }
-
 .ad-float.minimized .ad-float-mini-icon {
   display: block;
 }
 
-/* Garante altura mínima enquanto o anúncio carrega */
 #adContainer {
   min-height: 250px;
 }
