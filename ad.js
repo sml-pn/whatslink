@@ -19,17 +19,17 @@ const AD_CONFIG = {
       type: 'custom', // Usando script personalizado para HilltopAds
       html: `
         <script>
-          (function(vldbts){
-            var d = document,
-                s = d.createElement('script'),
-                l = d.scripts[d.scripts.length - 1];
-            s.settings = vldbts || {};
-            s.src = "\\/\\/conventionalresponse.com\\/bPXNV.s\\/diGNlJ0HYTWDcK\\/Qejmu9Mu\\/ZIUOl-kWP\\/TEcFzBNWzKUDzgMbT\\/MZtiNUzjMV3\\/NPTqMWxhNpwZ";
-            s.async = true;
-            s.referrerPolicy = 'no-referrer-when-downgrade';
-            l.parentNode.insertBefore(s, l);
-          })({})
-        <\/script>
+(function(scelg){
+var d = document,
+    s = d.createElement('script'),
+    l = d.scripts[d.scripts.length - 1];
+s.settings = scelg || {};
+s.src = "\/\/conventionalresponse.com\/b\/X.VNs\/dwGJlI0\/YJWCci\/_egmh9\/uuZdUklxkCPuTBc_zxN\/zlU\/zAMWT-MPtCNFzWMj3fNcTuMfx\/Nuwm";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
+})({})
+</script>
       `,
       width: 300,
       height: 250,
