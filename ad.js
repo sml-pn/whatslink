@@ -18,7 +18,7 @@ const AD_CONFIG = {
     {
       id: 'adRight',
       type: 'iframe',
-      src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
+      src: 'src: 'https://elementarywhole.com/8OfdKg'',
       width: 300,
       height: 250,
       position: 'right',
