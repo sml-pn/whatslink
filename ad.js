@@ -1,24 +1,36 @@
 /* ============================================
    CONFIGURAÇÃO DOS ANÚNCIOS LATERAIS
-   Altere aqui: URL, tipo, dimensões, etc.
+   Duas fontes: Profitablerate e HilltopAds
    ============================================ */
 
 const AD_CONFIG = {
-  // Lista de anúncios (um para cada lado)
   ads: [
     {
       id: 'adLeft',
-      type: 'iframe', // use 'iframe' para garantir que apareça; ou 'script' se preferir
+      type: 'iframe', // Usando iframe para Profitablerate
       src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
       width: 300,
       height: 250,
-      position: 'left', // 'left' ou 'right'
+      position: 'left',
       closeable: true
     },
     {
       id: 'adRight',
-      type: 'iframe',
-      src: 'https://elementarywhole.com/8OfdKg',
+      type: 'custom', // Usando script personalizado para HilltopAds
+      html: `
+        <script>
+          (function(vldbts){
+            var d = document,
+                s = d.createElement('script'),
+                l = d.scripts[d.scripts.length - 1];
+            s.settings = vldbts || {};
+            s.src = "\\/\\/conventionalresponse.com\\/bPXNV.s\\/diGNlJ0HYTWDcK\\/Qejmu9Mu\\/ZIUOl-kWP\\/TEcFzBNWzKUDzgMbT\\/MZtiNUzjMV3\\/NPTqMWxhNpwZ";
+            s.async = true;
+            s.referrerPolicy = 'no-referrer-when-downgrade';
+            l.parentNode.insertBefore(s, l);
+          })({})
+        <\/script>
+      `,
       width: 300,
       height: 250,
       position: 'right',
@@ -35,17 +47,14 @@ const AD_CONFIG = {
 (function() {
   'use strict';
 
-  // Função para criar o contêiner do anúncio
   function createAdContainer(ad) {
     const aside = document.createElement('aside');
     aside.className = `ad-side ad-${ad.position}`;
     aside.id = ad.id;
 
-    // Cartão interno
     const card = document.createElement('div');
     card.className = 'ad-card';
 
-    // Cabeçalho com botão de fechar
     const header = document.createElement('div');
     header.className = 'ad-header';
     header.innerHTML = '<span>Publicidade</span>';
@@ -64,7 +73,6 @@ const AD_CONFIG = {
 
     card.appendChild(header);
 
-    // Área do anúncio (inicialmente com mensagem de carregando)
     const content = document.createElement('div');
     content.className = 'ad-content';
     const loading = document.createElement('span');
@@ -73,7 +81,6 @@ const AD_CONFIG = {
     content.appendChild(loading);
     card.appendChild(content);
 
-    // Rodapé informativo
     const footer = document.createElement('div');
     footer.className = 'ad-footer';
     footer.textContent = 'Feche o anúncio no X';
@@ -83,39 +90,51 @@ const AD_CONFIG = {
     return aside;
   }
 
-  // Função para carregar o conteúdo do anúncio
   function loadAdContent(aside, ad) {
     const content = aside.querySelector('.ad-content');
     if (!content) return;
 
-    // Remove a mensagem de carregando
     const loading = content.querySelector('.ad-loading');
     if (loading) loading.remove();
 
-    if (ad.type === 'script') {
-      const script = document.createElement('script');
-      script.src = ad.src;
-      script.async = true;
-      script.onerror = () => {
-        content.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
-      };
-      content.appendChild(script);
-    } else {
-      // Iframe (padrão)
-      const iframe = document.createElement('iframe');
-      iframe.src = ad.src;
-      iframe.frameBorder = '0';
-      iframe.scrolling = 'no';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.onerror = () => {
-        content.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
-      };
-      content.appendChild(iframe);
+    switch (ad.type) {
+      case 'script':
+        loadScriptAd(content, ad.src);
+        break;
+      case 'iframe':
+        loadIframeAd(content, ad.src);
+        break;
+      case 'custom':
+        content.innerHTML = ad.html;
+        break;
+      default:
+        content.innerHTML = '<span class="ad-fallback">Tipo de anúncio não suportado</span>';
     }
   }
 
-  // Inicialização
+  function loadScriptAd(parent, src) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onerror = () => {
+      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
+    };
+    parent.appendChild(script);
+  }
+
+  function loadIframeAd(parent, src) {
+    const iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.frameBorder = '0';
+    iframe.scrolling = 'no';
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.onerror = () => {
+      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
+    };
+    parent.appendChild(iframe);
+  }
+
   function init() {
     const wrapper = document.querySelector('.ad-wrapper');
 
@@ -123,14 +142,12 @@ const AD_CONFIG = {
       const aside = createAdContainer(ad);
 
       if (wrapper) {
-        // Se houver wrapper, insere no lugar certo para ficar nas laterais
         if (ad.position === 'right') {
           wrapper.appendChild(aside);
         } else {
           wrapper.insertBefore(aside, wrapper.firstChild);
         }
       } else {
-        // Fallback: posição fixa na tela
         aside.classList.add('ad-fixed');
         document.body.appendChild(aside);
       }
@@ -141,7 +158,6 @@ const AD_CONFIG = {
     console.log('[WhatsLink Ads] Anúncios laterais criados.');
   }
 
-  // Aguarda o DOM estar pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
