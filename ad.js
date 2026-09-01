@@ -16,21 +16,8 @@ const AD_CONFIG = {
     },
     {
       id: 'adRight',
-      type: 'script', // Usando script personalizado para HilltopAds
-      html: `
-        <script>
-(function(scelg){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = scelg || {};
-s.src = "\/\/conventionalresponse.com\/b\/X.VNs\/dwGJlI0\/YJWCci\/_egmh9\/uuZdUklxkCPuTBc_zxN\/zlU\/zAMWT-MPtCNFzWMj3fNcTuMfx\/Nuwm";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
-      `,
+      type: 'script', // Agora com src correto
+      src: '//conventionalresponse.com/b/X.VNs/dwGJlI0/YJWCci/_egmh9/uUZdUklxkCPuTBc_zxN/zlU/zAMWT-MPtCNFzWMj3fNcTuMfx/Nuwm',
       width: 300,
       height: 250,
       position: 'right',
