@@ -18,7 +18,7 @@ const AD_CONFIG = {
     {
       id: 'adRight',
       type: 'iframe',
-      src: 'src: 'https://elementarywhole.com/8OfdKg'',
+      src: 'src: 'https://elementarywhole.com/8OfdKg',
       width: 300,
       height: 250,
       position: 'right',
