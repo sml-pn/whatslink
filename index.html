@@ -49,6 +49,16 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/index.css" />
+
+  <!-- Google Analytics 4 (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R6FYZLQHT1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-R6FYZLQHT1');
+  </script>
 </head>
 <body>
   <div id="app">
@@ -209,5 +219,37 @@
   
   <div id="toast" class="toast"></div>
   <script src="script.js"></script>
+
+  <!-- Eventos principais de rastreamento -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Evento principal: clique nos botões "Criar meu link agora" e "Começar"
+      const ctaButtons = document.querySelectorAll('.btn-primary, .nav-cta');
+
+      ctaButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (typeof gtag === 'function') {
+            gtag('event', 'click_cta', {
+              'event_category': 'engagement',
+              'event_label': this.textContent.trim() || 'CTA'
+            });
+          }
+        });
+      });
+
+      // (Opcional) Evento para os links "Criar link" do menu
+      const criarLinkMenu = document.querySelector('a[href="criar.html"]');
+      if (criarLinkMenu) {
+        criarLinkMenu.addEventListener('click', function() {
+          if (typeof gtag === 'function') {
+            gtag('event', 'click_create_link', {
+              'event_category': 'navigation',
+              'event_label': 'Menu Criar link'
+            });
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
