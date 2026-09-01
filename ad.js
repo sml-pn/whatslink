@@ -16,7 +16,7 @@ const AD_CONFIG = {
     },
     {
       id: 'adRight',
-      type: 'custom', // Usando script personalizado para HilltopAds
+      type: 'script', // Usando script personalizado para HilltopAds
       html: `
         <script>
 (function(scelg){
