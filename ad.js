@@ -34,6 +34,11 @@ const AD_CONFIG = {
 (function() {
   'use strict';
 
+  /**
+   * Cria o contêiner <aside> do anúncio lateral com cabeçalho, área de conteúdo e rodapé.
+   * @param {Object} ad - Configuração do anúncio.
+   * @returns {HTMLElement} Elemento <aside> pronto para inserir no DOM.
+   */
   function createAdContainer(ad) {
     const aside = document.createElement('aside');
     aside.className = `ad-side ad-${ad.position}`;
@@ -42,6 +47,7 @@ const AD_CONFIG = {
     const card = document.createElement('div');
     card.className = 'ad-card';
 
+    // Cabeçalho com botão de fechar
     const header = document.createElement('div');
     header.className = 'ad-header';
     header.innerHTML = '<span>Publicidade</span>';
@@ -53,13 +59,16 @@ const AD_CONFIG = {
       btn.innerHTML = '✕';
       btn.addEventListener('click', function() {
         aside.classList.add('closed');
-        if (typeof gtag === 'function') gtag('event', 'close_ad', { 'ad_id': ad.id });
+        if (typeof gtag === 'function') {
+          gtag('event', 'close_ad', { 'ad_id': ad.id });
+        }
       });
       header.appendChild(btn);
     }
 
     card.appendChild(header);
 
+    // Área do anúncio (inicialmente com "Carregando...")
     const content = document.createElement('div');
     content.className = 'ad-content';
     const loading = document.createElement('span');
@@ -68,6 +77,7 @@ const AD_CONFIG = {
     content.appendChild(loading);
     card.appendChild(content);
 
+    // Rodapé
     const footer = document.createElement('div');
     footer.className = 'ad-footer';
     footer.textContent = 'Feche o anúncio no X';
@@ -77,10 +87,16 @@ const AD_CONFIG = {
     return aside;
   }
 
+  /**
+   * Carrega o conteúdo do anúncio conforme o tipo.
+   * @param {HTMLElement} aside - Elemento <aside> do anúncio.
+   * @param {Object} ad - Configuração do anúncio.
+   */
   function loadAdContent(aside, ad) {
     const content = aside.querySelector('.ad-content');
     if (!content) return;
 
+    // Remove o indicador de carregamento
     const loading = content.querySelector('.ad-loading');
     if (loading) loading.remove();
 
@@ -98,6 +114,7 @@ const AD_CONFIG = {
         break;
 
       case 'custom':
+        // Somente para HTML puro (sem script)
         content.innerHTML = ad.html;
         break;
 
@@ -106,6 +123,9 @@ const AD_CONFIG = {
     }
   }
 
+  /**
+   * Carrega anúncio via script comum.
+   */
   function loadScriptAd(parent, src) {
     const script = document.createElement('script');
     script.src = src;
@@ -116,6 +136,9 @@ const AD_CONFIG = {
     parent.appendChild(script);
   }
 
+  /**
+   * Carrega anúncio via iframe.
+   */
   function loadIframeAd(parent, src) {
     const iframe = document.createElement('iframe');
     iframe.src = src;
@@ -129,23 +152,36 @@ const AD_CONFIG = {
     parent.appendChild(iframe);
   }
 
-  // Função específica para carregar anúncio HilltopAds
+  /**
+   * Carrega anúncio da HilltopAds.
+   * Reproduz exatamente o comportamento do código original da rede.
+   */
   function loadHilltopAd(parent, src) {
     const script = document.createElement('script');
-    // Configuração padrão esperada pelo script da HilltopAds
+
+    // Configuração que a HilltopAds espera
     script.settings = {};
-    // Atribui a URL do script (geralmente protocolo relativo)
+
+    // URL fornecida pela HilltopAds (pode ser protocolo relativo)
     script.src = src;
     script.async = true;
     script.referrerPolicy = 'no-referrer-when-downgrade';
 
-    script.onerror = () => {
-      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
+    script.onerror = function() {
+      console.error('[WhatsLink Ads] HilltopAds não carregou.');
+      // Opcional: exibir fallback visual
+      // parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
     };
 
+    // Adiciona o script ao contêiner do anúncio
     parent.appendChild(script);
+
+    console.log('[WhatsLink Ads] Script HilltopAds adicionado.');
   }
 
+  /**
+   * Inicializa a criação e posicionamento dos anúncios.
+   */
   function init() {
     const wrapper = document.querySelector('.ad-wrapper');
 
@@ -153,12 +189,14 @@ const AD_CONFIG = {
       const aside = createAdContainer(ad);
 
       if (wrapper) {
+        // Se houver wrapper, insere na ordem correta (esquerda primeiro, direita por último)
         if (ad.position === 'right') {
           wrapper.appendChild(aside);
         } else {
           wrapper.insertBefore(aside, wrapper.firstChild);
         }
       } else {
+        // Fallback: posição fixa na tela
         aside.classList.add('ad-fixed');
         document.body.appendChild(aside);
       }
@@ -169,6 +207,7 @@ const AD_CONFIG = {
     console.log('[WhatsLink Ads] Anúncios laterais criados.');
   }
 
+  // Aguarda o DOM estar pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
