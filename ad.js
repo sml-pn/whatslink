@@ -7,7 +7,7 @@ const AD_CONFIG = {
   ads: [
     {
       id: 'adLeft',
-      type: 'iframe', // Usando iframe para Profitablerate
+      type: 'iframe', // Profitablerate via iframe
       src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
       width: 300,
       height: 250,
@@ -16,8 +16,21 @@ const AD_CONFIG = {
     },
     {
       id: 'adRight',
-      type: 'script', // Agora com src correto
-      src: '//conventionalresponse.com/b/X.VNs/dwGJlI0/YJWCci/_egmh9/uUZdUklxkCPuTBc_zxN/zlU/zAMWT-MPtCNFzWMj3fNcTuMfx/Nuwm',
+      type: 'custom', // HilltopAds via código HTML/script personalizado
+      html: `
+        <script>
+          (function(scelg){
+            var d = document,
+                s = d.createElement('script'),
+                l = d.scripts[d.scripts.length - 1];
+            s.settings = scelg || {};
+            s.src = "\\/\\/conventionalresponse.com\\/b\\/X.VNs\\/dwGJlI0\\/YJWCci\\/_egmh9\\/uuZdUklxkCPuTBc_zxN\\/zlU\\/zAMWT-MPtCNFzWMj3fNcTuMfx\\/Nuwm";
+            s.async = true;
+            s.referrerPolicy = 'no-referrer-when-downgrade';
+            l.parentNode.insertBefore(s, l);
+          })({})
+        <\/script>
+      `,
       width: 300,
       height: 250,
       position: 'right',
