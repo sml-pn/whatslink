@@ -17,7 +17,7 @@ const AD_CONFIG = {
     {
       id: 'adRight',
       type: 'hilltop', // HilltopAds via script programático (tipo especial)
-      src: '//conventionalresponse.com/btX.V/sSdhG/lD0/YtWGcS/mesmH9qu_ZHUglukwPQT/cFzoNGzyUxz/MDTQMftLNyzUMC3yNxTVMKxENawS',
+      src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
       width: 300,
       height: 250,
       position: 'right',
