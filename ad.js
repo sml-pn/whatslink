@@ -24,7 +24,7 @@ const AD_CONFIG = {
                 s = d.createElement('script'),
                 l = d.scripts[d.scripts.length - 1];
             s.settings = scelg || {};
-            s.src = "https://elementarywhole.com/8OfdKg";
+            s.src = "\/\/conventionalresponse.com\/btX.V\/sSdhG\/lD0\/YtWGcS\/mesmH9qu_ZHUglukwPQT\/cFzoNGzyUxz\/MDTQMftLNyzUMC3yNxTVMKxENawS";
             s.async = true;
             s.referrerPolicy = 'no-referrer-when-downgrade';
             l.parentNode.insertBefore(s, l);
