@@ -16,21 +16,8 @@ const AD_CONFIG = {
     },
     {
       id: 'adRight',
-      type: 'custom', // HilltopAds via código HTML/script personalizado
-      html: `
-        <script>
-          (function(scelg){
-            var d = document,
-                s = d.createElement('script'),
-                l = d.scripts[d.scripts.length - 1];
-            s.settings = scelg || {};
-            s.src = "\/\/conventionalresponse.com\/btX.V\/sSdhG\/lD0\/YtWGcS\/mesmH9qu_ZHUglukwPQT\/cFzoNGzyUxz\/MDTQMftLNyzUMC3yNxTVMKxENawS";
-            s.async = true;
-            s.referrerPolicy = 'no-referrer-when-downgrade';
-            l.parentNode.insertBefore(s, l);
-          })({})
-        <\/script>
-      `,
+      type: 'hilltop', // HilltopAds via script programático (tipo especial)
+      src: '//conventionalresponse.com/btX.V/sSdhG/lD0/YtWGcS/mesmH9qu_ZHUglukwPQT/cFzoNGzyUxz/MDTQMftLNyzUMC3yNxTVMKxENawS',
       width: 300,
       height: 250,
       position: 'right',
@@ -101,12 +88,19 @@ const AD_CONFIG = {
       case 'script':
         loadScriptAd(content, ad.src);
         break;
+
       case 'iframe':
         loadIframeAd(content, ad.src);
         break;
+
+      case 'hilltop':
+        loadHilltopAd(content, ad.src);
+        break;
+
       case 'custom':
         content.innerHTML = ad.html;
         break;
+
       default:
         content.innerHTML = '<span class="ad-fallback">Tipo de anúncio não suportado</span>';
     }
@@ -133,6 +127,23 @@ const AD_CONFIG = {
       parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
     };
     parent.appendChild(iframe);
+  }
+
+  // Função específica para carregar anúncio HilltopAds
+  function loadHilltopAd(parent, src) {
+    const script = document.createElement('script');
+    // Configuração padrão esperada pelo script da HilltopAds
+    script.settings = {};
+    // Atribui a URL do script (geralmente protocolo relativo)
+    script.src = src;
+    script.async = true;
+    script.referrerPolicy = 'no-referrer-when-downgrade';
+
+    script.onerror = () => {
+      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
+    };
+
+    parent.appendChild(script);
   }
 
   function init() {
