@@ -1,13 +1,13 @@
 /* ============================================
    CONFIGURAÇÃO DOS ANÚNCIOS LATERAIS
-   Duas fontes: Profitablerate e HilltopAds
+   Fontes: Profitablerate (esquerda) e Adsterra (direita)
    ============================================ */
 
 const AD_CONFIG = {
   ads: [
     {
       id: 'adLeft',
-      type: 'iframe', // Profitablerate via iframe
+      type: 'iframe', // Profitablerate funciona bem via iframe
       src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
       width: 300,
       height: 250,
@@ -16,8 +16,9 @@ const AD_CONFIG = {
     },
     {
       id: 'adRight',
-      type: 'hilltop', // HilltopAds via script programático (tipo especial)
-      src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
+      type: 'script', // Adsterra geralmente usa script
+      // ⚠️ Substitua o src abaixo pelo código real fornecido pela Adsterra
+      src: 'https://www.ads-terra.com/script.js', // PLACEHOLDER – troque pelo seu código
       width: 300,
       height: 250,
       position: 'right',
@@ -101,39 +102,17 @@ const AD_CONFIG = {
     if (loading) loading.remove();
 
     switch (ad.type) {
-      case 'script':
-        loadScriptAd(content, ad.src);
-        break;
-
       case 'iframe':
         loadIframeAd(content, ad.src);
         break;
 
-      case 'hilltop':
-        loadHilltopAd(content, ad.src);
-        break;
-
-      case 'custom':
-        // Somente para HTML puro (sem script)
-        content.innerHTML = ad.html;
+      case 'script':
+        loadScriptAd(content, ad.src);
         break;
 
       default:
         content.innerHTML = '<span class="ad-fallback">Tipo de anúncio não suportado</span>';
     }
-  }
-
-  /**
-   * Carrega anúncio via script comum.
-   */
-  function loadScriptAd(parent, src) {
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = true;
-    script.onerror = () => {
-      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
-    };
-    parent.appendChild(script);
   }
 
   /**
@@ -153,30 +132,16 @@ const AD_CONFIG = {
   }
 
   /**
-   * Carrega anúncio da HilltopAds.
-   * Reproduz exatamente o comportamento do código original da rede.
+   * Carrega anúncio via script.
    */
-  function loadHilltopAd(parent, src) {
+  function loadScriptAd(parent, src) {
     const script = document.createElement('script');
-
-    // Configuração que a HilltopAds espera
-    script.settings = {};
-
-    // URL fornecida pela HilltopAds (pode ser protocolo relativo)
     script.src = src;
     script.async = true;
-    script.referrerPolicy = 'no-referrer-when-downgrade';
-
-    script.onerror = function() {
-      console.error('[WhatsLink Ads] HilltopAds não carregou.');
-      // Opcional: exibir fallback visual
-      // parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
+    script.onerror = () => {
+      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
     };
-
-    // Adiciona o script ao contêiner do anúncio
     parent.appendChild(script);
-
-    console.log('[WhatsLink Ads] Script HilltopAds adicionado.');
   }
 
   /**
