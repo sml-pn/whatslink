@@ -451,16 +451,21 @@
 
     // ============ INDICADOR DE CARREGAMENTO ============
     function mostrarCarregando() {
-      const linksList = $('#linksList');
-      if (linksList) {
-        linksList.innerHTML = `
-          <div class="loading-links">
-            <div class="spinner"></div>
-            <span>Carregando seus links...</span>
-          </div>
-        `;
-      }
-    }
+  const linksArea = $('#linksArea');
+  const linksList = $('#linksList');
+
+  // Garante que a área de links esteja visível antes de mostrar o carregamento
+  if (linksArea) linksArea.style.display = 'block';
+
+  if (linksList) {
+    linksList.innerHTML = `
+      <div class="loading-links">
+        <div class="spinner"></div>
+        <span>Carregando seus links...</span>
+      </div>
+    `;
+  }
+}
 
     // ============ BUSCAR MEUS LINKS ============
     async function buscarMeusLinks() {
