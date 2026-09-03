@@ -45,6 +45,7 @@
   <link rel="stylesheet" href="css/edit.css" />
 
   <style>
+    /* ================= ESTILOS ESPECÍFICOS DA PÁGINA ================= */
     .criar-container { max-width: 680px; margin: 0 auto; padding: 20px; width: 100%; box-sizing: border-box; }
     .login-required {
       background: white; border-radius: 24px; padding: 48px 32px; text-align: center;
@@ -104,6 +105,17 @@
     }
     .image-preview img { width: 100%; max-height: 150px; object-fit: cover; display: block; }
     .logo-preview img { max-height: 80px; width: 80px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
+    /* Dica de ajuda visual */
+    .helper-text {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .helper-text a {
+      color: #2563eb;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -119,6 +131,7 @@
   </header>
 
   <div class="criar-container">
+    <!-- ================= BLOCO DE LOGIN ================= -->
     <div class="login-required" id="loginRequired">
       <div class="login-icon"><span class="material-icons-round">lock</span></div>
       <h2>🔐 Faça login para criar seu link</h2>
@@ -140,6 +153,7 @@
       </button>
     </div>
 
+    <!-- ================= ÁREA DO FORMULÁRIO ================= -->
     <div id="formArea" style="display:none;">
       <div class="user-info-bar">
         <div class="user-info-left">
@@ -209,7 +223,11 @@
             <div class="field">
               <label for="logoUrl">Logo (URL) <span class="optional">opcional</span></label>
               <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
-              <span class="field-hint">Imagem circular na sua página</span>
+              <span class="field-hint">
+                📌 Como obter o link: acesse <a href="https://postimages.org/" target="_blank">postimages.org</a>,
+                envie a imagem e copie o <strong>Direct Link</strong>.
+                Se a imagem falhar, usaremos as iniciais do nome automaticamente.
+              </span>
               <div class="image-preview logo-preview" id="logoPreview">
                 <img id="logoPreviewImg" src="" alt="Preview da logo" />
               </div>
@@ -217,7 +235,9 @@
             <div class="field">
               <label for="bannerUrl">Banner (URL) <span class="optional">opcional</span></label>
               <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
-              <span class="field-hint">Imagem ampla no topo</span>
+              <span class="field-hint">
+                📌 Imagem horizontal (recomendado 1200x400px). Use as mesmas dicas do logo para obter o link.
+              </span>
               <div class="image-preview" id="bannerPreview">
                 <img id="bannerPreviewImg" src="" alt="Preview do banner" />
               </div>
