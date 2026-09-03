@@ -57,18 +57,21 @@
     .google-login-btn:hover { background: #f8fafc; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
     .google-login-btn:active { transform: scale(.98); }
     .google-login-btn svg { flex-shrink: 0; }
+
     .image-preview {
       margin-top: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
       background: #f8fafc; display: none;
     }
     .image-preview img { width: 100%; max-height: 120px; object-fit: cover; display: block; }
     .logo-preview img { max-height: 70px; width: 70px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
+
     .save-loader {
       display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
       border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite;
       margin-left: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
     .helper-text {
       font-size: 12px;
       color: #6b7280;
@@ -78,6 +81,26 @@
     .helper-text a {
       color: #2563eb;
       text-decoration: underline;
+    }
+
+    /* ================= INDICADOR DE CARREGAMENTO ================= */
+    .loading-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .loading-links .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(37,211,102,.2);
+      border-top-color: #25D366;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
     }
   </style>
 </head>
@@ -426,15 +449,35 @@
     $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
     $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
 
+    // ============ INDICADOR DE CARREGAMENTO ============
+    function mostrarCarregando() {
+      const linksList = $('#linksList');
+      if (linksList) {
+        linksList.innerHTML = `
+          <div class="loading-links">
+            <div class="spinner"></div>
+            <span>Carregando seus links...</span>
+          </div>
+        `;
+      }
+    }
+
     // ============ BUSCAR MEUS LINKS ============
     async function buscarMeusLinks() {
       try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'buscar_meus_links', email: currentUser.email })
-        });
-        const data = await response.json();
+        // Mostra indicador de carregamento imediatamente
+        mostrarCarregando();
+
+        // Aguarda a API e no mínimo 2 segundos
+        const [data] = await Promise.all([
+          fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'buscar_meus_links', email: currentUser.email })
+          }).then(res => res.json()),
+          new Promise(resolve => setTimeout(resolve, 2000))
+        ]);
+
         if (data.error) throw new Error(data.error);
 
         const links = data.links || [];
