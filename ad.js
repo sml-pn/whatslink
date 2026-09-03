@@ -1,30 +1,43 @@
 /* ============================================
-   CONFIGURAÇÃO DOS ANÚNCIOS LATERAIS
-   Fontes: Profitablerate (esquerda) e Adsterra (direita)
+   GERENCIADOR DE ANÚNCIOS
+   Inclui:
+   - Anúncio lateral (Adsterra)
+   - Push in-page (TrafficStars)
    ============================================ */
 
 const AD_CONFIG = {
+  // ================= ANÚNCIO LATERAL =================
   ads: [
     {
       id: 'adLeft',
-      type: 'iframe', // Profitablerate funciona bem via iframe
-      src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
-      width: 300,
-      height: 250,
-      position: 'left',
-      closeable: true
-    },
-    {
-      id: 'adRight',
       type: 'script', // Adsterra geralmente usa script
       // ⚠️ Substitua o src abaixo pelo código real fornecido pela Adsterra
       src: 'https://www.ads-terra.com/script.js', // PLACEHOLDER – troque pelo seu código
       width: 300,
       height: 250,
-      position: 'right',
+      position: 'left',
       closeable: true
     }
-  ]
+    // Para adicionar outro anúncio lateral (direita), descomente e ajuste:
+    // {
+    //   id: 'adRight',
+    //   type: 'script',
+    //   src: 'https://www.ads-terra.com/script2.js',
+    //   width: 300,
+    //   height: 250,
+    //   position: 'right',
+    //   closeable: true
+    // }
+  ],
+
+  // ================= PUSH IN-PAGE (TRAFFICSTARS) =================
+  push: {
+    enabled: true,                // true = ativa o push; false = desativa
+    spot: '6eb53a7be15a452c8d40dda758e9b473',
+    verticalPosition: 'bottom',   // bottom | top
+    keywords: '',                 // deixe vazio ou preencha com palavras-chave
+    subid: ''                     // deixe vazio ou gere dinamicamente
+  }
 };
 
 /* ============================================
@@ -89,7 +102,7 @@ const AD_CONFIG = {
   }
 
   /**
-   * Carrega o conteúdo do anúncio conforme o tipo.
+   * Carrega o conteúdo do anúncio lateral conforme o tipo.
    * @param {HTMLElement} aside - Elemento <aside> do anúncio.
    * @param {Object} ad - Configuração do anúncio.
    */
@@ -145,9 +158,9 @@ const AD_CONFIG = {
   }
 
   /**
-   * Inicializa a criação e posicionamento dos anúncios.
+   * Inicializa os anúncios laterais.
    */
-  function init() {
+  function initSideAds() {
     const wrapper = document.querySelector('.ad-wrapper');
 
     AD_CONFIG.ads.forEach(ad => {
@@ -169,7 +182,51 @@ const AD_CONFIG = {
       loadAdContent(aside, ad);
     });
 
-    console.log('[WhatsLink Ads] Anúncios laterais criados.');
+    console.log('[WhatsLink Ads] Anúncio lateral (Adsterra) criado.');
+  }
+
+  /**
+   * Inicializa o push in-page da TrafficStars.
+   */
+  function initPush() {
+    // Verifica se o push está habilitado
+    if (!AD_CONFIG.push.enabled) {
+      console.log('[WhatsLink Ads] Push in-page desativado.');
+      return;
+    }
+
+    // Carrega o SDK do push da Runative
+    const sdk = document.createElement('script');
+    sdk.src = '//cdn.runative-syndicate.com/sdk/v1/inpage.push.js';
+    sdk.async = true;
+    sdk.onload = function() {
+      // Após carregar o SDK, verifica se a função RnInPagePush está disponível
+      if (typeof RnInPagePush === 'function') {
+        RnInPagePush({
+          spot: AD_CONFIG.push.spot,
+          verticalPosition: AD_CONFIG.push.verticalPosition,
+          keywords: AD_CONFIG.push.keywords || '',
+          subid: AD_CONFIG.push.subid || ''
+        });
+        console.log('[WhatsLink Ads] Push in-page (TrafficStars) iniciado.');
+      } else {
+        console.warn('[WhatsLink Ads] RnInPagePush não está disponível.');
+      }
+    };
+    sdk.onerror = function() {
+      console.error('[WhatsLink Ads] Falha ao carregar SDK do push.');
+    };
+
+    // Adiciona o SDK ao head
+    document.head.appendChild(sdk);
+  }
+
+  /**
+   * Inicializa todos os anúncios (lateral e push).
+   */
+  function init() {
+    initSideAds();
+    initPush();
   }
 
   // Aguarda o DOM estar pronto
