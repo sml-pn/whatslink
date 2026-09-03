@@ -102,6 +102,7 @@
       border-radius: 50%;
       animation: spin .8s linear infinite;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -147,7 +148,9 @@
     <!-- ================= LISTA DE LINKS ================= -->
     <div id="linksArea" style="display:none;">
       <h2 style="margin-bottom:16px;">Meus Links</h2>
-      <div id="linksList"></div>
+      <div id="linksList">
+        <!-- O conteúdo será preenchido via JavaScript -->
+      </div>
     </div>
   </div>
 
@@ -251,14 +254,17 @@
           </div>
         </div>
 
+        <!-- ================= CAMPO DE LOCALIZAÇÃO ================= -->
         <div class="field">
           <label for="editLocalizacao">Localização (Google Maps)</label>
-          <input type="text" id="editLocalizacao" placeholder="Cole aqui o HTML copiado do Google Maps" />
+          <input type="text" id="editLocalizacao" placeholder="Cole o link curto ou link de incorporação" />
           <span class="field-hint" style="display:block; margin-top:6px; background:#f0f9ff; padding:10px; border-radius:8px; border:1px solid #bae6fd; color:#0369a1; line-height:1.5;">
-            Cole o código de incorporação do Google Maps ou o link direto. Nós extraímos automaticamente.
+            ✅ Pode colar o link curto do Google Maps (ex.: maps.app.goo.gl) ou o link de incorporação.
+            O sistema transformará em mapa automaticamente ao salvar.
           </span>
         </div>
 
+        <!-- ================= SELEÇÃO DE TEMA ================= -->
         <div class="field">
           <label>Tema da página</label>
           <input type="hidden" id="editTema" value="verde" />
@@ -468,14 +474,14 @@
         // Mostra indicador de carregamento imediatamente
         mostrarCarregando();
 
-        // Aguarda a API e no mínimo 2 segundos
+        // Aguarda pelo menos 2 segundos (para percepção visual)
         const [data] = await Promise.all([
           fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ action: 'buscar_meus_links', email: currentUser.email })
           }).then(res => res.json()),
-          new Promise(resolve => setTimeout(resolve, 2000))
+          new Promise(resolve => setTimeout(resolve, 2000)) // 2 segundos
         ]);
 
         if (data.error) throw new Error(data.error);
