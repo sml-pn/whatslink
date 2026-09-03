@@ -45,6 +45,7 @@
   <link rel="stylesheet" href="css/edit.css" />
 
   <style>
+    /* ================= ESTILOS ESPECÍFICOS DA PÁGINA ================= */
     .google-login-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; max-width: 300px; margin: 0 auto; padding: 14px 20px;
@@ -68,6 +69,16 @@
       margin-left: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .helper-text {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .helper-text a {
+      color: #2563eb;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -83,6 +94,7 @@
   </header>
 
   <div class="edit-container">
+    <!-- ================= BLOCO DE LOGIN ================= -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
@@ -97,6 +109,7 @@
       </button>
     </div>
 
+    <!-- ================= ÁREA DO USUÁRIO ================= -->
     <div id="userArea" style="display:none;">
       <div class="user-area">
         <img id="userPhoto" src="" alt="Foto" />
@@ -108,12 +121,14 @@
       </div>
     </div>
 
+    <!-- ================= LISTA DE LINKS ================= -->
     <div id="linksArea" style="display:none;">
       <h2 style="margin-bottom:16px;">Meus Links</h2>
       <div id="linksList"></div>
     </div>
   </div>
 
+  <!-- ================= MODAL DE EDIÇÃO ================= -->
   <div class="modal-overlay" id="editModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -153,6 +168,10 @@
           <div class="field">
             <label for="editLogo">Logo (URL)</label>
             <input type="url" id="editLogo" />
+            <span class="helper-text">
+              📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> para obter o link direto.
+              Se falhar, usaremos as iniciais.
+            </span>
             <div class="image-preview logo-preview" id="editLogoPreview">
               <img id="editLogoPreviewImg" src="" alt="Preview da logo" />
             </div>
@@ -160,6 +179,9 @@
           <div class="field">
             <label for="editBanner">Banner (URL)</label>
             <input type="url" id="editBanner" />
+            <span class="helper-text">
+              📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.
+            </span>
             <div class="image-preview" id="editBannerPreview">
               <img id="editBannerPreviewImg" src="" alt="Preview do banner" />
             </div>
