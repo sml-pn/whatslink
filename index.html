@@ -3,23 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meus Links - WhatsLink</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="theme-color" content="#25D366" />
 
-  <!-- Open Graph / Facebook -->
+  <title>WhatsLink - Link na Bio Profissional com Mapa, Instagram e WhatsApp</title>
+  <meta name="description" content="Crie seu link na bio profissional em 1 minuto. Junte Instagram, Facebook, Site, Mapa com localização e botão pro WhatsApp em uma página só. Ideal para qualquer negócio local. Grátis." />
+  <meta name="keywords" content="link na bio, link na bio instagram, bio link profissional, página de links, link com mapa, link bio com localização, link instagram whatsapp, link para negócio local" />
+  <meta name="author" content="WhatsLink" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="theme-color" content="#25D366" />
+  <link rel="canonical" href="https://whatslink-48tc.onrender.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="WhatsLink - Link na Bio com Mapa e WhatsApp para Negócios" />
+  <meta property="og:description" content="Seu Instagram, Site, Mapa e WhatsApp em um único link na bio. Crie a página de recepção do seu negócio em 1 minuto. 6 temas profissionais, 100% grátis." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://whatslink-48tc.onrender.com/edit.html" />
-  <meta property="og:title" content="Meus Links - WhatsLink" />
-  <meta property="og:description" content="Gerencie e edite seus links criados no WhatsLink." />
+  <meta property="og:url" content="https://whatslink-48tc.onrender.com/" />
   <meta property="og:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="WhatsLink" />
   <meta property="og:locale" content="pt_BR" />
 
-  <!-- Twitter Card -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Meus Links - WhatsLink" />
-  <meta name="twitter:description" content="Gerencie e edite seus links criados no WhatsLink." />
+  <meta name="twitter:title" content="WhatsLink - Link na Bio Profissional para Qualquer Negócio" />
+  <meta name="twitter:description" content="Link na bio com Instagram, Mapa, Site e WhatsApp. Uma página só para facilitar o contato do cliente com seu negócio." />
   <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
 
   <!-- Favicons -->
@@ -31,646 +38,231 @@
   <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <!-- Ícones -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
   <!-- Estilos -->
   <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/edit.css" />
+  <link rel="stylesheet" href="css/index.css" />
 
-  <style>
-    /* ================= ESTILOS ESPECÍFICOS DA PÁGINA ================= */
-    .google-login-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; max-width: 300px; margin: 0 auto; padding: 14px 20px;
-      background: white; border: 2px solid #e2e8f0; border-radius: 999px;
-      font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s ease;
-      font-family: 'Inter', sans-serif; color: #0f172a; -webkit-tap-highlight-color: transparent;
-      box-sizing: border-box;
-    }
-    .google-login-btn:hover { background: #f8fafc; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
-    .google-login-btn:active { transform: scale(.98); }
-    .google-login-btn svg { flex-shrink: 0; }
-    .image-preview {
-      margin-top: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
-      background: #f8fafc; display: none;
-    }
-    .image-preview img { width: 100%; max-height: 120px; object-fit: cover; display: block; }
-    .logo-preview img { max-height: 70px; width: 70px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
-    .save-loader {
-      display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
-      border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite;
-      margin-left: 8px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .helper-text {
-      font-size: 12px;
-      color: #6b7280;
-      margin-top: 4px;
-      line-height: 1.5;
-    }
-    .helper-text a {
-      color: #2563eb;
-      text-decoration: underline;
-    }
+  <!-- Dados estruturados (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "WhatsLink",
+    "alternateName": "Link na Bio Profissional",
+    "url": "https://whatslink-48tc.onrender.com/",
+    "description": "Link na bio profissional para qualquer negócio. Reúna Instagram, Facebook, Site, Mapa com localização e WhatsApp em uma única página. Facilite o contato do cliente.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+    "featureList": ["Link na bio Instagram", "Mapa com localização", "Botão WhatsApp", "Instagram e Facebook", "6 temas profissionais", "Logo e banner personalizado"]
+  }
+  </script>
 
-    /* ================= INDICADOR DE CARREGAMENTO ================= */
-    .loading-links {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .loading-links .spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid rgba(37,211,102,.2);
-      border-top-color: #25D366;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+  <!-- Google Analytics 4 (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R6FYZLQHT1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R6FYZLQHT1');
+  </script>
 </head>
 <body>
-  <header class="main-header">
-    <a href="index.html" class="logo">
-      <div class="logo-icon"><span class="material-icons-round">link</span></div>
-      Whats<span>Link</span>
-    </a>
-    <a href="index.html" class="back-link">
-      <span class="material-icons-round" style="font-size:18px;">arrow_back</span>
-      Voltar para página inicial
-    </a>
-  </header>
-
-  <div class="edit-container">
-    <!-- ================= BLOCO DE LOGIN ================= -->
-    <div class="login-box" id="loginCard">
-      <h2>🔐 Entre para editar seus links</h2>
-      <p>Use sua conta Google para acessar</p>
-      <button id="googleLoginBtn" class="google-login-btn" type="button">
-        <svg width="20" height="20" viewBox="0 0 48 48">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-        </svg>
-        Continuar com Google
+  <div id="app">
+    <header>
+      <div class="logo">
+        <div class="logo-icon"><span class="material-icons-round">link</span></div>
+        WhatsLink <span class="badge"><span class="dot"></span> GRÁTIS</span>
+      </div>
+      <nav class="nav" id="mainNav">
+        <a href="#temas">Temas</a>
+        <a href="criar.html">Criar link</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="edit.html" class="nav-edit">
+          <span class="material-icons-round" style="font-size:16px;">edit</span>
+          Meus Links
+        </a>
+        <a href="criar.html" class="nav-cta">Começar</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
       </button>
-    </div>
+    </header>
 
-    <!-- ================= ÁREA DO USUÁRIO ================= -->
-    <div id="userArea" style="display:none;">
-      <div class="user-area">
-        <img id="userPhoto" src="" alt="Foto" />
-        <span id="userName"></span>
-        <button class="logout-btn" id="logoutBtn">
-          <span class="material-icons-round" style="font-size:18px;">logout</span>
-          Sair
-        </button>
-      </div>
-    </div>
-
-    <!-- ================= LISTA DE LINKS ================= -->
-    <div id="linksArea" style="display:none;">
-      <h2 style="margin-bottom:16px;">Meus Links</h2>
-      <div id="linksList">
-        <!-- O conteúdo será preenchido via JavaScript -->
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= MODAL DE EDIÇÃO ================= -->
-  <div class="modal-overlay" id="editModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2><span class="material-icons-round">edit</span> Editar Link</h2>
-        <button class="modal-close" id="closeEditModal">&times;</button>
-      </div>
-      <form id="editForm" novalidate>
-        <input type="hidden" id="editId" />
-        <input type="hidden" id="editToken" />
-
-        <div class="field">
-          <label for="editEmpresa">Nome da empresa *</label>
-          <input type="text" id="editEmpresa" required />
+    <main>
+      <section class="hero">
+        <div class="hero-badge">
+          <span class="material-icons-round">verified</span>
+          Mais de 12.000 empresas usando
         </div>
-
-        <div class="field">
-          <label for="editWhatsapp">WhatsApp principal *</label>
-          <input type="tel" id="editWhatsapp" required maxlength="18" inputmode="tel" />
-        </div>
-
-        <div class="field">
-          <label for="editBotao1">Nome do botão principal *</label>
-          <input type="text" id="editBotao1" required />
-        </div>
-
-        <div class="field">
-          <label for="editWhatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
-          <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
-        </div>
-
-        <div class="field">
-          <label for="editBotao2">Nome do botão secundário <span class="optional">opcional</span></label>
-          <input type="text" id="editBotao2" />
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="editLogo">Logo (URL)</label>
-            <input type="url" id="editLogo" />
-            <span class="helper-text">
-              📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> para obter o link direto.
-              Se falhar, usaremos as iniciais.
-            </span>
-            <div class="image-preview logo-preview" id="editLogoPreview">
-              <img id="editLogoPreviewImg" src="" alt="Preview da logo" />
-            </div>
-          </div>
-          <div class="field">
-            <label for="editBanner">Banner (URL)</label>
-            <input type="url" id="editBanner" />
-            <span class="helper-text">
-              📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.
-            </span>
-            <div class="image-preview" id="editBannerPreview">
-              <img id="editBannerPreviewImg" src="" alt="Preview do banner" />
-            </div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="editMensagem">Mensagem automática</label>
-          <textarea id="editMensagem" rows="2"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="editDescricao">Descrição</label>
-          <textarea id="editDescricao" rows="3"></textarea>
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="editInstagram">Instagram</label>
-            <div class="input-icon-group">
-              <span class="input-icon">@</span>
-              <input type="text" id="editInstagram" placeholder="suaempresa" />
-            </div>
-          </div>
-          <div class="field">
-            <label for="editHorario">Horário</label>
-            <textarea id="editHorario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
-            <span class="field-hint">
-              Coloque cada período em uma linha.<br>
-              Exemplo: <em>Seg a Sex: 8h às 18h</em><br>
-              <em>Sáb: 8h às 12h</em>
-            </span>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="editFacebook">Facebook</label>
-            <input type="url" id="editFacebook" />
-          </div>
-          <div class="field">
-            <label for="editSite">Site</label>
-            <input type="url" id="editSite" />
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="editLocalizacao">Localização (Google Maps)</label>
-          <input type="text" id="editLocalizacao" placeholder="Cole aqui o HTML copiado do Google Maps" />
-          <span class="field-hint" style="display:block; margin-top:6px; background:#f0f9ff; padding:10px; border-radius:8px; border:1px solid #bae6fd; color:#0369a1; line-height:1.5;">
-            Cole o código de incorporação do Google Maps ou o link direto. Nós extraímos automaticamente.
+        <h1>Crie sua <span>página profissional</span><br>para WhatsApp</h1>
+        <p>6 temas exclusivos. Múltiplos números e botões personalizados.<br><strong>100% gratuito.</strong></p>
+        <div class="hero-actions">
+          <a href="criar.html" class="btn-primary">
+            <span class="material-icons-round">rocket_launch</span>
+            Criar meu link agora
+            <span class="material-icons-round">arrow_forward</span>
+          </a>
+          <span class="hero-note">
+            <span class="material-icons-round">bolt</span>
+            Sem cartão • 100% grátis
           </span>
         </div>
+      </section>
 
-        <div class="field">
-          <label>Tema da página</label>
-          <input type="hidden" id="editTema" value="verde" />
-          <div class="theme-selector-grid" id="editThemeSelector">
-            <div class="theme-card-option active" data-theme="verde" tabindex="0">
-              <div class="theme-preview-mini preview-mini-verde">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
+      <section id="temas" class="themes-section">
+        <div class="section-head">
+          <h2>Temas profissionais</h2>
+          <p class="section-subtitle">Escolha o visual da sua página</p>
+        </div>
+        <div class="carousel">
+          <button class="carousel-btn prev" id="prevBtn" aria-label="Anterior">
+            <span class="material-icons-round">chevron_left</span>
+          </button>
+          <div class="carousel-viewport">
+            <div class="carousel-track" id="carouselTrack">
+              
+              <div class="theme-card active" data-theme="verde" tabindex="0">
+                <div class="theme-preview preview-verde">
+                  <div class="preview-banner"></div>
+                  <div class="preview-logo"><span class="material-icons-round">storefront</span></div>
+                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <span class="theme-check"><span class="material-icons-round">check</span></span>
+                </div>
+                <h3>Verde Glass</h3><p>Vidro translúcido • WhatsApp</p>
               </div>
-              <h4>Verde Glass</h4>
-              <p>Vidro translúcido + partículas</p>
-            </div>
-            <div class="theme-card-option" data-theme="azul" tabindex="0">
-              <div class="theme-preview-mini preview-mini-azul">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
+              
+              <div class="theme-card" data-theme="azul" tabindex="0">
+                <div class="theme-preview preview-azul">
+                  <div class="preview-banner"></div>
+                  <div class="preview-logo"><span class="material-icons-round">business_center</span></div>
+                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <span class="theme-check"><span class="material-icons-round">check</span></span>
+                </div>
+                <h3>Azul Corporate</h3><p>Dark • Profissional</p>
               </div>
-              <h4>Azul Corporate</h4>
-              <p>Grid tech + profissional</p>
-            </div>
-            <div class="theme-card-option" data-theme="roxo" tabindex="0">
-              <div class="theme-preview-mini preview-mini-roxo">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
+              
+              <div class="theme-card" data-theme="roxo" tabindex="0">
+                <div class="theme-preview preview-roxo">
+                  <div class="preview-banner"></div>
+                  <div class="preview-logo"><span class="material-icons-round">auto_awesome</span></div>
+                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <span class="theme-check"><span class="material-icons-round">check</span></span>
+                </div>
+                <h3>Roxo Gradient</h3><p>Gradiente animado • Premium</p>
               </div>
-              <h4>Roxo Gradient</h4>
-              <p>Blobs + gradiente animado</p>
-            </div>
-            <div class="theme-card-option" data-theme="laranja" tabindex="0">
-              <div class="theme-preview-mini preview-mini-laranja">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
+              
+              <div class="theme-card" data-theme="laranja" tabindex="0">
+                <div class="theme-preview preview-laranja">
+                  <div class="preview-banner"></div>
+                  <div class="preview-logo"><span class="material-icons-round">local_fire_department</span></div>
+                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <span class="theme-check"><span class="material-icons-round">check</span></span>
+                </div>
+                <h3>Laranja Energia</h3><p>Vibrante • Acolhedor</p>
               </div>
-              <h4>Laranja Energia</h4>
-              <p>Ondas + calor acolhedor</p>
-            </div>
-            <div class="theme-card-option" data-theme="preto" tabindex="0">
-              <div class="theme-preview-mini preview-mini-preto">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
+              
+              <div class="theme-card" data-theme="preto" tabindex="0">
+                <div class="theme-preview preview-preto">
+                  <div class="preview-banner"></div>
+                  <div class="preview-logo"><span class="material-icons-round">diamond</span></div>
+                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <span class="theme-check"><span class="material-icons-round">check</span></span>
+                </div>
+                <h3>Preto Luxury</h3><p>Dourado • Sofisticado</p>
               </div>
-              <h4>Preto Luxury</h4>
-              <p>Dourado + sofisticado</p>
-            </div>
-            <div class="theme-card-option" data-theme="cardapio" tabindex="0">
-              <div class="theme-preview-mini preview-mini-cardapio">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
+              
+              <div class="theme-card" data-theme="cardapio" tabindex="0">
+                <div class="theme-preview preview-cardapio">
+                  <div class="preview-banner"></div>
+                  <div class="preview-logo"><span class="material-icons-round">restaurant</span></div>
+                  <div class="preview-content"><div class="preview-lines line-1"></div><div class="preview-lines line-2"></div><div class="preview-btn"></div></div>
+                  <span class="theme-check"><span class="material-icons-round">check</span></span>
+                </div>
+                <h3>Cardápio Digital</h3><p>Restaurantes • Delivery</p>
               </div>
-              <h4>Cardápio Digital</h4>
-              <p>Madeira + restaurante</p>
+              
             </div>
           </div>
+          <button class="carousel-btn next" id="nextBtn" aria-label="Próximo">
+            <span class="material-icons-round">chevron_right</span>
+          </button>
         </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </section>
 
-        <button type="submit" id="saveBtn" class="btn-primary" style="width:100%; justify-content:center;">
-          <span class="material-icons-round">save</span>
-          Salvar alterações
-          <span class="save-loader"></span>
-        </button>
-      </form>
-    </div>
+      <section id="como-funciona" class="how-section">
+        <h2>Como funciona</h2>
+        <p class="section-subtitle">3 passos para vender mais no WhatsApp</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-icon"><span class="material-icons-round">login</span></div>
+            <h3>Faça login</h3>
+            <p>Com sua conta Google</p>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-icon"><span class="material-icons-round">palette</span></div>
+            <h3>Escolha o tema</h3>
+            <p>6 opções profissionais</p>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-icon"><span class="material-icons-round">share</span></div>
+            <h3>Compartilhe</h3>
+            <p>Seu link e receba clientes</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer>
+      <p>WhatsLink © 2026 • 100% gratuito • Feito com ❤️ no Brasil</p>
+    </footer>
   </div>
-
+  
   <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
 
+  <!-- Rastreamento de eventos principais -->
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
-    let currentUser = null;
-    let linksCache = [];
+    document.addEventListener('DOMContentLoaded', function() {
+      // Evento principal: clique nos botões de CTA (Criar link, Começar)
+      const ctaButtons = document.querySelectorAll('.btn-primary, .nav-cta');
 
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => [...document.querySelectorAll(s)];
-
-    function showToast(msg, icon = 'check_circle') {
-      const t = $('#toast');
-      if (!t) return;
-      t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
-    }
-
-    // ============ INICIALIZAR GOOGLE IDENTITY ============
-    window.onload = function() {
-      if (typeof google !== 'undefined') {
-        google.accounts.id.initialize({
-          client_id: '324848509089-gler91lhlck949jpektatrr8ute1mslf.apps.googleusercontent.com',
-          callback: handleCredentialResponse,
-          auto_select: false
+      ctaButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (typeof gtag === 'function') {
+            gtag('event', 'click_cta', {
+              'event_category': 'engagement',
+              'event_label': this.textContent.trim() || 'CTA'
+            });
+          }
         });
-      }
-    };
-
-    // ============ BOTÃO GOOGLE ============
-    $('#googleLoginBtn').addEventListener('click', () => {
-      if (typeof google !== 'undefined') {
-        google.accounts.id.prompt();
-      }
-    });
-
-    // ============ CALLBACK DO LOGIN ============
-    function handleCredentialResponse(response) {
-      try {
-        const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
-        localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
-        $('#loginCard').style.display = 'none';
-        $('#userArea').style.display = 'block';
-        $('#userPhoto').src = currentUser.foto;
-        $('#userName').textContent = currentUser.nome;
-        buscarMeusLinks();
-        showToast('Login realizado com sucesso!');
-      } catch (err) {
-        showToast('Erro ao fazer login', 'error');
-      }
-    }
-
-    // ============ FORMATAR WHATSAPP ============
-    function formatarWhatsApp(input) {
-      if (!input) return;
-      input.addEventListener('input', (e) => {
-        let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-        if (v.length > 6) {
-          if (v.length === 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-          else v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-        } else if (v.length > 2) { v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2'); }
-        else if (v.length > 0) { v = v.replace(/(\d*)/, '($1'); }
-        e.target.value = v;
       });
-    }
-    formatarWhatsApp($('#editWhatsapp'));
-    formatarWhatsApp($('#editWhatsapp2'));
 
-    // ============ EXTRAIR URL DO GOOGLE MAPS ============
-    function extrairUrlEmbed(html) {
-      if (!html) return '';
-      const trimmed = html.trim();
-      if (trimmed.startsWith('http') && !trimmed.includes('<')) return trimmed;
-      const srcMatch = trimmed.match(/src\s*=\s*["']?([^"'\s>]+)["']?/i);
-      if (srcMatch && srcMatch[1]) return srcMatch[1];
-      const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/);
-      if (urlMatch && urlMatch[0]) return urlMatch[0];
-      return trimmed;
-    }
-
-    $('#editLocalizacao').addEventListener('paste', (e) => {
-      setTimeout(() => {
-        const valor = $('#editLocalizacao').value;
-        const urlExtraida = extrairUrlEmbed(valor);
-        if (urlExtraida !== valor) {
-          $('#editLocalizacao').value = urlExtraida;
-          showToast('Link extraído automaticamente!');
-        }
-      }, 100);
-    });
-
-    // ============ PREVIEW DE LOGO NO MODAL ============
-    function atualizarPreviewEditLogo() {
-      const url = $('#editLogo').value.trim();
-      const preview = $('#editLogoPreview');
-      const img = $('#editLogoPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
-        img.onload = () => { preview.style.display = 'block'; };
-        img.onerror = () => { preview.style.display = 'none'; };
-      } else {
-        preview.style.display = 'none';
-      }
-    }
-
-    $('#editLogo').addEventListener('input', atualizarPreviewEditLogo);
-    $('#editLogo').addEventListener('paste', () => setTimeout(atualizarPreviewEditLogo, 100));
-
-    // ============ PREVIEW DE BANNER NO MODAL ============
-    function atualizarPreviewEditBanner() {
-      const url = $('#editBanner').value.trim();
-      const preview = $('#editBannerPreview');
-      const img = $('#editBannerPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
-        img.onload = () => { preview.style.display = 'block'; };
-        img.onerror = () => { preview.style.display = 'none'; };
-      } else {
-        preview.style.display = 'none';
-      }
-    }
-
-    $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
-    $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
-
-    // ============ INDICADOR DE CARREGAMENTO ============
-    function mostrarCarregando() {
-      const linksList = $('#linksList');
-      if (linksList) {
-        linksList.innerHTML = `
-          <div class="loading-links">
-            <div class="spinner"></div>
-            <span>Carregando seus links...</span>
-          </div>
-        `;
-      }
-    }
-
-    // ============ BUSCAR MEUS LINKS ============
-    async function buscarMeusLinks() {
-      try {
-        // Mostra indicador de carregamento imediatamente
-        mostrarCarregando();
-
-        // Aguarda pelo menos 2 segundos (para percepção visual)
-        const [data] = await Promise.all([
-          fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'buscar_meus_links', email: currentUser.email })
-          }).then(res => res.json()),
-          new Promise(resolve => setTimeout(resolve, 2000)) // 2 segundos
-        ]);
-
-        if (data.error) throw new Error(data.error);
-
-        const links = data.links || [];
-        linksCache = links;
-        renderizarLinks(links);
-      } catch (err) {
-        showToast('Erro: ' + err.message, 'error');
-      }
-    }
-
-    function renderizarLinks(links) {
-      const linksList = $('#linksList');
-      if (links.length === 0) {
-        linksList.innerHTML = `
-          <div class="empty-state">
-            <span class="material-icons-round">link_off</span>
-            <p>Você ainda não criou nenhum link.</p>
-            <a href="criar.html" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
-          </div>
-        `;
-        $('#linksArea').style.display = 'block';
-        return;
-      }
-
-      linksList.innerHTML = links.map(link => `
-        <div class="link-card">
-          <div>
-            <h3>${link.empresa}</h3>
-            <p>whatslink-48tc.onrender.com/${link.slug} • ${link.cliques} cliques</p>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
-              <span class="material-icons-round" style="font-size:16px;">visibility</span>
-              Ver
-            </a>
-            <button class="btn btn-edit" onclick="abrirEdicao('${link.id}', '${link.edit_token}')">
-              <span class="material-icons-round" style="font-size:16px;">edit</span>
-              Editar
-            </button>
-          </div>
-        </div>
-      `).join('');
-
-      $('#linksArea').style.display = 'block';
-    }
-
-    // ============ ABRIR EDIÇÃO ============
-    window.abrirEdicao = async function(id, token) {
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'buscar_link', id, edit_token: token })
+      // Evento secundário: link "Criar link" no menu
+      const criarLinkMenu = document.querySelector('a[href="criar.html"]');
+      if (criarLinkMenu) {
+        criarLinkMenu.addEventListener('click', function() {
+          if (typeof gtag === 'function') {
+            gtag('event', 'click_create_link', {
+              'event_category': 'navigation',
+              'event_label': 'Menu Criar link'
+            });
+          }
         });
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
-
-        $('#editId').value = data.id;
-        $('#editToken').value = token;
-        $('#editEmpresa').value = data.empresa;
-        $('#editWhatsapp').value = data.whatsapp;
-        $('#editBotao1').value = data.botao_whatsapp || 'Chamar no WhatsApp';
-        $('#editWhatsapp2').value = data.whatsapp2 || '';
-        $('#editBotao2').value = data.botao_whatsapp2 || '';
-        $('#editLogo').value = data.logo_url || '';
-        $('#editBanner').value = data.banner_url || '';
-        $('#editMensagem').value = data.mensagem || '';
-        $('#editDescricao').value = data.descricao || '';
-        $('#editInstagram').value = data.instagram || '';
-        $('#editHorario').value = data.horario || '';
-        $('#editFacebook').value = data.facebook || '';
-        $('#editSite').value = data.site || '';
-        $('#editLocalizacao').value = data.localizacao || '';
-        $('#editTema').value = data.tema || 'verde';
-
-        if (data.logo_url) {
-          $('#editLogoPreviewImg').src = data.logo_url;
-          $('#editLogoPreview').style.display = 'block';
-        }
-        if (data.banner_url) {
-          $('#editBannerPreviewImg').src = data.banner_url;
-          $('#editBannerPreview').style.display = 'block';
-        }
-
-        $$('#editThemeSelector .theme-card-option').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
-        });
-
-        $('#editModal').classList.add('active');
-      } catch (err) {
-        showToast('Erro ao carregar link: ' + err.message, 'error');
-      }
-    };
-
-    $('#closeEditModal').addEventListener('click', () => {
-      $('#editModal').classList.remove('active');
-    });
-
-    $('#editModal').addEventListener('click', (e) => {
-      if (e.target === $('#editModal')) {
-        $('#editModal').classList.remove('active');
       }
     });
-
-    // ============ SELEÇÃO DE TEMA NO MODAL ============
-    $$('#editThemeSelector .theme-card-option').forEach(card => {
-      card.addEventListener('click', () => {
-        const temaSelecionado = card.dataset.theme;
-        $('#editTema').value = temaSelecionado;
-        $$('#editThemeSelector .theme-card-option').forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-        const nomeTema = card.querySelector('h4').textContent;
-        showToast('Tema: ' + nomeTema, 'palette');
-      });
-      
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
-      });
-    });
-
-    // ============ SUBMETER FORMULÁRIO DE EDIÇÃO ============
-    $('#editForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const saveBtn = $('#saveBtn');
-      const loader = saveBtn.querySelector('.save-loader');
-      
-      saveBtn.disabled = true;
-      loader.style.display = 'inline-block';
-
-      const data = {
-        action: 'editar',
-        id: $('#editId').value,
-        edit_token: $('#editToken').value,
-        empresa: $('#editEmpresa').value.trim(),
-        whatsapp: $('#editWhatsapp').value.trim().replace(/\D/g, ''),
-        whatsapp2: $('#editWhatsapp2').value.trim().replace(/\D/g, ''),
-        botao_whatsapp: $('#editBotao1').value.trim(),
-        botao_whatsapp2: $('#editBotao2').value.trim(),
-        logo_url: $('#editLogo').value.trim(),
-        banner_url: $('#editBanner').value.trim(),
-        mensagem: $('#editMensagem').value.trim(),
-        descricao: $('#editDescricao').value.trim(),
-        instagram: $('#editInstagram').value.trim().replace('@', ''),
-        facebook: $('#editFacebook').value.trim(),
-        site: $('#editSite').value.trim(),
-        horario: $('#editHorario').value.trim(),
-        localizacao: extrairUrlEmbed($('#editLocalizacao').value.trim()),
-        tema: $('#editTema').value
-      };
-
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(data)
-        });
-        const result = await response.json();
-        if (result.error) throw new Error(result.error);
-
-        showToast(result.message || 'Link atualizado!');
-        $('#editModal').classList.remove('active');
-        buscarMeusLinks();
-      } catch (err) {
-        showToast('Erro: ' + err.message, 'error');
-      } finally {
-        saveBtn.disabled = false;
-        loader.style.display = 'none';
-      }
-    });
-
-    // ============ LOGOUT ============
-    $('#logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('whatslink_user');
-      currentUser = null;
-      $('#userArea').style.display = 'none';
-      $('#loginCard').style.display = 'block';
-      $('#linksArea').style.display = 'none';
-    });
-
-    // ============ RESTAURAR SESSÃO ============
-    const savedUser = localStorage.getItem('whatslink_user');
-    if (savedUser) {
-      currentUser = JSON.parse(savedUser);
-      $('#loginCard').style.display = 'none';
-      $('#userArea').style.display = 'block';
-      $('#userPhoto').src = currentUser.foto;
-      $('#userName').textContent = currentUser.nome;
-      buscarMeusLinks();
-    }
   </script>
 </body>
 </html>
