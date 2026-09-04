@@ -1,12 +1,9 @@
 /* ============================================
-   GERENCIADOR DE ANÚNCIOS
-   Inclui:
-   - Anúncio lateral (Adsterra)
-   - Push in-page (TrafficStars)
+   CONFIGURAÇÃO DOS ANÚNCIOS LATERAIS
+   Fonte: Adsterra (esquerda)
    ============================================ */
 
 const AD_CONFIG = {
-  // ================= ANÚNCIO LATERAL =================
   ads: [
     {
       id: 'adLeft',
@@ -182,7 +179,7 @@ const AD_CONFIG = {
       loadAdContent(aside, ad);
     });
 
-    console.log('[WhatsLink Ads] Anúncio lateral (Adsterra) criado.');
+    console.log('[WhatsLink Ads] Anúncio lateral criado.');
   }
 
   /**
@@ -208,7 +205,7 @@ const AD_CONFIG = {
           keywords: AD_CONFIG.push.keywords || '',
           subid: AD_CONFIG.push.subid || ''
         });
-        console.log('[WhatsLink Ads] Push in-page (TrafficStars) iniciado.');
+        console.log('[WhatsLink Ads] Push in-page iniciado.');
       } else {
         console.warn('[WhatsLink Ads] RnInPagePush não está disponível.');
       }
