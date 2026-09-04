@@ -2,7 +2,7 @@
    GERENCIADOR DE ANÚNCIOS
    Inclui:
    - Adsterra (banner fixo no rodapé)
-   - Monetag Vignette (com atraso para não travar)
+   - Monetag Vignette (após a página carregar)
    ============================================ */
 
 const AD_CONFIG = {
@@ -29,7 +29,9 @@ const AD_CONFIG = {
   // ================= MONETAG VIGNETTE =================
   vignette: {
     enabled: true,
-    delay: 0, // atraso em milissegundos antes de carregar (3 segundos)
+    // Usamos "load" para carregar após a página inteira estar pronta
+    // e um pequeno atraso de 1,5s para não segurar o render.
+    delayAfterLoad: 1500,
     code: `
       (function(s){s.dataset.zone='11725719',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
     `
@@ -58,13 +60,8 @@ const AD_CONFIG = {
       btn.innerHTML = '✕';
       btn.setAttribute('aria-label', 'Fechar anúncio');
       btn.addEventListener('click', function() {
-        // Remove o anúncio da tela
         bar.remove();
-
-        // Remove o padding extra do body para não deixar espaço vazio
         document.body.style.paddingBottom = '';
-
-        // Rastreia fechamento (se gtag disponível)
         if (typeof gtag === 'function') {
           gtag('event', 'close_ad', { 'ad_id': ad.id });
         }
@@ -72,11 +69,9 @@ const AD_CONFIG = {
       bar.appendChild(btn);
     }
 
-    // Área do anúncio
     const content = document.createElement('div');
     content.className = 'ad-bottom-content';
 
-    // Insere o script (Adsterra) dentro do contêiner
     if (ad.type === 'inline' && ad.code) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
@@ -86,37 +81,42 @@ const AD_CONFIG = {
 
     bar.appendChild(content);
     document.body.appendChild(bar);
-
-    // Adiciona padding no body para o conteúdo não ficar atrás do banner
     document.body.style.paddingBottom = '100px';
   }
 
   /**
-   * Carrega o Vignette Monetag após um atraso (evita travar o carregamento).
+   * Carrega o Vignette Monetag depois que a página carregou,
+   * com um pequeno atraso para não atrapalhar a renderização.
    */
   function loadVignette(vignette) {
     if (!vignette.enabled) return;
 
-    // Aguarda o tempo definido (padrão 3 segundos)
-    setTimeout(function() {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.textContent = vignette.code;
-      document.body.appendChild(script);
-      console.log('[WhatsLink Ads] Vignette Monetag carregado (atrasado).');
-    }, vignette.delay || 3000);
+    const carregar = () => {
+      setTimeout(() => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.textContent = vignette.code;
+        document.body.appendChild(script);
+        console.log('[WhatsLink Ads] Vignette Monetag carregado.');
+      }, vignette.delayAfterLoad || 1500);
+    };
+
+    // Se a página já estiver carregada, chama imediatamente
+    if (document.readyState === 'complete') {
+      carregar();
+    } else {
+      window.addEventListener('load', carregar);
+    }
   }
 
   /**
    * Inicializa os anúncios.
    */
   function init() {
-    // Banner de rodapé (Adsterra)
     if (AD_CONFIG.bottomAd.enabled) {
       createBottomAd(AD_CONFIG.bottomAd);
     }
 
-    // Vignette (Monetag) com atraso
     if (AD_CONFIG.vignette.enabled) {
       loadVignette(AD_CONFIG.vignette);
     }
