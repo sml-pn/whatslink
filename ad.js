@@ -1,9 +1,7 @@
 /* ============================================
-   GERENCIADOR DE ANÚNCIOS
-   Inclui:
-   - Anúncio lateral esquerdo (Profitablerate via iframe)
-   - Anúncio lateral direito (Adsterra via script)
-   - Push in-page (TrafficStars)
+   CONFIGURAÇÃO DOS ANÚNCIOS LATERAIS
+   Fontes: Profitablerate (esquerda) e Adsterra (direita)
+   + Push in-page (TrafficStars)
    ============================================ */
 
 const AD_CONFIG = {
