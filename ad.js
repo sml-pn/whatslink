@@ -29,7 +29,7 @@ const AD_CONFIG = {
   // ================= MONETAG VIGNETTE =================
   vignette: {
     enabled: true,
-    delay: 3000, // atraso em milissegundos antes de carregar (3 segundos)
+    delay: 0, // atraso em milissegundos antes de carregar (3 segundos)
     code: `
       (function(s){s.dataset.zone='11725719',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
     `
