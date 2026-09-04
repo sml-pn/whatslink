@@ -4,7 +4,7 @@
    - Anúncio lateral esquerdo (Profitablerate via iframe)
    - Anúncio lateral direito (Adsterra via script)
    - Push in-page (TrafficStars)
-   - Monetag (script global)
+   - Monetag (script com data-zone e data-cfasync)
    ============================================ */
 
 const AD_CONFIG = {
@@ -40,13 +40,13 @@ const AD_CONFIG = {
     subid: ''                     // deixe vazio ou gere dinamicamente
   },
 
-  // ================= MONETAG (SCRIPT GLOBAL) =================
+  // ================= MONETAG =================
   monetag: {
     enabled: true,                // true = ativa o Monetag; false = desativa
-    src: 'https://www.monetag.com/script.js', // PLACEHOLDER – substitua pelo código real da Monetag
-    async: true,
-    // Se a Monetag fornecer um script inline em vez de src, use:
-    // code: '(function(){...})();'
+    src: 'https://quge5.com/88/tag.min.js',
+    zone: '276271',               // data-zone
+    cfasync: 'false',             // data-cfasync
+    async: true                   // atributo async
   }
 };
 
@@ -232,18 +232,33 @@ const AD_CONFIG = {
   }
 
   /**
-   * Inicializa o Monetag (script global).
+   * Inicializa o Monetag (script com data-zone e data-cfasync).
    */
   function initMonetag() {
+    // Verifica se o Monetag está habilitado
     if (!AD_CONFIG.monetag.enabled) {
       console.log('[WhatsLink Ads] Monetag desativado.');
       return;
     }
 
+    // Cria o elemento <script>
     const script = document.createElement('script');
     script.src = AD_CONFIG.monetag.src;
-    script.async = AD_CONFIG.monetag.async !== false;
 
+    // Define data-zone (obrigatório para Monetag)
+    script.setAttribute('data-zone', AD_CONFIG.monetag.zone);
+
+    // Define data-cfasync (opcional, mas recomendado)
+    if (AD_CONFIG.monetag.cfasync) {
+      script.setAttribute('data-cfasync', AD_CONFIG.monetag.cfasync);
+    }
+
+    // Async
+    if (AD_CONFIG.monetag.async !== false) {
+      script.async = true;
+    }
+
+    // Eventos
     script.onload = function() {
       console.log('[WhatsLink Ads] Monetag carregado.');
     };
@@ -251,7 +266,7 @@ const AD_CONFIG = {
       console.error('[WhatsLink Ads] Falha ao carregar Monetag.');
     };
 
-    // Adiciona ao head (Monetag normalmente fica no <head>)
+    // Adiciona ao head (recomendado para Monetag)
     document.head.appendChild(script);
   }
 
