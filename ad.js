@@ -1,7 +1,7 @@
 /* ============================================
    GERENCIADOR DE ANÚNCIOS
    Inclui:
-   - Anúncio lateral Adsterra (script dinâmico real)
+   - Anúncio lateral Adsterra (script inline original)
    - Push in-page TrafficStars
    ============================================ */
 
@@ -10,44 +10,38 @@ const AD_CONFIG = {
   ads: [
     {
       id: 'adLeft',
-      type: 'dynamic', // script dinâmico (Adsterra)
-      src: '//conventionalresponse.com/bPXNV.s/diGNlJ0HYTWDcK/Qejmu9Mu/ZIUOl-kWP/TEcFzBNWzKUDzgMbT/MZtiNUzjMV3/NPTqMWxhNpwZ',
+      type: 'inline', // script inline (executado diretamente)
+      code: `
+        (function(vldbts){
+          var d = document,
+              s = d.createElement('script'),
+              l = d.scripts[d.scripts.length - 1];
+          s.settings = vldbts || {};
+          s.src = "\\/\\/conventionalresponse.com\\/bPXNV.s\\/diGNlJ0HYTWDcK\\/Qejmu9Mu\\/ZIUOl-kWP\\/TEcFzBNWzKUDzgMbT\\/MZtiNUzjMV3\\/NPTqMWxhNpwZ";
+          s.async = true;
+          s.referrerPolicy = 'no-referrer-when-downgrade';
+          l.parentNode.insertBefore(s, l);
+        })({})
+      `,
       width: 300,
       height: 250,
       position: 'left',
-      closeable: true,
-      settings: {},
-      referrerPolicy: 'no-referrer-when-downgrade',
-      async: true
+      closeable: true
     }
-    // Para adicionar outro anúncio lateral (direita), descomente e ajuste:
-    // {
-    //   id: 'adRight',
-    //   type: 'dynamic',
-    //   src: '//outro-script...',
-    //   width: 300,
-    //   height: 250,
-    //   position: 'right',
-    //   closeable: true,
-    //   settings: {},
-    //   referrerPolicy: 'no-referrer-when-downgrade',
-    //   async: true
-    // }
   ],
 
   // ================= PUSH IN-PAGE (TRAFFICSTARS) =================
   push: {
-    enabled: true,                // true = ativa o push; false = desativa
+    enabled: true,
     spot: '6eb53a7be15a452c8d40dda758e9b473',
-    verticalPosition: 'bottom',   // bottom | top
-    keywords: '',                 // deixe vazio ou preencha com palavras-chave
-    subid: ''                     // deixe vazio ou gere dinamicamente
+    verticalPosition: 'bottom',
+    keywords: '',
+    subid: ''
   }
 };
 
 /* ============================================
    LÓGICA DE CRIAÇÃO E CARREGAMENTO
-   Não precisa alterar abaixo
    ============================================ */
 
 (function() {
@@ -55,8 +49,6 @@ const AD_CONFIG = {
 
   /**
    * Cria o contêiner <aside> do anúncio lateral.
-   * @param {Object} ad - Configuração do anúncio.
-   * @returns {HTMLElement} Elemento <aside> pronto para inserir no DOM.
    */
   function createAdContainer(ad) {
     const aside = document.createElement('aside');
@@ -104,9 +96,7 @@ const AD_CONFIG = {
   }
 
   /**
-   * Carrega o conteúdo do anúncio lateral conforme o tipo.
-   * @param {HTMLElement} aside - Elemento <aside> do anúncio.
-   * @param {Object} ad - Configuração do anúncio.
+   * Carrega o conteúdo do anúncio lateral.
    */
   function loadAdContent(aside, ad) {
     const content = aside.querySelector('.ad-content');
@@ -119,23 +109,17 @@ const AD_CONFIG = {
       case 'iframe':
         loadIframeAd(content, ad.src);
         break;
-
       case 'script':
         loadScriptAd(content, ad.src);
         break;
-
-      case 'dynamic':
-        loadDynamicAd(content, ad);
+      case 'inline':
+        loadInlineAd(content, ad.code);
         break;
-
       default:
         content.innerHTML = '<span class="ad-fallback">Tipo de anúncio não suportado</span>';
     }
   }
 
-  /**
-   * Carrega anúncio via iframe.
-   */
   function loadIframeAd(parent, src) {
     const iframe = document.createElement('iframe');
     iframe.src = src;
@@ -149,9 +133,6 @@ const AD_CONFIG = {
     parent.appendChild(iframe);
   }
 
-  /**
-   * Carrega anúncio via script simples (src externo).
-   */
   function loadScriptAd(parent, src) {
     const script = document.createElement('script');
     script.src = src;
@@ -163,18 +144,21 @@ const AD_CONFIG = {
   }
 
   /**
-   * Carrega script dinâmico (ex.: Adsterra) preservando configurações.
+   * Executa código JavaScript inline (ex.: Adsterra).
    */
-  function loadDynamicAd(parent, ad) {
+  function loadInlineAd(parent, code) {
+    if (!code) {
+      parent.innerHTML = '<span class="ad-fallback">Código não fornecido</span>';
+      return;
+    }
+
     const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.textContent = code; // conteúdo do script inline
 
-    script.settings = ad.settings || {};
-    script.src = ad.src;
-    script.async = ad.async !== false; // true por padrão
-    script.referrerPolicy = ad.referrerPolicy || 'no-referrer-when-downgrade';
-
+    // Captura erros de execução (opcional)
     script.onerror = () => {
-      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
+      parent.innerHTML = '<span class="ad-fallback">Falha ao executar anúncio</span>';
     };
 
     parent.appendChild(script);
