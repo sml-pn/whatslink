@@ -1,7 +1,10 @@
 /* ============================================
-   CONFIGURAÇÃO DOS ANÚNCIOS LATERAIS
-   Fontes: Profitablerate (esquerda) e Adsterra (direita)
-   + Push in-page (TrafficStars)
+   GERENCIADOR DE ANÚNCIOS
+   Inclui:
+   - Anúncio lateral esquerdo (Profitablerate via iframe)
+   - Anúncio lateral direito (Adsterra via script)
+   - Push in-page (TrafficStars)
+   - Monetag (script global)
    ============================================ */
 
 const AD_CONFIG = {
@@ -35,6 +38,15 @@ const AD_CONFIG = {
     verticalPosition: 'bottom',   // bottom | top
     keywords: '',                 // deixe vazio ou preencha com palavras-chave
     subid: ''                     // deixe vazio ou gere dinamicamente
+  },
+
+  // ================= MONETAG (SCRIPT GLOBAL) =================
+  monetag: {
+    enabled: true,                // true = ativa o Monetag; false = desativa
+    src: 'https://www.monetag.com/script.js', // PLACEHOLDER – substitua pelo código real da Monetag
+    async: true,
+    // Se a Monetag fornecer um script inline em vez de src, use:
+    // code: '(function(){...})();'
   }
 };
 
@@ -220,11 +232,36 @@ const AD_CONFIG = {
   }
 
   /**
-   * Inicializa todos os anúncios (laterais e push).
+   * Inicializa o Monetag (script global).
+   */
+  function initMonetag() {
+    if (!AD_CONFIG.monetag.enabled) {
+      console.log('[WhatsLink Ads] Monetag desativado.');
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = AD_CONFIG.monetag.src;
+    script.async = AD_CONFIG.monetag.async !== false;
+
+    script.onload = function() {
+      console.log('[WhatsLink Ads] Monetag carregado.');
+    };
+    script.onerror = function() {
+      console.error('[WhatsLink Ads] Falha ao carregar Monetag.');
+    };
+
+    // Adiciona ao head (Monetag normalmente fica no <head>)
+    document.head.appendChild(script);
+  }
+
+  /**
+   * Inicializa todos os anúncios.
    */
   function init() {
     initSideAds();
     initPush();
+    initMonetag();
   }
 
   // Aguarda o DOM estar pronto
