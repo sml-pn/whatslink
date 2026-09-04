@@ -2,15 +2,15 @@
    GERENCIADOR DE ANÚNCIOS
    Inclui:
    - Adsterra (banner fixo no rodapé)
-   - Monetag Vignette (script inline)
+   - Monetag Vignette (com atraso para não travar)
    ============================================ */
 
 const AD_CONFIG = {
   // ================= ANÚNCIO RODAPÉ (ADSTERRA) =================
   bottomAd: {
-    enabled: true,                // true = ativa o anúncio de rodapé
+    enabled: true,
     id: 'adBottom',
-    type: 'inline',               // script inline (código JavaScript real)
+    type: 'inline', // script inline (código real Adsterra)
     code: `
       (function(vldbts){
         var d = document,
@@ -28,7 +28,8 @@ const AD_CONFIG = {
 
   // ================= MONETAG VIGNETTE =================
   vignette: {
-    enabled: true,                // true = ativa o Vignette da Monetag
+    enabled: true,
+    delay: 3000, // atraso em milissegundos antes de carregar (3 segundos)
     code: `
       (function(s){s.dataset.zone='11725719',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
     `
@@ -37,18 +38,15 @@ const AD_CONFIG = {
 
 /* ============================================
    LÓGICA DE CRIAÇÃO E CARREGAMENTO
-   Não precisa alterar abaixo
    ============================================ */
 
 (function() {
   'use strict';
 
   /**
-   * Cria o contêiner fixo do anúncio no rodapé.
-   * @param {Object} ad - Configuração do anúncio de rodapé.
+   * Cria o banner fixo no rodapé.
    */
   function createBottomAd(ad) {
-    // Cria a barra fixa inferior
     const bar = document.createElement('div');
     bar.id = ad.id;
     bar.className = 'ad-bottom-bar';
@@ -60,7 +58,13 @@ const AD_CONFIG = {
       btn.innerHTML = '✕';
       btn.setAttribute('aria-label', 'Fechar anúncio');
       btn.addEventListener('click', function() {
+        // Remove o anúncio da tela
         bar.remove();
+
+        // Remove o padding extra do body para não deixar espaço vazio
+        document.body.style.paddingBottom = '';
+
+        // Rastreia fechamento (se gtag disponível)
         if (typeof gtag === 'function') {
           gtag('event', 'close_ad', { 'ad_id': ad.id });
         }
@@ -68,69 +72,56 @@ const AD_CONFIG = {
       bar.appendChild(btn);
     }
 
-    // Área onde o script do anúncio será inserido
+    // Área do anúncio
     const content = document.createElement('div');
     content.className = 'ad-bottom-content';
-    bar.appendChild(content);
 
-    // Adiciona a barra ao body
-    document.body.appendChild(bar);
-
-    // Ajusta o padding do body para o conteúdo não ficar escondido atrás do rodapé
-    document.body.style.paddingBottom = '100px'; // valor estimado; ajuste se necessário
-
-    // Carrega o script inline (Adsterra) dentro do contêiner
+    // Insere o script (Adsterra) dentro do contêiner
     if (ad.type === 'inline' && ad.code) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.textContent = ad.code;
       content.appendChild(script);
-    } else if (ad.type === 'iframe' && ad.src) {
-      const iframe = document.createElement('iframe');
-      iframe.src = ad.src;
-      iframe.frameBorder = '0';
-      iframe.scrolling = 'no';
-      iframe.style.width = '100%';
-      iframe.style.height = '90px';
-      content.appendChild(iframe);
     }
+
+    bar.appendChild(content);
+    document.body.appendChild(bar);
+
+    // Adiciona padding no body para o conteúdo não ficar atrás do banner
+    document.body.style.paddingBottom = '100px';
   }
 
   /**
-   * Carrega o Vignette da Monetag.
-   * @param {Object} vignette - Configuração do Vignette.
+   * Carrega o Vignette Monetag após um atraso (evita travar o carregamento).
    */
   function loadVignette(vignette) {
-    if (!vignette.enabled) {
-      console.log('[WhatsLink Ads] Vignette desativado.');
-      return;
-    }
+    if (!vignette.enabled) return;
 
-    // Cria um script inline com o código fornecido
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.textContent = vignette.code;
-    document.body.appendChild(script);
-
-    console.log('[WhatsLink Ads] Vignette Monetag carregado.');
+    // Aguarda o tempo definido (padrão 3 segundos)
+    setTimeout(function() {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.textContent = vignette.code;
+      document.body.appendChild(script);
+      console.log('[WhatsLink Ads] Vignette Monetag carregado (atrasado).');
+    }, vignette.delay || 3000);
   }
 
   /**
    * Inicializa os anúncios.
    */
   function init() {
-    // Anúncio de rodapé (Adsterra)
-    if (AD_CONFIG.bottomAd && AD_CONFIG.bottomAd.enabled) {
+    // Banner de rodapé (Adsterra)
+    if (AD_CONFIG.bottomAd.enabled) {
       createBottomAd(AD_CONFIG.bottomAd);
     }
 
-    // Vignette (Monetag)
-    if (AD_CONFIG.vignette && AD_CONFIG.vignette.enabled) {
+    // Vignette (Monetag) com atraso
+    if (AD_CONFIG.vignette.enabled) {
       loadVignette(AD_CONFIG.vignette);
     }
   }
 
-  // Aguarda o DOM estar pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
