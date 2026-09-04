@@ -1,29 +1,37 @@
 /* ============================================
-   CONFIGURAÇÃO DOS ANÚNCIOS LATERAIS
-   Fonte: Adsterra (esquerda)
+   GERENCIADOR DE ANÚNCIOS
+   Inclui:
+   - Anúncio lateral Adsterra (script dinâmico real)
+   - Push in-page TrafficStars
    ============================================ */
 
 const AD_CONFIG = {
+  // ================= ANÚNCIO LATERAL (ADSTERRA) =================
   ads: [
     {
       id: 'adLeft',
-      type: 'script', // Adsterra geralmente usa script
-      // ⚠️ Substitua o src abaixo pelo código real fornecido pela Adsterra
-      src: 'https://www.ads-terra.com/script.js', // PLACEHOLDER – troque pelo seu código
+      type: 'dynamic', // script dinâmico (Adsterra)
+      src: '//conventionalresponse.com/bPXNV.s/diGNlJ0HYTWDcK/Qejmu9Mu/ZIUOl-kWP/TEcFzBNWzKUDzgMbT/MZtiNUzjMV3/NPTqMWxhNpwZ',
       width: 300,
       height: 250,
       position: 'left',
-      closeable: true
+      closeable: true,
+      settings: {},
+      referrerPolicy: 'no-referrer-when-downgrade',
+      async: true
     }
     // Para adicionar outro anúncio lateral (direita), descomente e ajuste:
     // {
     //   id: 'adRight',
-    //   type: 'script',
-    //   src: 'https://www.ads-terra.com/script2.js',
+    //   type: 'dynamic',
+    //   src: '//outro-script...',
     //   width: 300,
     //   height: 250,
     //   position: 'right',
-    //   closeable: true
+    //   closeable: true,
+    //   settings: {},
+    //   referrerPolicy: 'no-referrer-when-downgrade',
+    //   async: true
     // }
   ],
 
@@ -46,7 +54,7 @@ const AD_CONFIG = {
   'use strict';
 
   /**
-   * Cria o contêiner <aside> do anúncio lateral com cabeçalho, área de conteúdo e rodapé.
+   * Cria o contêiner <aside> do anúncio lateral.
    * @param {Object} ad - Configuração do anúncio.
    * @returns {HTMLElement} Elemento <aside> pronto para inserir no DOM.
    */
@@ -58,7 +66,6 @@ const AD_CONFIG = {
     const card = document.createElement('div');
     card.className = 'ad-card';
 
-    // Cabeçalho com botão de fechar
     const header = document.createElement('div');
     header.className = 'ad-header';
     header.innerHTML = '<span>Publicidade</span>';
@@ -79,7 +86,6 @@ const AD_CONFIG = {
 
     card.appendChild(header);
 
-    // Área do anúncio (inicialmente com "Carregando...")
     const content = document.createElement('div');
     content.className = 'ad-content';
     const loading = document.createElement('span');
@@ -88,7 +94,6 @@ const AD_CONFIG = {
     content.appendChild(loading);
     card.appendChild(content);
 
-    // Rodapé
     const footer = document.createElement('div');
     footer.className = 'ad-footer';
     footer.textContent = 'Feche o anúncio no X';
@@ -107,7 +112,6 @@ const AD_CONFIG = {
     const content = aside.querySelector('.ad-content');
     if (!content) return;
 
-    // Remove o indicador de carregamento
     const loading = content.querySelector('.ad-loading');
     if (loading) loading.remove();
 
@@ -118,6 +122,10 @@ const AD_CONFIG = {
 
       case 'script':
         loadScriptAd(content, ad.src);
+        break;
+
+      case 'dynamic':
+        loadDynamicAd(content, ad);
         break;
 
       default:
@@ -142,7 +150,7 @@ const AD_CONFIG = {
   }
 
   /**
-   * Carrega anúncio via script.
+   * Carrega anúncio via script simples (src externo).
    */
   function loadScriptAd(parent, src) {
     const script = document.createElement('script');
@@ -151,6 +159,24 @@ const AD_CONFIG = {
     script.onerror = () => {
       parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
     };
+    parent.appendChild(script);
+  }
+
+  /**
+   * Carrega script dinâmico (ex.: Adsterra) preservando configurações.
+   */
+  function loadDynamicAd(parent, ad) {
+    const script = document.createElement('script');
+
+    script.settings = ad.settings || {};
+    script.src = ad.src;
+    script.async = ad.async !== false; // true por padrão
+    script.referrerPolicy = ad.referrerPolicy || 'no-referrer-when-downgrade';
+
+    script.onerror = () => {
+      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
+    };
+
     parent.appendChild(script);
   }
 
@@ -164,14 +190,12 @@ const AD_CONFIG = {
       const aside = createAdContainer(ad);
 
       if (wrapper) {
-        // Se houver wrapper, insere na ordem correta (esquerda primeiro, direita por último)
         if (ad.position === 'right') {
           wrapper.appendChild(aside);
         } else {
           wrapper.insertBefore(aside, wrapper.firstChild);
         }
       } else {
-        // Fallback: posição fixa na tela
         aside.classList.add('ad-fixed');
         document.body.appendChild(aside);
       }
@@ -179,25 +203,22 @@ const AD_CONFIG = {
       loadAdContent(aside, ad);
     });
 
-    console.log('[WhatsLink Ads] Anúncio lateral criado.');
+    console.log('[WhatsLink Ads] Anúncio lateral Adsterra criado.');
   }
 
   /**
    * Inicializa o push in-page da TrafficStars.
    */
   function initPush() {
-    // Verifica se o push está habilitado
     if (!AD_CONFIG.push.enabled) {
       console.log('[WhatsLink Ads] Push in-page desativado.');
       return;
     }
 
-    // Carrega o SDK do push da Runative
     const sdk = document.createElement('script');
     sdk.src = '//cdn.runative-syndicate.com/sdk/v1/inpage.push.js';
     sdk.async = true;
     sdk.onload = function() {
-      // Após carregar o SDK, verifica se a função RnInPagePush está disponível
       if (typeof RnInPagePush === 'function') {
         RnInPagePush({
           spot: AD_CONFIG.push.spot,
@@ -205,7 +226,7 @@ const AD_CONFIG = {
           keywords: AD_CONFIG.push.keywords || '',
           subid: AD_CONFIG.push.subid || ''
         });
-        console.log('[WhatsLink Ads] Push in-page iniciado.');
+        console.log('[WhatsLink Ads] Push in-page TrafficStars iniciado.');
       } else {
         console.warn('[WhatsLink Ads] RnInPagePush não está disponível.');
       }
@@ -214,19 +235,17 @@ const AD_CONFIG = {
       console.error('[WhatsLink Ads] Falha ao carregar SDK do push.');
     };
 
-    // Adiciona o SDK ao head
     document.head.appendChild(sdk);
   }
 
   /**
-   * Inicializa todos os anúncios (lateral e push).
+   * Inicializa todos os anúncios.
    */
   function init() {
     initSideAds();
     initPush();
   }
 
-  // Aguarda o DOM estar pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
