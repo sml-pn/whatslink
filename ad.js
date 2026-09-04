@@ -1,216 +1,159 @@
 /* ============================================
    GERENCIADOR DE ANÚNCIOS
    Inclui:
-   - Anúncio lateral esquerdo (Profitablerate via iframe)
-   - Anúncio lateral direito (Adsterra via script)
-   - Push in-page (TrafficStars)
-   - Monetag (script com data-zone e data-cfasync)
+   - Adsterra (banner fixo no rodapé)
+   - Profitablerate (pop-up centralizado)
+   - TrafficStars (push in-page)
+   - Monetag (script global)
    ============================================ */
 
 const AD_CONFIG = {
-  // ================= ANÚNCIOS LATERAIS =================
-  ads: [
-    {
-      id: 'adLeft',
-      type: 'iframe', // Profitablerate funciona bem via iframe
-      src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
-      width: 300,
-      height: 250,
-      position: 'left',
-      closeable: true
-    },
-    {
-      id: 'adRight',
-      type: 'script', // Adsterra geralmente usa script
-      // ⚠️ Substitua o src abaixo pelo código real fornecido pela Adsterra
-      src: 'https://www.ads-terra.com/script.js', // PLACEHOLDER – troque pelo seu código
-      width: 300,
-      height: 250,
-      position: 'right',
-      closeable: true
-    }
-  ],
+  // ================= ANÚNCIO POP-UP (PROFITABLERATE) =================
+  popup: {
+    id: 'adPopup',
+    type: 'iframe',
+    src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
+    width: 300,
+    height: 250,
+    closeable: true
+  },
+
+  // ================= ANÚNCIO RODAPÉ (ADSTERRA) =================
+  bottom: {
+    id: 'adBottom',
+    type: 'script',
+    src: 'https://www.ads-terra.com/script.js', // ⚠️ substitua pelo código real da Adsterra
+    height: 90,                // altura do banner de rodapé
+    closeable: true
+  },
 
   // ================= PUSH IN-PAGE (TRAFFICSTARS) =================
   push: {
-    enabled: true,                // true = ativa o push; false = desativa
+    enabled: true,
     spot: '6eb53a7be15a452c8d40dda758e9b473',
-    verticalPosition: 'bottom',   // bottom | top
-    keywords: '',                 // deixe vazio ou preencha com palavras-chave
-    subid: ''                     // deixe vazio ou gere dinamicamente
+    verticalPosition: 'bottom',
+    keywords: '',
+    subid: ''
   },
 
   // ================= MONETAG =================
   monetag: {
-    enabled: true,                // true = ativa o Monetag; false = desativa
+    enabled: true,
     src: 'https://quge5.com/88/tag.min.js',
-    zone: '276271',               // data-zone
-    cfasync: 'false',             // data-cfasync
-    async: true                   // atributo async
+    zone: '276271',
+    cfasync: 'false',
+    async: true
   }
 };
 
 /* ============================================
    LÓGICA DE CRIAÇÃO E CARREGAMENTO
-   Não precisa alterar abaixo
    ============================================ */
 
 (function() {
   'use strict';
 
   /**
-   * Cria o contêiner <aside> do anúncio lateral com cabeçalho, área de conteúdo e rodapé.
-   * @param {Object} ad - Configuração do anúncio.
-   * @returns {HTMLElement} Elemento <aside> pronto para inserir no DOM.
+   * Cria o contêiner do pop-up (Profitablerate).
    */
-  function createAdContainer(ad) {
-    const aside = document.createElement('aside');
-    aside.className = `ad-side ad-${ad.position}`;
-    aside.id = ad.id;
+  function createPopup(ad) {
+    const overlay = document.createElement('div');
+    overlay.id = ad.id;
+    overlay.className = 'ad-popup-overlay';
 
-    const card = document.createElement('div');
-    card.className = 'ad-card';
-
-    // Cabeçalho com botão de fechar
-    const header = document.createElement('div');
-    header.className = 'ad-header';
-    header.innerHTML = '<span>Publicidade</span>';
+    const box = document.createElement('div');
+    box.className = 'ad-popup-box';
 
     if (ad.closeable !== false) {
       const btn = document.createElement('button');
-      btn.className = 'ad-close';
-      btn.setAttribute('aria-label', 'Fechar anúncio');
+      btn.className = 'ad-popup-close';
       btn.innerHTML = '✕';
+      btn.setAttribute('aria-label', 'Fechar anúncio');
       btn.addEventListener('click', function() {
-        aside.classList.add('closed');
-        if (typeof gtag === 'function') {
-          gtag('event', 'close_ad', { 'ad_id': ad.id });
-        }
+        overlay.remove();
+        if (typeof gtag === 'function') gtag('event', 'close_ad', { 'ad_id': ad.id });
       });
-      header.appendChild(btn);
+      box.appendChild(btn);
     }
 
-    card.appendChild(header);
-
-    // Área do anúncio (inicialmente com "Carregando...")
     const content = document.createElement('div');
-    content.className = 'ad-content';
-    const loading = document.createElement('span');
-    loading.className = 'ad-loading';
-    loading.textContent = 'Carregando...';
-    content.appendChild(loading);
-    card.appendChild(content);
+    content.className = 'ad-popup-content';
 
-    // Rodapé
-    const footer = document.createElement('div');
-    footer.className = 'ad-footer';
-    footer.textContent = 'Feche o anúncio no X';
-    card.appendChild(footer);
-
-    aside.appendChild(card);
-    return aside;
-  }
-
-  /**
-   * Carrega o conteúdo do anúncio lateral conforme o tipo.
-   * @param {HTMLElement} aside - Elemento <aside> do anúncio.
-   * @param {Object} ad - Configuração do anúncio.
-   */
-  function loadAdContent(aside, ad) {
-    const content = aside.querySelector('.ad-content');
-    if (!content) return;
-
-    // Remove o indicador de carregamento
-    const loading = content.querySelector('.ad-loading');
-    if (loading) loading.remove();
-
-    switch (ad.type) {
-      case 'iframe':
-        loadIframeAd(content, ad.src);
-        break;
-
-      case 'script':
-        loadScriptAd(content, ad.src);
-        break;
-
-      default:
-        content.innerHTML = '<span class="ad-fallback">Tipo de anúncio não suportado</span>';
+    if (ad.type === 'iframe') {
+      const iframe = document.createElement('iframe');
+      iframe.src = ad.src;
+      iframe.frameBorder = '0';
+      iframe.scrolling = 'no';
+      iframe.style.width = ad.width + 'px';
+      iframe.style.height = ad.height + 'px';
+      content.appendChild(iframe);
+    } else if (ad.type === 'script') {
+      const script = document.createElement('script');
+      script.src = ad.src;
+      script.async = true;
+      content.appendChild(script);
     }
+
+    box.appendChild(content);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
   }
 
   /**
-   * Carrega anúncio via iframe.
+   * Cria o contêiner do banner de rodapé (Adsterra).
    */
-  function loadIframeAd(parent, src) {
-    const iframe = document.createElement('iframe');
-    iframe.src = src;
-    iframe.frameBorder = '0';
-    iframe.scrolling = 'no';
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.onerror = () => {
-      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
-    };
-    parent.appendChild(iframe);
-  }
+  function createBottom(ad) {
+    const bar = document.createElement('div');
+    bar.id = ad.id;
+    bar.className = 'ad-bottom-bar';
 
-  /**
-   * Carrega anúncio via script.
-   */
-  function loadScriptAd(parent, src) {
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = true;
-    script.onerror = () => {
-      parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
-    };
-    parent.appendChild(script);
-  }
+    if (ad.closeable !== false) {
+      const btn = document.createElement('button');
+      btn.className = 'ad-bottom-close';
+      btn.innerHTML = '✕';
+      btn.setAttribute('aria-label', 'Fechar anúncio');
+      btn.addEventListener('click', function() {
+        bar.remove();
+        if (typeof gtag === 'function') gtag('event', 'close_ad', { 'ad_id': ad.id });
+      });
+      bar.appendChild(btn);
+    }
 
-  /**
-   * Inicializa os anúncios laterais.
-   */
-  function initSideAds() {
-    const wrapper = document.querySelector('.ad-wrapper');
+    const content = document.createElement('div');
+    content.className = 'ad-bottom-content';
 
-    AD_CONFIG.ads.forEach(ad => {
-      const aside = createAdContainer(ad);
+    if (ad.type === 'script') {
+      const script = document.createElement('script');
+      script.src = ad.src;
+      script.async = true;
+      content.appendChild(script);
+    } else if (ad.type === 'iframe') {
+      const iframe = document.createElement('iframe');
+      iframe.src = ad.src;
+      iframe.frameBorder = '0';
+      iframe.scrolling = 'no';
+      iframe.style.width = '100%';
+      iframe.style.height = ad.height + 'px';
+      content.appendChild(iframe);
+    }
 
-      if (wrapper) {
-        // Se houver wrapper, insere na ordem correta (esquerda primeiro, direita por último)
-        if (ad.position === 'right') {
-          wrapper.appendChild(aside);
-        } else {
-          wrapper.insertBefore(aside, wrapper.firstChild);
-        }
-      } else {
-        // Fallback: posição fixa na tela
-        aside.classList.add('ad-fixed');
-        document.body.appendChild(aside);
-      }
+    bar.appendChild(content);
+    document.body.appendChild(bar);
 
-      loadAdContent(aside, ad);
-    });
-
-    console.log('[WhatsLink Ads] Anúncios laterais criados.');
+    // Adiciona padding ao body para o conteúdo não ficar escondido atrás do rodapé
+    document.body.style.paddingBottom = (ad.height + 20) + 'px';
   }
 
   /**
    * Inicializa o push in-page da TrafficStars.
    */
   function initPush() {
-    // Verifica se o push está habilitado
-    if (!AD_CONFIG.push.enabled) {
-      console.log('[WhatsLink Ads] Push in-page desativado.');
-      return;
-    }
+    if (!AD_CONFIG.push.enabled) return;
 
-    // Carrega o SDK do push da Runative
     const sdk = document.createElement('script');
     sdk.src = '//cdn.runative-syndicate.com/sdk/v1/inpage.push.js';
     sdk.async = true;
     sdk.onload = function() {
-      // Após carregar o SDK, verifica se a função RnInPagePush está disponível
       if (typeof RnInPagePush === 'function') {
         RnInPagePush({
           spot: AD_CONFIG.push.spot,
@@ -219,54 +162,31 @@ const AD_CONFIG = {
           subid: AD_CONFIG.push.subid || ''
         });
         console.log('[WhatsLink Ads] Push in-page iniciado.');
-      } else {
-        console.warn('[WhatsLink Ads] RnInPagePush não está disponível.');
       }
     };
     sdk.onerror = function() {
       console.error('[WhatsLink Ads] Falha ao carregar SDK do push.');
     };
-
-    // Adiciona o SDK ao head
     document.head.appendChild(sdk);
   }
 
   /**
-   * Inicializa o Monetag (script com data-zone e data-cfasync).
+   * Inicializa o Monetag (script global).
    */
   function initMonetag() {
-    // Verifica se o Monetag está habilitado
-    if (!AD_CONFIG.monetag.enabled) {
-      console.log('[WhatsLink Ads] Monetag desativado.');
-      return;
-    }
+    if (!AD_CONFIG.monetag.enabled) return;
 
-    // Cria o elemento <script>
     const script = document.createElement('script');
     script.src = AD_CONFIG.monetag.src;
-
-    // Define data-zone (obrigatório para Monetag)
     script.setAttribute('data-zone', AD_CONFIG.monetag.zone);
-
-    // Define data-cfasync (opcional, mas recomendado)
     if (AD_CONFIG.monetag.cfasync) {
       script.setAttribute('data-cfasync', AD_CONFIG.monetag.cfasync);
     }
-
-    // Async
     if (AD_CONFIG.monetag.async !== false) {
       script.async = true;
     }
-
-    // Eventos
-    script.onload = function() {
-      console.log('[WhatsLink Ads] Monetag carregado.');
-    };
-    script.onerror = function() {
-      console.error('[WhatsLink Ads] Falha ao carregar Monetag.');
-    };
-
-    // Adiciona ao head (recomendado para Monetag)
+    script.onload = () => console.log('[WhatsLink Ads] Monetag carregado.');
+    script.onerror = () => console.error('[WhatsLink Ads] Falha ao carregar Monetag.');
     document.head.appendChild(script);
   }
 
@@ -274,12 +194,19 @@ const AD_CONFIG = {
    * Inicializa todos os anúncios.
    */
   function init() {
-    initSideAds();
+    // Pop-up Profitablerate (aparece uma vez por carregamento)
+    createPopup(AD_CONFIG.popup);
+
+    // Banner rodapé Adsterra
+    createBottom(AD_CONFIG.bottom);
+
+    // Push in-page
     initPush();
+
+    // Monetag
     initMonetag();
   }
 
-  // Aguarda o DOM estar pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
