@@ -52,8 +52,8 @@ const AD_CONFIG = {
     enabled: true,
 
     // Tempo após window.load
-    // 1500 = 1,5 segundo
-    delayAfterLoad: 1500,
+    // 3000 = 3 segundo
+    delayAfterLoad: 3000,
 
     // Código original da zona Monetag
     code: `
