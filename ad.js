@@ -2,111 +2,58 @@
    GERENCIADOR DE ANÚNCIOS
    Inclui:
    - Adsterra (banner fixo no rodapé)
-   - Profitablerate (pop-up centralizado)
-   - TrafficStars (push in-page)
-   - Monetag (script global)
+   - Monetag Vignette (script inline)
    ============================================ */
 
 const AD_CONFIG = {
-  // ================= ANÚNCIO POP-UP (PROFITABLERATE) =================
-  popup: {
-    id: 'adPopup',
-    type: 'iframe',
-    src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
-    width: 300,
-    height: 250,
-    closeable: true
-  },
-
   // ================= ANÚNCIO RODAPÉ (ADSTERRA) =================
-  bottom: {
+  bottomAd: {
+    enabled: true,                // true = ativa o anúncio de rodapé
     id: 'adBottom',
-    type: 'script',
-    src: 'https://www.ads-terra.com/script.js', // ⚠️ substitua pelo código real da Adsterra
-    height: 90,                // altura do banner de rodapé
+    type: 'inline',               // script inline (código JavaScript real)
+    code: `
+      (function(vldbts){
+        var d = document,
+            s = d.createElement('script'),
+            l = d.scripts[d.scripts.length - 1];
+        s.settings = vldbts || {};
+        s.src = "\\/\\/conventionalresponse.com\\/bPXNV.s\\/diGNlJ0HYTWDcK\\/Qejmu9Mu\\/ZIUOl-kWP\\/TEcFzBNWzKUDzgMbT\\/MZtiNUzjMV3\\/NPTqMWxhNpwZ";
+        s.async = true;
+        s.referrerPolicy = 'no-referrer-when-downgrade';
+        l.parentNode.insertBefore(s, l);
+      })({})
+    `,
     closeable: true
   },
 
-  // ================= PUSH IN-PAGE (TRAFFICSTARS) =================
-  push: {
-    enabled: true,
-    spot: '6eb53a7be15a452c8d40dda758e9b473',
-    verticalPosition: 'bottom',
-    keywords: '',
-    subid: ''
-  },
-
-  // ================= MONETAG =================
-  monetag: {
-    enabled: true,
-    src: 'https://quge5.com/88/tag.min.js',
-    zone: '276271',
-    cfasync: 'false',
-    async: true
+  // ================= MONETAG VIGNETTE =================
+  vignette: {
+    enabled: true,                // true = ativa o Vignette da Monetag
+    code: `
+      (function(s){s.dataset.zone='11725719',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
+    `
   }
 };
 
 /* ============================================
    LÓGICA DE CRIAÇÃO E CARREGAMENTO
+   Não precisa alterar abaixo
    ============================================ */
 
 (function() {
   'use strict';
 
   /**
-   * Cria o contêiner do pop-up (Profitablerate).
+   * Cria o contêiner fixo do anúncio no rodapé.
+   * @param {Object} ad - Configuração do anúncio de rodapé.
    */
-  function createPopup(ad) {
-    const overlay = document.createElement('div');
-    overlay.id = ad.id;
-    overlay.className = 'ad-popup-overlay';
-
-    const box = document.createElement('div');
-    box.className = 'ad-popup-box';
-
-    if (ad.closeable !== false) {
-      const btn = document.createElement('button');
-      btn.className = 'ad-popup-close';
-      btn.innerHTML = '✕';
-      btn.setAttribute('aria-label', 'Fechar anúncio');
-      btn.addEventListener('click', function() {
-        overlay.remove();
-        if (typeof gtag === 'function') gtag('event', 'close_ad', { 'ad_id': ad.id });
-      });
-      box.appendChild(btn);
-    }
-
-    const content = document.createElement('div');
-    content.className = 'ad-popup-content';
-
-    if (ad.type === 'iframe') {
-      const iframe = document.createElement('iframe');
-      iframe.src = ad.src;
-      iframe.frameBorder = '0';
-      iframe.scrolling = 'no';
-      iframe.style.width = ad.width + 'px';
-      iframe.style.height = ad.height + 'px';
-      content.appendChild(iframe);
-    } else if (ad.type === 'script') {
-      const script = document.createElement('script');
-      script.src = ad.src;
-      script.async = true;
-      content.appendChild(script);
-    }
-
-    box.appendChild(content);
-    overlay.appendChild(box);
-    document.body.appendChild(overlay);
-  }
-
-  /**
-   * Cria o contêiner do banner de rodapé (Adsterra).
-   */
-  function createBottom(ad) {
+  function createBottomAd(ad) {
+    // Cria a barra fixa inferior
     const bar = document.createElement('div');
     bar.id = ad.id;
     bar.className = 'ad-bottom-bar';
 
+    // Botão de fechar
     if (ad.closeable !== false) {
       const btn = document.createElement('button');
       btn.className = 'ad-bottom-close';
@@ -114,99 +61,76 @@ const AD_CONFIG = {
       btn.setAttribute('aria-label', 'Fechar anúncio');
       btn.addEventListener('click', function() {
         bar.remove();
-        if (typeof gtag === 'function') gtag('event', 'close_ad', { 'ad_id': ad.id });
+        if (typeof gtag === 'function') {
+          gtag('event', 'close_ad', { 'ad_id': ad.id });
+        }
       });
       bar.appendChild(btn);
     }
 
+    // Área onde o script do anúncio será inserido
     const content = document.createElement('div');
     content.className = 'ad-bottom-content';
+    bar.appendChild(content);
 
-    if (ad.type === 'script') {
+    // Adiciona a barra ao body
+    document.body.appendChild(bar);
+
+    // Ajusta o padding do body para o conteúdo não ficar escondido atrás do rodapé
+    document.body.style.paddingBottom = '100px'; // valor estimado; ajuste se necessário
+
+    // Carrega o script inline (Adsterra) dentro do contêiner
+    if (ad.type === 'inline' && ad.code) {
       const script = document.createElement('script');
-      script.src = ad.src;
-      script.async = true;
+      script.type = 'text/javascript';
+      script.textContent = ad.code;
       content.appendChild(script);
-    } else if (ad.type === 'iframe') {
+    } else if (ad.type === 'iframe' && ad.src) {
       const iframe = document.createElement('iframe');
       iframe.src = ad.src;
       iframe.frameBorder = '0';
       iframe.scrolling = 'no';
       iframe.style.width = '100%';
-      iframe.style.height = ad.height + 'px';
+      iframe.style.height = '90px';
       content.appendChild(iframe);
     }
-
-    bar.appendChild(content);
-    document.body.appendChild(bar);
-
-    // Adiciona padding ao body para o conteúdo não ficar escondido atrás do rodapé
-    document.body.style.paddingBottom = (ad.height + 20) + 'px';
   }
 
   /**
-   * Inicializa o push in-page da TrafficStars.
+   * Carrega o Vignette da Monetag.
+   * @param {Object} vignette - Configuração do Vignette.
    */
-  function initPush() {
-    if (!AD_CONFIG.push.enabled) return;
+  function loadVignette(vignette) {
+    if (!vignette.enabled) {
+      console.log('[WhatsLink Ads] Vignette desativado.');
+      return;
+    }
 
-    const sdk = document.createElement('script');
-    sdk.src = '//cdn.runative-syndicate.com/sdk/v1/inpage.push.js';
-    sdk.async = true;
-    sdk.onload = function() {
-      if (typeof RnInPagePush === 'function') {
-        RnInPagePush({
-          spot: AD_CONFIG.push.spot,
-          verticalPosition: AD_CONFIG.push.verticalPosition,
-          keywords: AD_CONFIG.push.keywords || '',
-          subid: AD_CONFIG.push.subid || ''
-        });
-        console.log('[WhatsLink Ads] Push in-page iniciado.');
-      }
-    };
-    sdk.onerror = function() {
-      console.error('[WhatsLink Ads] Falha ao carregar SDK do push.');
-    };
-    document.head.appendChild(sdk);
-  }
-
-  /**
-   * Inicializa o Monetag (script global).
-   */
-  function initMonetag() {
-    if (!AD_CONFIG.monetag.enabled) return;
-
+    // Cria um script inline com o código fornecido
     const script = document.createElement('script');
-    script.src = AD_CONFIG.monetag.src;
-    script.setAttribute('data-zone', AD_CONFIG.monetag.zone);
-    if (AD_CONFIG.monetag.cfasync) {
-      script.setAttribute('data-cfasync', AD_CONFIG.monetag.cfasync);
-    }
-    if (AD_CONFIG.monetag.async !== false) {
-      script.async = true;
-    }
-    script.onload = () => console.log('[WhatsLink Ads] Monetag carregado.');
-    script.onerror = () => console.error('[WhatsLink Ads] Falha ao carregar Monetag.');
-    document.head.appendChild(script);
+    script.type = 'text/javascript';
+    script.textContent = vignette.code;
+    document.body.appendChild(script);
+
+    console.log('[WhatsLink Ads] Vignette Monetag carregado.');
   }
 
   /**
-   * Inicializa todos os anúncios.
+   * Inicializa os anúncios.
    */
   function init() {
-    // Pop-up Profitablerate (aparece uma vez por carregamento)
-    createPopup(AD_CONFIG.popup);
+    // Anúncio de rodapé (Adsterra)
+    if (AD_CONFIG.bottomAd && AD_CONFIG.bottomAd.enabled) {
+      createBottomAd(AD_CONFIG.bottomAd);
+    }
 
-    // Banner rodapé Adsterra
-    createBottom(AD_CONFIG.bottom);
-
-    // Push in-page
-    initPush();
-
-    // Monetag
-    initMonetag();
+    // Vignette (Monetag)
+    if (AD_CONFIG.vignette && AD_CONFIG.vignette.enabled) {
+      loadVignette(AD_CONFIG.vignette);
+    }
   }
 
+  // Aguarda o DOM estar pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
