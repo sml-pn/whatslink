@@ -1,54 +1,57 @@
 /* ============================================
    GERENCIADOR DE ANÚNCIOS
    Inclui:
-   - Anúncio lateral Adsterra (script inline original)
-   - Push in-page TrafficStars
+   - Anúncio lateral esquerdo (Profitablerate via iframe)
+   - Anúncio lateral direito (Adsterra via script)
+   - Push in-page (TrafficStars)
    ============================================ */
 
 const AD_CONFIG = {
-  // ================= ANÚNCIO LATERAL (ADSTERRA) =================
+  // ================= ANÚNCIOS LATERAIS =================
   ads: [
     {
       id: 'adLeft',
-      type: 'inline', // script inline (executado diretamente)
-      code: `
-        (function(vldbts){
-          var d = document,
-              s = d.createElement('script'),
-              l = d.scripts[d.scripts.length - 1];
-          s.settings = vldbts || {};
-          s.src = "\\/\\/conventionalresponse.com\\/bPXNV.s\\/diGNlJ0HYTWDcK\\/Qejmu9Mu\\/ZIUOl-kWP\\/TEcFzBNWzKUDzgMbT\\/MZtiNUzjMV3\\/NPTqMWxhNpwZ";
-          s.async = true;
-          s.referrerPolicy = 'no-referrer-when-downgrade';
-          l.parentNode.insertBefore(s, l);
-        })({})
-      `,
+      type: 'iframe', // Profitablerate funciona bem via iframe
+      src: 'https://www.profitableratecpmnetwork.com/tex5g0tvv?key=78443d7dfd48583d7fe38644e80f7ad5',
       width: 300,
       height: 250,
       position: 'left',
+      closeable: true
+    },
+    {
+      id: 'adRight',
+      type: 'script', // Adsterra geralmente usa script
+      // ⚠️ Substitua o src abaixo pelo código real fornecido pela Adsterra
+      src: 'https://www.ads-terra.com/script.js', // PLACEHOLDER – troque pelo seu código
+      width: 300,
+      height: 250,
+      position: 'right',
       closeable: true
     }
   ],
 
   // ================= PUSH IN-PAGE (TRAFFICSTARS) =================
   push: {
-    enabled: true,
+    enabled: true,                // true = ativa o push; false = desativa
     spot: '6eb53a7be15a452c8d40dda758e9b473',
-    verticalPosition: 'bottom',
-    keywords: '',
-    subid: ''
+    verticalPosition: 'bottom',   // bottom | top
+    keywords: '',                 // deixe vazio ou preencha com palavras-chave
+    subid: ''                     // deixe vazio ou gere dinamicamente
   }
 };
 
 /* ============================================
    LÓGICA DE CRIAÇÃO E CARREGAMENTO
+   Não precisa alterar abaixo
    ============================================ */
 
 (function() {
   'use strict';
 
   /**
-   * Cria o contêiner <aside> do anúncio lateral.
+   * Cria o contêiner <aside> do anúncio lateral com cabeçalho, área de conteúdo e rodapé.
+   * @param {Object} ad - Configuração do anúncio.
+   * @returns {HTMLElement} Elemento <aside> pronto para inserir no DOM.
    */
   function createAdContainer(ad) {
     const aside = document.createElement('aside');
@@ -58,6 +61,7 @@ const AD_CONFIG = {
     const card = document.createElement('div');
     card.className = 'ad-card';
 
+    // Cabeçalho com botão de fechar
     const header = document.createElement('div');
     header.className = 'ad-header';
     header.innerHTML = '<span>Publicidade</span>';
@@ -78,6 +82,7 @@ const AD_CONFIG = {
 
     card.appendChild(header);
 
+    // Área do anúncio (inicialmente com "Carregando...")
     const content = document.createElement('div');
     content.className = 'ad-content';
     const loading = document.createElement('span');
@@ -86,6 +91,7 @@ const AD_CONFIG = {
     content.appendChild(loading);
     card.appendChild(content);
 
+    // Rodapé
     const footer = document.createElement('div');
     footer.className = 'ad-footer';
     footer.textContent = 'Feche o anúncio no X';
@@ -96,12 +102,15 @@ const AD_CONFIG = {
   }
 
   /**
-   * Carrega o conteúdo do anúncio lateral.
+   * Carrega o conteúdo do anúncio lateral conforme o tipo.
+   * @param {HTMLElement} aside - Elemento <aside> do anúncio.
+   * @param {Object} ad - Configuração do anúncio.
    */
   function loadAdContent(aside, ad) {
     const content = aside.querySelector('.ad-content');
     if (!content) return;
 
+    // Remove o indicador de carregamento
     const loading = content.querySelector('.ad-loading');
     if (loading) loading.remove();
 
@@ -109,17 +118,19 @@ const AD_CONFIG = {
       case 'iframe':
         loadIframeAd(content, ad.src);
         break;
+
       case 'script':
         loadScriptAd(content, ad.src);
         break;
-      case 'inline':
-        loadInlineAd(content, ad.code);
-        break;
+
       default:
         content.innerHTML = '<span class="ad-fallback">Tipo de anúncio não suportado</span>';
     }
   }
 
+  /**
+   * Carrega anúncio via iframe.
+   */
   function loadIframeAd(parent, src) {
     const iframe = document.createElement('iframe');
     iframe.src = src;
@@ -133,6 +144,9 @@ const AD_CONFIG = {
     parent.appendChild(iframe);
   }
 
+  /**
+   * Carrega anúncio via script.
+   */
   function loadScriptAd(parent, src) {
     const script = document.createElement('script');
     script.src = src;
@@ -140,27 +154,6 @@ const AD_CONFIG = {
     script.onerror = () => {
       parent.innerHTML = '<span class="ad-fallback">Falha ao carregar anúncio</span>';
     };
-    parent.appendChild(script);
-  }
-
-  /**
-   * Executa código JavaScript inline (ex.: Adsterra).
-   */
-  function loadInlineAd(parent, code) {
-    if (!code) {
-      parent.innerHTML = '<span class="ad-fallback">Código não fornecido</span>';
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.textContent = code; // conteúdo do script inline
-
-    // Captura erros de execução (opcional)
-    script.onerror = () => {
-      parent.innerHTML = '<span class="ad-fallback">Falha ao executar anúncio</span>';
-    };
-
     parent.appendChild(script);
   }
 
@@ -174,12 +167,14 @@ const AD_CONFIG = {
       const aside = createAdContainer(ad);
 
       if (wrapper) {
+        // Se houver wrapper, insere na ordem correta (esquerda primeiro, direita por último)
         if (ad.position === 'right') {
           wrapper.appendChild(aside);
         } else {
           wrapper.insertBefore(aside, wrapper.firstChild);
         }
       } else {
+        // Fallback: posição fixa na tela
         aside.classList.add('ad-fixed');
         document.body.appendChild(aside);
       }
@@ -187,22 +182,25 @@ const AD_CONFIG = {
       loadAdContent(aside, ad);
     });
 
-    console.log('[WhatsLink Ads] Anúncio lateral Adsterra criado.');
+    console.log('[WhatsLink Ads] Anúncios laterais criados.');
   }
 
   /**
    * Inicializa o push in-page da TrafficStars.
    */
   function initPush() {
+    // Verifica se o push está habilitado
     if (!AD_CONFIG.push.enabled) {
       console.log('[WhatsLink Ads] Push in-page desativado.');
       return;
     }
 
+    // Carrega o SDK do push da Runative
     const sdk = document.createElement('script');
     sdk.src = '//cdn.runative-syndicate.com/sdk/v1/inpage.push.js';
     sdk.async = true;
     sdk.onload = function() {
+      // Após carregar o SDK, verifica se a função RnInPagePush está disponível
       if (typeof RnInPagePush === 'function') {
         RnInPagePush({
           spot: AD_CONFIG.push.spot,
@@ -210,7 +208,7 @@ const AD_CONFIG = {
           keywords: AD_CONFIG.push.keywords || '',
           subid: AD_CONFIG.push.subid || ''
         });
-        console.log('[WhatsLink Ads] Push in-page TrafficStars iniciado.');
+        console.log('[WhatsLink Ads] Push in-page iniciado.');
       } else {
         console.warn('[WhatsLink Ads] RnInPagePush não está disponível.');
       }
@@ -219,17 +217,19 @@ const AD_CONFIG = {
       console.error('[WhatsLink Ads] Falha ao carregar SDK do push.');
     };
 
+    // Adiciona o SDK ao head
     document.head.appendChild(sdk);
   }
 
   /**
-   * Inicializa todos os anúncios.
+   * Inicializa todos os anúncios (laterais e push).
    */
   function init() {
     initSideAds();
     initPush();
   }
 
+  // Aguarda o DOM estar pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
