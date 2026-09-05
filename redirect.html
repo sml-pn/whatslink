@@ -556,11 +556,13 @@ async function init() {
     if (data.error) throw new Error(data.error);
 
     // ==========================================
+    // ARMAZENA A DATA DE CRIAÇÃO GLOBALMENTE
+    // ==========================================
+    window.__whatslinkCreatedAt = data.created_at || null;
+
+    // ==========================================
     // DISPARA EVENTO PARA O AD.JS
     // ==========================================
-    // Informa ao ad.js a data de criação do link
-    // para que ele possa decidir se já passaram
-    // 10 dias e liberar os anúncios.
     window.dispatchEvent(new CustomEvent('ads:init', {
       detail: {
         created_at: data.created_at,
