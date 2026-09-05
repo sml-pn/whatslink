@@ -542,38 +542,50 @@
     }
 
     // Inicialização principal
-    async function init() {
-      const container = $('container');
-      container.style.opacity = '0';
+async function init() {
+  const container = $('container');
+  container.style.opacity = '0';
 
-      const slug = new URLSearchParams(location.search).get('slug')?.trim();
-      if (!slug) { location.replace('/'); return; }
+  const slug = new URLSearchParams(location.search).get('slug')?.trim();
+  if (!slug) { location.replace('/'); return; }
 
-      try {
-        const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
-        const text = await response.text();
-        const data = JSON.parse(text);
-        if (data.error) throw new Error(data.error);
+  try {
+    const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
+    const text = await response.text();
+    const data = JSON.parse(text);
+    if (data.error) throw new Error(data.error);
 
-        const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
-        await carregarCssTema(tema);
+    // ==========================================
+    // DISPARA EVENTO PARA O AD.JS
+    // ==========================================
+    // Informa ao ad.js a data de criação do link
+    // para que ele possa decidir se já passaram
+    // 10 dias e liberar os anúncios.
+    window.dispatchEvent(new CustomEvent('ads:init', {
+      detail: {
+        created_at: data.created_at,
+        slug: slug
+      }
+    }));
 
-        document.documentElement.style.setProperty('--theme', CONFIG.THEME_COLORS[tema]);
-        document.documentElement.style.setProperty('--theme-rgb', CONFIG.THEME_RGB[tema]);
-        $('themeColorMeta').content = CONFIG.THEME_COLORS[tema];
-        container.className = `reception-page theme-${tema}`;
-        document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
+    const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
+    await carregarCssTema(tema);
 
-        atualizarMetaTags(data, slug);
+    document.documentElement.style.setProperty('--theme', CONFIG.THEME_COLORS[tema]);
+    document.documentElement.style.setProperty('--theme-rgb', CONFIG.THEME_RGB[tema]);
+    $('themeColorMeta').content = CONFIG.THEME_COLORS[tema];
+    container.className = `reception-page theme-${tema}`;
+    document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
 
-        if (typeof gtag === 'function') {
-          gtag('event', 'view_link', {
-            'link_id': data.id,
-            'slug': slug,
-            'theme': tema
-          });
-        }
+    atualizarMetaTags(data, slug);
 
+    if (typeof gtag === 'function') {
+      gtag('event', 'view_link', {
+        'link_id': data.id,
+        'slug': slug,
+        'theme': tema
+      });
+    }
         renderizarHeader(data, container);
         $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
         if (data.descricao) {
