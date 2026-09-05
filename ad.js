@@ -7,14 +7,18 @@
 
    FLUXO:
    1. Página carrega normalmente
-   2. window.load acontece
-   3. Adsterra é iniciado
-   4. Aguarda 1,5 segundo
-   5. Monetag Vignette é iniciado
+   2. Dados do link são obtidos via API
+   3. Evento 'ads:init' é disparado
+   4. Verifica se já passaram 10 dias desde a criação
+   5. Se sim:
+      a. window.load acontece (ou já aconteceu)
+      b. Adsterra é iniciado
+      c. Aguarda 1,5 segundo
+      d. Monetag Vignette é iniciado
 
    IMPORTANTE:
-   Nenhum anúncio é inserido antes do
-   carregamento completo da página.
+   - Nenhum anúncio é inserido antes de 10 dias da criação.
+   - Nenhum anúncio é inserido antes do carregamento completo.
    ============================================ */
 
 const AD_CONFIG = {
@@ -52,8 +56,8 @@ const AD_CONFIG = {
     enabled: true,
 
     // Tempo após window.load
-    // 3000 = 3 segundo
-    delayAfterLoad: 3000,
+    // 1500 = 1,5 segundo
+    delayAfterLoad: 1500,
 
     // Código original da zona Monetag
     code: `
@@ -82,12 +86,39 @@ const AD_CONFIG = {
   // mais de uma vez.
   let adsInitialized = false;
 
+  // Número de dias que o link deve ter antes de liberar anúncios
+  const DIAS_ANTES_DOS_ANUNCIOS = 10;
+
+  /* ==========================================
+     VERIFICAÇÃO DE DIAS
+     ========================================== */
+  function podeExibirAnuncios(createdAt) {
+    if (!createdAt) {
+      console.warn('[WhatsLink Ads] Data de criação não fornecida.');
+      return false;
+    }
+
+    const agora = Date.now();
+    const criadoEm = new Date(createdAt).getTime();
+
+    if (isNaN(criadoEm)) {
+      console.error('[WhatsLink Ads] Data de criação inválida:', createdAt);
+      return false;
+    }
+
+    const diffDias = (agora - criadoEm) / (1000 * 60 * 60 * 24);
+
+    console.log(
+      `[WhatsLink Ads] Link criado há ${diffDias.toFixed(2)} dias.`
+    );
+
+    return diffDias >= DIAS_ANTES_DOS_ANUNCIOS;
+  }
+
   /* ==========================================
      ADSTERRA
      ========================================== */
   function createBottomAd(ad) {
-
-    // Segurança contra duplicação
     if (document.getElementById(ad.id)) {
       console.log('[WhatsLink Ads] Adsterra já existe.');
       return;
@@ -97,42 +128,27 @@ const AD_CONFIG = {
     bar.id = ad.id;
     bar.className = 'ad-bottom-bar';
 
-    /* ----------------------------------------
-       BOTÃO FECHAR
-       ---------------------------------------- */
     if (ad.closeable !== false) {
       const btn = document.createElement('button');
       btn.className = 'ad-bottom-close';
       btn.innerHTML = '✕';
-      btn.setAttribute(
-        'aria-label',
-        'Fechar anúncio'
-      );
+      btn.setAttribute('aria-label', 'Fechar anúncio');
 
       btn.addEventListener('click', function() {
         bar.remove();
         document.body.style.paddingBottom = '';
 
-        // Google Analytics
         if (typeof gtag === 'function') {
-          gtag('event', 'close_ad', {
-            ad_id: ad.id
-          });
+          gtag('event', 'close_ad', { ad_id: ad.id });
         }
       });
 
       bar.appendChild(btn);
     }
 
-    /* ----------------------------------------
-       ÁREA DO ANÚNCIO
-       ---------------------------------------- */
     const content = document.createElement('div');
     content.className = 'ad-bottom-content';
 
-    /* ----------------------------------------
-       INSERE O SCRIPT DO ADSTERRA
-       ---------------------------------------- */
     if (ad.type === 'inline' && ad.code) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
@@ -141,20 +157,10 @@ const AD_CONFIG = {
     }
 
     bar.appendChild(content);
-
-    /* ----------------------------------------
-       ADICIONA O BANNER À PÁGINA
-       ---------------------------------------- */
     document.body.appendChild(bar);
-
-    /* ----------------------------------------
-       ESPAÇO PARA O BANNER
-       ---------------------------------------- */
     document.body.style.paddingBottom = '100px';
 
-    console.log(
-      '[WhatsLink Ads] Adsterra iniciado após window.load.'
-    );
+    console.log('[WhatsLink Ads] Adsterra iniciado após window.load.');
   }
 
   /* ==========================================
@@ -162,21 +168,10 @@ const AD_CONFIG = {
      ========================================== */
   function loadVignette(vignette) {
     if (!vignette.enabled) {
-      console.log(
-        '[WhatsLink Ads] Monetag desativado.'
-      );
+      console.log('[WhatsLink Ads] Monetag desativado.');
       return;
     }
 
-    /*
-     * IMPORTANTE:
-     *
-     * Esta função é chamada depois de window.load,
-     * portanto NÃO precisamos registrar outro
-     * window.addEventListener('load', ...).
-     *
-     * Basta aguardar o delay.
-     */
     const delay = Number(vignette.delayAfterLoad) || 1500;
 
     setTimeout(function() {
@@ -188,14 +183,10 @@ const AD_CONFIG = {
 
         console.log(
           '[WhatsLink Ads] Monetag Vignette iniciado após ' +
-          delay +
-          'ms.'
+          delay + 'ms.'
         );
       } catch (error) {
-        console.error(
-          '[WhatsLink Ads] Erro ao carregar Monetag:',
-          error
-        );
+        console.error('[WhatsLink Ads] Erro ao carregar Monetag:', error);
       }
     }, delay);
   }
@@ -203,62 +194,54 @@ const AD_CONFIG = {
   /* ==========================================
      INICIALIZAÇÃO DOS ANÚNCIOS
      ========================================== */
-  function init() {
-    // Segurança contra execução duplicada
+  function init(createdAt) {
     if (adsInitialized) {
+      console.log('[WhatsLink Ads] Já inicializado.');
+      return;
+    }
+
+    // Verifica se o link já tem a idade mínima
+    if (!podeExibirAnuncios(createdAt)) {
       console.log(
-        '[WhatsLink Ads] Já inicializado.'
+        `[WhatsLink Ads] Anúncios bloqueados (menos de ${DIAS_ANTES_DOS_ANUNCIOS} dias).`
       );
       return;
     }
+
     adsInitialized = true;
+    console.log('[WhatsLink Ads] Anúncios liberados.');
 
-    console.log(
-      '[WhatsLink Ads] Página totalmente carregada.'
-    );
-
-    /* ----------------------------------------
-       1. ADSTERRA
-       ---------------------------------------- */
+    // Adsterra
     if (AD_CONFIG.bottomAd.enabled) {
-      createBottomAd(
-        AD_CONFIG.bottomAd
-      );
+      createBottomAd(AD_CONFIG.bottomAd);
     }
 
-    /* ----------------------------------------
-       2. MONETAG
-       ---------------------------------------- */
+    // Monetag
     if (AD_CONFIG.vignette.enabled) {
-      loadVignette(
-        AD_CONFIG.vignette
-      );
+      loadVignette(AD_CONFIG.vignette);
     }
   }
 
   /* ==========================================
-     INÍCIO DO GERENCIADOR
+     ESCUTA O EVENTO DE DADOS DO LINK
      ========================================== */
-  /*
-   * Se o ADS.js for carregado normalmente antes
-   * do carregamento terminar:
-   *
-   *   espera window.load
-   *
-   * Se o ADS.js for carregado depois que a página
-   * já terminou:
-   *
-   *   inicializa imediatamente.
-   */
-  if (document.readyState === 'complete') {
-    // A página já terminou de carregar
-    init();
-  } else {
-    // Aguarda o carregamento completo
-    window.addEventListener(
-      'load',
-      init,
-      { once: true }
-    );
-  }
+  window.addEventListener('ads:init', function(event) {
+    const detail = event.detail || {};
+    const createdAt = detail.created_at;
+
+    // Se a página já estiver carregada, inicia imediatamente
+    if (document.readyState === 'complete') {
+      init(createdAt);
+    } else {
+      // Aguarda o carregamento completo
+      window.addEventListener(
+        'load',
+        function() {
+          init(createdAt);
+        },
+        { once: true }
+      );
+    }
+  });
+
 })();
