@@ -8,9 +8,11 @@
    FLUXO:
    1. Página carrega normalmente
    2. Dados do link são obtidos via API
-   3. Evento 'ads:init' é disparado
-   4. Verifica se já passaram 10 dias desde a criação
-   5. Se sim:
+   3. Data de criação é armazenada em
+      window.__whatslinkCreatedAt
+   4. Evento 'ads:init' é disparado (opcional)
+   5. Verifica se já passaram 10 dias desde a criação
+   6. Se sim:
       a. window.load acontece (ou já aconteceu)
       b. Adsterra é iniciado
       c. Aguarda 1,5 segundo
@@ -29,7 +31,7 @@ const AD_CONFIG = {
   bottomAd: {
     enabled: true,
     id: 'adBottom',
-    type: 'inline',
+    type: 'inline', // script inline (código original Adsterra)
 
     // Código original do Adsterra
     code: `
@@ -92,6 +94,11 @@ const AD_CONFIG = {
   /* ==========================================
      VERIFICAÇÃO DE DIAS
      ========================================== */
+  /**
+   * Verifica se o link já tem a idade mínima.
+   * @param {string} createdAt - Data de criação no formato ISO.
+   * @returns {boolean} True se os anúncios podem ser exibidos.
+   */
   function podeExibirAnuncios(createdAt) {
     if (!createdAt) {
       console.warn('[WhatsLink Ads] Data de criação não fornecida.');
@@ -118,7 +125,12 @@ const AD_CONFIG = {
   /* ==========================================
      ADSTERRA
      ========================================== */
+  /**
+   * Cria o banner fixo no rodapé.
+   * @param {Object} ad - Configuração do anúncio.
+   */
   function createBottomAd(ad) {
+    // Segurança contra duplicação
     if (document.getElementById(ad.id)) {
       console.log('[WhatsLink Ads] Adsterra já existe.');
       return;
@@ -128,6 +140,9 @@ const AD_CONFIG = {
     bar.id = ad.id;
     bar.className = 'ad-bottom-bar';
 
+    /* ----------------------------------------
+       BOTÃO FECHAR
+       ---------------------------------------- */
     if (ad.closeable !== false) {
       const btn = document.createElement('button');
       btn.className = 'ad-bottom-close';
@@ -138,17 +153,26 @@ const AD_CONFIG = {
         bar.remove();
         document.body.style.paddingBottom = '';
 
+        // Google Analytics
         if (typeof gtag === 'function') {
-          gtag('event', 'close_ad', { ad_id: ad.id });
+          gtag('event', 'close_ad', {
+            ad_id: ad.id
+          });
         }
       });
 
       bar.appendChild(btn);
     }
 
+    /* ----------------------------------------
+       ÁREA DO ANÚNCIO
+       ---------------------------------------- */
     const content = document.createElement('div');
     content.className = 'ad-bottom-content';
 
+    /* ----------------------------------------
+       INSERE O SCRIPT DO ADSTERRA
+       ---------------------------------------- */
     if (ad.type === 'inline' && ad.code) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
@@ -157,7 +181,15 @@ const AD_CONFIG = {
     }
 
     bar.appendChild(content);
+
+    /* ----------------------------------------
+       ADICIONA O BANNER À PÁGINA
+       ---------------------------------------- */
     document.body.appendChild(bar);
+
+    /* ----------------------------------------
+       ESPAÇO PARA O BANNER
+       ---------------------------------------- */
     document.body.style.paddingBottom = '100px';
 
     console.log('[WhatsLink Ads] Adsterra iniciado após window.load.');
@@ -166,6 +198,10 @@ const AD_CONFIG = {
   /* ==========================================
      MONETAG VIGNETTE
      ========================================== */
+  /**
+   * Carrega o Vignette Monetag com atraso.
+   * @param {Object} vignette - Configuração do Vignette.
+   */
   function loadVignette(vignette) {
     if (!vignette.enabled) {
       console.log('[WhatsLink Ads] Monetag desativado.');
@@ -183,10 +219,14 @@ const AD_CONFIG = {
 
         console.log(
           '[WhatsLink Ads] Monetag Vignette iniciado após ' +
-          delay + 'ms.'
+          delay +
+          'ms.'
         );
       } catch (error) {
-        console.error('[WhatsLink Ads] Erro ao carregar Monetag:', error);
+        console.error(
+          '[WhatsLink Ads] Erro ao carregar Monetag:',
+          error
+        );
       }
     }, delay);
   }
@@ -194,7 +234,12 @@ const AD_CONFIG = {
   /* ==========================================
      INICIALIZAÇÃO DOS ANÚNCIOS
      ========================================== */
+  /**
+   * Inicializa os anúncios se a idade do link permitir.
+   * @param {string} createdAt - Data de criação do link.
+   */
   function init(createdAt) {
+    // Segurança contra execução duplicada
     if (adsInitialized) {
       console.log('[WhatsLink Ads] Já inicializado.');
       return;
@@ -211,12 +256,16 @@ const AD_CONFIG = {
     adsInitialized = true;
     console.log('[WhatsLink Ads] Anúncios liberados.');
 
-    // Adsterra
+    /* ----------------------------------------
+       1. ADSTERRA
+       ---------------------------------------- */
     if (AD_CONFIG.bottomAd.enabled) {
       createBottomAd(AD_CONFIG.bottomAd);
     }
 
-    // Monetag
+    /* ----------------------------------------
+       2. MONETAG
+       ---------------------------------------- */
     if (AD_CONFIG.vignette.enabled) {
       loadVignette(AD_CONFIG.vignette);
     }
@@ -225,23 +274,38 @@ const AD_CONFIG = {
   /* ==========================================
      ESCUTA O EVENTO DE DADOS DO LINK
      ========================================== */
+  /**
+   * Tenta inicializar os anúncios a partir da
+   * variável global (se já estiver definida).
+   */
+  function tryInitFromGlobal() {
+    const createdAt = window.__whatslinkCreatedAt;
+    if (createdAt) {
+      // Se a página já estiver carregada, inicia; senão aguarda load
+      if (document.readyState === 'complete') {
+        init(createdAt);
+      } else {
+        window.addEventListener('load', function() {
+          init(createdAt);
+        }, { once: true });
+      }
+    }
+  }
+
+  // Escuta o evento ads:init (caso seja disparado depois)
   window.addEventListener('ads:init', function(event) {
     const detail = event.detail || {};
-    const createdAt = detail.created_at;
+    const createdAt = detail.created_at || window.__whatslinkCreatedAt;
 
-    // Se a página já estiver carregada, inicia imediatamente
     if (document.readyState === 'complete') {
       init(createdAt);
     } else {
-      // Aguarda o carregamento completo
-      window.addEventListener(
-        'load',
-        function() {
-          init(createdAt);
-        },
-        { once: true }
-      );
+      window.addEventListener('load', function() {
+        init(createdAt);
+      }, { once: true });
     }
   });
 
+  // Tenta iniciar imediatamente caso a variável global já exista
+  tryInitFromGlobal();
 })();
