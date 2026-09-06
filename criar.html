@@ -105,7 +105,6 @@
     }
     .image-preview img { width: 100%; max-height: 150px; object-fit: cover; display: block; }
     .logo-preview img { max-height: 80px; width: 80px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
-    /* Dica de ajuda visual */
     .helper-text {
       font-size: 12px;
       color: #6b7280;
@@ -116,7 +115,6 @@
       color: #2563eb;
       text-decoration: underline;
     }
-    /* Spinner do botão de submit */
     .spinner {
       width: 18px;
       height: 18px;
@@ -127,6 +125,25 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .btn-loader { display: none; align-items: center; justify-content: center; }
+
+    /* Seções agrupadas */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      margin: 20px 0 10px;
+      color: var(--text);
+    }
+    .section-title .material-icons-round { color: var(--whatsapp); font-size: 20px; }
+    .field-group {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #fafafa;
+    }
   </style>
 </head>
 <body>
@@ -193,242 +210,204 @@
             <p class="card-subtitle">Preencha os dados abaixo. Leva 30 segundos.</p>
           </div>
         </div>
-        
+
         <form id="linkForm" novalidate>
-          <div class="form-group-title">
+
+          <!-- ================= SEÇÃO 1: IDENTIFICAÇÃO ================= -->
+          <div class="section-title">
             <span class="material-icons-round">business</span>
-            Informações principais
+            Identificação
           </div>
-          
-          <div class="field">
-            <label for="empresa">Nome da empresa *</label>
-            <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
-            <span class="field-hint">Aparece no topo da sua página de recepção</span>
-          </div>
-          
-          <div class="field">
-            <label for="whatsapp">WhatsApp principal *</label>
-            <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" inputmode="tel" />
-            <span class="field-hint">Número principal que receberá as mensagens</span>
-          </div>
-          
-          <div class="field">
-            <label for="botaoWhatsapp">Nome do botão principal *</label>
-            <input type="text" id="botaoWhatsapp" placeholder="Ex: Falar com Vendas" value="Chamar no WhatsApp" required />
-            <span class="field-hint">Exemplos: "Falar com Vendas", "Atendimento", "Agendar Consulta", "Fazer Pedido"</span>
-          </div>
-          
-          <div class="field">
-            <label for="whatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
-            <input type="tel" id="whatsapp2" placeholder="(85) 98888-8888" maxlength="18" inputmode="tel" />
-            <span class="field-hint">Segundo número para atendimento diferenciado</span>
-          </div>
-          
-          <div class="field">
-            <label for="botaoWhatsapp2">Nome do botão secundário <span class="optional">opcional</span></label>
-            <input type="text" id="botaoWhatsapp2" placeholder="Ex: Falar com Suporte" />
-            <span class="field-hint">Exemplos: "Falar com Suporte", "Unidade Centro", "Unidade Sul"</span>
-          </div>
-          
-          <div class="grid-2">
+          <div class="field-group">
             <div class="field">
-              <label for="logoUrl">Logo (URL) <span class="optional">opcional</span></label>
-              <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
-              <span class="field-hint">
-                📌 Como obter o link: acesse <a href="https://postimages.org/" target="_blank">postimages.org</a>,
-                envie a imagem e copie o <strong>Direct Link</strong>.
-                Se a imagem falhar, usaremos as iniciais do nome automaticamente.
-              </span>
-              <div class="image-preview logo-preview" id="logoPreview">
-                <img id="logoPreviewImg" src="" alt="Preview da logo" />
-              </div>
+              <label for="empresa">Nome da empresa *</label>
+              <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
+              <span class="helper-text">Aparece no topo da sua página. Use o nome que o cliente reconhece.</span>
             </div>
+
             <div class="field">
-              <label for="bannerUrl">Banner (URL) <span class="optional">opcional</span></label>
-              <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
-              <span class="field-hint">
-                📌 Imagem horizontal (recomendado 1200x400px). Use as mesmas dicas do logo para obter o link.
-              </span>
-              <div class="image-preview" id="bannerPreview">
-                <img id="bannerPreviewImg" src="" alt="Preview do banner" />
-              </div>
+              <label for="whatsapp">WhatsApp principal *</label>
+              <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" inputmode="tel" />
+              <span class="helper-text">Número que receberá as mensagens. Digite apenas números.</span>
+            </div>
+
+            <div class="field">
+              <label for="botaoWhatsapp">Texto do botão principal *</label>
+              <input type="text" id="botaoWhatsapp" value="Chamar no WhatsApp" required />
+              <span class="helper-text">Exemplos: "Falar com vendas", "Pedir agora", "Agendar consulta".</span>
+            </div>
+
+            <div class="field">
+              <label for="mensagemPrincipal">Mensagem automática do botão principal</label>
+              <textarea id="mensagemPrincipal" rows="2" placeholder="Ex: Olá! Vim pelo seu link e gostaria de mais informações."></textarea>
+              <span class="helper-text">Quando o cliente clicar, essa mensagem já aparecerá no WhatsApp dele.</span>
             </div>
           </div>
-          
-          <div class="form-group-title">
-            <span class="material-icons-round">chat_bubble</span>
-            Mensagem & Conteúdo
+
+          <!-- ================= SEÇÃO 2: WHATSAPP SECUNDÁRIO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">chat</span>
+            WhatsApp secundário <span style="font-size:12px; font-weight:400;">(opcional)</span>
           </div>
-          
-          <div class="field">
-            <label for="mensagem">Mensagem automática <span class="optional">opcional</span></label>
-            <textarea id="mensagem" rows="3" placeholder="Ex: Olá! Vim pelo seu link e gostaria de mais informações..."></textarea>
-            <span class="field-hint">
-              <strong>O que é:</strong> Texto que já aparece pronto no WhatsApp do cliente.<br>
-              <strong>Para que serve:</strong> Facilita o primeiro contato.
-            </span>
-          </div>
-          
-          <div class="field">
-            <label for="descricao">Descrição da empresa <span class="optional">opcional</span></label>
-            <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação..."></textarea>
-            <span class="field-hint">
-              <strong>O que é:</strong> Texto abaixo do nome da empresa.<br>
-              <strong>Para que serve:</strong> Apresenta seu negócio.
-            </span>
-          </div>
-          
-          <div class="form-group-title">
-            <span class="material-icons-round">share_location</span>
-            Links & Contato
-          </div>
-          
-          <div class="field">
-            <label for="localizacao">Localização (Google Maps) <span class="optional">opcional</span></label>
-            <input type="text" id="localizacao" placeholder="Cole aqui o HTML copiado do Google Maps" />
-            <span class="field-hint" style="display:flex; align-items:flex-start; gap:6px; margin-top:8px; background:#f0f9ff; padding:12px; border-radius:10px; border:1px solid #bae6fd;">
-              <span class="material-icons-round" style="font-size:20px; color:#0284c7;">info</span>
-              <span style="color:#0369a1; line-height:1.6;">
-                <strong style="display:block; margin-bottom:6px;">📋 Como obter o link de incorporação:</strong>
-                <strong>1.</strong> Abra o <a href="https://www.google.com/maps" target="_blank" style="color:#0284c7; text-decoration:underline; font-weight:600;">Google Maps</a><br>
-                <strong>2.</strong> Pesquise o endereço da sua empresa<br>
-                <strong>3.</strong> Clique em <strong>"Compartilhar"</strong><br>
-                <strong>4.</strong> Clique em <strong>"Incorporar um mapa"</strong><br>
-                <strong>5.</strong> <strong>Ignore o tamanho</strong> (pode deixar "Médio")<br>
-                <strong>6.</strong> Clique em <strong>"Copiar HTML"</strong><br>
-                <strong>7.</strong> <strong>Cole todo o código aqui</strong> — extraímos o link automaticamente! ✨
-              </span>
-            </span>
-          </div>
-          
-          <div class="grid-2">
+          <div class="field-group">
             <div class="field">
-              <label for="instagram">Instagram <span class="optional">opcional</span></label>
-              <div class="input-icon-group">
-                <span class="input-icon">@</span>
-                <input type="text" id="instagram" placeholder="suaempresa" />
-              </div>
-              <span class="field-hint">Seu perfil (sem o @)</span>
+              <label for="whatsapp2">Número do WhatsApp secundário</label>
+              <input type="tel" id="whatsapp2" placeholder="(85) 98888-8888" maxlength="18" inputmode="tel" />
+              <span class="helper-text">Segundo número para atendimento diferenciado.</span>
             </div>
+
             <div class="field">
-              <label for="horario">Horário de funcionamento <span class="optional">opcional</span></label>
-              <textarea id="horario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
-              <span class="field-hint">
-                Coloque cada período em uma linha.<br>
-                Exemplo: <em>Seg a Sex: 8h às 18h</em><br>
-                <em>Sáb: 8h às 12h</em>
-              </span>
+              <label for="botaoWhatsapp2">Texto do botão secundário</label>
+              <input type="text" id="botaoWhatsapp2" placeholder="Ex: Falar com suporte" />
+              <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com gerente".</span>
+            </div>
+
+            <div class="field">
+              <label for="mensagemSecundaria">Mensagem automática do botão secundário</label>
+              <textarea id="mensagemSecundaria" rows="2" placeholder="Ex: Gostaria de falar com o suporte."></textarea>
             </div>
           </div>
-          
-          <div class="grid-2">
+
+          <!-- ================= SEÇÃO 3: WHATSAPP TERCEIRO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">add_circle</span>
+            Terceiro botão <span style="font-size:12px; font-weight:400;">(opcional)</span>
+          </div>
+          <div class="field-group">
             <div class="field">
-              <label for="facebook">Facebook <span class="optional">opcional</span></label>
-              <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
+              <label for="whatsapp3">Número do terceiro WhatsApp</label>
+              <input type="tel" id="whatsapp3" placeholder="(85) 97777-7777" maxlength="18" inputmode="tel" />
             </div>
+
             <div class="field">
-              <label for="site">Site <span class="optional">opcional</span></label>
-              <input type="url" id="site" placeholder="https://suaempresa.com" />
+              <label for="botaoWhatsapp3">Texto do terceiro botão</label>
+              <input type="text" id="botaoWhatsapp3" placeholder="Ex: Ver cardápio" />
+              <span class="helper-text">Use para cardápio, agendamento ou outro contato.</span>
+            </div>
+
+            <div class="field">
+              <label for="mensagemTerceira">Mensagem automática do terceiro botão</label>
+              <textarea id="mensagemTerceira" rows="2" placeholder="Ex: Olá, gostaria de ver o cardápio."></textarea>
             </div>
           </div>
-          
-          <div class="form-group-title">
+
+          <!-- ================= SEÇÃO 4: APARÊNCIA ================= -->
+          <div class="section-title">
             <span class="material-icons-round">palette</span>
             Aparência
           </div>
-          
-          <div class="field">
-            <label>Tema da página *</label>
-            <span class="field-hint" style="margin-bottom:8px;">Escolha o visual que combina com sua marca</span>
-            <input type="hidden" id="tema" value="verde" />
-            <div class="theme-selector-grid" id="themeSelector">
-              <div class="theme-card-option active" data-theme="verde" tabindex="0">
-                <div class="theme-preview-mini preview-mini-verde">
-                  <div class="preview-dot"></div>
-                  <div class="preview-line"></div>
-                </div>
-                <h4>Verde Glass</h4>
-                <p>Vidro translúcido + partículas</p>
+          <div class="field-group">
+            <div class="field">
+              <label>Tema da página *</label>
+              <span class="helper-text" style="margin-bottom:8px;">Escolha o visual que combina com sua marca</span>
+              <input type="hidden" id="tema" value="verde" />
+              <div class="theme-selector-grid" id="themeSelector">
+                <!-- Cards de tema (mantidos) -->
+                <div class="theme-card-option active" data-theme="verde" tabindex="0"><div class="theme-preview-mini preview-mini-verde"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Verde Glass</h4><p>Vidro translúcido + partículas</p></div>
+                <div class="theme-card-option" data-theme="azul" tabindex="0"><div class="theme-preview-mini preview-mini-azul"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Azul Corporate</h4><p>Grid tech + profissional</p></div>
+                <div class="theme-card-option" data-theme="roxo" tabindex="0"><div class="theme-preview-mini preview-mini-roxo"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Roxo Gradient</h4><p>Blobs + gradiente animado</p></div>
+                <div class="theme-card-option" data-theme="laranja" tabindex="0"><div class="theme-preview-mini preview-mini-laranja"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Laranja Energia</h4><p>Ondas + calor acolhedor</p></div>
+                <div class="theme-card-option" data-theme="preto" tabindex="0"><div class="theme-preview-mini preview-mini-preto"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Preto Luxury</h4><p>Dourado + sofisticado</p></div>
+                <div class="theme-card-option" data-theme="cardapio" tabindex="0"><div class="theme-preview-mini preview-mini-cardapio"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Cardápio Digital</h4><p>Madeira + restaurante</p></div>
               </div>
-              <div class="theme-card-option" data-theme="azul" tabindex="0">
-                <div class="theme-preview-mini preview-mini-azul">
-                  <div class="preview-dot"></div>
-                  <div class="preview-line"></div>
-                </div>
-                <h4>Azul Corporate</h4>
-                <p>Grid tech + profissional</p>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="logoUrl">Logo (URL) <span style="font-weight:400;">(opcional)</span></label>
+                <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
+                <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link. Se falhar, usaremos as iniciais.</span>
+                <div class="image-preview logo-preview" id="logoPreview"><img id="logoPreviewImg" src="" alt="Preview da logo" /></div>
               </div>
-              <div class="theme-card-option" data-theme="roxo" tabindex="0">
-                <div class="theme-preview-mini preview-mini-roxo">
-                  <div class="preview-dot"></div>
-                  <div class="preview-line"></div>
-                </div>
-                <h4>Roxo Gradient</h4>
-                <p>Blobs + gradiente animado</p>
-              </div>
-              <div class="theme-card-option" data-theme="laranja" tabindex="0">
-                <div class="theme-preview-mini preview-mini-laranja">
-                  <div class="preview-dot"></div>
-                  <div class="preview-line"></div>
-                </div>
-                <h4>Laranja Energia</h4>
-                <p>Ondas + calor acolhedor</p>
-              </div>
-              <div class="theme-card-option" data-theme="preto" tabindex="0">
-                <div class="theme-preview-mini preview-mini-preto">
-                  <div class="preview-dot"></div>
-                  <div class="preview-line"></div>
-                </div>
-                <h4>Preto Luxury</h4>
-                <p>Dourado + sofisticado</p>
-              </div>
-              <div class="theme-card-option" data-theme="cardapio" tabindex="0">
-                <div class="theme-preview-mini preview-mini-cardapio">
-                  <div class="preview-dot"></div>
-                  <div class="preview-line"></div>
-                </div>
-                <h4>Cardápio Digital</h4>
-                <p>Madeira + restaurante</p>
+              <div class="field">
+                <label for="bannerUrl">Banner (URL) <span style="font-weight:400;">(opcional)</span></label>
+                <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
+                <span class="helper-text">📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.</span>
+                <div class="image-preview" id="bannerPreview"><img id="bannerPreviewImg" src="" alt="Preview do banner" /></div>
               </div>
             </div>
           </div>
-          
-          <div class="field">
-            <label for="slug">Nome do link *</label>
-            <div class="slug-group">
-              <span>whatslink-48tc.onrender.com/</span>
-              <input type="text" id="slug" placeholder="academia-top-fit" required pattern="[a-z0-9-]+" />
-            </div>
-            <span class="field-hint">Gera automaticamente a partir do nome da empresa</span>
+
+          <!-- ================= SEÇÃO 5: CONTEÚDO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">description</span>
+            Conteúdo
           </div>
-          
+          <div class="field-group">
+            <div class="field">
+              <label for="descricao">Descrição da empresa</label>
+              <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação..."></textarea>
+              <span class="helper-text">Texto abaixo do nome. Conte o que sua empresa faz.</span>
+            </div>
+          </div>
+
+          <!-- ================= SEÇÃO 6: CONTATOS ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">share</span>
+            Contatos e links
+          </div>
+          <div class="field-group">
+            <div class="grid-2">
+              <div class="field">
+                <label for="instagram">Instagram</label>
+                <div class="input-icon-group"><span class="input-icon">@</span><input type="text" id="instagram" placeholder="suaempresa" /></div>
+              </div>
+              <div class="field">
+                <label for="facebook">Facebook</label>
+                <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="site">Site</label>
+                <input type="url" id="site" placeholder="https://suaempresa.com" />
+              </div>
+              <div class="field">
+                <label for="siteNome">Nome do botão do site</label>
+                <input type="text" id="siteNome" placeholder="Ex: Nosso site" />
+                <span class="helper-text">Se preenchido, o botão do site aparecerá em destaque, com o mesmo tamanho dos botões do WhatsApp.</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="localizacao">Localização (Google Maps)</label>
+              <input type="text" id="localizacao" placeholder="Cole o link curto ou link de incorporação" />
+              <span class="helper-text">✅ Pode colar o link curto do Google Maps (ex.: maps.app.goo.gl). O sistema transformará em mapa automaticamente.</span>
+            </div>
+
+            <div class="field">
+              <label for="horario">Horário de funcionamento</label>
+              <textarea id="horario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
+              <span class="helper-text">Coloque cada período em uma linha.</span>
+            </div>
+          </div>
+
+          <!-- ================= SEÇÃO 7: LINK PERSONALIZADO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">link</span>
+            Link personalizado
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label for="slug">Nome do link *</label>
+              <div class="slug-group"><span>whatslink-48tc.onrender.com/</span><input type="text" id="slug" placeholder="academia-top-fit" required pattern="[a-z0-9-]+" /></div>
+              <span class="helper-text">Gera automaticamente. Você pode editar para deixar mais curto.</span>
+            </div>
+          </div>
+
           <button type="submit" id="submitBtn">
             <span class="material-icons-round">send</span>
             <span class="btn-text">Gerar link grátis</span>
             <div class="btn-loader"><div class="spinner"></div></div>
           </button>
         </form>
-        
+
+        <!-- Resultado (mantido) -->
         <div id="result" style="display:none;">
           <div class="result-box">
-            <div class="result-head">
-              <span class="material-icons-round">check_circle</span>
-              <div>
-                <strong>Link criado com sucesso!</strong>
-                <p>Vinculado ao email: <span id="resultEmail"></span></p>
-              </div>
-            </div>
-            <div class="link-row">
-              <input type="text" id="generatedUrl" readonly />
-              <button id="copyBtn"><span class="material-icons-round">content_copy</span> Copiar</button>
-            </div>
-            <div class="result-actions">
-              <button id="previewBtn"><span class="material-icons-round">visibility</span> Ver página</button>
-              <a href="edit.html" style="flex:1; padding:12px; background:var(--text); color:white; border-radius:12px; text-decoration:none; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px;">
-                <span class="material-icons-round" style="font-size:18px;">list</span>
-                Meus Links
-              </a>
-            </div>
+            <div class="result-head"><span class="material-icons-round">check_circle</span><div><strong>Link criado com sucesso!</strong><p>Vinculado ao email: <span id="resultEmail"></span></p></div></div>
+            <div class="link-row"><input type="text" id="generatedUrl" readonly /><button id="copyBtn"><span class="material-icons-round">content_copy</span> Copiar</button></div>
+            <div class="result-actions"><button id="previewBtn"><span class="material-icons-round">visibility</span> Ver página</button><a href="edit.html" style="flex:1; padding:12px; background:var(--text); color:white; border-radius:12px; text-decoration:none; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px;"><span class="material-icons-round" style="font-size:18px;">list</span> Meus Links</a></div>
           </div>
         </div>
       </div>
@@ -450,7 +429,7 @@
       if (!t) return;
       t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
+      setTimeout(() => t.classList.remove('show'), 3200);
     }
 
     function slugify(text) {
@@ -469,7 +448,7 @@
       return trimmed;
     }
 
-    // ============ PREVIEW DE LOGO ============
+    // Preview logo
     function atualizarPreviewLogo() {
       const url = $('#logoUrl').value.trim();
       const preview = $('#logoPreview');
@@ -478,15 +457,12 @@
         img.src = url;
         img.onload = () => { preview.style.display = 'block'; };
         img.onerror = () => { preview.style.display = 'none'; };
-      } else {
-        preview.style.display = 'none';
-      }
+      } else preview.style.display = 'none';
     }
-
     $('#logoUrl').addEventListener('input', atualizarPreviewLogo);
     $('#logoUrl').addEventListener('paste', () => setTimeout(atualizarPreviewLogo, 100));
 
-    // ============ PREVIEW DE BANNER ============
+    // Preview banner
     function atualizarPreviewBanner() {
       const url = $('#bannerUrl').value.trim();
       const preview = $('#bannerPreview');
@@ -495,15 +471,12 @@
         img.src = url;
         img.onload = () => { preview.style.display = 'block'; };
         img.onerror = () => { preview.style.display = 'none'; };
-      } else {
-        preview.style.display = 'none';
-      }
+      } else preview.style.display = 'none';
     }
-
     $('#bannerUrl').addEventListener('input', atualizarPreviewBanner);
     $('#bannerUrl').addEventListener('paste', () => setTimeout(atualizarPreviewBanner, 100));
 
-    // ============ INICIALIZAR GOOGLE IDENTITY ============
+    // Google Identity
     window.onload = function() {
       if (typeof google !== 'undefined') {
         google.accounts.id.initialize({
@@ -513,23 +486,14 @@
         });
       }
     };
-
-    // ============ BOTÃO GOOGLE ============
     $('#googleLoginBtn').addEventListener('click', () => {
-      if (typeof google !== 'undefined') {
-        google.accounts.id.prompt();
-      }
+      if (typeof google !== 'undefined') google.accounts.id.prompt();
     });
 
-    // ============ CALLBACK DO LOGIN ============
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = {
-          email: payload.email,
-          nome: payload.name,
-          foto: payload.picture
-        };
+        currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
         mostrarFormulario();
         showToast('Login realizado com sucesso!');
@@ -561,15 +525,11 @@
 
     const savedUser = localStorage.getItem('whatslink_user');
     if (savedUser) {
-      try {
-        currentUser = JSON.parse(savedUser);
-        mostrarFormulario();
-      } catch {
-        localStorage.removeItem('whatslink_user');
-        currentUser = null;
-      }
+      try { currentUser = JSON.parse(savedUser); mostrarFormulario(); }
+      catch { localStorage.removeItem('whatslink_user'); currentUser = null; }
     }
 
+    // Máscaras
     function formatarWhatsApp(input) {
       if (!input) return;
       input.addEventListener('input', (e) => {
@@ -584,76 +544,70 @@
     }
     formatarWhatsApp($('#whatsapp'));
     formatarWhatsApp($('#whatsapp2'));
+    formatarWhatsApp($('#whatsapp3'));
 
+    // Slug automático
     const empresa = $('#empresa');
     const slug = $('#slug');
     let slugTouched = false;
     slug.addEventListener('input', () => slugTouched = true);
-    empresa.addEventListener('input', () => {
-      if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
-    });
+    empresa.addEventListener('input', () => { if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value); });
 
+    // Localização
     $('#localizacao').addEventListener('paste', (e) => {
       setTimeout(() => {
         const valor = $('#localizacao').value;
         const urlExtraida = extrairUrlEmbed(valor);
-        if (urlExtraida !== valor) {
-          $('#localizacao').value = urlExtraida;
-          showToast('Link extraído automaticamente!');
-        }
+        if (urlExtraida !== valor) { $('#localizacao').value = urlExtraida; showToast('Link extraído automaticamente!'); }
       }, 100);
     });
 
-    // ============ SELEÇÃO DE TEMA ============
+    // Seleção de tema
     $$('.theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
         const temaSelecionado = card.dataset.theme;
         $('#tema').value = temaSelecionado;
         $$('.theme-card-option').forEach(c => c.classList.remove('active'));
         card.classList.add('active');
-        const nomeTema = card.querySelector('h4').textContent;
-        showToast('Tema: ' + nomeTema, 'palette');
+        showToast('Tema: ' + card.querySelector('h4').textContent, 'palette');
       });
-      
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
-      });
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } });
     });
 
+    // Submit
     $('#linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
       if (!currentUser) {
         const saved = localStorage.getItem('whatslink_user');
-        if (saved) {
-          try { currentUser = JSON.parse(saved); mostrarFormulario(); }
-          catch { currentUser = null; }
-        }
+        if (saved) { try { currentUser = JSON.parse(saved); mostrarFormulario(); } catch { currentUser = null; } }
       }
+      if (!currentUser || !currentUser.email) { showToast('Sessão expirada. Faça login novamente.', 'error'); mostrarLogin(); return; }
 
-      if (!currentUser || !currentUser.email) {
-        showToast('Sessão expirada. Faça login novamente.', 'error');
-        mostrarLogin();
-        return;
-      }
+      // Mensagens por botão: usa a mensagem global se específica vazia
+      const msgPrincipal = $('#mensagemPrincipal').value.trim() || $('#mensagem').value.trim();
+      const msgSecundaria = $('#mensagemSecundaria').value.trim() || msgPrincipal;
+      const msgTerceira = $('#mensagemTerceira').value.trim() || msgPrincipal;
 
       const data = {
         empresa: $('#empresa').value.trim(),
         whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
         whatsapp2: $('#whatsapp2').value.trim().replace(/\D/g, ''),
+        whatsapp3: $('#whatsapp3').value.trim().replace(/\D/g, ''),
         botao_whatsapp: $('#botaoWhatsapp').value.trim() || 'Chamar no WhatsApp',
         botao_whatsapp2: $('#botaoWhatsapp2').value.trim(),
+        botao_whatsapp3: $('#botaoWhatsapp3').value.trim(),
+        mensagem: msgPrincipal,
+        mensagem_whatsapp2: msgSecundaria,
+        mensagem_whatsapp3: msgTerceira,
         logo_url: $('#logoUrl').value.trim(),
         banner_url: $('#bannerUrl').value.trim(),
-        mensagem: $('#mensagem').value.trim(),
         descricao: $('#descricao').value.trim(),
         localizacao: extrairUrlEmbed($('#localizacao').value.trim()),
         instagram: $('#instagram').value.trim().replace('@', ''),
         facebook: $('#facebook').value.trim(),
         site: $('#site').value.trim(),
+        site_nome: $('#siteNome').value.trim(),
         horario: $('#horario').value.trim(),
         tema: $('#tema').value,
         slug: slugify($('#slug').value.trim()),
@@ -665,10 +619,9 @@
       const submitBtn = $('#submitBtn');
       const btnText = submitBtn.querySelector('.btn-text');
       const loader = submitBtn.querySelector('.btn-loader');
-
       submitBtn.disabled = true;
       btnText.style.opacity = '0';
-      loader.style.display = 'flex'; // mostra spinner
+      loader.style.display = 'flex';
 
       try {
         const res = await fetch(API_URL, {
@@ -685,13 +638,8 @@
         $('#result').style.display = 'block';
         $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
         showToast('Link criado com sucesso!');
-
-        $('#copyBtn').onclick = async () => {
-          try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
-          catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
-        };
+        $('#copyBtn').onclick = async () => { try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); } catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); } };
         $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
-
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
       } finally {
