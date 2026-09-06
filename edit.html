@@ -45,7 +45,7 @@
   <link rel="stylesheet" href="css/edit.css" />
 
   <style>
-    /* ================= ESTILOS ESPECÍFICOS DA PÁGINA ================= */
+    /* ================= ESTILOS ESPECÍFICOS ================= */
     .google-login-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; max-width: 300px; margin: 0 auto; padding: 14px 20px;
@@ -78,29 +78,27 @@
       margin-top: 4px;
       line-height: 1.5;
     }
-    .helper-text a {
-      color: #2563eb;
-      text-decoration: underline;
-    }
+    .helper-text a { color: #2563eb; text-decoration: underline; }
 
-    /* ================= INDICADOR DE CARREGAMENTO ================= */
+    /* Indicador de carregamento */
     .loading-links {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 14px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 40px 20px; gap: 12px; color: var(--muted); font-size: 14px;
     }
     .loading-links .spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid rgba(37,211,102,.2);
-      border-top-color: #25D366;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
+      width: 32px; height: 32px; border: 3px solid rgba(37,211,102,.2);
+      border-top-color: #25D366; border-radius: 50%; animation: spin .8s linear infinite;
+    }
+
+    /* Seções agrupadas no modal */
+    .section-title {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 15px; margin: 16px 0 8px; color: var(--text);
+    }
+    .section-title .material-icons-round { color: var(--whatsapp); font-size: 20px; }
+    .field-group {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px; margin-bottom: 12px; background: #fafafa;
     }
   </style>
 </head>
@@ -162,155 +160,133 @@
         <input type="hidden" id="editId" />
         <input type="hidden" id="editToken" />
 
-        <div class="field">
-          <label for="editEmpresa">Nome da empresa *</label>
-          <input type="text" id="editEmpresa" required />
-        </div>
-
-        <div class="field">
-          <label for="editWhatsapp">WhatsApp principal *</label>
-          <input type="tel" id="editWhatsapp" required maxlength="18" inputmode="tel" />
-        </div>
-
-        <div class="field">
-          <label for="editBotao1">Nome do botão principal *</label>
-          <input type="text" id="editBotao1" required />
-        </div>
-
-        <div class="field">
-          <label for="editWhatsapp2">WhatsApp secundário <span class="optional">opcional</span></label>
-          <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
-        </div>
-
-        <div class="field">
-          <label for="editBotao2">Nome do botão secundário <span class="optional">opcional</span></label>
-          <input type="text" id="editBotao2" />
-        </div>
-
-        <div class="grid-2">
+        <!-- Seção Identificação -->
+        <div class="section-title"><span class="material-icons-round">business</span>Identificação</div>
+        <div class="field-group">
           <div class="field">
-            <label for="editLogo">Logo (URL)</label>
-            <input type="url" id="editLogo" />
-            <span class="helper-text">
-              📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> para obter o link direto.
-              Se falhar, usaremos as iniciais.
-            </span>
-            <div class="image-preview logo-preview" id="editLogoPreview">
-              <img id="editLogoPreviewImg" src="" alt="Preview da logo" />
-            </div>
+            <label for="editEmpresa">Nome da empresa *</label>
+            <input type="text" id="editEmpresa" required />
           </div>
           <div class="field">
-            <label for="editBanner">Banner (URL)</label>
-            <input type="url" id="editBanner" />
-            <span class="helper-text">
-              📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.
-            </span>
-            <div class="image-preview" id="editBannerPreview">
-              <img id="editBannerPreviewImg" src="" alt="Preview do banner" />
-            </div>
+            <label for="editWhatsapp">WhatsApp principal *</label>
+            <input type="tel" id="editWhatsapp" required maxlength="18" inputmode="tel" />
+          </div>
+          <div class="field">
+            <label for="editBotao1">Texto do botão principal *</label>
+            <input type="text" id="editBotao1" required />
+          </div>
+          <div class="field">
+            <label for="editMensagem1">Mensagem automática do botão principal</label>
+            <textarea id="editMensagem1" rows="2"></textarea>
           </div>
         </div>
 
-        <div class="field">
-          <label for="editMensagem">Mensagem automática</label>
-          <textarea id="editMensagem" rows="2"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="editDescricao">Descrição</label>
-          <textarea id="editDescricao" rows="3"></textarea>
-        </div>
-
-        <div class="grid-2">
+        <!-- Seção WhatsApp Secundário -->
+        <div class="section-title"><span class="material-icons-round">chat</span>WhatsApp secundário (opcional)</div>
+        <div class="field-group">
           <div class="field">
-            <label for="editInstagram">Instagram</label>
-            <div class="input-icon-group">
-              <span class="input-icon">@</span>
-              <input type="text" id="editInstagram" placeholder="suaempresa" />
+            <label for="editWhatsapp2">Número do WhatsApp secundário</label>
+            <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
+          </div>
+          <div class="field">
+            <label for="editBotao2">Texto do botão secundário</label>
+            <input type="text" id="editBotao2" />
+          </div>
+          <div class="field">
+            <label for="editMensagem2">Mensagem automática do botão secundário</label>
+            <textarea id="editMensagem2" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Seção Terceiro Botão -->
+        <div class="section-title"><span class="material-icons-round">add_circle</span>Terceiro botão (opcional)</div>
+        <div class="field-group">
+          <div class="field">
+            <label for="editWhatsapp3">Número do terceiro WhatsApp</label>
+            <input type="tel" id="editWhatsapp3" maxlength="18" inputmode="tel" />
+          </div>
+          <div class="field">
+            <label for="editBotao3">Texto do terceiro botão</label>
+            <input type="text" id="editBotao3" placeholder="Ex: Ver cardápio" />
+          </div>
+          <div class="field">
+            <label for="editMensagem3">Mensagem automática do terceiro botão</label>
+            <textarea id="editMensagem3" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Seção Aparência -->
+        <div class="section-title"><span class="material-icons-round">palette</span>Aparência</div>
+        <div class="field-group">
+          <div class="grid-2">
+            <div class="field">
+              <label for="editLogo">Logo (URL)</label>
+              <input type="url" id="editLogo" />
+              <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link.</span>
+              <div class="image-preview logo-preview" id="editLogoPreview"><img id="editLogoPreviewImg" src="" alt="Preview da logo" /></div>
             </div>
+            <div class="field">
+              <label for="editBanner">Banner (URL)</label>
+              <input type="url" id="editBanner" />
+              <span class="helper-text">📌 Imagem horizontal (1200x400px).</span>
+              <div class="image-preview" id="editBannerPreview"><img id="editBannerPreviewImg" src="" alt="Preview do banner" /></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Tema da página</label>
+            <input type="hidden" id="editTema" value="verde" />
+            <div class="theme-selector-grid" id="editThemeSelector">
+              <div class="theme-card-option active" data-theme="verde" tabindex="0"><div class="theme-preview-mini preview-mini-verde"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Verde Glass</h4><p>Vidro translúcido + partículas</p></div>
+              <div class="theme-card-option" data-theme="azul" tabindex="0"><div class="theme-preview-mini preview-mini-azul"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Azul Corporate</h4><p>Grid tech + profissional</p></div>
+              <div class="theme-card-option" data-theme="roxo" tabindex="0"><div class="theme-preview-mini preview-mini-roxo"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Roxo Gradient</h4><p>Blobs + gradiente animado</p></div>
+              <div class="theme-card-option" data-theme="laranja" tabindex="0"><div class="theme-preview-mini preview-mini-laranja"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Laranja Energia</h4><p>Ondas + calor acolhedor</p></div>
+              <div class="theme-card-option" data-theme="preto" tabindex="0"><div class="theme-preview-mini preview-mini-preto"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Preto Luxury</h4><p>Dourado + sofisticado</p></div>
+              <div class="theme-card-option" data-theme="cardapio" tabindex="0"><div class="theme-preview-mini preview-mini-cardapio"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Cardápio Digital</h4><p>Madeira + restaurante</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção Conteúdo -->
+        <div class="section-title"><span class="material-icons-round">description</span>Conteúdo</div>
+        <div class="field-group">
+          <div class="field">
+            <label for="editDescricao">Descrição</label>
+            <textarea id="editDescricao" rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- Seção Contatos -->
+        <div class="section-title"><span class="material-icons-round">share</span>Contatos e links</div>
+        <div class="field-group">
+          <div class="grid-2">
+            <div class="field">
+              <label for="editInstagram">Instagram</label>
+              <div class="input-icon-group"><span class="input-icon">@</span><input type="text" id="editInstagram" placeholder="suaempresa" /></div>
+            </div>
+            <div class="field">
+              <label for="editFacebook">Facebook</label>
+              <input type="url" id="editFacebook" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="editSite">Site</label>
+              <input type="url" id="editSite" />
+            </div>
+            <div class="field">
+              <label for="editSiteNome">Nome do botão do site</label>
+              <input type="text" id="editSiteNome" placeholder="Ex: Nosso site" />
+              <span class="helper-text">Se preenchido, o botão do site terá o mesmo tamanho dos botões do WhatsApp.</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="editLocalizacao">Localização (Google Maps)</label>
+            <input type="text" id="editLocalizacao" placeholder="Cole o link curto ou link de incorporação" />
+            <span class="helper-text">✅ Pode colar o link curto do Google Maps (ex.: maps.app.goo.gl).</span>
           </div>
           <div class="field">
             <label for="editHorario">Horário</label>
             <textarea id="editHorario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
-            <span class="field-hint">
-              Coloque cada período em uma linha.<br>
-              Exemplo: <em>Seg a Sex: 8h às 18h</em><br>
-              <em>Sáb: 8h às 12h</em>
-            </span>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label for="editFacebook">Facebook</label>
-            <input type="url" id="editFacebook" />
-          </div>
-          <div class="field">
-            <label for="editSite">Site</label>
-            <input type="url" id="editSite" />
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="editLocalizacao">Localização (Google Maps)</label>
-          <input type="text" id="editLocalizacao" placeholder="Cole aqui o HTML copiado do Google Maps" />
-          <span class="field-hint" style="display:block; margin-top:6px; background:#f0f9ff; padding:10px; border-radius:8px; border:1px solid #bae6fd; color:#0369a1; line-height:1.5;">
-            Cole o código de incorporação do Google Maps ou o link direto. Nós extraímos automaticamente.
-          </span>
-        </div>
-
-        <div class="field">
-          <label>Tema da página</label>
-          <input type="hidden" id="editTema" value="verde" />
-          <div class="theme-selector-grid" id="editThemeSelector">
-            <div class="theme-card-option active" data-theme="verde" tabindex="0">
-              <div class="theme-preview-mini preview-mini-verde">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
-              </div>
-              <h4>Verde Glass</h4>
-              <p>Vidro translúcido + partículas</p>
-            </div>
-            <div class="theme-card-option" data-theme="azul" tabindex="0">
-              <div class="theme-preview-mini preview-mini-azul">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
-              </div>
-              <h4>Azul Corporate</h4>
-              <p>Grid tech + profissional</p>
-            </div>
-            <div class="theme-card-option" data-theme="roxo" tabindex="0">
-              <div class="theme-preview-mini preview-mini-roxo">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
-              </div>
-              <h4>Roxo Gradient</h4>
-              <p>Blobs + gradiente animado</p>
-            </div>
-            <div class="theme-card-option" data-theme="laranja" tabindex="0">
-              <div class="theme-preview-mini preview-mini-laranja">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
-              </div>
-              <h4>Laranja Energia</h4>
-              <p>Ondas + calor acolhedor</p>
-            </div>
-            <div class="theme-card-option" data-theme="preto" tabindex="0">
-              <div class="theme-preview-mini preview-mini-preto">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
-              </div>
-              <h4>Preto Luxury</h4>
-              <p>Dourado + sofisticado</p>
-            </div>
-            <div class="theme-card-option" data-theme="cardapio" tabindex="0">
-              <div class="theme-preview-mini preview-mini-cardapio">
-                <div class="preview-dot"></div>
-                <div class="preview-line"></div>
-              </div>
-              <h4>Cardápio Digital</h4>
-              <p>Madeira + restaurante</p>
-            </div>
           </div>
         </div>
 
@@ -352,14 +328,10 @@
       }
     };
 
-    // ============ BOTÃO GOOGLE ============
     $('#googleLoginBtn').addEventListener('click', () => {
-      if (typeof google !== 'undefined') {
-        google.accounts.id.prompt();
-      }
+      if (typeof google !== 'undefined') google.accounts.id.prompt();
     });
 
-    // ============ CALLBACK DO LOGIN ============
     function handleCredentialResponse(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
@@ -391,6 +363,7 @@
     }
     formatarWhatsApp($('#editWhatsapp'));
     formatarWhatsApp($('#editWhatsapp2'));
+    formatarWhatsApp($('#editWhatsapp3'));
 
     // ============ EXTRAIR URL DO GOOGLE MAPS ============
     function extrairUrlEmbed(html) {
@@ -415,7 +388,7 @@
       }, 100);
     });
 
-    // ============ PREVIEW DE LOGO NO MODAL ============
+    // ============ PREVIEW DE LOGO/BANNER ============
     function atualizarPreviewEditLogo() {
       const url = $('#editLogo').value.trim();
       const preview = $('#editLogoPreview');
@@ -424,15 +397,11 @@
         img.src = url;
         img.onload = () => { preview.style.display = 'block'; };
         img.onerror = () => { preview.style.display = 'none'; };
-      } else {
-        preview.style.display = 'none';
-      }
+      } else preview.style.display = 'none';
     }
-
     $('#editLogo').addEventListener('input', atualizarPreviewEditLogo);
     $('#editLogo').addEventListener('paste', () => setTimeout(atualizarPreviewEditLogo, 100));
 
-    // ============ PREVIEW DE BANNER NO MODAL ============
     function atualizarPreviewEditBanner() {
       const url = $('#editBanner').value.trim();
       const preview = $('#editBannerPreview');
@@ -441,39 +410,30 @@
         img.src = url;
         img.onload = () => { preview.style.display = 'block'; };
         img.onerror = () => { preview.style.display = 'none'; };
-      } else {
-        preview.style.display = 'none';
-      }
+      } else preview.style.display = 'none';
     }
-
     $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
     $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
 
     // ============ INDICADOR DE CARREGAMENTO ============
     function mostrarCarregando() {
-  const linksArea = $('#linksArea');
-  const linksList = $('#linksList');
-
-  // Garante que a área de links esteja visível antes de mostrar o carregamento
-  if (linksArea) linksArea.style.display = 'block';
-
-  if (linksList) {
-    linksList.innerHTML = `
-      <div class="loading-links">
-        <div class="spinner"></div>
-        <span>Carregando seus links...</span>
-      </div>
-    `;
-  }
-}
+      const linksArea = $('#linksArea');
+      const linksList = $('#linksList');
+      if (linksArea) linksArea.style.display = 'block';
+      if (linksList) {
+        linksList.innerHTML = `
+          <div class="loading-links">
+            <div class="spinner"></div>
+            <span>Carregando seus links...</span>
+          </div>
+        `;
+      }
+    }
 
     // ============ BUSCAR MEUS LINKS ============
     async function buscarMeusLinks() {
       try {
-        // Mostra indicador de carregamento imediatamente
         mostrarCarregando();
-
-        // Aguarda a API e no mínimo 2 segundos
         const [data] = await Promise.all([
           fetch(API_URL, {
             method: 'POST',
@@ -482,9 +442,7 @@
           }).then(res => res.json()),
           new Promise(resolve => setTimeout(resolve, 2000))
         ]);
-
         if (data.error) throw new Error(data.error);
-
         const links = data.links || [];
         linksCache = links;
         renderizarLinks(links);
@@ -503,7 +461,6 @@
             <a href="criar.html" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
           </div>
         `;
-        $('#linksArea').style.display = 'block';
         return;
       }
 
@@ -515,18 +472,14 @@
           </div>
           <div style="display:flex; gap:8px;">
             <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
-              <span class="material-icons-round" style="font-size:16px;">visibility</span>
-              Ver
+              <span class="material-icons-round" style="font-size:16px;">visibility</span> Ver
             </a>
             <button class="btn btn-edit" onclick="abrirEdicao('${link.id}', '${link.edit_token}')">
-              <span class="material-icons-round" style="font-size:16px;">edit</span>
-              Editar
+              <span class="material-icons-round" style="font-size:16px;">edit</span> Editar
             </button>
           </div>
         </div>
       `).join('');
-
-      $('#linksArea').style.display = 'block';
     }
 
     // ============ ABRIR EDIÇÃO ============
@@ -542,30 +495,35 @@
 
         $('#editId').value = data.id;
         $('#editToken').value = token;
-        $('#editEmpresa').value = data.empresa;
-        $('#editWhatsapp').value = data.whatsapp;
-        $('#editBotao1').value = data.botao_whatsapp || 'Chamar no WhatsApp';
+        $('#editEmpresa').value = data.empresa || '';
+        $('#editWhatsapp').value = data.whatsapp || '';
+        $('#editBotao1').value = data.botao_whatsapp || '';
+        $('#editMensagem1').value = data.mensagem || '';
         $('#editWhatsapp2').value = data.whatsapp2 || '';
         $('#editBotao2').value = data.botao_whatsapp2 || '';
+        $('#editMensagem2').value = data.mensagem_whatsapp2 || '';
+        $('#editWhatsapp3').value = data.whatsapp3 || '';
+        $('#editBotao3').value = data.botao_whatsapp3 || '';
+        $('#editMensagem3').value = data.mensagem_whatsapp3 || '';
         $('#editLogo').value = data.logo_url || '';
         $('#editBanner').value = data.banner_url || '';
-        $('#editMensagem').value = data.mensagem || '';
         $('#editDescricao').value = data.descricao || '';
         $('#editInstagram').value = data.instagram || '';
-        $('#editHorario').value = data.horario || '';
         $('#editFacebook').value = data.facebook || '';
         $('#editSite').value = data.site || '';
+        $('#editSiteNome').value = data.site_nome || '';
         $('#editLocalizacao').value = data.localizacao || '';
+        $('#editHorario').value = data.horario || '';
         $('#editTema').value = data.tema || 'verde';
 
         if (data.logo_url) {
           $('#editLogoPreviewImg').src = data.logo_url;
           $('#editLogoPreview').style.display = 'block';
-        }
+        } else { $('#editLogoPreview').style.display = 'none'; }
         if (data.banner_url) {
           $('#editBannerPreviewImg').src = data.banner_url;
           $('#editBannerPreview').style.display = 'block';
-        }
+        } else { $('#editBannerPreview').style.display = 'none'; }
 
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
@@ -577,6 +535,7 @@
       }
     };
 
+    // Fechar modal
     $('#closeEditModal').addEventListener('click', () => {
       $('#editModal').classList.remove('active');
     });
@@ -587,17 +546,15 @@
       }
     });
 
-    // ============ SELEÇÃO DE TEMA NO MODAL ============
+    // Seleção de tema no modal
     $$('#editThemeSelector .theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
         const temaSelecionado = card.dataset.theme;
         $('#editTema').value = temaSelecionado;
         $$('#editThemeSelector .theme-card-option').forEach(c => c.classList.remove('active'));
         card.classList.add('active');
-        const nomeTema = card.querySelector('h4').textContent;
-        showToast('Tema: ' + nomeTema, 'palette');
+        showToast('Tema: ' + card.querySelector('h4').textContent, 'palette');
       });
-      
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -609,12 +566,14 @@
     // ============ SUBMETER FORMULÁRIO DE EDIÇÃO ============
     $('#editForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const saveBtn = $('#saveBtn');
       const loader = saveBtn.querySelector('.save-loader');
-      
       saveBtn.disabled = true;
       loader.style.display = 'inline-block';
+
+      const msgPrincipal = $('#editMensagem1').value.trim();
+      const msgSecundaria = $('#editMensagem2').value.trim() || msgPrincipal;
+      const msgTerceira = $('#editMensagem3').value.trim() || msgPrincipal;
 
       const data = {
         action: 'editar',
@@ -623,17 +582,22 @@
         empresa: $('#editEmpresa').value.trim(),
         whatsapp: $('#editWhatsapp').value.trim().replace(/\D/g, ''),
         whatsapp2: $('#editWhatsapp2').value.trim().replace(/\D/g, ''),
+        whatsapp3: $('#editWhatsapp3').value.trim().replace(/\D/g, ''),
         botao_whatsapp: $('#editBotao1').value.trim(),
         botao_whatsapp2: $('#editBotao2').value.trim(),
+        botao_whatsapp3: $('#editBotao3').value.trim(),
+        mensagem: msgPrincipal,
+        mensagem_whatsapp2: msgSecundaria,
+        mensagem_whatsapp3: msgTerceira,
         logo_url: $('#editLogo').value.trim(),
         banner_url: $('#editBanner').value.trim(),
-        mensagem: $('#editMensagem').value.trim(),
         descricao: $('#editDescricao').value.trim(),
         instagram: $('#editInstagram').value.trim().replace('@', ''),
         facebook: $('#editFacebook').value.trim(),
         site: $('#editSite').value.trim(),
-        horario: $('#editHorario').value.trim(),
+        site_nome: $('#editSiteNome').value.trim(),
         localizacao: extrairUrlEmbed($('#editLocalizacao').value.trim()),
+        horario: $('#editHorario').value.trim(),
         tema: $('#editTema').value
       };
 
@@ -645,7 +609,6 @@
         });
         const result = await response.json();
         if (result.error) throw new Error(result.error);
-
         showToast(result.message || 'Link atualizado!');
         $('#editModal').classList.remove('active');
         buscarMeusLinks();
