@@ -166,18 +166,22 @@
           <div class="field">
             <label for="editEmpresa">Nome da empresa *</label>
             <input type="text" id="editEmpresa" required />
+            <span class="helper-text">Aparece no topo da sua página. Use o nome que o cliente reconhece.</span>
           </div>
           <div class="field">
             <label for="editWhatsapp">WhatsApp principal *</label>
             <input type="tel" id="editWhatsapp" required maxlength="18" inputmode="tel" />
+            <span class="helper-text">Número que receberá as mensagens. Digite apenas números.</span>
           </div>
           <div class="field">
             <label for="editBotao1">Texto do botão principal *</label>
             <input type="text" id="editBotao1" required />
+            <span class="helper-text">Exemplos: "Falar com vendas", "Pedir agora", "Agendar consulta".</span>
           </div>
           <div class="field">
             <label for="editMensagem1">Mensagem automática do botão principal</label>
             <textarea id="editMensagem1" rows="2"></textarea>
+            <span class="helper-text">Quando o cliente clicar, essa mensagem já aparecerá no WhatsApp dele.</span>
           </div>
         </div>
 
@@ -187,10 +191,12 @@
           <div class="field">
             <label for="editWhatsapp2">Número do WhatsApp secundário</label>
             <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
+            <span class="helper-text">Segundo número para atendimento diferenciado.</span>
           </div>
           <div class="field">
             <label for="editBotao2">Texto do botão secundário</label>
             <input type="text" id="editBotao2" />
+            <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com gerente".</span>
           </div>
           <div class="field">
             <label for="editMensagem2">Mensagem automática do botão secundário</label>
@@ -204,10 +210,12 @@
           <div class="field">
             <label for="editWhatsapp3">Número do terceiro WhatsApp</label>
             <input type="tel" id="editWhatsapp3" maxlength="18" inputmode="tel" />
+            <span class="helper-text">Use para um terceiro contato, se necessário.</span>
           </div>
           <div class="field">
             <label for="editBotao3">Texto do terceiro botão</label>
             <input type="text" id="editBotao3" placeholder="Ex: Ver cardápio" />
+            <span class="helper-text">Exemplos: "Cardápio", "Agendar", "Falar com financeiro".</span>
           </div>
           <div class="field">
             <label for="editMensagem3">Mensagem automática do terceiro botão</label>
@@ -222,13 +230,13 @@
             <div class="field">
               <label for="editLogo">Logo (URL)</label>
               <input type="url" id="editLogo" />
-              <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link.</span>
+              <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link. Se falhar, usaremos as iniciais.</span>
               <div class="image-preview logo-preview" id="editLogoPreview"><img id="editLogoPreviewImg" src="" alt="Preview da logo" /></div>
             </div>
             <div class="field">
               <label for="editBanner">Banner (URL)</label>
               <input type="url" id="editBanner" />
-              <span class="helper-text">📌 Imagem horizontal (1200x400px).</span>
+              <span class="helper-text">📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.</span>
               <div class="image-preview" id="editBannerPreview"><img id="editBannerPreviewImg" src="" alt="Preview do banner" /></div>
             </div>
           </div>
@@ -252,6 +260,7 @@
           <div class="field">
             <label for="editDescricao">Descrição</label>
             <textarea id="editDescricao" rows="3"></textarea>
+            <span class="helper-text">Texto abaixo do nome. Conte o que sua empresa faz.</span>
           </div>
         </div>
 
@@ -262,21 +271,24 @@
             <div class="field">
               <label for="editInstagram">Instagram</label>
               <div class="input-icon-group"><span class="input-icon">@</span><input type="text" id="editInstagram" placeholder="suaempresa" /></div>
+              <span class="helper-text">Apenas o nome de usuário, sem @.</span>
             </div>
             <div class="field">
               <label for="editFacebook">Facebook</label>
               <input type="url" id="editFacebook" />
+              <span class="helper-text">Link completo do Facebook.</span>
             </div>
           </div>
           <div class="grid-2">
             <div class="field">
-              <label for="editSite">Site</label>
-              <input type="url" id="editSite" />
+              <label for="editSite">Site ou catálogo (URL)</label>
+              <input type="url" id="editSite" placeholder="https://suaempresa.com ou https://wa.me/c/..." />
+              <span class="helper-text">Pode colocar o link do site, catálogo do WhatsApp Business, PDF ou qualquer página.</span>
             </div>
             <div class="field">
-              <label for="editSiteNome">Nome do botão do site</label>
-              <input type="text" id="editSiteNome" placeholder="Ex: Nosso site" />
-              <span class="helper-text">Se preenchido, o botão do site terá o mesmo tamanho dos botões do WhatsApp.</span>
+              <label for="editSiteNome">Nome do botão (ex.: "Cardápio", "Catálogo")</label>
+              <input type="text" id="editSiteNome" placeholder="Ex: Cardápio digital" />
+              <span class="helper-text">Este nome aparecerá no botão. Se vazio, o botão mostrará apenas "Site".</span>
             </div>
           </div>
           <div class="field">
@@ -287,6 +299,7 @@
           <div class="field">
             <label for="editHorario">Horário</label>
             <textarea id="editHorario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
+            <span class="helper-text">Coloque cada período em uma linha.</span>
           </div>
         </div>
 
@@ -388,7 +401,7 @@
       }, 100);
     });
 
-    // ============ PREVIEW DE LOGO/BANNER ============
+    // ============ PREVIEW DE LOGO ============
     function atualizarPreviewEditLogo() {
       const url = $('#editLogo').value.trim();
       const preview = $('#editLogoPreview');
@@ -402,6 +415,7 @@
     $('#editLogo').addEventListener('input', atualizarPreviewEditLogo);
     $('#editLogo').addEventListener('paste', () => setTimeout(atualizarPreviewEditLogo, 100));
 
+    // ============ PREVIEW DE BANNER ============
     function atualizarPreviewEditBanner() {
       const url = $('#editBanner').value.trim();
       const preview = $('#editBannerPreview');
