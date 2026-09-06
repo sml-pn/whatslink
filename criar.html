@@ -277,12 +277,13 @@
             <div class="field">
               <label for="whatsapp3">Número do terceiro WhatsApp</label>
               <input type="tel" id="whatsapp3" placeholder="(85) 97777-7777" maxlength="18" inputmode="tel" />
+              <span class="helper-text">Use para um terceiro contato, se necessário.</span>
             </div>
 
             <div class="field">
               <label for="botaoWhatsapp3">Texto do terceiro botão</label>
               <input type="text" id="botaoWhatsapp3" placeholder="Ex: Ver cardápio" />
-              <span class="helper-text">Use para cardápio, agendamento ou outro contato.</span>
+              <span class="helper-text">Exemplos: "Cardápio", "Agendar", "Falar com financeiro".</span>
             </div>
 
             <div class="field">
@@ -299,10 +300,9 @@
           <div class="field-group">
             <div class="field">
               <label>Tema da página *</label>
-              <span class="helper-text" style="margin-bottom:8px;">Escolha o visual que combina com sua marca</span>
+              <span class="helper-text" style="margin-bottom:8px;">Escolha o visual que combina com sua marca.</span>
               <input type="hidden" id="tema" value="verde" />
               <div class="theme-selector-grid" id="themeSelector">
-                <!-- Cards de tema (mantidos) -->
                 <div class="theme-card-option active" data-theme="verde" tabindex="0"><div class="theme-preview-mini preview-mini-verde"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Verde Glass</h4><p>Vidro translúcido + partículas</p></div>
                 <div class="theme-card-option" data-theme="azul" tabindex="0"><div class="theme-preview-mini preview-mini-azul"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Azul Corporate</h4><p>Grid tech + profissional</p></div>
                 <div class="theme-card-option" data-theme="roxo" tabindex="0"><div class="theme-preview-mini preview-mini-roxo"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Roxo Gradient</h4><p>Blobs + gradiente animado</p></div>
@@ -351,21 +351,24 @@
               <div class="field">
                 <label for="instagram">Instagram</label>
                 <div class="input-icon-group"><span class="input-icon">@</span><input type="text" id="instagram" placeholder="suaempresa" /></div>
+                <span class="helper-text">Apenas o nome de usuário, sem @.</span>
               </div>
               <div class="field">
                 <label for="facebook">Facebook</label>
                 <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
+                <span class="helper-text">Link completo do Facebook.</span>
               </div>
             </div>
             <div class="grid-2">
               <div class="field">
-                <label for="site">Site</label>
-                <input type="url" id="site" placeholder="https://suaempresa.com" />
+                <label for="site">Site ou catálogo (URL)</label>
+                <input type="url" id="site" placeholder="https://suaempresa.com ou https://wa.me/c/..." />
+                <span class="helper-text">Pode colocar o link do site, catálogo do WhatsApp Business, PDF ou qualquer página.</span>
               </div>
               <div class="field">
-                <label for="siteNome">Nome do botão do site</label>
-                <input type="text" id="siteNome" placeholder="Ex: Nosso site" />
-                <span class="helper-text">Se preenchido, o botão do site aparecerá em destaque, com o mesmo tamanho dos botões do WhatsApp.</span>
+                <label for="siteNome">Nome do botão (ex.: "Cardápio", "Catálogo")</label>
+                <input type="text" id="siteNome" placeholder="Ex: Cardápio digital" />
+                <span class="helper-text">Este nome aparecerá no botão. Se vazio, o botão mostrará apenas "Site".</span>
               </div>
             </div>
 
@@ -402,7 +405,7 @@
           </button>
         </form>
 
-        <!-- Resultado (mantido) -->
+        <!-- ================= RESULTADO ================= -->
         <div id="result" style="display:none;">
           <div class="result-box">
             <div class="result-head"><span class="material-icons-round">check_circle</span><div><strong>Link criado com sucesso!</strong><p>Vinculado ao email: <span id="resultEmail"></span></p></div></div>
@@ -448,7 +451,7 @@
       return trimmed;
     }
 
-    // Preview logo
+    // ============ PREVIEW DE LOGO ============
     function atualizarPreviewLogo() {
       const url = $('#logoUrl').value.trim();
       const preview = $('#logoPreview');
@@ -462,7 +465,7 @@
     $('#logoUrl').addEventListener('input', atualizarPreviewLogo);
     $('#logoUrl').addEventListener('paste', () => setTimeout(atualizarPreviewLogo, 100));
 
-    // Preview banner
+    // ============ PREVIEW DE BANNER ============
     function atualizarPreviewBanner() {
       const url = $('#bannerUrl').value.trim();
       const preview = $('#bannerPreview');
@@ -476,7 +479,7 @@
     $('#bannerUrl').addEventListener('input', atualizarPreviewBanner);
     $('#bannerUrl').addEventListener('paste', () => setTimeout(atualizarPreviewBanner, 100));
 
-    // Google Identity
+    // ============ GOOGLE IDENTITY ============
     window.onload = function() {
       if (typeof google !== 'undefined') {
         google.accounts.id.initialize({
@@ -529,7 +532,7 @@
       catch { localStorage.removeItem('whatslink_user'); currentUser = null; }
     }
 
-    // Máscaras
+    // ============ MÁSCARAS ============
     function formatarWhatsApp(input) {
       if (!input) return;
       input.addEventListener('input', (e) => {
@@ -546,23 +549,28 @@
     formatarWhatsApp($('#whatsapp2'));
     formatarWhatsApp($('#whatsapp3'));
 
-    // Slug automático
+    // ============ SLUG AUTOMÁTICO ============
     const empresa = $('#empresa');
     const slug = $('#slug');
     let slugTouched = false;
     slug.addEventListener('input', () => slugTouched = true);
-    empresa.addEventListener('input', () => { if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value); });
+    empresa.addEventListener('input', () => {
+      if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
+    });
 
-    // Localização
+    // ============ LOCALIZAÇÃO ============
     $('#localizacao').addEventListener('paste', (e) => {
       setTimeout(() => {
         const valor = $('#localizacao').value;
         const urlExtraida = extrairUrlEmbed(valor);
-        if (urlExtraida !== valor) { $('#localizacao').value = urlExtraida; showToast('Link extraído automaticamente!'); }
+        if (urlExtraida !== valor) {
+          $('#localizacao').value = urlExtraida;
+          showToast('Link extraído automaticamente!');
+        }
       }, 100);
     });
 
-    // Seleção de tema
+    // ============ SELEÇÃO DE TEMA ============
     $$('.theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
         const temaSelecionado = card.dataset.theme;
@@ -571,10 +579,12 @@
         card.classList.add('active');
         showToast('Tema: ' + card.querySelector('h4').textContent, 'palette');
       });
-      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+      });
     });
 
-    // Submit
+    // ============ SUBMIT ============
     $('#linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -582,10 +592,14 @@
         const saved = localStorage.getItem('whatslink_user');
         if (saved) { try { currentUser = JSON.parse(saved); mostrarFormulario(); } catch { currentUser = null; } }
       }
-      if (!currentUser || !currentUser.email) { showToast('Sessão expirada. Faça login novamente.', 'error'); mostrarLogin(); return; }
+      if (!currentUser || !currentUser.email) {
+        showToast('Sessão expirada. Faça login novamente.', 'error');
+        mostrarLogin();
+        return;
+      }
 
-      // Mensagens por botão: usa a mensagem global se específica vazia
-      const msgPrincipal = $('#mensagemPrincipal').value.trim() || $('#mensagem').value.trim();
+      // Mensagens por botão: usa a mensagem principal se específica vazia
+      const msgPrincipal = $('#mensagemPrincipal').value.trim();
       const msgSecundaria = $('#mensagemSecundaria').value.trim() || msgPrincipal;
       const msgTerceira = $('#mensagemTerceira').value.trim() || msgPrincipal;
 
@@ -638,7 +652,10 @@
         $('#result').style.display = 'block';
         $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
         showToast('Link criado com sucesso!');
-        $('#copyBtn').onclick = async () => { try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); } catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); } };
+        $('#copyBtn').onclick = async () => {
+          try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
+          catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
+        };
         $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
