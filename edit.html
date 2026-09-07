@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meus Links - WhatsLink</title>
+  <title>Criar Link - WhatsLink</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://whatslink-48tc.onrender.com/edit.html" />
-  <meta property="og:title" content="Meus Links - WhatsLink" />
-  <meta property="og:description" content="Gerencie e edite seus links criados no WhatsLink." />
+  <meta property="og:url" content="https://whatslink-48tc.onrender.com/criar.html" />
+  <meta property="og:title" content="Criar Link - WhatsLink" />
+  <meta property="og:description" content="Preencha os dados e gere seu link de WhatsApp em segundos." />
   <meta property="og:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
   <meta property="og:site_name" content="WhatsLink" />
   <meta property="og:locale" content="pt_BR" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Meus Links - WhatsLink" />
-  <meta name="twitter:description" content="Gerencie e edite seus links criados no WhatsLink." />
+  <meta name="twitter:title" content="Criar Link - WhatsLink" />
+  <meta name="twitter:description" content="Preencha os dados e gere seu link de WhatsApp em segundos." />
   <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
 
   <!-- Favicons -->
@@ -31,7 +31,7 @@
   <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
 
   <!-- Ícones -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
@@ -40,37 +40,401 @@
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/edit.css" />
-
   <style>
-    /* ================= ESTILOS ESPECÍFICOS ================= */
-    .google-login-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; max-width: 300px; margin: 0 auto; padding: 14px 20px;
-      background: white; border: 2px solid #e2e8f0; border-radius: 999px;
-      font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s ease;
-      font-family: 'Inter', sans-serif; color: #0f172a; -webkit-tap-highlight-color: transparent;
+    /* ========== RESET & VARIÁVEIS ========== */
+    :root {
+      --theme: #25D366;
+      --theme-dark: #128C7E;
+      --theme-rgb: 37, 211, 102;
+      --bg-body: #f5f7fa;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: rgba(15, 23, 42, 0.1);
+      --border-strong: rgba(15, 23, 42, 0.2);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 999px;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100dvh;
+      background: var(--bg-body);
+      font-family: var(--font-family);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(37, 211, 102, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(18, 140, 126, 0.04) 0%, transparent 50%),
+        var(--bg-body);
+    }
+
+    /* ========== HEADER ========== */
+    .main-header {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+      transition: transform 0.2s ease;
+    }
+    .logo:hover { transform: scale(1.02); }
+    .logo span { color: var(--theme); }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--theme), var(--theme-dark));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.8);
+      transition: all 0.2s ease;
+    }
+    .back-link:hover {
+      background: #fff;
+      border-color: var(--border-strong);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ========== CONTAINER PRINCIPAL (MAIS LARGO) ========== */
+    .criar-container {
+      width: 100%;
+      max-width: 900px;  /* Aumentado de 680px para 900px */
+      margin: 0 auto;
+      padding: 20px 24px 40px;
       box-sizing: border-box;
     }
-    .google-login-btn:hover { background: #f8fafc; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
-    .google-login-btn:active { transform: scale(.98); }
+
+    /* ========== BLOCO DE LOGIN ========== */
+    .login-required {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      max-width: 560px;
+      margin: 40px auto;
+      border: 1px solid var(--border);
+      width: 100%;
+      box-sizing: border-box;
+      animation: fadeUp 0.6s ease both;
+    }
+    .login-required .login-icon {
+      width: 72px;
+      height: 72px;
+      background: rgba(37, 211, 102, 0.1);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 20px;
+      font-size: 36px;
+      color: var(--theme);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
+    }
+    .login-required h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .login-required p {
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .login-benefits {
+      text-align: left;
+      margin-bottom: 28px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 16px;
+      list-style: none;
+      border: 1px solid var(--border);
+    }
+    .login-benefits li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 8px 0;
+    }
+    .login-benefits li .material-icons-round {
+      font-size: 20px;
+      color: var(--theme);
+      flex-shrink: 0;
+    }
+
+    .google-login-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: var(--font-family);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+      box-sizing: border-box;
+    }
+    .google-login-btn:hover {
+      background: #f8fafc;
+      border-color: var(--theme);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.15);
+      transform: translateY(-2px);
+    }
+    .google-login-btn:active { transform: scale(0.98); }
     .google-login-btn svg { flex-shrink: 0; }
 
-    .image-preview {
-      margin-top: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
-      background: #f8fafc; display: none;
+    /* ========== BARRA DE USUÁRIO ========== */
+    .user-info-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      padding: 16px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      width: 100%;
+      box-sizing: border-box;
+      animation: fadeUp 0.4s ease both;
+      gap: 12px;
     }
-    .image-preview img { width: 100%; max-height: 120px; object-fit: cover; display: block; }
-    .logo-preview img { max-height: 70px; width: 70px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
+    .user-info-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      flex: 1;
+    }
+    .user-info-left img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px solid var(--theme);
+    }
+    .user-info-left strong {
+      font-size: 16px;
+      display: block;
+    }
+    .user-info-left span {
+      font-size: 13px;
+      color: var(--text-muted);
+      word-break: break-all;
+    }
 
-    .save-loader {
-      display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
-      border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite;
-      margin-left: 8px;
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      font-family: var(--font-family);
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .logout-btn:hover {
+      background: #fff;
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    /* ========== AVISO DE EMAIL ========== */
+    .email-notice {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: #1e40af;
+      width: 100%;
+      box-sizing: border-box;
+      animation: fadeUp 0.4s 0.1s ease both;
+    }
+    .email-notice .material-icons-round {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ========== CARD DO FORMULÁRIO ========== */
+    .card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      box-shadow: var(--shadow-md);
+      padding: 32px;
+      border: 1px solid var(--border);
+      animation: fadeUp 0.5s 0.15s ease both;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(37,211,102,0.1), rgba(18,140,126,0.1));
+      display: grid;
+      place-items: center;
+      color: var(--theme);
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+    .card-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .card-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    /* ========== SEÇÕES ========== */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      margin: 24px 0 12px;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+    .section-title .material-icons-round {
+      color: var(--theme);
+      font-size: 22px;
+    }
+
+    .field-group {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 8px;
+      background: #fafbfc;
+    }
+
+    /* ========== CAMPOS ========== */
+    .field {
+      margin-bottom: 18px;
+    }
+    .field:last-child {
+      margin-bottom: 0;
+    }
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .field input[type="text"],
+    .field input[type="tel"],
+    .field input[type="url"],
+    .field textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: var(--font-family);
+      background: white;
+      color: var(--text-main);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--theme);
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
 
     .helper-text {
       font-size: 12px;
@@ -78,27 +442,401 @@
       margin-top: 4px;
       line-height: 1.5;
     }
-    .helper-text a { color: #2563eb; text-decoration: underline; }
-
-    /* Indicador de carregamento */
-    .loading-links {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 40px 20px; gap: 12px; color: var(--muted); font-size: 14px;
-    }
-    .loading-links .spinner {
-      width: 32px; height: 32px; border: 3px solid rgba(37,211,102,.2);
-      border-top-color: #25D366; border-radius: 50%; animation: spin .8s linear infinite;
+    .helper-text a {
+      color: #2563eb;
+      text-decoration: underline;
     }
 
-    /* Seções agrupadas no modal */
-    .section-title {
-      display: flex; align-items: center; gap: 8px;
-      font-weight: 700; font-size: 15px; margin: 16px 0 8px; color: var(--text);
+    /* Grid de 2 colunas para campos lado a lado */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 8px;
     }
-    .section-title .material-icons-round { color: var(--whatsapp); font-size: 20px; }
-    .field-group {
-      border: 1px solid var(--border); border-radius: 10px;
-      padding: 12px; margin-bottom: 12px; background: #fafafa;
+    .grid-2 .field {
+      margin-bottom: 18px;
+    }
+
+    /* Input com ícone */
+    .input-icon-group {
+      position: relative;
+    }
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .input-icon-group input {
+      padding-left: 36px !important;
+    }
+
+    /* Slug group */
+    .slug-group {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .slug-group span {
+      padding: 12px 14px;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 14px;
+      white-space: nowrap;
+      border-right: 1px solid var(--border);
+    }
+    .slug-group input {
+      border: none;
+      border-radius: 0;
+      padding: 12px 14px;
+      flex: 1;
+    }
+    .slug-group input:focus {
+      box-shadow: none;
+    }
+
+    /* ========== SELETOR DE TEMA ========== */
+    .theme-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .theme-card-option {
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      background: white;
+      user-select: none;
+    }
+    .theme-card-option:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .theme-card-option.active {
+      border-color: var(--theme);
+      background: rgba(37, 211, 102, 0.05);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.15);
+    }
+    .theme-card-option h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 8px 0 4px;
+    }
+    .theme-card-option p {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+    .theme-preview-mini {
+      width: 100%;
+      height: 60px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--theme);
+    }
+    .preview-line {
+      width: 50%;
+      height: 6px;
+      border-radius: 3px;
+      background: #cbd5e1;
+    }
+
+    /* Previews de cores por tema */
+    .preview-mini-verde { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+    .preview-mini-verde .preview-dot { background: #25D366; }
+    .preview-mini-azul { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+    .preview-mini-azul .preview-dot { background: #3b82f6; }
+    .preview-mini-roxo { background: linear-gradient(135deg, #f5f3ff, #ede9fe); }
+    .preview-mini-roxo .preview-dot { background: #8b5cf6; }
+    .preview-mini-laranja { background: linear-gradient(135deg, #fff7ed, #ffedd5); }
+    .preview-mini-laranja .preview-dot { background: #f97316; }
+    .preview-mini-preto { background: linear-gradient(135deg, #f5f5f4, #e7e5e4); }
+    .preview-mini-preto .preview-dot { background: #d4af37; }
+    .preview-mini-cardapio { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+    .preview-mini-cardapio .preview-dot { background: #ff8f00; }
+
+    /* ========== PREVIEW DE IMAGENS ========== */
+    .image-preview {
+      margin-top: 8px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      display: none;
+      position: relative;
+    }
+    .image-preview img {
+      width: 100%;
+      max-height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+    .logo-preview img {
+      max-height: 80px;
+      width: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 8px auto;
+    }
+
+    /* ========== BOTÃO DE SUBMIT ========== */
+    #submitBtn {
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--theme), var(--theme-dark));
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      transition: all 0.3s ease;
+      font-family: var(--font-family);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    #submitBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(37, 211, 102, 0.4);
+    }
+    #submitBtn:active {
+      transform: scale(0.98);
+    }
+    #submitBtn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-loader {
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ========== RESULTADO ========== */
+    #result {
+      margin-top: 24px;
+      animation: fadeUp 0.4s ease both;
+    }
+    .result-box {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .result-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .result-head .material-icons-round {
+      color: var(--theme);
+      font-size: 28px;
+    }
+    .result-head strong {
+      font-size: 16px;
+      display: block;
+    }
+    .result-head p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .link-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .link-row input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #86efac;
+      border-radius: 12px;
+      background: white;
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+    }
+    .link-row button {
+      padding: 12px 20px;
+      background: var(--theme);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+      white-space: nowrap;
+    }
+    .link-row button:hover {
+      background: #16a34a;
+    }
+    .result-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .result-actions button,
+    .result-actions a {
+      flex: 1;
+      padding: 12px;
+      background: white;
+      color: var(--text-main);
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+      font-size: 14px;
+    }
+    .result-actions button:hover,
+    .result-actions a:hover {
+      background: #f8fafc;
+      border-color: var(--border-strong);
+    }
+    .result-actions a {
+      background: var(--text-main);
+      color: white;
+      border-color: var(--text-main);
+    }
+    .result-actions a:hover {
+      background: #1e293b;
+      border-color: #1e293b;
+    }
+
+    /* ========== ANIMAÇÕES ========== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== TOAST ========== */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text-main);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      max-width: 90%;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast .material-icons-round {
+      font-size: 20px;
+      color: var(--theme);
+    }
+
+    /* ========== RESPONSIVIDADE ========== */
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .card {
+        padding: 20px;
+      }
+      .field-group {
+        padding: 16px;
+      }
+      .theme-selector-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 8px;
+      }
+      .criar-container {
+        padding: 12px;
+      }
+      .main-header {
+        padding: 12px 16px;
+      }
+      .logo {
+        font-size: 20px;
+      }
+      .back-link {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+      .login-required {
+        padding: 32px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .theme-selector-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .link-row {
+        flex-direction: column;
+      }
+      .result-actions {
+        flex-direction: column;
+      }
+      .user-info-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .logout-btn {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -114,11 +852,18 @@
     </a>
   </header>
 
-  <div class="edit-container">
+  <div class="criar-container">
     <!-- ================= BLOCO DE LOGIN ================= -->
-    <div class="login-box" id="loginCard">
-      <h2>🔐 Entre para editar seus links</h2>
-      <p>Use sua conta Google para acessar</p>
+    <div class="login-required" id="loginRequired">
+      <div class="login-icon"><span class="material-icons-round">lock</span></div>
+      <h2>🔐 Faça login para criar seu link</h2>
+      <p>Use sua conta Google para que possamos salvar seus links e permitir edição posterior.</p>
+      <ul class="login-benefits">
+        <li><span class="material-icons-round">check_circle</span> Seus links ficam vinculados ao seu email</li>
+        <li><span class="material-icons-round">check_circle</span> Edite suas informações até 5x por dia</li>
+        <li><span class="material-icons-round">check_circle</span> Acesse "Meus Links" de qualquer dispositivo</li>
+        <li><span class="material-icons-round">check_circle</span> Seus dados ficam protegidos e criptografados</li>
+      </ul>
       <button id="googleLoginBtn" class="google-login-btn" type="button">
         <svg width="20" height="20" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -130,194 +875,248 @@
       </button>
     </div>
 
-    <!-- ================= ÁREA DO USUÁRIO ================= -->
-    <div id="userArea" style="display:none;">
-      <div class="user-area">
-        <img id="userPhoto" src="" alt="Foto" />
-        <span id="userName"></span>
+    <!-- ================= ÁREA DO FORMULÁRIO ================= -->
+    <div id="formArea" style="display:none;">
+      <div class="user-info-bar">
+        <div class="user-info-left">
+          <img id="userPhoto" src="" alt="Foto" />
+          <div>
+            <strong id="userName"></strong>
+            <span id="userEmail"></span>
+          </div>
+        </div>
         <button class="logout-btn" id="logoutBtn">
-          <span class="material-icons-round" style="font-size:18px;">logout</span>
+          <span class="material-icons-round" style="font-size:16px;">logout</span>
           Sair
         </button>
       </div>
-    </div>
 
-    <!-- ================= LISTA DE LINKS ================= -->
-    <div id="linksArea" style="display:none;">
-      <h2 style="margin-bottom:16px;">Meus Links</h2>
-      <div id="linksList"></div>
-    </div>
-  </div>
-
-  <!-- ================= MODAL DE EDIÇÃO ================= -->
-  <div class="modal-overlay" id="editModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2><span class="material-icons-round">edit</span> Editar Link</h2>
-        <button class="modal-close" id="closeEditModal">&times;</button>
+      <div class="email-notice">
+        <span class="material-icons-round">info</span>
+        <span>Seu link será vinculado ao email <strong id="emailVinculado"></strong>. Você poderá editá-lo em "Meus Links".</span>
       </div>
-      <form id="editForm" novalidate>
-        <input type="hidden" id="editId" />
-        <input type="hidden" id="editToken" />
 
-        <!-- Seção Identificação -->
-        <div class="section-title"><span class="material-icons-round">business</span>Identificação</div>
-        <div class="field-group">
-          <div class="field">
-            <label for="editEmpresa">Nome da empresa *</label>
-            <input type="text" id="editEmpresa" required />
-            <span class="helper-text">Aparece no topo da sua página. Use o nome que o cliente reconhece.</span>
-          </div>
-          <div class="field">
-            <label for="editWhatsapp">WhatsApp principal *</label>
-            <input type="tel" id="editWhatsapp" required maxlength="18" inputmode="tel" />
-            <span class="helper-text">Número que receberá as mensagens. Digite apenas números.</span>
-          </div>
-          <div class="field">
-            <label for="editBotao1">Texto do botão principal *</label>
-            <input type="text" id="editBotao1" required />
-            <span class="helper-text">Exemplos: "Falar com vendas", "Pedir agora", "Agendar consulta".</span>
-          </div>
-          <div class="field">
-            <label for="editMensagem1">Mensagem automática do botão principal</label>
-            <textarea id="editMensagem1" rows="2"></textarea>
-            <span class="helper-text">Quando o cliente clicar, essa mensagem já aparecerá no WhatsApp dele.</span>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><span class="material-icons-round">edit_note</span></div>
+          <div>
+            <h2>Criar meu link</h2>
+            <p class="card-subtitle">Preencha os dados abaixo. Leva 30 segundos.</p>
           </div>
         </div>
 
-        <!-- Seção WhatsApp Secundário -->
-        <div class="section-title"><span class="material-icons-round">chat</span>WhatsApp secundário (opcional)</div>
-        <div class="field-group">
-          <div class="field">
-            <label for="editWhatsapp2">Número do WhatsApp secundário</label>
-            <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
-            <span class="helper-text">Segundo número para atendimento diferenciado.</span>
+        <form id="linkForm" novalidate>
+          <!-- ================= SEÇÃO 1: IDENTIFICAÇÃO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">business</span>
+            Identificação
           </div>
-          <div class="field">
-            <label for="editBotao2">Texto do botão secundário</label>
-            <input type="text" id="editBotao2" />
-            <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com gerente".</span>
+          <div class="field-group">
+            <div class="field">
+              <label for="empresa">Nome da empresa *</label>
+              <input type="text" id="empresa" placeholder="Ex: Academia Top Fit" required />
+              <span class="helper-text">Aparece no topo da sua página. Use o nome que o cliente reconhece.</span>
+            </div>
+
+            <div class="field">
+              <label for="whatsapp">WhatsApp principal *</label>
+              <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" inputmode="tel" />
+              <span class="helper-text">Número que receberá as mensagens. Digite apenas números.</span>
+            </div>
+
+            <div class="field">
+              <label for="botaoWhatsapp">Texto do botão principal *</label>
+              <input type="text" id="botaoWhatsapp" value="Chamar no WhatsApp" required />
+              <span class="helper-text">Exemplos: "Falar com vendas", "Pedir agora", "Agendar consulta".</span>
+            </div>
+
+            <div class="field">
+              <label for="mensagemPrincipal">Mensagem automática do botão principal</label>
+              <textarea id="mensagemPrincipal" rows="2" placeholder="Ex: Olá! Vim pelo seu link e gostaria de mais informações."></textarea>
+              <span class="helper-text">Quando o cliente clicar, essa mensagem já aparecerá no WhatsApp dele.</span>
+            </div>
           </div>
-          <div class="field">
-            <label for="editMensagem2">Mensagem automática do botão secundário</label>
-            <textarea id="editMensagem2" rows="2"></textarea>
+
+          <!-- ================= SEÇÃO 2: WHATSAPP SECUNDÁRIO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">chat</span>
+            WhatsApp secundário <span style="font-size:12px; font-weight:400;">(opcional)</span>
+          </div>
+          <div class="field-group">
+            <div class="grid-2">
+              <div class="field">
+                <label for="whatsapp2">Número do WhatsApp secundário</label>
+                <input type="tel" id="whatsapp2" placeholder="(85) 98888-8888" maxlength="18" inputmode="tel" />
+                <span class="helper-text">Segundo número para atendimento diferenciado.</span>
+              </div>
+              <div class="field">
+                <label for="botaoWhatsapp2">Texto do botão secundário</label>
+                <input type="text" id="botaoWhatsapp2" placeholder="Ex: Falar com suporte" />
+                <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com gerente".</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="mensagemSecundaria">Mensagem automática do botão secundário</label>
+              <textarea id="mensagemSecundaria" rows="2" placeholder="Ex: Gostaria de falar com o suporte."></textarea>
+            </div>
+          </div>
+
+          <!-- ================= SEÇÃO 3: WHATSAPP TERCEIRO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">add_circle</span>
+            Terceiro botão <span style="font-size:12px; font-weight:400;">(opcional)</span>
+          </div>
+          <div class="field-group">
+            <div class="grid-2">
+              <div class="field">
+                <label for="whatsapp3">Número do terceiro WhatsApp</label>
+                <input type="tel" id="whatsapp3" placeholder="(85) 97777-7777" maxlength="18" inputmode="tel" />
+                <span class="helper-text">Use para um terceiro contato, se necessário.</span>
+              </div>
+              <div class="field">
+                <label for="botaoWhatsapp3">Texto do terceiro botão</label>
+                <input type="text" id="botaoWhatsapp3" placeholder="Ex: Ver cardápio" />
+                <span class="helper-text">Exemplos: "Cardápio", "Agendar", "Falar com financeiro".</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="mensagemTerceira">Mensagem automática do terceiro botão</label>
+              <textarea id="mensagemTerceira" rows="2" placeholder="Ex: Olá, gostaria de ver o cardápio."></textarea>
+            </div>
+          </div>
+
+          <!-- ================= SEÇÃO 4: APARÊNCIA ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">palette</span>
+            Aparência
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label>Tema da página *</label>
+              <span class="helper-text" style="margin-bottom:8px;">Escolha o visual que combina com sua marca.</span>
+              <input type="hidden" id="tema" value="verde" />
+              <div class="theme-selector-grid" id="themeSelector">
+                <div class="theme-card-option active" data-theme="verde" tabindex="0"><div class="theme-preview-mini preview-mini-verde"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Verde Glass</h4><p>Vidro translúcido + partículas</p></div>
+                <div class="theme-card-option" data-theme="azul" tabindex="0"><div class="theme-preview-mini preview-mini-azul"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Azul Corporate</h4><p>Grid tech + profissional</p></div>
+                <div class="theme-card-option" data-theme="roxo" tabindex="0"><div class="theme-preview-mini preview-mini-roxo"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Roxo Gradient</h4><p>Blobs + gradiente animado</p></div>
+                <div class="theme-card-option" data-theme="laranja" tabindex="0"><div class="theme-preview-mini preview-mini-laranja"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Laranja Energia</h4><p>Ondas + calor acolhedor</p></div>
+                <div class="theme-card-option" data-theme="preto" tabindex="0"><div class="theme-preview-mini preview-mini-preto"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Preto Luxury</h4><p>Dourado + sofisticado</p></div>
+                <div class="theme-card-option" data-theme="cardapio" tabindex="0"><div class="theme-preview-mini preview-mini-cardapio"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Cardápio Digital</h4><p>Madeira + restaurante</p></div>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="logoUrl">Logo (URL) <span style="font-weight:400;">(opcional)</span></label>
+                <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
+                <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link. Se falhar, usaremos as iniciais.</span>
+                <div class="image-preview logo-preview" id="logoPreview"><img id="logoPreviewImg" src="" alt="Preview da logo" /></div>
+              </div>
+              <div class="field">
+                <label for="bannerUrl">Banner (URL) <span style="font-weight:400;">(opcional)</span></label>
+                <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
+                <span class="helper-text">📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.</span>
+                <div class="image-preview" id="bannerPreview"><img id="bannerPreviewImg" src="" alt="Preview do banner" /></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= SEÇÃO 5: CONTEÚDO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">description</span>
+            Conteúdo
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label for="descricao">Descrição da empresa</label>
+              <textarea id="descricao" rows="3" placeholder="Ex: Academia especializada em musculação..."></textarea>
+              <span class="helper-text">Texto abaixo do nome. Conte o que sua empresa faz.</span>
+            </div>
+          </div>
+
+          <!-- ================= SEÇÃO 6: CONTATOS ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">share</span>
+            Contatos e links
+          </div>
+          <div class="field-group">
+            <div class="grid-2">
+              <div class="field">
+                <label for="instagram">Instagram</label>
+                <div class="input-icon-group"><span class="input-icon">@</span><input type="text" id="instagram" placeholder="suaempresa" /></div>
+                <span class="helper-text">Apenas o nome de usuário, sem @.</span>
+              </div>
+              <div class="field">
+                <label for="facebook">Facebook</label>
+                <input type="url" id="facebook" placeholder="https://facebook.com/suaempresa" />
+                <span class="helper-text">Link completo do Facebook.</span>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="site">Site ou catálogo (URL)</label>
+                <input type="url" id="site" placeholder="https://suaempresa.com ou https://wa.me/c/..." />
+                <span class="helper-text">Pode colocar o link do site, catálogo do WhatsApp Business, PDF ou qualquer página.</span>
+              </div>
+              <div class="field">
+                <label for="siteNome">Nome do botão (ex.: "Cardápio", "Catálogo")</label>
+                <input type="text" id="siteNome" placeholder="Ex: Cardápio digital" />
+                <span class="helper-text">Este nome aparecerá no botão. Se vazio, o botão mostrará apenas "Site".</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="localizacao">Localização (Google Maps)</label>
+              <input type="text" id="localizacao" placeholder="Cole o link curto ou link de incorporação" />
+              <span class="helper-text">✅ Pode colar o link curto do Google Maps (ex.: maps.app.goo.gl). O sistema transformará em mapa automaticamente.</span>
+            </div>
+
+            <div class="field">
+              <label for="horario">Horário de funcionamento</label>
+              <textarea id="horario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
+              <span class="helper-text">Coloque cada período em uma linha.</span>
+            </div>
+          </div>
+
+          <!-- ================= SEÇÃO 7: LINK PERSONALIZADO ================= -->
+          <div class="section-title">
+            <span class="material-icons-round">link</span>
+            Link personalizado
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label for="slug">Nome do link *</label>
+              <div class="slug-group"><span>whatslink-48tc.onrender.com/</span><input type="text" id="slug" placeholder="academia-top-fit" required pattern="[a-z0-9-]+" /></div>
+              <span class="helper-text">Gera automaticamente. Você pode editar para deixar mais curto.</span>
+            </div>
+          </div>
+
+          <button type="submit" id="submitBtn">
+            <span class="material-icons-round">send</span>
+            <span class="btn-text">Gerar link grátis</span>
+            <div class="btn-loader"><div class="spinner"></div></div>
+          </button>
+        </form>
+
+        <!-- ================= RESULTADO ================= -->
+        <div id="result" style="display:none;">
+          <div class="result-box">
+            <div class="result-head"><span class="material-icons-round">check_circle</span><div><strong>Link criado com sucesso!</strong><p>Vinculado ao email: <span id="resultEmail"></span></p></div></div>
+            <div class="link-row"><input type="text" id="generatedUrl" readonly /><button id="copyBtn"><span class="material-icons-round">content_copy</span> Copiar</button></div>
+            <div class="result-actions"><button id="previewBtn"><span class="material-icons-round">visibility</span> Ver página</button><a href="edit.html" style="flex:1; padding:12px; background:var(--text); color:white; border-radius:12px; text-decoration:none; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px;"><span class="material-icons-round" style="font-size:18px;">list</span> Meus Links</a></div>
           </div>
         </div>
-
-        <!-- Seção Terceiro Botão -->
-        <div class="section-title"><span class="material-icons-round">add_circle</span>Terceiro botão (opcional)</div>
-        <div class="field-group">
-          <div class="field">
-            <label for="editWhatsapp3">Número do terceiro WhatsApp</label>
-            <input type="tel" id="editWhatsapp3" maxlength="18" inputmode="tel" />
-            <span class="helper-text">Use para um terceiro contato, se necessário.</span>
-          </div>
-          <div class="field">
-            <label for="editBotao3">Texto do terceiro botão</label>
-            <input type="text" id="editBotao3" placeholder="Ex: Ver cardápio" />
-            <span class="helper-text">Exemplos: "Cardápio", "Agendar", "Falar com financeiro".</span>
-          </div>
-          <div class="field">
-            <label for="editMensagem3">Mensagem automática do terceiro botão</label>
-            <textarea id="editMensagem3" rows="2"></textarea>
-          </div>
-        </div>
-
-        <!-- Seção Aparência -->
-        <div class="section-title"><span class="material-icons-round">palette</span>Aparência</div>
-        <div class="field-group">
-          <div class="grid-2">
-            <div class="field">
-              <label for="editLogo">Logo (URL)</label>
-              <input type="url" id="editLogo" />
-              <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link. Se falhar, usaremos as iniciais.</span>
-              <div class="image-preview logo-preview" id="editLogoPreview"><img id="editLogoPreviewImg" src="" alt="Preview da logo" /></div>
-            </div>
-            <div class="field">
-              <label for="editBanner">Banner (URL)</label>
-              <input type="url" id="editBanner" />
-              <span class="helper-text">📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.</span>
-              <div class="image-preview" id="editBannerPreview"><img id="editBannerPreviewImg" src="" alt="Preview do banner" /></div>
-            </div>
-          </div>
-          <div class="field">
-            <label>Tema da página</label>
-            <input type="hidden" id="editTema" value="verde" />
-            <div class="theme-selector-grid" id="editThemeSelector">
-              <div class="theme-card-option active" data-theme="verde" tabindex="0"><div class="theme-preview-mini preview-mini-verde"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Verde Glass</h4><p>Vidro translúcido + partículas</p></div>
-              <div class="theme-card-option" data-theme="azul" tabindex="0"><div class="theme-preview-mini preview-mini-azul"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Azul Corporate</h4><p>Grid tech + profissional</p></div>
-              <div class="theme-card-option" data-theme="roxo" tabindex="0"><div class="theme-preview-mini preview-mini-roxo"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Roxo Gradient</h4><p>Blobs + gradiente animado</p></div>
-              <div class="theme-card-option" data-theme="laranja" tabindex="0"><div class="theme-preview-mini preview-mini-laranja"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Laranja Energia</h4><p>Ondas + calor acolhedor</p></div>
-              <div class="theme-card-option" data-theme="preto" tabindex="0"><div class="theme-preview-mini preview-mini-preto"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Preto Luxury</h4><p>Dourado + sofisticado</p></div>
-              <div class="theme-card-option" data-theme="cardapio" tabindex="0"><div class="theme-preview-mini preview-mini-cardapio"><div class="preview-dot"></div><div class="preview-line"></div></div><h4>Cardápio Digital</h4><p>Madeira + restaurante</p></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Seção Conteúdo -->
-        <div class="section-title"><span class="material-icons-round">description</span>Conteúdo</div>
-        <div class="field-group">
-          <div class="field">
-            <label for="editDescricao">Descrição</label>
-            <textarea id="editDescricao" rows="3"></textarea>
-            <span class="helper-text">Texto abaixo do nome. Conte o que sua empresa faz.</span>
-          </div>
-        </div>
-
-        <!-- Seção Contatos -->
-        <div class="section-title"><span class="material-icons-round">share</span>Contatos e links</div>
-        <div class="field-group">
-          <div class="grid-2">
-            <div class="field">
-              <label for="editInstagram">Instagram</label>
-              <div class="input-icon-group"><span class="input-icon">@</span><input type="text" id="editInstagram" placeholder="suaempresa" /></div>
-              <span class="helper-text">Apenas o nome de usuário, sem @.</span>
-            </div>
-            <div class="field">
-              <label for="editFacebook">Facebook</label>
-              <input type="url" id="editFacebook" />
-              <span class="helper-text">Link completo do Facebook.</span>
-            </div>
-          </div>
-          <div class="grid-2">
-            <div class="field">
-              <label for="editSite">Site ou catálogo (URL)</label>
-              <input type="url" id="editSite" placeholder="https://suaempresa.com ou https://wa.me/c/..." />
-              <span class="helper-text">Pode colocar o link do site, catálogo do WhatsApp Business, PDF ou qualquer página.</span>
-            </div>
-            <div class="field">
-              <label for="editSiteNome">Nome do botão (ex.: "Cardápio", "Catálogo")</label>
-              <input type="text" id="editSiteNome" placeholder="Ex: Cardápio digital" />
-              <span class="helper-text">Este nome aparecerá no botão. Se vazio, o botão mostrará apenas "Site".</span>
-            </div>
-          </div>
-          <div class="field">
-            <label for="editLocalizacao">Localização (Google Maps)</label>
-            <input type="text" id="editLocalizacao" placeholder="Cole o link curto ou link de incorporação" />
-            <span class="helper-text">✅ Pode colar o link curto do Google Maps (ex.: maps.app.goo.gl).</span>
-          </div>
-          <div class="field">
-            <label for="editHorario">Horário</label>
-            <textarea id="editHorario" rows="2" placeholder="Seg a Sex: 8h às 18h&#10;Sáb: 8h às 12h"></textarea>
-            <span class="helper-text">Coloque cada período em uma linha.</span>
-          </div>
-        </div>
-
-        <button type="submit" id="saveBtn" class="btn-primary" style="width:100%; justify-content:center;">
-          <span class="material-icons-round">save</span>
-          Salvar alterações
-          <span class="save-loader"></span>
-        </button>
-      </form>
+      </div>
     </div>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
+    // Todo o JavaScript permanece EXATAMENTE igual ao original
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+    const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
     let currentUser = null;
-    let linksCache = [];
 
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
@@ -327,10 +1126,54 @@
       if (!t) return;
       t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
+      setTimeout(() => t.classList.remove('show'), 3200);
     }
 
-    // ============ INICIALIZAR GOOGLE IDENTITY ============
+    function slugify(text) {
+      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+    }
+
+    function extrairUrlEmbed(html) {
+      if (!html) return '';
+      const trimmed = html.trim();
+      if (trimmed.startsWith('http') && !trimmed.includes('<')) return trimmed;
+      const srcMatch = trimmed.match(/src\s*=\s*["']?([^"'\s>]+)["']?/i);
+      if (srcMatch && srcMatch[1]) return srcMatch[1];
+      const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/);
+      if (urlMatch && urlMatch[0]) return urlMatch[0];
+      return trimmed;
+    }
+
+    // ============ PREVIEW DE LOGO ============
+    function atualizarPreviewLogo() {
+      const url = $('#logoUrl').value.trim();
+      const preview = $('#logoPreview');
+      const img = $('#logoPreviewImg');
+      if (url && url.startsWith('http')) {
+        img.src = url;
+        img.onload = () => { preview.style.display = 'block'; };
+        img.onerror = () => { preview.style.display = 'none'; };
+      } else preview.style.display = 'none';
+    }
+    $('#logoUrl').addEventListener('input', atualizarPreviewLogo);
+    $('#logoUrl').addEventListener('paste', () => setTimeout(atualizarPreviewLogo, 100));
+
+    // ============ PREVIEW DE BANNER ============
+    function atualizarPreviewBanner() {
+      const url = $('#bannerUrl').value.trim();
+      const preview = $('#bannerPreview');
+      const img = $('#bannerPreviewImg');
+      if (url && url.startsWith('http')) {
+        img.src = url;
+        img.onload = () => { preview.style.display = 'block'; };
+        img.onerror = () => { preview.style.display = 'none'; };
+      } else preview.style.display = 'none';
+    }
+    $('#bannerUrl').addEventListener('input', atualizarPreviewBanner);
+    $('#bannerUrl').addEventListener('paste', () => setTimeout(atualizarPreviewBanner, 100));
+
+    // ============ GOOGLE IDENTITY ============
     window.onload = function() {
       if (typeof google !== 'undefined') {
         google.accounts.id.initialize({
@@ -340,7 +1183,6 @@
         });
       }
     };
-
     $('#googleLoginBtn').addEventListener('click', () => {
       if (typeof google !== 'undefined') google.accounts.id.prompt();
     });
@@ -350,18 +1192,41 @@
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
         currentUser = { email: payload.email, nome: payload.name, foto: payload.picture };
         localStorage.setItem('whatslink_user', JSON.stringify(currentUser));
-        $('#loginCard').style.display = 'none';
-        $('#userArea').style.display = 'block';
-        $('#userPhoto').src = currentUser.foto;
-        $('#userName').textContent = currentUser.nome;
-        buscarMeusLinks();
+        mostrarFormulario();
         showToast('Login realizado com sucesso!');
       } catch (err) {
         showToast('Erro ao fazer login', 'error');
       }
     }
 
-    // ============ FORMATAR WHATSAPP ============
+    function mostrarFormulario() {
+      $('#loginRequired').style.display = 'none';
+      $('#formArea').style.display = 'block';
+      $('#userPhoto').src = currentUser.foto || '';
+      $('#userName').textContent = currentUser.nome || '';
+      $('#userEmail').textContent = currentUser.email || '';
+      $('#emailVinculado').textContent = currentUser.email || '';
+    }
+
+    function mostrarLogin() {
+      $('#formArea').style.display = 'none';
+      $('#loginRequired').style.display = 'block';
+    }
+
+    $('#logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('whatslink_user');
+      currentUser = null;
+      mostrarLogin();
+      showToast('Você saiu da sua conta');
+    });
+
+    const savedUser = localStorage.getItem('whatslink_user');
+    if (savedUser) {
+      try { currentUser = JSON.parse(savedUser); mostrarFormulario(); }
+      catch { localStorage.removeItem('whatslink_user'); currentUser = null; }
+    }
+
+    // ============ MÁSCARAS ============
     function formatarWhatsApp(input) {
       if (!input) return;
       input.addEventListener('input', (e) => {
@@ -374,285 +1239,126 @@
         e.target.value = v;
       });
     }
-    formatarWhatsApp($('#editWhatsapp'));
-    formatarWhatsApp($('#editWhatsapp2'));
-    formatarWhatsApp($('#editWhatsapp3'));
+    formatarWhatsApp($('#whatsapp'));
+    formatarWhatsApp($('#whatsapp2'));
+    formatarWhatsApp($('#whatsapp3'));
 
-    // ============ EXTRAIR URL DO GOOGLE MAPS ============
-    function extrairUrlEmbed(html) {
-      if (!html) return '';
-      const trimmed = html.trim();
-      if (trimmed.startsWith('http') && !trimmed.includes('<')) return trimmed;
-      const srcMatch = trimmed.match(/src\s*=\s*["']?([^"'\s>]+)["']?/i);
-      if (srcMatch && srcMatch[1]) return srcMatch[1];
-      const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/);
-      if (urlMatch && urlMatch[0]) return urlMatch[0];
-      return trimmed;
-    }
+    // ============ SLUG AUTOMÁTICO ============
+    const empresa = $('#empresa');
+    const slug = $('#slug');
+    let slugTouched = false;
+    slug.addEventListener('input', () => slugTouched = true);
+    empresa.addEventListener('input', () => {
+      if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
+    });
 
-    $('#editLocalizacao').addEventListener('paste', (e) => {
+    // ============ LOCALIZAÇÃO ============
+    $('#localizacao').addEventListener('paste', (e) => {
       setTimeout(() => {
-        const valor = $('#editLocalizacao').value;
+        const valor = $('#localizacao').value;
         const urlExtraida = extrairUrlEmbed(valor);
         if (urlExtraida !== valor) {
-          $('#editLocalizacao').value = urlExtraida;
+          $('#localizacao').value = urlExtraida;
           showToast('Link extraído automaticamente!');
         }
       }, 100);
     });
 
-    // ============ PREVIEW DE LOGO ============
-    function atualizarPreviewEditLogo() {
-      const url = $('#editLogo').value.trim();
-      const preview = $('#editLogoPreview');
-      const img = $('#editLogoPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
-        img.onload = () => { preview.style.display = 'block'; };
-        img.onerror = () => { preview.style.display = 'none'; };
-      } else preview.style.display = 'none';
-    }
-    $('#editLogo').addEventListener('input', atualizarPreviewEditLogo);
-    $('#editLogo').addEventListener('paste', () => setTimeout(atualizarPreviewEditLogo, 100));
-
-    // ============ PREVIEW DE BANNER ============
-    function atualizarPreviewEditBanner() {
-      const url = $('#editBanner').value.trim();
-      const preview = $('#editBannerPreview');
-      const img = $('#editBannerPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
-        img.onload = () => { preview.style.display = 'block'; };
-        img.onerror = () => { preview.style.display = 'none'; };
-      } else preview.style.display = 'none';
-    }
-    $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
-    $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
-
-    // ============ INDICADOR DE CARREGAMENTO ============
-    function mostrarCarregando() {
-      const linksArea = $('#linksArea');
-      const linksList = $('#linksList');
-      if (linksArea) linksArea.style.display = 'block';
-      if (linksList) {
-        linksList.innerHTML = `
-          <div class="loading-links">
-            <div class="spinner"></div>
-            <span>Carregando seus links...</span>
-          </div>
-        `;
-      }
-    }
-
-    // ============ BUSCAR MEUS LINKS ============
-    async function buscarMeusLinks() {
-      try {
-        mostrarCarregando();
-        const [data] = await Promise.all([
-          fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'buscar_meus_links', email: currentUser.email })
-          }).then(res => res.json()),
-          new Promise(resolve => setTimeout(resolve, 2000))
-        ]);
-        if (data.error) throw new Error(data.error);
-        const links = data.links || [];
-        linksCache = links;
-        renderizarLinks(links);
-      } catch (err) {
-        showToast('Erro: ' + err.message, 'error');
-      }
-    }
-
-    function renderizarLinks(links) {
-      const linksList = $('#linksList');
-      if (links.length === 0) {
-        linksList.innerHTML = `
-          <div class="empty-state">
-            <span class="material-icons-round">link_off</span>
-            <p>Você ainda não criou nenhum link.</p>
-            <a href="criar.html" style="color:#25D366; font-weight:600;">Criar meu primeiro link →</a>
-          </div>
-        `;
-        return;
-      }
-
-      linksList.innerHTML = links.map(link => `
-        <div class="link-card">
-          <div>
-            <h3>${link.empresa}</h3>
-            <p>whatslink-48tc.onrender.com/${link.slug} • ${link.cliques} cliques</p>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
-              <span class="material-icons-round" style="font-size:16px;">visibility</span> Ver
-            </a>
-            <button class="btn btn-edit" onclick="abrirEdicao('${link.id}', '${link.edit_token}')">
-              <span class="material-icons-round" style="font-size:16px;">edit</span> Editar
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // ============ ABRIR EDIÇÃO ============
-    window.abrirEdicao = async function(id, token) {
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'buscar_link', id, edit_token: token })
-        });
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
-
-        $('#editId').value = data.id;
-        $('#editToken').value = token;
-        $('#editEmpresa').value = data.empresa || '';
-        $('#editWhatsapp').value = data.whatsapp || '';
-        $('#editBotao1').value = data.botao_whatsapp || '';
-        $('#editMensagem1').value = data.mensagem || '';
-        $('#editWhatsapp2').value = data.whatsapp2 || '';
-        $('#editBotao2').value = data.botao_whatsapp2 || '';
-        $('#editMensagem2').value = data.mensagem_whatsapp2 || '';
-        $('#editWhatsapp3').value = data.whatsapp3 || '';
-        $('#editBotao3').value = data.botao_whatsapp3 || '';
-        $('#editMensagem3').value = data.mensagem_whatsapp3 || '';
-        $('#editLogo').value = data.logo_url || '';
-        $('#editBanner').value = data.banner_url || '';
-        $('#editDescricao').value = data.descricao || '';
-        $('#editInstagram').value = data.instagram || '';
-        $('#editFacebook').value = data.facebook || '';
-        $('#editSite').value = data.site || '';
-        $('#editSiteNome').value = data.site_nome || '';
-        $('#editLocalizacao').value = data.localizacao || '';
-        $('#editHorario').value = data.horario || '';
-        $('#editTema').value = data.tema || 'verde';
-
-        if (data.logo_url) {
-          $('#editLogoPreviewImg').src = data.logo_url;
-          $('#editLogoPreview').style.display = 'block';
-        } else { $('#editLogoPreview').style.display = 'none'; }
-        if (data.banner_url) {
-          $('#editBannerPreviewImg').src = data.banner_url;
-          $('#editBannerPreview').style.display = 'block';
-        } else { $('#editBannerPreview').style.display = 'none'; }
-
-        $$('#editThemeSelector .theme-card-option').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
-        });
-
-        $('#editModal').classList.add('active');
-      } catch (err) {
-        showToast('Erro ao carregar link: ' + err.message, 'error');
-      }
-    };
-
-    // Fechar modal
-    $('#closeEditModal').addEventListener('click', () => {
-      $('#editModal').classList.remove('active');
-    });
-
-    $('#editModal').addEventListener('click', (e) => {
-      if (e.target === $('#editModal')) {
-        $('#editModal').classList.remove('active');
-      }
-    });
-
-    // Seleção de tema no modal
-    $$('#editThemeSelector .theme-card-option').forEach(card => {
+    // ============ SELEÇÃO DE TEMA ============
+    $$('.theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
         const temaSelecionado = card.dataset.theme;
-        $('#editTema').value = temaSelecionado;
-        $$('#editThemeSelector .theme-card-option').forEach(c => c.classList.remove('active'));
+        $('#tema').value = temaSelecionado;
+        $$('.theme-card-option').forEach(c => c.classList.remove('active'));
         card.classList.add('active');
         showToast('Tema: ' + card.querySelector('h4').textContent, 'palette');
       });
       card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
       });
     });
 
-    // ============ SUBMETER FORMULÁRIO DE EDIÇÃO ============
-    $('#editForm').addEventListener('submit', async (e) => {
+    // ============ SUBMIT ============
+    $('#linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const saveBtn = $('#saveBtn');
-      const loader = saveBtn.querySelector('.save-loader');
-      saveBtn.disabled = true;
-      loader.style.display = 'inline-block';
 
-      const msgPrincipal = $('#editMensagem1').value.trim();
-      const msgSecundaria = $('#editMensagem2').value.trim() || msgPrincipal;
-      const msgTerceira = $('#editMensagem3').value.trim() || msgPrincipal;
+      if (!currentUser) {
+        const saved = localStorage.getItem('whatslink_user');
+        if (saved) { try { currentUser = JSON.parse(saved); mostrarFormulario(); } catch { currentUser = null; } }
+      }
+      if (!currentUser || !currentUser.email) {
+        showToast('Sessão expirada. Faça login novamente.', 'error');
+        mostrarLogin();
+        return;
+      }
+
+      // Mensagens por botão: usa a mensagem principal se específica vazia
+      const msgPrincipal = $('#mensagemPrincipal').value.trim();
+      const msgSecundaria = $('#mensagemSecundaria').value.trim() || msgPrincipal;
+      const msgTerceira = $('#mensagemTerceira').value.trim() || msgPrincipal;
 
       const data = {
-        action: 'editar',
-        id: $('#editId').value,
-        edit_token: $('#editToken').value,
-        empresa: $('#editEmpresa').value.trim(),
-        whatsapp: $('#editWhatsapp').value.trim().replace(/\D/g, ''),
-        whatsapp2: $('#editWhatsapp2').value.trim().replace(/\D/g, ''),
-        whatsapp3: $('#editWhatsapp3').value.trim().replace(/\D/g, ''),
-        botao_whatsapp: $('#editBotao1').value.trim(),
-        botao_whatsapp2: $('#editBotao2').value.trim(),
-        botao_whatsapp3: $('#editBotao3').value.trim(),
+        empresa: $('#empresa').value.trim(),
+        whatsapp: $('#whatsapp').value.trim().replace(/\D/g, ''),
+        whatsapp2: $('#whatsapp2').value.trim().replace(/\D/g, ''),
+        whatsapp3: $('#whatsapp3').value.trim().replace(/\D/g, ''),
+        botao_whatsapp: $('#botaoWhatsapp').value.trim() || 'Chamar no WhatsApp',
+        botao_whatsapp2: $('#botaoWhatsapp2').value.trim(),
+        botao_whatsapp3: $('#botaoWhatsapp3').value.trim(),
         mensagem: msgPrincipal,
         mensagem_whatsapp2: msgSecundaria,
         mensagem_whatsapp3: msgTerceira,
-        logo_url: $('#editLogo').value.trim(),
-        banner_url: $('#editBanner').value.trim(),
-        descricao: $('#editDescricao').value.trim(),
-        instagram: $('#editInstagram').value.trim().replace('@', ''),
-        facebook: $('#editFacebook').value.trim(),
-        site: $('#editSite').value.trim(),
-        site_nome: $('#editSiteNome').value.trim(),
-        localizacao: extrairUrlEmbed($('#editLocalizacao').value.trim()),
-        horario: $('#editHorario').value.trim(),
-        tema: $('#editTema').value
+        logo_url: $('#logoUrl').value.trim(),
+        banner_url: $('#bannerUrl').value.trim(),
+        descricao: $('#descricao').value.trim(),
+        localizacao: extrairUrlEmbed($('#localizacao').value.trim()),
+        instagram: $('#instagram').value.trim().replace('@', ''),
+        facebook: $('#facebook').value.trim(),
+        site: $('#site').value.trim(),
+        site_nome: $('#siteNome').value.trim(),
+        horario: $('#horario').value.trim(),
+        tema: $('#tema').value,
+        slug: slugify($('#slug').value.trim()),
+        user_email: currentUser.email
       };
 
+      console.log('Enviando dados:', data);
+
+      const submitBtn = $('#submitBtn');
+      const btnText = submitBtn.querySelector('.btn-text');
+      const loader = submitBtn.querySelector('.btn-loader');
+      submitBtn.disabled = true;
+      btnText.style.opacity = '0';
+      loader.style.display = 'flex';
+
       try {
-        const response = await fetch(API_URL, {
+        const res = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(data)
         });
-        const result = await response.json();
+        const result = await res.json();
         if (result.error) throw new Error(result.error);
-        showToast(result.message || 'Link atualizado!');
-        $('#editModal').classList.remove('active');
-        buscarMeusLinks();
+
+        const finalUrl = BASE_URL + data.slug;
+        $('#generatedUrl').value = finalUrl;
+        $('#resultEmail').textContent = currentUser.email;
+        $('#result').style.display = 'block';
+        $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast('Link criado com sucesso!');
+        $('#copyBtn').onclick = async () => {
+          try { await navigator.clipboard.writeText(finalUrl); showToast('Copiado!'); }
+          catch { $('#generatedUrl').select(); document.execCommand('copy'); showToast('Copiado!'); }
+        };
+        $('#previewBtn').onclick = () => window.open(finalUrl, '_blank');
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
       } finally {
-        saveBtn.disabled = false;
+        submitBtn.disabled = false;
+        btnText.style.opacity = '1';
         loader.style.display = 'none';
       }
     });
-
-    // ============ LOGOUT ============
-    $('#logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('whatslink_user');
-      currentUser = null;
-      $('#userArea').style.display = 'none';
-      $('#loginCard').style.display = 'block';
-      $('#linksArea').style.display = 'none';
-    });
-
-    // ============ RESTAURAR SESSÃO ============
-    const savedUser = localStorage.getItem('whatslink_user');
-    if (savedUser) {
-      currentUser = JSON.parse(savedUser);
-      $('#loginCard').style.display = 'none';
-      $('#userArea').style.display = 'block';
-      $('#userPhoto').src = currentUser.foto;
-      $('#userName').textContent = currentUser.nome;
-      buscarMeusLinks();
-    }
   </script>
 </body>
 </html>
