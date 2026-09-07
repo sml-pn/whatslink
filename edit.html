@@ -40,65 +40,689 @@
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/edit.css" />
-
   <style>
-    /* ================= ESTILOS ESPECÍFICOS ================= */
-    .google-login-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; max-width: 300px; margin: 0 auto; padding: 14px 20px;
-      background: white; border: 2px solid #e2e8f0; border-radius: 999px;
-      font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s ease;
-      font-family: 'Inter', sans-serif; color: #0f172a; -webkit-tap-highlight-color: transparent;
+    /* =========================================================
+       WHATSLINK - PÁGINA MEUS LINKS - CSS OTIMIZADO MOBILE
+       Aproveitamento total da largura, sem conflitos
+       ========================================================= */
+    :root {
+      --theme: #25D366;
+      --theme-dark: #128C7E;
+      --theme-rgb: 37, 211, 102;
+      --bg-body: #f5f7fa;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: rgba(15, 23, 42, 0.1);
+      --border-strong: rgba(15, 23, 42, 0.2);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 999px;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100dvh;
+      background: var(--bg-body);
+      font-family: var(--font-family);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(37, 211, 102, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(18, 140, 126, 0.04) 0%, transparent 50%),
+        var(--bg-body);
+    }
+
+    /* ========== HEADER ========== */
+    .main-header {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+      transition: transform 0.2s ease;
+    }
+    .logo:hover { transform: scale(1.02); }
+    .logo span { color: var(--theme); }
+
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--theme), var(--theme-dark));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.8);
+      transition: all 0.2s ease;
+    }
+    .back-link:hover {
+      background: #fff;
+      border-color: var(--border-strong);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ========== CONTAINER PRINCIPAL ========== */
+    .edit-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 12px;
       box-sizing: border-box;
     }
-    .google-login-btn:hover { background: #f8fafc; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
-    .google-login-btn:active { transform: scale(.98); }
+
+    /* ========== BLOCO DE LOGIN ========== */
+    .login-box {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      max-width: 400px;
+      margin: 20px auto;
+      border: 1px solid var(--border);
+      width: 100%;
+      box-sizing: border-box;
+      animation: fadeUp 0.6s ease both;
+    }
+    .login-box h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .login-box p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .google-login-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: var(--font-family);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+      box-sizing: border-box;
+    }
+    .google-login-btn:hover {
+      background: #f8fafc;
+      border-color: var(--theme);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.15);
+      transform: translateY(-2px);
+    }
+    .google-login-btn:active { transform: scale(0.98); }
     .google-login-btn svg { flex-shrink: 0; }
 
-    .image-preview {
-      margin-top: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
-      background: #f8fafc; display: none;
+    /* ========== ÁREA DO USUÁRIO ========== */
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+      animation: fadeUp 0.4s ease both;
     }
-    .image-preview img { width: 100%; max-height: 120px; object-fit: cover; display: block; }
-    .logo-preview img { max-height: 70px; width: 70px; border-radius: 50%; object-fit: cover; margin: 8px auto; }
-
-    .save-loader {
-      display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
-      border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite;
-      margin-left: 8px;
+    .user-area img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--theme);
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .user-area span {
+      font-size: 14px;
+      font-weight: 600;
+      flex: 1;
+      word-break: break-all;
+    }
 
-    .helper-text {
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
       font-size: 12px;
-      color: #6b7280;
-      margin-top: 4px;
-      line-height: 1.5;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
     }
-    .helper-text a { color: #2563eb; text-decoration: underline; }
+    .logout-btn:hover {
+      background: #fff;
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    /* ========== LISTA DE LINKS ========== */
+    #linksArea h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--bg-card);
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .link-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-md);
+    }
+    .link-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .link-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .link-card .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+    }
+    .btn-view:hover {
+      border-color: var(--theme);
+      color: var(--theme);
+    }
+    .btn-edit:hover {
+      border-color: var(--theme);
+      color: var(--theme);
+    }
+
+    /* Estado vazio */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .empty-state .material-icons-round {
+      font-size: 48px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .empty-state p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
 
     /* Indicador de carregamento */
     .loading-links {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 40px 20px; gap: 12px; color: var(--muted); font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 14px;
     }
     .loading-links .spinner {
-      width: 32px; height: 32px; border: 3px solid rgba(37,211,102,.2);
-      border-top-color: #25D366; border-radius: 50%; animation: spin .8s linear infinite;
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(37, 211, 102, 0.2);
+      border-top-color: var(--theme);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
 
-    /* Seções agrupadas no modal */
-    .section-title {
-      display: flex; align-items: center; gap: 8px;
-      font-weight: 700; font-size: 15px; margin: 16px 0 8px; color: var(--text);
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ========== MODAL ========== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 0;
     }
-    .section-title .material-icons-round { color: var(--whatsapp); font-size: 20px; }
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90dvh;
+      overflow-y: auto;
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      box-sizing: border-box;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .modal-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 4px;
+    }
+
+    /* Formulário do modal */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 15px;
+      margin: 16px 0 8px;
+      color: var(--text-main);
+    }
+    .section-title .material-icons-round {
+      color: var(--theme);
+      font-size: 18px;
+    }
+
     .field-group {
-      border: 1px solid var(--border); border-radius: 10px;
-      padding: 12px; margin-bottom: 12px; background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #fafbfc;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+    .field:last-child {
+      margin-bottom: 0;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+    .field input[type="text"],
+    .field input[type="tel"],
+    .field input[type="url"],
+    .field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--font-family);
+      background: white;
+      color: var(--text-main);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--theme);
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .helper-text {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+    .helper-text a {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .grid-2 .field {
+      margin-bottom: 12px;
+    }
+
+    /* Input com ícone */
+    .input-icon-group {
+      position: relative;
+    }
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 14px;
+      pointer-events: none;
+    }
+    .input-icon-group input {
+      padding-left: 32px !important;
+    }
+
+    /* Seletor de temas */
+    .theme-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .theme-card-option {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      background: white;
+      user-select: none;
+    }
+    .theme-card-option:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .theme-card-option.active {
+      border-color: var(--theme);
+      background: rgba(37, 211, 102, 0.05);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.15);
+    }
+    .theme-card-option h4 {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 6px 0 2px;
+    }
+    .theme-card-option p {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+    .theme-preview-mini {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--theme);
+    }
+    .preview-line {
+      width: 50%;
+      height: 4px;
+      border-radius: 2px;
+      background: #cbd5e1;
+    }
+
+    .preview-mini-verde { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+    .preview-mini-verde .preview-dot { background: #25D366; }
+    .preview-mini-azul { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+    .preview-mini-azul .preview-dot { background: #3b82f6; }
+    .preview-mini-roxo { background: linear-gradient(135deg, #f5f3ff, #ede9fe); }
+    .preview-mini-roxo .preview-dot { background: #8b5cf6; }
+    .preview-mini-laranja { background: linear-gradient(135deg, #fff7ed, #ffedd5); }
+    .preview-mini-laranja .preview-dot { background: #f97316; }
+    .preview-mini-preto { background: linear-gradient(135deg, #f5f5f4, #e7e5e4); }
+    .preview-mini-preto .preview-dot { background: #d4af37; }
+    .preview-mini-cardapio { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+    .preview-mini-cardapio .preview-dot { background: #ff8f00; }
+
+    /* Previews de imagem */
+    .image-preview {
+      margin-top: 6px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      display: none;
+    }
+    .image-preview img {
+      width: 100%;
+      max-height: 100px;
+      object-fit: cover;
+      display: block;
+    }
+    .logo-preview img {
+      max-height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 6px auto;
+    }
+
+    /* Botão salvar */
+    #saveBtn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--theme), var(--theme-dark));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      transition: all 0.3s ease;
+      font-family: var(--font-family);
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+    }
+    #saveBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(37, 211, 102, 0.4);
+    }
+    #saveBtn:active {
+      transform: scale(0.98);
+    }
+    #saveBtn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .save-loader {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-left: 8px;
+    }
+
+    /* ========== TOAST ========== */
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text-main);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 2000;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      max-width: 90%;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast .material-icons-round {
+      font-size: 18px;
+      color: var(--theme);
+    }
+
+    /* ========== ANIMAÇÃO GERAL ========== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== RESPONSIVIDADE EXTRA ========== */
+    @media (max-width: 360px) {
+      .edit-container { padding: 8px; }
+      .field-group { padding: 10px; }
+      .field input, .field textarea { font-size: 13px; padding: 8px 10px; }
+      .theme-selector-grid { grid-template-columns: 1fr 1fr; }
+      .grid-2 { grid-template-columns: 1fr; gap: 0; }
+      .link-card { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .link-card .btn { width: 100%; justify-content: center; }
+    }
+
+    @media (min-width: 600px) {
+      .edit-container { padding: 20px; }
+      .grid-2 { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .theme-selector-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .modal-content {
+        border-radius: 20px;
+        margin: 20px;
+        max-height: 85dvh;
+      }
+      .modal-overlay {
+        align-items: center;
+      }
+      .logo { font-size: 26px; }
+      .logo-icon { width: 40px; height: 40px; font-size: 22px; }
+      .back-link { font-size: 14px; }
     }
   </style>
 </head>
@@ -115,12 +739,12 @@
   </header>
 
   <div class="edit-container">
-    <!-- ================= BLOCO DE LOGIN ================= -->
+    <!-- BLOCO DE LOGIN -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
       <button id="googleLoginBtn" class="google-login-btn" type="button">
-        <svg width="20" height="20" viewBox="0 0 48 48">
+        <svg width="18" height="18" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
           <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
           <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -130,26 +754,26 @@
       </button>
     </div>
 
-    <!-- ================= ÁREA DO USUÁRIO ================= -->
+    <!-- ÁREA DO USUÁRIO -->
     <div id="userArea" style="display:none;">
       <div class="user-area">
         <img id="userPhoto" src="" alt="Foto" />
         <span id="userName"></span>
         <button class="logout-btn" id="logoutBtn">
-          <span class="material-icons-round" style="font-size:18px;">logout</span>
+          <span class="material-icons-round" style="font-size:16px;">logout</span>
           Sair
         </button>
       </div>
     </div>
 
-    <!-- ================= LISTA DE LINKS ================= -->
+    <!-- LISTA DE LINKS -->
     <div id="linksArea" style="display:none;">
-      <h2 style="margin-bottom:16px;">Meus Links</h2>
+      <h2 style="margin-bottom:12px;">Meus Links</h2>
       <div id="linksList"></div>
     </div>
   </div>
 
-  <!-- ================= MODAL DE EDIÇÃO ================= -->
+  <!-- MODAL DE EDIÇÃO -->
   <div class="modal-overlay" id="editModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -188,15 +812,17 @@
         <!-- Seção WhatsApp Secundário -->
         <div class="section-title"><span class="material-icons-round">chat</span>WhatsApp secundário (opcional)</div>
         <div class="field-group">
-          <div class="field">
-            <label for="editWhatsapp2">Número do WhatsApp secundário</label>
-            <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
-            <span class="helper-text">Segundo número para atendimento diferenciado.</span>
-          </div>
-          <div class="field">
-            <label for="editBotao2">Texto do botão secundário</label>
-            <input type="text" id="editBotao2" />
-            <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com gerente".</span>
+          <div class="grid-2">
+            <div class="field">
+              <label for="editWhatsapp2">Número do WhatsApp secundário</label>
+              <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
+              <span class="helper-text">Segundo número para atendimento diferenciado.</span>
+            </div>
+            <div class="field">
+              <label for="editBotao2">Texto do botão secundário</label>
+              <input type="text" id="editBotao2" />
+              <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com gerente".</span>
+            </div>
           </div>
           <div class="field">
             <label for="editMensagem2">Mensagem automática do botão secundário</label>
@@ -207,15 +833,17 @@
         <!-- Seção Terceiro Botão -->
         <div class="section-title"><span class="material-icons-round">add_circle</span>Terceiro botão (opcional)</div>
         <div class="field-group">
-          <div class="field">
-            <label for="editWhatsapp3">Número do terceiro WhatsApp</label>
-            <input type="tel" id="editWhatsapp3" maxlength="18" inputmode="tel" />
-            <span class="helper-text">Use para um terceiro contato, se necessário.</span>
-          </div>
-          <div class="field">
-            <label for="editBotao3">Texto do terceiro botão</label>
-            <input type="text" id="editBotao3" placeholder="Ex: Ver cardápio" />
-            <span class="helper-text">Exemplos: "Cardápio", "Agendar", "Falar com financeiro".</span>
+          <div class="grid-2">
+            <div class="field">
+              <label for="editWhatsapp3">Número do terceiro WhatsApp</label>
+              <input type="tel" id="editWhatsapp3" maxlength="18" inputmode="tel" />
+              <span class="helper-text">Use para um terceiro contato, se necessário.</span>
+            </div>
+            <div class="field">
+              <label for="editBotao3">Texto do terceiro botão</label>
+              <input type="text" id="editBotao3" placeholder="Ex: Ver cardápio" />
+              <span class="helper-text">Exemplos: "Cardápio", "Agendar", "Falar com financeiro".</span>
+            </div>
           </div>
           <div class="field">
             <label for="editMensagem3">Mensagem automática do terceiro botão</label>
@@ -230,7 +858,7 @@
             <div class="field">
               <label for="editLogo">Logo (URL)</label>
               <input type="url" id="editLogo" />
-              <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link. Se falhar, usaremos as iniciais.</span>
+              <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link.</span>
               <div class="image-preview logo-preview" id="editLogoPreview"><img id="editLogoPreviewImg" src="" alt="Preview da logo" /></div>
             </div>
             <div class="field">
@@ -303,7 +931,7 @@
           </div>
         </div>
 
-        <button type="submit" id="saveBtn" class="btn-primary" style="width:100%; justify-content:center;">
+        <button type="submit" id="saveBtn" class="btn-primary">
           <span class="material-icons-round">save</span>
           Salvar alterações
           <span class="save-loader"></span>
