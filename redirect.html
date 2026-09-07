@@ -44,7 +44,7 @@
     gtag('config', 'G-TTJX70ENFL');
   </script>
 
-  <!-- CSS dos anúncios laterais -->
+  <!-- CSS dos anúncios (rodapé e vignette) -->
   <link rel="stylesheet" href="ad.css" />
 
   <!-- Estilos principais -->
@@ -135,7 +135,7 @@
       background:rgba(255,255,255,.05); color:#a1a1aa; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;
     }
 
-    /* Botão do site com nome em destaque (quando preenchido) */
+    /* Botão do site com nome em destaque */
     .site-destaque {
       width:100%; height:56px; border:0; border-radius:999px;
       background:rgba(255,255,255,.08); color:#fff; font-weight:600;
@@ -162,7 +162,7 @@
 </head>
 <body class="reception-body">
 
-  <!-- Wrapper para anúncios laterais e conteúdo principal -->
+  <!-- Wrapper para conteúdo principal -->
   <div class="ad-wrapper">
 
     <!-- Conteúdo principal -->
@@ -205,7 +205,7 @@
           <span id="whatsappBtn3Text"></span>
         </button>
 
-        <!-- Botão do site em destaque (se houver nome) -->
+        <!-- Botão do site em destaque -->
         <button id="siteDestaqueBtn" type="button" class="site-destaque hidden">
           <span class="material-icons-round">public</span>
           <span id="siteDestaqueText">Site</span>
@@ -463,13 +463,11 @@
         temSocial = true;
       }
       if (sanitizeUrl(data.site)) {
-        // Se houver site_nome, mostra botão em destaque (tamanho grande) e não o social pequeno
         if (data.site_nome && data.site_nome.trim() !== '') {
           $('siteDestaqueBtn').classList.remove('hidden');
           $('siteDestaqueText').textContent = data.site_nome.trim();
           $('siteDestaqueBtn').onclick = () => window.open(sanitizeUrl(data.site), '_blank');
         } else {
-          // Caso contrário, mantém botão social pequeno
           $('siteBtn').classList.remove('hidden');
           $('siteBtn').onclick = () => window.open(sanitizeUrl(data.site), '_blank');
           temSocial = true;
@@ -528,17 +526,37 @@
         const text = await response.text();
         const data = JSON.parse(text);
         if (data.error) throw new Error(data.error);
+
+        // ==========================================
+        // ARMAZENA A DATA DE CRIAÇÃO GLOBALMENTE
+        // ==========================================
+        window.__whatslinkCreatedAt = data.created_at || null;
+
+        // ==========================================
+        // DISPARA EVENTO PARA O AD.JS
+        // ==========================================
+        window.dispatchEvent(new CustomEvent('ads:init', {
+          detail: {
+            created_at: data.created_at,
+            slug: slug
+          }
+        }));
+
         const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
         await carregarCssTema(tema);
+
         document.documentElement.style.setProperty('--theme', CONFIG.THEME_COLORS[tema]);
         document.documentElement.style.setProperty('--theme-rgb', CONFIG.THEME_RGB[tema]);
         $('themeColorMeta').content = CONFIG.THEME_COLORS[tema];
         container.className = `reception-page theme-${tema}`;
         document.title = `${sanitizeString(data.empresa, 60) || 'WhatsApp'} | WhatsApp`;
+
         atualizarMetaTags(data, slug);
+
         if (typeof gtag === 'function') {
           gtag('event', 'view_link', { 'link_id': data.id, 'slug': slug, 'theme': tema });
         }
+
         renderizarHeader(data, container);
         $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
         if (data.descricao) {
@@ -551,10 +569,12 @@
         renderizarLocalizacao(data, tema);
         renderizarHorario(data);
         removeLoaders();
+
         requestAnimationFrame(() => {
           container.classList.add('loaded');
           container.style.opacity = '';
         });
+
       } catch (error) {
         console.error('[WhatsLink] Erro:', error);
         const msg = error.message || 'Não foi possível carregar este link';
@@ -569,7 +589,7 @@
     init();
   </script>
 
-  <!-- Script dos anúncios laterais -->
+  <!-- Script dos anúncios -->
   <script src="ad.js" defer></script>
 </body>
 </html>
