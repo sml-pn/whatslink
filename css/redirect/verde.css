@@ -1,324 +1,144 @@
 /* =========================================================
-   WHATSLINK - TEMA VERDE 2.0 - MINHA VERSÃO
-   CONCEITO: Emerald Forest - brilho orgânico, névoa e 
-   partículas vivas. 100% mobile.
+   WHATSLINK - TEMA VERDE 3.0
+   Mantendo a lógica original da página.
+   Fundo com identidade, 100% mobile, 480px desktop.
    ========================================================= */
 
 .theme-verde {
   --theme: #25D366;
   --theme-dark: #128C7E;
-  --theme-glow: #2ef283;
   --theme-rgb: 37, 211, 102;
-  --bg-main: #040805;
-  --bg-card: #0d1410;
-  --bg-card-2: #111a13;
-  --text-main: #ffffff;
-  --text-secondary: #9bb0a0;
-  --text-muted: #5a6e5e;
-  --border: rgba(255,255,255,.07);
-  --border-theme: rgba(37,211,102,.26);
-  --glass: rgba(255,255,255,.04);
-  --glass-strong: rgba(255,255,255,.07);
+  --bg-main: #08080a;
+  --bg-card: #111113;
 }
 
-/* RESET MOBILE FIX */
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body {
-  width:100%; max-width:100%;
-  background:var(--bg-main);
-  overflow-x:hidden;
-}
-body {
-  font-family:'Outfit', sans-serif;
-  color:var(--text-main);
-  min-height:100dvh; min-height:100svh;
-  display:flex; justify-content:center;
-  -webkit-font-smoothing:antialiased;
-}
-.ad-wrapper {
-  width:100%;
-  min-height:100dvh; min-height:100svh;
-  display:flex; justify-content:center; align-items:flex-start;
-}
+/* Fundo atrás - COM IDENTIDADE, não branco */
 .reception-body {
-  width:100%; min-height:100dvh; min-height:100svh;
   background:
-    radial-gradient(900px 500px at 50% -10%, rgba(var(--theme-rgb),.14), transparent 60%),
-    radial-gradient(600px 400px at 100% 100%, rgba(18,140,126,.10), transparent 55%),
-    radial-gradient(400px 300px at 0% 100%, rgba(var(--theme-rgb),.06), transparent 60%),
-    var(--bg-main);
+    radial-gradient(650px circle at 0% 0%, rgba(var(--theme-rgb),.16), transparent 42%),
+    radial-gradient(750px circle at 100% 100%, rgba(var(--theme-rgb),.10), transparent 45%),
+    radial-gradient(500px circle at 50% 50%, rgba(var(--theme-rgb),.04), transparent 60%),
+    var(--bg-main) !important;
 }
 
-/* CARD - 100% NO MOBILE */
+/* Mantendo exatamente a lógica original do seu redirect.html */
 .reception-page {
-  width:100%; max-width:100%;
-  min-height:100dvh; min-height:100svh;
-  margin:0; border-radius:0;
-  border-left:0; border-right:0;
   background:
-    linear-gradient(180deg, rgba(var(--theme-rgb),.06), transparent 28%),
-    linear-gradient(180deg, var(--bg-card) 0%, var(--bg-main) 100%);
-  position:relative; overflow:hidden;
-  display:flex; flex-direction:column; flex:1;
-  opacity:0; transform:translateY(16px);
-  transition: opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1);
-  will-change: transform, opacity;
+    linear-gradient(180deg, rgba(var(--theme-rgb),.04), transparent 24%),
+    var(--bg-card);
+  border:1px solid rgba(255,255,255,.06);
 }
-.reception-page.loaded { opacity:1; transform:translateY(0); }
 
-/* textura pontilhada esmeralda */
+/* Efeitos - sem alterar layout */
 .reception-page::before {
-  content:''; position:absolute; inset:0;
-  opacity:.045; pointer-events:none; z-index:0;
-  background-image: radial-gradient(circle at 1.5px 1.5px, var(--theme) 1.5px, transparent 0);
-  background-size:28px 28px;
+  content:''; position:absolute; inset:0; opacity:.045; pointer-events:none; z-index:0;
+  background-image: radial-gradient(circle at 1.5px 1.5px, var(--theme) 1.3px, transparent 0);
+  background-size:26px 26px;
 }
-/* linha superior com brilho */
 .reception-page::after {
   content:''; position:absolute; top:0; left:0; right:0; height:1px; z-index:4;
-  background: linear-gradient(90deg, transparent, var(--theme-glow), var(--theme), transparent);
-  opacity:.85; box-shadow:0 0 12px rgba(var(--theme-rgb),.6);
+  background: linear-gradient(90deg, transparent, var(--theme), transparent);
+  opacity:.7;
 }
 
-/* partículas vivas */
+/* Brilhos - mesma ideia do seu preto.css */
 .dust-layer {
-  position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.7;
+  position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.6;
   background-image:
-    radial-gradient(circle at 18% 28%, rgba(37,211,102,.95) 1.2px, transparent 2px),
-    radial-gradient(circle at 42% 62%, rgba(46,242,131,.7) 1px, transparent 1.8px),
-    radial-gradient(circle at 72% 38%, rgba(37,211,102,.6) 1.4px, transparent 2.2px),
-    radial-gradient(circle at 88% 78%, rgba(18,140,126,.55) 1px, transparent 1.7px),
-    radial-gradient(circle at 30% 88%, rgba(255,255,255,.35) .8px, transparent 1.2px);
-  background-size: 240px 240px, 200px 200px, 220px 220px, 260px 260px, 180px 180px;
-  animation: sparkleVerde 9s ease-in-out infinite alternate;
+    radial-gradient(circle at 20% 30%, rgba(var(--theme-rgb),.75) 1px, transparent 1.8px),
+    radial-gradient(circle at 60% 65%, rgba(var(--theme-rgb),.45) 1px, transparent 1.6px),
+    radial-gradient(circle at 80% 40%, rgba(var(--theme-rgb),.55) 1.2px, transparent 2px);
+  background-size:220px 220px;
+  animation: sparkleVerde 8s ease-in-out infinite alternate;
 }
-/* névoa verde */
 .fog-layer {
-  position:absolute; inset:-30%; width:160%; height:160%; pointer-events:none; z-index:1;
+  position:absolute; inset:-20%; width:140%; height:140%; pointer-events:none; z-index:1;
   background:
-    radial-gradient(ellipse at 30% 30%, rgba(var(--theme-rgb),.14), transparent 58%),
-    radial-gradient(ellipse at 70% 70%, rgba(18,140,126,.10), transparent 60%),
-    radial-gradient(ellipse at 50% 85%, rgba(var(--theme-rgb),.05), transparent 50%);
-  filter:blur(48px);
-  animation: fogDrift 26s ease-in-out infinite alternate;
+    radial-gradient(ellipse at 30% 30%, rgba(var(--theme-rgb),.11), transparent 60%),
+    radial-gradient(ellipse at 75% 75%, rgba(18,140,126,.08), transparent 55%);
+  filter:blur(42px);
+  animation: fogDrift 22s ease-in-out infinite alternate;
 }
 
-/* HEADER */
+/* Header - mantém 280px original */
 .header-visual {
-  width:100%; height:300px; position:relative; overflow:hidden; flex-shrink:0;
-  background: #08120a; z-index:2;
+  background: radial-gradient(circle at 50% 30%, rgba(var(--theme-rgb),.18), transparent 62%), #151517;
 }
-.banner-image, .color-banner { position:absolute; inset:0; width:100%; height:100%; }
-.banner-image img { width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.02); }
 .color-banner {
-  display:none; place-items:center;
-  background:
-    radial-gradient(circle at 50% 30%, rgba(var(--theme-rgb),.22), transparent 62%),
-    radial-gradient(circle at 80% 80%, rgba(18,140,126,.14), transparent 50%),
-    #08120a;
-  width:100%; height:100%; color:var(--theme);
+  background: radial-gradient(circle at 50% 35%, rgba(var(--theme-rgb),.20), transparent 65%), #151517 !important;
+  color:var(--theme) !important;
 }
-.color-banner .material-icons-round { font-size:72px; opacity:.9; filter:drop-shadow(0 0 20px rgba(var(--theme-rgb),.6)); text-shadow:0 0 30px rgba(var(--theme-rgb),.5); }
-.header-visual::after {
-  content:''; position:absolute; inset:0; z-index:3; pointer-events:none;
-  background: linear-gradient(to bottom, transparent 15%, rgba(13,20,16,.15) 40%, rgba(13,20,16,.65) 68%, var(--bg-card) 92%);
+.color-banner .material-icons-round {
+  filter:drop-shadow(0 0 18px rgba(var(--theme-rgb),.55));
 }
 
-/* CONTEÚDO */
-.reception-content {
-  position:relative; z-index:10;
-  padding: 0 max(20px, env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-  display:flex; flex-direction:column; align-items:center;
-  width:100%; margin-top:-52px;
-}
-.reception-page.no-banner .header-visual { display:none; }
-.reception-page.no-banner .reception-content { margin-top:28px; }
-.reception-page.has-banner .reception-content { margin-top:-62px; }
-
-/* LOGO / AVATAR */
+/* Logo com brilho verde */
 .logo-circle, .avatar-circle {
-  width:98px; height:98px; border-radius:50%; flex-shrink:0;
-  border:2.5px solid var(--theme);
+  border:3px solid var(--bg-card);
   box-shadow:
-    0 0 0 6px rgba(4,8,5,.9),
-    0 0 0 1px rgba(var(--theme-rgb),.25),
-    0 12px 28px rgba(0,0,0,.55),
-    0 0 32px rgba(var(--theme-rgb),.22);
-  overflow:hidden; display:flex; align-items:center; justify-content:center;
-  background:#0f1e13; animation: pop 0.8s cubic-bezier(.2,.8,.2,1) both; z-index:20;
+    0 0 0 2px rgba(var(--theme-rgb),.35),
+    0 0 0 6px rgba(8,8,10,.9),
+    0 12px 28px rgba(0,0,0,.5),
+    0 0 28px rgba(var(--theme-rgb),.22);
 }
-.logo-circle img { width:100%; height:100%; object-fit:cover; background:#fff; }
 .avatar-circle {
-  background: radial-gradient(circle at 30% 30%, var(--theme-glow), var(--theme) 45%, var(--theme-dark) 100%);
-  color:#fff; font-size:34px; font-weight:800; letter-spacing:-.04em;
+  background: linear-gradient(135deg, var(--theme), var(--theme-dark)) !important;
 }
 
-/* TEXTOS */
-.company-name {
-  font-size:27px; font-weight:800; letter-spacing:-.035em; line-height:1.05;
-  margin:18px 0 8px; text-align:center; color:#fff;
-  text-shadow: 0 2px 14px rgba(0,0,0,.7), 0 0 20px rgba(var(--theme-rgb),.18);
-  animation:fadeUp .65s .1s both;
-}
-.company-desc {
-  font-size:15px; line-height:1.65; font-weight:400;
-  color:var(--text-secondary); text-align:center; max-width:33ch;
-  margin:0 0 26px; animation:fadeUp .65s .16s both;
-  white-space:pre-line;
-}
-.divider {
-  width:32px; height:4px; border-radius:999px; margin:0 0 26px;
-  background: linear-gradient(90deg, var(--theme), var(--theme-glow));
-  box-shadow: 0 0 16px rgba(var(--theme-rgb),.65), 0 0 32px rgba(var(--theme-rgb),.25);
-  animation:fadeUp .65s .18s both;
-}
+/* Textos */
+.company-name { text-shadow: 0 2px 12px rgba(0,0,0,.6), 0 0 18px rgba(var(--theme-rgb),.15); }
+.divider { background: var(--theme) !important; box-shadow:0 0 12px rgba(var(--theme-rgb),.6); }
 
-/* BOTÕES WHATSAPP */
+/* Botões - mantém tamanho original 56px */
 .whatsapp-btn {
-  width:100%; min-height:58px; border:1px solid rgba(var(--theme-rgb),.38);
-  border-radius:999px; cursor:pointer; position:relative; overflow:hidden;
-  background: linear-gradient(135deg, var(--theme) 0%, #1fb25a 50%, var(--theme-dark) 100%);
-  color:#fff; font-family:inherit; font-size:15.5px; font-weight:700; letter-spacing:.01em;
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  box-shadow:
-    0 10px 28px rgba(var(--theme-rgb),.32),
-    0 2px 0 rgba(255,255,255,.14) inset,
-    0 -1px 0 rgba(0,0,0,.2) inset;
-  transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
-  animation:fadeUp .65s .22s both;
-  -webkit-tap-highlight-color:transparent;
+  background: linear-gradient(135deg, var(--theme), var(--theme-dark)) !important;
+  border:1px solid rgba(var(--theme-rgb),.32);
+  box-shadow: 0 8px 26px rgba(var(--theme-rgb),.28), inset 0 1px 0 rgba(255,255,255,.14);
 }
-.whatsapp-btn::before {
-  content:''; position:absolute; inset:1px; border-radius:999px;
-  background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 40%);
-  pointer-events:none;
-}
-.whatsapp-btn:hover { transform:translateY(-2px); box-shadow:0 16px 38px rgba(var(--theme-rgb),.42); filter:brightness(1.05); }
-.whatsapp-btn:active { transform:translateY(0) scale(.985); }
-
 .whatsapp-btn.secondary {
-  margin-top:12px; color:#e8f5e9;
-  background: linear-gradient(180deg, rgba(37,211,102,.12), rgba(37,211,102,.07));
-  border:1px solid rgba(37,211,102,.24);
-  box-shadow: 0 4px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.06);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  background: rgba(37,211,102,.08) !important;
+  border:1px solid rgba(37,211,102,.22) !important;
+  backdrop-filter:blur(10px);
 }
-.whatsapp-btn.secondary:hover { background: linear-gradient(180deg, rgba(37,211,102,.18), rgba(37,211,102,.10)); border-color:rgba(37,211,102,.34); }
-
 .whatsapp-btn.tertiary {
-  margin-top:12px; color:#a7b5a9;
-  background: rgba(255,255,255,.035);
-  border:1px solid rgba(255,255,255,.07);
-  box-shadow:none; backdrop-filter:blur(12px);
+  background: rgba(255,255,255,.04) !important;
+  border:1px solid rgba(255,255,255,.06) !important;
 }
-
-.whatsapp-icon {
-  width:30px; height:30px; border-radius:50%;
-  background: rgba(255,255,255,.22);
-  display:grid; place-items:center; font-size:16px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
-}
-.btn-shine {
-  position:absolute; top:0; left:-110%; width:65%; height:100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
-  transform:skewX(-18deg); animation:shine 4.2s infinite; pointer-events:none;
-}
-
 .site-destaque {
-  width:100%; height:56px; border-radius:999px;
-  border:1px solid var(--border-theme);
-  background: rgba(var(--theme-rgb),.09);
-  color:#fff; font-weight:650; font-size:14.5px;
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  cursor:pointer; margin-top:12px; backdrop-filter:blur(12px);
-  transition:.22s; animation:fadeUp .65s .24s both;
+  background: rgba(37,211,102,.08) !important;
+  border:1px solid rgba(37,211,102,.22) !important;
 }
-.site-destaque:hover { background: rgba(var(--theme-rgb),.15); border-color:rgba(var(--theme-rgb),.36); transform:translateY(-1px); }
+.whatsapp-icon { background: rgba(255,255,255,.22) !important; }
+.btn-shine { background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent) !important; }
 
-/* SOCIAIS */
-.social-links { width:100%; display:flex; gap:10px; margin-top:16px; animation:fadeUp .65s .28s both; }
 .social-btn {
-  flex:1; height:46px; border-radius:999px;
-  border:1px solid var(--border-theme);
-  background: linear-gradient(180deg, rgba(var(--theme-rgb),.07), rgba(var(--theme-rgb),.04));
-  color:var(--text-secondary); font-size:13px; font-weight:600;
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  cursor:pointer; transition:.22s; backdrop-filter:blur(10px);
+  border:1px solid rgba(37,211,102,.20) !important;
+  background: rgba(37,211,102,.06) !important;
 }
-.social-btn:hover { background: rgba(var(--theme-rgb),.14); color:#fff; transform:translateY(-1px); border-color:rgba(var(--theme-rgb),.36); box-shadow:0 6px 16px rgba(var(--theme-rgb),.15); }
-.social-btn i { font-size:16px; }
-
-/* CARDS */
-.location-block, .info-block {
-  width:100%; margin-top:20px; border-radius:22px;
-  border:1px solid rgba(255,255,255,.06);
-  background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
-  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  overflow:hidden; animation:fadeUp .65s .32s both;
-  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+.social-btn:hover {
+  background: rgba(37,211,102,.13) !important;
+  border-color: rgba(37,211,102,.32) !important;
 }
-.section-label {
-  padding:16px 18px 10px; display:flex; align-items:center; gap:8px;
-  font-size:10.5px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--text-muted);
+
+.section-label .material-icons-round { color:var(--theme) !important; }
+.info-icon { background: rgba(var(--theme-rgb),.12) !important; color:var(--theme) !important; border:1px solid rgba(var(--theme-rgb),.18); }
+.powered-by .heart { color:var(--theme) !important; }
+
+/* Animações */
+@keyframes sparkleVerde {
+  0% { opacity:.35; transform:scale(1); }
+  50% { opacity:.82; transform:scale(1.04); }
+  100% { opacity:.48; transform:scale(1); }
 }
-.section-label .material-icons-round { font-size:16px; color:var(--theme); filter:drop-shadow(0 0 6px rgba(var(--theme-rgb),.5)); }
-.map-container { padding:0 8px 8px; }
-.map-container iframe { border-radius:16px!important; filter:saturate(1.1) contrast(1.02); }
-.map-link {
-  height:48px; display:flex; align-items:center; justify-content:center; gap:8px;
-  text-decoration:none; font-size:13px; font-weight:600; color:var(--text-secondary);
-  border-top:1px solid rgba(255,255,255,.06); transition:.2s;
-}
-.map-link:hover { color:var(--theme); background:rgba(var(--theme-rgb),.06); }
-.location-fallback { padding:28px 20px; text-align:center; }
-.location-fallback-icon { width:52px; height:52px; border-radius:50%; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; margin:0 auto 12px; box-shadow:0 0 0 1px rgba(var(--theme-rgb),.18) inset; }
-.location-fallback p { color:var(--text-secondary); font-size:13px; margin:0 0 16px; }
-.location-fallback a { display:inline-flex; align-items:center; gap:6px; padding:10px 18px; border-radius:999px; background:var(--theme); color:#000; text-decoration:none; font-size:13px; font-weight:700; box-shadow:0 6px 18px rgba(var(--theme-rgb),.3); }
+@keyframes fogDrift { from { transform:translate(0,0); } to { transform:translate(2.5%,2%); } }
 
-.info-block { padding:16px; display:flex; gap:14px; align-items:flex-start; }
-.info-icon { width:38px; height:38px; border-radius:11px; background:rgba(var(--theme-rgb),.12); color:var(--theme); display:grid; place-items:center; flex-shrink:0; border:1px solid rgba(var(--theme-rgb),.18); }
-.info-content h3 { margin:0 0 4px; font-size:10.5px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--text-muted); }
-.info-content p { margin:0; font-size:14px; line-height:1.55; color:#dce9de; white-space:pre-line; }
-#horarioTexto { white-space:pre-line; }
-
-.powered-by { margin-top:30px; font-size:11px; color:var(--text-muted); display:flex; align-items:center; gap:6px; letter-spacing:.02em; }
-.powered-by a { color:#7a9a7e; text-decoration:none; font-weight:650; transition:.2s; }
-.powered-by a:hover { color:var(--theme); }
-.powered-by .heart { color:var(--theme); filter:drop-shadow(0 0 6px rgba(var(--theme-rgb),.6)); }
-
-.hidden { display:none !important; }
-
-/* ANIMAÇÕES */
-@keyframes shine { 0%,58% { left:-110%; } 78%,100% { left:160%; } }
-@keyframes pop { 0% { transform:scale(.68) translateY(18px); opacity:0; } 60% { transform:scale(1.04) translateY(-2px); } 100% { transform:scale(1) translateY(0); opacity:1; } }
-@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-@keyframes fogDrift { 0% { transform:translate(0,0) scale(1); } 100% { transform:translate(3.5%,2.5%) scale(1.03); } }
-@keyframes sparkleVerde { 0% { opacity:.32; transform:scale(1) translateY(0); } 50% { opacity:.88; transform:scale(1.05) translateY(-1px); } 100% { opacity:.52; transform:scale(1) translateY(0); } }
-
-/* DESKTOP - vira card centralizado */
-@media (min-width: 600px) {
-  .ad-wrapper { padding:24px 16px; align-items:center; }
+/* Desktop mantém exatamente sua regra original */
+@media (min-width:600px) {
   .reception-page {
-    max-width:480px !important;
+    margin:32px auto !important;
     min-height:auto !important;
-    margin:0 auto !important;
-    border-radius:28px !important;
-    border:1px solid rgba(255,255,255,.08) !important;
-    flex:none;
-    box-shadow: 0 30px 90px rgba(0,0,0,.85), 0 0 0 1px rgba(var(--theme-rgb),.08);
+    border-radius:32px !important;
+    border:1px solid rgba(255,255,255,.06) !important;
+    box-shadow: 0 20px 70px rgba(0,0,0,.65), 0 0 0 1px rgba(var(--theme-rgb),.06);
   }
-  .header-visual { height:260px; border-radius:28px 28px 0 0; }
-  .reception-content { padding:0 26px 30px 26px; }
-}
-
-/* telas muito pequenas */
-@media (max-width: 360px) {
-  .reception-content { padding-left:16px; padding-right:16px; }
-  .company-name { font-size:24px; }
-  .whatsapp-btn { font-size:14.5px; min-height:54px; }
-}
-
-/* acessibilidade */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
 }
