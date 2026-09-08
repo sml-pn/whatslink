@@ -517,31 +517,48 @@
     }
 
     async function init() {
-      const container = $('container');
-      container.style.opacity = '0';
-      const slug = new URLSearchParams(location.search).get('slug')?.trim();
-      if (!slug) { location.replace('/'); return; }
-      try {
-        const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
-        const text = await response.text();
-        const data = JSON.parse(text);
-        if (data.error) throw new Error(data.error);
+  const container = $('container');
+  container.style.opacity = '0';
 
-        // ==========================================
-        // ARMAZENA A DATA DE CRIAÇÃO GLOBALMENTE
-        // ==========================================
-        window.__whatslinkCreatedAt = data.created_at || null;
+  // ==========================================
+  // OBTÉM O SLUG DA QUERY STRING OU DO CAMINHO
+  // ==========================================
+  let slug = new URLSearchParams(location.search).get('slug')?.trim();
+  if (!slug) {
+    const path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+    // Ignora se for a raiz, index.html, redirect.html, criar.html, editar.html ou vazio
+    const ignored = ['', 'index.html', 'redirect.html', 'criar.html', 'editar.html'];
+    if (path && !ignored.includes(path)) {
+      slug = path;
+    }
+  }
+  // Se não tiver slug, redireciona para a raiz (página inicial)
+  if (!slug) {
+    window.location.href = '/';
+    return;
+  }
+  // ==========================================
 
-        // ==========================================
-        // DISPARA EVENTO PARA O AD.JS
-        // ==========================================
-        window.dispatchEvent(new CustomEvent('ads:init', {
-          detail: {
-            created_at: data.created_at,
-            slug: slug
-          }
-        }));
+  try {
+    const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
+    const text = await response.text();
+    const data = JSON.parse(text);
+    if (data.error) throw new Error(data.error);
 
+    // ==========================================
+    // ARMAZENA A DATA DE CRIAÇÃO GLOBALMENTE
+    // ==========================================
+    window.__whatslinkCreatedAt = data.created_at || null;
+
+    // ==========================================
+    // DISPARA EVENTO PARA O AD.JS
+    // ==========================================
+    window.dispatchEvent(new CustomEvent('ads:init', {
+      detail: {
+        created_at: data.created_at,
+        slug: slug
+      }
+    }));
         const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
         await carregarCssTema(tema);
 
