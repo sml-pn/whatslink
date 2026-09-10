@@ -43,7 +43,6 @@
   <style>
     /* =========================================================
        WHATSLINK - PÁGINA MEUS LINKS - CSS OTIMIZADO MOBILE
-       Aproveitamento total da largura, sem conflitos
        ========================================================= */
     :root {
       --theme: #25D366;
@@ -430,10 +429,16 @@
       font-size: 15px;
       margin: 16px 0 8px;
       color: var(--text-main);
+      flex-wrap: wrap;
     }
     .section-title .material-icons-round {
       color: var(--theme);
       font-size: 18px;
+    }
+    .section-title .section-hint {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
     }
 
     .field-group {
@@ -520,6 +525,103 @@
     }
     .input-icon-group input {
       padding-left: 32px !important;
+    }
+
+    /* ========== WHATSAPP EXTRA (4 A 10) ========== */
+    .whatsapp-extra {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+      animation: fadeUp 0.3s ease both;
+    }
+    .whatsapp-extra-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .whatsapp-extra-header strong {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--theme);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .whatsapp-extra-header strong::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--theme);
+    }
+    .remove-whatsapp {
+      background: rgba(239, 68, 68, 0.1);
+      border: none;
+      color: #ef4444;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+    }
+    .remove-whatsapp:hover {
+      background: rgba(239, 68, 68, 0.2);
+      transform: scale(1.05);
+    }
+    .remove-whatsapp .material-icons-round {
+      font-size: 16px;
+    }
+
+    #addWhatsappBtn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      background: rgba(37, 211, 102, 0.08);
+      border: 2px dashed rgba(37, 211, 102, 0.4);
+      border-radius: 12px;
+      color: var(--theme);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+    }
+    #addWhatsappBtn:hover {
+      background: rgba(37, 211, 102, 0.15);
+      border-color: var(--theme);
+      transform: translateY(-2px);
+    }
+    #addWhatsappBtn:active {
+      transform: scale(0.98);
+    }
+    #addWhatsappBtn .material-icons-round {
+      font-size: 20px;
+    }
+
+    .whatsapp-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(37, 211, 102, 0.12);
+      color: var(--theme);
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 6px;
     }
 
     /* Seletor de temas */
@@ -810,7 +912,7 @@
         </div>
 
         <!-- Seção WhatsApp Secundário -->
-        <div class="section-title"><span class="material-icons-round">chat</span>WhatsApp secundário (opcional)</div>
+        <div class="section-title"><span class="material-icons-round">chat</span>WhatsApp secundário <span class="section-hint">(opcional)</span></div>
         <div class="field-group">
           <div class="grid-2">
             <div class="field">
@@ -831,7 +933,7 @@
         </div>
 
         <!-- Seção Terceiro Botão -->
-        <div class="section-title"><span class="material-icons-round">add_circle</span>Terceiro botão (opcional)</div>
+        <div class="section-title"><span class="material-icons-round">add_circle</span>Terceiro botão <span class="section-hint">(opcional)</span></div>
         <div class="field-group">
           <div class="grid-2">
             <div class="field">
@@ -849,6 +951,23 @@
             <label for="editMensagem3">Mensagem automática do terceiro botão</label>
             <textarea id="editMensagem3" rows="2"></textarea>
           </div>
+        </div>
+
+        <!-- SEÇÃO NOVA: MAIS WHATSAPPS ATÉ 10 -->
+        <div class="section-title">
+          <span class="material-icons-round">groups</span>
+          Mais WhatsApps
+          <span class="whatsapp-counter" id="whatsappCounter">3 de 10</span>
+        </div>
+        <div class="field-group">
+          <p class="helper-text" style="margin-bottom: 8px;">
+            Ideal para vários vendedores/atendentes. Cada um terá seu próprio botão na página final. Máximo: 10 WhatsApps no total.
+          </p>
+          <div id="maisWhatsappsContainer"></div>
+          <button type="button" id="addWhatsappBtn">
+            <span class="material-icons-round">add_circle</span>
+            Adicionar WhatsApp
+          </button>
         </div>
 
         <!-- Seção Aparência -->
@@ -944,6 +1063,7 @@
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
+    const MAX_WHATSAPP = 10;
     let currentUser = null;
     let linksCache = [];
 
@@ -1005,6 +1125,76 @@
     formatarWhatsApp($('#editWhatsapp'));
     formatarWhatsApp($('#editWhatsapp2'));
     formatarWhatsApp($('#editWhatsapp3'));
+
+    // ============ WHATSAPP EXTRA (4 A 10) ============
+    function atualizarContadorWhatsapp() {
+      const total = 3 + $$('#maisWhatsappsContainer .whatsapp-extra').length;
+      $('#whatsappCounter').textContent = `${total} de ${MAX_WHATSAPP}`;
+      const addBtn = $('#addWhatsappBtn');
+      if (total >= MAX_WHATSAPP) {
+        addBtn.style.display = 'none';
+      } else {
+        addBtn.style.display = 'flex';
+      }
+    }
+
+    function criarBlocoWhatsappExtra(numero, dados = {}) {
+      const div = document.createElement('div');
+      div.className = 'whatsapp-extra';
+      div.dataset.num = numero;
+      div.innerHTML = `
+        <div class="whatsapp-extra-header">
+          <strong>WhatsApp ${numero}</strong>
+          <button type="button" class="remove-whatsapp" title="Remover">
+            <span class="material-icons-round">close</span>
+          </button>
+        </div>
+        <div class="field">
+          <label>Número</label>
+          <input type="tel" class="extra-numero" placeholder="(85) 90000-0000" maxlength="18" inputmode="tel" value="${dados.numero || ''}" />
+        </div>
+        <div class="field">
+          <label>Texto do botão</label>
+          <input type="text" class="extra-botao" placeholder="Ex: Falar com vendas" value="${dados.botao || ''}" />
+        </div>
+        <div class="field">
+          <label>Mensagem automática</label>
+          <textarea class="extra-mensagem" rows="2" placeholder="Ex: Olá, gostaria de mais informações.">${dados.mensagem || ''}</textarea>
+        </div>
+      `;
+      formatarWhatsApp(div.querySelector('.extra-numero'));
+      div.querySelector('.remove-whatsapp').addEventListener('click', () => {
+        div.style.opacity = '0';
+        div.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+          div.remove();
+          reindexarExtras();
+          atualizarContadorWhatsapp();
+        }, 200);
+      });
+      return div;
+    }
+
+    function reindexarExtras() {
+      $$('#maisWhatsappsContainer .whatsapp-extra').forEach((el, idx) => {
+        const num = 4 + idx;
+        el.dataset.num = num;
+        const strong = el.querySelector('.whatsapp-extra-header strong');
+        if (strong) strong.textContent = `WhatsApp ${num}`;
+      });
+    }
+
+    $('#addWhatsappBtn').addEventListener('click', () => {
+      const total = 3 + $$('#maisWhatsappsContainer .whatsapp-extra').length;
+      if (total >= MAX_WHATSAPP) {
+        showToast('Limite de 10 WhatsApps atingido', 'info');
+        return;
+      }
+      const novoBloco = criarBlocoWhatsappExtra(total + 1);
+      $('#maisWhatsappsContainer').appendChild(novoBloco);
+      atualizarContadorWhatsapp();
+      setTimeout(() => { novoBloco.querySelector('.extra-numero')?.focus(); }, 100);
+    });
 
     // ============ EXTRAIR URL DO GOOGLE MAPS ============
     function extrairUrlEmbed(html) {
@@ -1158,6 +1348,39 @@
         $('#editHorario').value = data.horario || '';
         $('#editTema').value = data.tema || 'verde';
 
+        // ============ CARREGAR WHATSAPPS EXTRAS (4 A 10) ============
+        $('#maisWhatsappsContainer').innerHTML = '';
+        const extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras : [];
+        extras.forEach((w, idx) => {
+          const num = 4 + idx;
+          if (w && (w.numero || w.botao || w.mensagem)) {
+            const bloco = criarBlocoWhatsappExtra(num, {
+              numero: w.numero || '',
+              botao: w.botao || '',
+              mensagem: w.mensagem || ''
+            });
+            $('#maisWhatsappsContainer').appendChild(bloco);
+          }
+        });
+        // Fallback: se a API retornar campos individuais whatsapp4..whatsapp10
+        if (extras.length === 0) {
+          for (let n = 4; n <= MAX_WHATSAPP; n++) {
+            const numero = data['whatsapp' + n];
+            const botao = data['botao_whatsapp' + n];
+            const mensagem = data['mensagem_whatsapp' + n];
+            if (numero || botao || mensagem) {
+              const bloco = criarBlocoWhatsappExtra(n, {
+                numero: numero || '',
+                botao: botao || '',
+                mensagem: mensagem || ''
+              });
+              $('#maisWhatsappsContainer').appendChild(bloco);
+            }
+          }
+        }
+        atualizarContadorWhatsapp();
+        // ==========================================================
+
         if (data.logo_url) {
           $('#editLogoPreviewImg').src = data.logo_url;
           $('#editLogoPreview').style.display = 'block';
@@ -1205,6 +1428,18 @@
       });
     });
 
+    // ============ COLETA DE WHATSAPPS EXTRAS ============
+    function coletarWhatsappsExtras() {
+      const extras = [];
+      $$('#maisWhatsappsContainer .whatsapp-extra').forEach(el => {
+        const numero = el.querySelector('.extra-numero').value.trim().replace(/\D/g, '');
+        const botao = el.querySelector('.extra-botao').value.trim();
+        const mensagem = el.querySelector('.extra-mensagem').value.trim();
+        if (numero) extras.push({ numero, botao, mensagem });
+      });
+      return extras;
+    }
+
     // ============ SUBMETER FORMULÁRIO DE EDIÇÃO ============
     $('#editForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -1216,6 +1451,8 @@
       const msgPrincipal = $('#editMensagem1').value.trim();
       const msgSecundaria = $('#editMensagem2').value.trim() || msgPrincipal;
       const msgTerceira = $('#editMensagem3').value.trim() || msgPrincipal;
+
+      const extras = coletarWhatsappsExtras();
 
       const data = {
         action: 'editar',
@@ -1240,8 +1477,17 @@
         site_nome: $('#editSiteNome').value.trim(),
         localizacao: extrairUrlEmbed($('#editLocalizacao').value.trim()),
         horario: $('#editHorario').value.trim(),
-        tema: $('#editTema').value
+        tema: $('#editTema').value,
+        whatsapps_extras: extras
       };
+
+      // Campos individuais extras (whatsapp4..whatsapp10) para compatibilidade com a API
+      extras.forEach((w, idx) => {
+        const n = 4 + idx;
+        data['whatsapp' + n] = w.numero;
+        data['botao_whatsapp' + n] = w.botao;
+        data['mensagem_whatsapp' + n] = w.mensagem;
+      });
 
       try {
         const response = await fetch(API_URL, {
