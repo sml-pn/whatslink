@@ -193,17 +193,22 @@
           <span class="btn-shine"></span>
         </button>
 
-        <!-- Botão secundário do WhatsApp -->
-        <button id="whatsappBtn2" type="button" class="whatsapp-btn secondary hidden">
+        <!-- Botão secundário do WhatsApp (mesmo estilo do principal) -->
+        <button id="whatsappBtn2" type="button" class="whatsapp-btn hidden">
           <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
           <span id="whatsappBtn2Text"></span>
+          <span class="btn-shine"></span>
         </button>
 
-        <!-- Botão terceiro do WhatsApp -->
-        <button id="whatsappBtn3" type="button" class="whatsapp-btn tertiary hidden">
+        <!-- Botão terceiro do WhatsApp (mesmo estilo do principal) -->
+        <button id="whatsappBtn3" type="button" class="whatsapp-btn hidden">
           <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
           <span id="whatsappBtn3Text"></span>
+          <span class="btn-shine"></span>
         </button>
+
+        <!-- Botões WhatsApp extras (4 a 10) - gerados dinamicamente -->
+        <div id="maisWhatsappBtns" style="width:100%;"></div>
 
         <!-- Botão do site em destaque -->
         <button id="siteDestaqueBtn" type="button" class="site-destaque hidden">
@@ -252,7 +257,8 @@
       THEMES: ['verde', 'azul', 'roxo', 'laranja', 'preto', 'cardapio'],
       DEFAULT_THEME: 'verde',
       THEME_COLORS: { verde:'#25D366', azul:'#3b82f6', roxo:'#8b5cf6', laranja:'#f97316', preto:'#d4af37', cardapio:'#ff8f00' },
-      THEME_RGB: { verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0' }
+      THEME_RGB: { verde:'37,211,102', azul:'59,130,246', roxo:'139,92,246', laranja:'249,115,22', preto:'212,175,55', cardapio:'255,143,0' },
+      MAX_WHATSAPP: 10
     };
 
     const $ = id => document.getElementById(id);
@@ -415,8 +421,23 @@
       }
     }
 
+    // ========== CRIA BOTÃO WHATSAPP PADRONIZADO ==========
+    // Todos os botões usam o mesmo estilo visual do principal (gradiente do tema)
+    function criarBotaoWhatsapp(texto, url) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'whatsapp-btn';
+      btn.innerHTML = `
+        <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
+        <span>${sanitizeString(texto, 50)}</span>
+        <span class="btn-shine"></span>
+      `;
+      btn.onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
+      return btn;
+    }
+
     function renderizarWhatsApp(data) {
-      // Botão principal
+      // ===== Botão principal =====
       if (isValidWhatsApp(data.whatsapp)) {
         const wa = formatarWhatsApp(data.whatsapp);
         let url = `https://wa.me/${wa}`;
@@ -427,7 +448,7 @@
         $('whatsappBtnText').textContent = 'WhatsApp indisponível';
       }
 
-      // Botão secundário
+      // ===== Botão secundário (mesmo estilo do principal) =====
       if (isValidWhatsApp(data.whatsapp2)) {
         const wa2 = formatarWhatsApp(data.whatsapp2);
         let url2 = `https://wa.me/${wa2}`;
@@ -438,7 +459,7 @@
         $('whatsappBtn2').onclick = () => window.open(url2, '_blank', 'noopener,noreferrer');
       }
 
-      // Botão terceiro
+      // ===== Botão terceiro (mesmo estilo do principal) =====
       if (isValidWhatsApp(data.whatsapp3)) {
         const wa3 = formatarWhatsApp(data.whatsapp3);
         let url3 = `https://wa.me/${wa3}`;
@@ -448,6 +469,42 @@
         $('whatsappBtn3').classList.remove('hidden');
         $('whatsappBtn3').onclick = () => window.open(url3, '_blank', 'noopener,noreferrer');
       }
+
+      // ===== Botões extras 4 a 10 (mesmo estilo do principal) =====
+      renderizarWhatsappExtras(data);
+    }
+
+    // ========== RENDERIZA BOTÕES EXTRAS (4 A 10) ==========
+    function renderizarWhatsappExtras(data) {
+      const container = $('maisWhatsappBtns');
+      if (!container) return;
+      container.innerHTML = '';
+
+      // Coleta extras: prioridade para array whatsapps_extras
+      let extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras.slice() : [];
+
+      // Fallback: campos individuais whatsapp4..whatsapp10
+      if (extras.length === 0) {
+        for (let n = 4; n <= CONFIG.MAX_WHATSAPP; n++) {
+          const numero = data['whatsapp' + n];
+          const botao = data['botao_whatsapp' + n];
+          const mensagem = data['mensagem_whatsapp' + n];
+          if (numero) extras.push({ numero, botao, mensagem });
+        }
+      }
+
+      // Cria os botões
+      extras.forEach((w, idx) => {
+        if (!w || !isValidWhatsApp(w.numero)) return;
+        const numero = formatarWhatsApp(w.numero);
+        let url = `https://wa.me/${numero}`;
+        const msg = (w.mensagem && String(w.mensagem).trim()) || data.mensagem;
+        if (msg) url += `?text=${encodeURIComponent(msg)}`;
+
+        const texto = sanitizeString(w.botao, 50) || `WhatsApp ${4 + idx}`;
+        const btn = criarBotaoWhatsapp(texto, url);
+        container.appendChild(btn);
+      });
     }
 
     function renderizarRedesSociais(data) {
@@ -517,48 +574,47 @@
     }
 
     async function init() {
-  const container = $('container');
-  container.style.opacity = '0';
+      const container = $('container');
+      container.style.opacity = '0';
 
-  // ==========================================
-  // OBTÉM O SLUG DA QUERY STRING OU DO CAMINHO
-  // ==========================================
-  let slug = new URLSearchParams(location.search).get('slug')?.trim();
-  if (!slug) {
-    const path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
-    // Ignora se for a raiz, index.html, redirect.html, criar.html, editar.html ou vazio
-    const ignored = ['', 'index.html', 'redirect.html', 'criar.html', 'editar.html'];
-    if (path && !ignored.includes(path)) {
-      slug = path;
-    }
-  }
-  // Se não tiver slug, redireciona para a raiz (página inicial)
-  if (!slug) {
-    window.location.href = '/';
-    return;
-  }
-  // ==========================================
-
-  try {
-    const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
-    const text = await response.text();
-    const data = JSON.parse(text);
-    if (data.error) throw new Error(data.error);
-
-    // ==========================================
-    // ARMAZENA A DATA DE CRIAÇÃO GLOBALMENTE
-    // ==========================================
-    window.__whatslinkCreatedAt = data.created_at || null;
-
-    // ==========================================
-    // DISPARA EVENTO PARA O AD.JS
-    // ==========================================
-    window.dispatchEvent(new CustomEvent('ads:init', {
-      detail: {
-        created_at: data.created_at,
-        slug: slug
+      // ==========================================
+      // OBTÉM O SLUG DA QUERY STRING OU DO CAMINHO
+      // ==========================================
+      let slug = new URLSearchParams(location.search).get('slug')?.trim();
+      if (!slug) {
+        const path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+        const ignored = ['', 'index.html', 'redirect.html', 'criar.html', 'editar.html'];
+        if (path && !ignored.includes(path)) {
+          slug = path;
+        }
       }
-    }));
+      if (!slug) {
+        window.location.href = '/';
+        return;
+      }
+      // ==========================================
+
+      try {
+        const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
+        const text = await response.text();
+        const data = JSON.parse(text);
+        if (data.error) throw new Error(data.error);
+
+        // ==========================================
+        // ARMAZENA A DATA DE CRIAÇÃO GLOBALMENTE
+        // ==========================================
+        window.__whatslinkCreatedAt = data.created_at || null;
+
+        // ==========================================
+        // DISPARA EVENTO PARA O AD.JS
+        // ==========================================
+        window.dispatchEvent(new CustomEvent('ads:init', {
+          detail: {
+            created_at: data.created_at,
+            slug: slug
+          }
+        }));
+
         const tema = isValidTheme(data.tema) ? data.tema : CONFIG.DEFAULT_THEME;
         await carregarCssTema(tema);
 
