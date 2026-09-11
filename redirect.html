@@ -107,33 +107,54 @@
     .company-name { min-height:32px; font-size:26px; font-weight:700; letter-spacing:-.03em; margin:16px 0 8px; text-align:center; }
     .company-desc { min-height:20px; font-size:15px; color:#9f9fa9; text-align:center; max-width:32ch; margin:0 0 24px; }
 
-    /* Botões WhatsApp */
+    /* ============================================================
+       BOTÕES DE WHATSAPP
+       Todos usam o mesmo estilo (gradiente do tema, ícone redondo
+       e efeito de brilho animado).
+       ============================================================ */
     .whatsapp-btn {
       width:100%; height:56px; border:0; border-radius:999px;
       background:linear-gradient(135deg, var(--theme), #128C7E); color:#fff; font-weight:600;
       display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer;
       position:relative; overflow:hidden; margin-bottom:12px;
+      transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
     }
-    .whatsapp-btn.secondary {
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
+    .whatsapp-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 8px 24px rgba(var(--theme-rgb), .25);
     }
-    .whatsapp-btn.tertiary {
-      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06);
+    .whatsapp-btn:active { transform: scale(.98); }
+
+    .whatsapp-icon {
+      width:28px; height:28px; border-radius:50%;
+      background:rgba(255,255,255,.2);
+      display:grid; place-items:center; font-size:16px;
     }
-    .whatsapp-icon { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.2); display:grid; place-items:center; font-size:16px; }
     .btn-shine {
       position:absolute; top:0; left:-100%; width:60%; height:100%;
       background:linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
       transform:skewX(-20deg); animation:shine 4s infinite;
+      pointer-events:none;
     }
     @keyframes shine { 0%,60% { left:-100%; } 80%,100% { left:150%; } }
+
+    /* Container dos botões extras (2 a 10) - gerados dinamicamente */
+    #maisWhatsappBtns {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
 
     /* Redes sociais */
     .social-links { width:100%; display:flex; gap:10px; margin-top:4px; }
     .social-btn {
       flex:1; height:46px; border-radius:999px; border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.05); color:#a1a1aa; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;
+      transition: background .2s ease, color .2s ease;
+      font-family: inherit;
     }
+    .social-btn:hover { background:rgba(255,255,255,.1); color:#fff; }
 
     /* Botão do site com nome em destaque */
     .site-destaque {
@@ -141,7 +162,10 @@
       background:rgba(255,255,255,.08); color:#fff; font-weight:600;
       display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer;
       margin-top:12px;
+      font-family: inherit;
+      transition: background .2s ease;
     }
+    .site-destaque:hover { background:rgba(255,255,255,.12); }
 
     .location-block, .info-block {
       width:100%; margin-top:20px; border-radius:24px; border:1px solid rgba(255,255,255,.06);
@@ -193,22 +217,8 @@
           <span class="btn-shine"></span>
         </button>
 
-        <!-- Botão secundário do WhatsApp (mesmo estilo do principal) -->
-        <button id="whatsappBtn2" type="button" class="whatsapp-btn hidden">
-          <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
-          <span id="whatsappBtn2Text"></span>
-          <span class="btn-shine"></span>
-        </button>
-
-        <!-- Botão terceiro do WhatsApp (mesmo estilo do principal) -->
-        <button id="whatsappBtn3" type="button" class="whatsapp-btn hidden">
-          <span class="whatsapp-icon"><i class="fab fa-whatsapp"></i></span>
-          <span id="whatsappBtn3Text"></span>
-          <span class="btn-shine"></span>
-        </button>
-
-        <!-- Botões WhatsApp extras (4 a 10) - gerados dinamicamente -->
-        <div id="maisWhatsappBtns" style="width:100%;"></div>
+        <!-- Container dos botões extras (2 a 10) - preenchido via JS -->
+        <div id="maisWhatsappBtns"></div>
 
         <!-- Botão do site em destaque -->
         <button id="siteDestaqueBtn" type="button" class="site-destaque hidden">
@@ -250,6 +260,9 @@
   <script>
     'use strict';
 
+    // ============================================================
+    // CONFIGURAÇÕES GLOBAIS
+    // ============================================================
     const CONFIG = {
       API_URL: 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec',
       TIMEOUT_MS: 10000,
@@ -264,6 +277,9 @@
     const $ = id => document.getElementById(id);
     const $$ = selector => [...document.querySelectorAll(selector)];
 
+    // ============================================================
+    // UTILITÁRIOS
+    // ============================================================
     function sanitizeString(value, maxLength = 500) {
       if (value === null || value === undefined) return '';
       return String(value).trim().slice(0, maxLength);
@@ -387,6 +403,9 @@
       container.style.opacity = '';
     }
 
+    // ============================================================
+    // RENDERIZAR HEADER (banner / logo / avatar)
+    // ============================================================
     function renderizarHeader(data, container) {
       const temBanner = sanitizeUrl(data.banner_url) !== '';
       const logoUrl = sanitizeUrl(data.logo_url);
@@ -421,8 +440,10 @@
       }
     }
 
-    // ========== CRIA BOTÃO WHATSAPP PADRONIZADO ==========
-    // Todos os botões usam o mesmo estilo visual do principal (gradiente do tema)
+    // ============================================================
+    // CRIAR BOTÃO WHATSAPP PADRONIZADO
+    // Todos os botões usam o mesmo estilo visual do principal.
+    // ============================================================
     function criarBotaoWhatsapp(texto, url) {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -436,8 +457,11 @@
       return btn;
     }
 
+    // ============================================================
+    // RENDERIZAR BOTÃO PRINCIPAL + EXTRAS
+    // ============================================================
     function renderizarWhatsApp(data) {
-      // ===== Botão principal =====
+      // ----- Botão principal -----
       if (isValidWhatsApp(data.whatsapp)) {
         const wa = formatarWhatsApp(data.whatsapp);
         let url = `https://wa.me/${wa}`;
@@ -446,54 +470,43 @@
         $('whatsappBtn').onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
       } else {
         $('whatsappBtnText').textContent = 'WhatsApp indisponível';
+        $('whatsappBtn').disabled = true;
       }
 
-      // ===== Botão secundário (mesmo estilo do principal) =====
-      if (isValidWhatsApp(data.whatsapp2)) {
-        const wa2 = formatarWhatsApp(data.whatsapp2);
-        let url2 = `https://wa.me/${wa2}`;
-        const msg2 = data.mensagem_whatsapp2 || data.mensagem;
-        if (msg2) url2 += `?text=${encodeURIComponent(msg2)}`;
-        $('whatsappBtn2Text').textContent = sanitizeString(data.botao_whatsapp2, 50) || 'Falar no WhatsApp';
-        $('whatsappBtn2').classList.remove('hidden');
-        $('whatsappBtn2').onclick = () => window.open(url2, '_blank', 'noopener,noreferrer');
-      }
-
-      // ===== Botão terceiro (mesmo estilo do principal) =====
-      if (isValidWhatsApp(data.whatsapp3)) {
-        const wa3 = formatarWhatsApp(data.whatsapp3);
-        let url3 = `https://wa.me/${wa3}`;
-        const msg3 = data.mensagem_whatsapp3 || data.mensagem;
-        if (msg3) url3 += `?text=${encodeURIComponent(msg3)}`;
-        $('whatsappBtn3Text').textContent = sanitizeString(data.botao_whatsapp3, 50) || 'Falar no WhatsApp';
-        $('whatsappBtn3').classList.remove('hidden');
-        $('whatsappBtn3').onclick = () => window.open(url3, '_blank', 'noopener,noreferrer');
-      }
-
-      // ===== Botões extras 4 a 10 (mesmo estilo do principal) =====
+      // ----- Botões extras (2 a 10) -----
       renderizarWhatsappExtras(data);
     }
 
-    // ========== RENDERIZA BOTÕES EXTRAS (4 A 10) ==========
+    // ============================================================
+    // RENDERIZAR EXTRAS (2 A 10)
+    // Lê do array whatsapps_extras (prioridade) OU dos campos
+    // individuais whatsapp2..whatsapp10 (fallback).
+    // Todos com o mesmo estilo do botão principal.
+    // ============================================================
     function renderizarWhatsappExtras(data) {
       const container = $('maisWhatsappBtns');
       if (!container) return;
       container.innerHTML = '';
 
-      // Coleta extras: prioridade para array whatsapps_extras
-      let extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras.slice() : [];
+      // Coleta os extras
+      let extras = [];
 
-      // Fallback: campos individuais whatsapp4..whatsapp10
-      if (extras.length === 0) {
-        for (let n = 4; n <= CONFIG.MAX_WHATSAPP; n++) {
+      // Prioridade 1: array whatsapps_extras
+      if (Array.isArray(data.whatsapps_extras) && data.whatsapps_extras.length > 0) {
+        extras = data.whatsapps_extras;
+      } else {
+        // Fallback: campos individuais
+        for (let n = 2; n <= CONFIG.MAX_WHATSAPP; n++) {
           const numero = data['whatsapp' + n];
           const botao = data['botao_whatsapp' + n];
           const mensagem = data['mensagem_whatsapp' + n];
-          if (numero) extras.push({ numero, botao, mensagem });
+          if (numero || botao || mensagem) {
+            extras.push({ numero: numero || '', botao: botao || '', mensagem: mensagem || '' });
+          }
         }
       }
 
-      // Cria os botões
+      // Cria os botões (apenas os que têm número válido)
       extras.forEach((w, idx) => {
         if (!w || !isValidWhatsApp(w.numero)) return;
         const numero = formatarWhatsApp(w.numero);
@@ -501,12 +514,15 @@
         const msg = (w.mensagem && String(w.mensagem).trim()) || data.mensagem;
         if (msg) url += `?text=${encodeURIComponent(msg)}`;
 
-        const texto = sanitizeString(w.botao, 50) || `WhatsApp ${4 + idx}`;
+        const texto = sanitizeString(w.botao, 50) || `WhatsApp ${2 + idx}`;
         const btn = criarBotaoWhatsapp(texto, url);
         container.appendChild(btn);
       });
     }
 
+    // ============================================================
+    // RENDERIZAR REDES SOCIAIS
+    // ============================================================
     function renderizarRedesSociais(data) {
       let temSocial = false;
       if (data.instagram) {
@@ -533,6 +549,9 @@
       if (temSocial) $('socialLinks').classList.remove('hidden');
     }
 
+    // ============================================================
+    // RENDERIZAR LOCALIZAÇÃO
+    // ============================================================
     function renderizarLocalizacao(data, tema) {
       if (!data.localizacao) return;
       const locUrl = sanitizeUrl(data.localizacao) || data.localizacao.trim();
@@ -553,12 +572,18 @@
       }
     }
 
+    // ============================================================
+    // RENDERIZAR HORÁRIO
+    // ============================================================
     function renderizarHorario(data) {
       if (!data.horario) return;
       $('horarioBlock').classList.remove('hidden');
       $('horarioTexto').textContent = sanitizeString(data.horario, 300);
     }
 
+    // ============================================================
+    // ATUALIZAR META TAGS (OG / Twitter)
+    // ============================================================
     function atualizarMetaTags(data, slug) {
       const ogTitle = `${data.empresa || 'WhatsApp'} | WhatsApp`;
       const ogDescription = data.descricao || 'Entre em contato pelo WhatsApp.';
@@ -573,17 +598,18 @@
       $('twitterImage').setAttribute('content', ogImage);
     }
 
+    // ============================================================
+    // INICIALIZAÇÃO
+    // ============================================================
     async function init() {
       const container = $('container');
       container.style.opacity = '0';
 
-      // ==========================================
-      // OBTÉM O SLUG DA QUERY STRING OU DO CAMINHO
-      // ==========================================
+      // Obtém slug via ?slug= ou pelo caminho da URL
       let slug = new URLSearchParams(location.search).get('slug')?.trim();
       if (!slug) {
         const path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
-        const ignored = ['', 'index.html', 'redirect.html', 'criar.html', 'editar.html'];
+        const ignored = ['', 'index.html', 'redirect.html', 'criar.html', 'editar.html', 'edit.html'];
         if (path && !ignored.includes(path)) {
           slug = path;
         }
@@ -592,7 +618,6 @@
         window.location.href = '/';
         return;
       }
-      // ==========================================
 
       try {
         const response = await fetchRetry(`${CONFIG.API_URL}?slug=${encodeURIComponent(slug)}`);
@@ -600,14 +625,10 @@
         const data = JSON.parse(text);
         if (data.error) throw new Error(data.error);
 
-        // ==========================================
-        // ARMAZENA A DATA DE CRIAÇÃO GLOBALMENTE
-        // ==========================================
+        // Armazena data de criação globalmente (usado pelo ad.js)
         window.__whatslinkCreatedAt = data.created_at || null;
 
-        // ==========================================
-        // DISPARA EVENTO PARA O AD.JS
-        // ==========================================
+        // Dispara evento para o ad.js
         window.dispatchEvent(new CustomEvent('ads:init', {
           detail: {
             created_at: data.created_at,
@@ -626,6 +647,7 @@
 
         atualizarMetaTags(data, slug);
 
+        // Google Analytics: evento personalizado
         if (typeof gtag === 'function') {
           gtag('event', 'view_link', { 'link_id': data.id, 'slug': slug, 'theme': tema });
         }
@@ -637,7 +659,8 @@
           $('descricaoTexto').classList.remove('hidden');
         }
         if (tema === 'preto') $('divider').classList.remove('hidden');
-        renderizarWhatsApp(data);
+
+        renderizarWhatsApp(data);          // principal + extras
         renderizarRedesSociais(data);
         renderizarLocalizacao(data, tema);
         renderizarHorario(data);
