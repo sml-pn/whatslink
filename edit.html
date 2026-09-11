@@ -527,7 +527,26 @@
       padding-left: 32px !important;
     }
 
-    /* ========== WHATSAPP EXTRA (4 A 10) ========== */
+    /* ========== AVISO INFORMATIVO (MAIS WHATSAPPS) ========== */
+    .whatsapp-info-box {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.5;
+    }
+    .whatsapp-info-box .material-icons-round {
+      font-size: 18px;
+      flex-shrink: 0;
+      color: #1e40af;
+    }
+
+    /* ========== WHATSAPP EXTRA (2 A 10) ========== */
     .whatsapp-extra {
       background: white;
       border: 1px solid var(--border);
@@ -841,7 +860,7 @@
   </header>
 
   <div class="edit-container">
-    <!-- BLOCO DE LOGIN -->
+    <!-- ================= BLOCO DE LOGIN ================= -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
@@ -856,7 +875,7 @@
       </button>
     </div>
 
-    <!-- ÁREA DO USUÁRIO -->
+    <!-- ================= ÁREA DO USUÁRIO ================= -->
     <div id="userArea" style="display:none;">
       <div class="user-area">
         <img id="userPhoto" src="" alt="Foto" />
@@ -868,14 +887,14 @@
       </div>
     </div>
 
-    <!-- LISTA DE LINKS -->
+    <!-- ================= LISTA DE LINKS ================= -->
     <div id="linksArea" style="display:none;">
       <h2 style="margin-bottom:12px;">Meus Links</h2>
       <div id="linksList"></div>
     </div>
   </div>
 
-  <!-- MODAL DE EDIÇÃO -->
+  <!-- ================= MODAL DE EDIÇÃO ================= -->
   <div class="modal-overlay" id="editModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -886,7 +905,7 @@
         <input type="hidden" id="editId" />
         <input type="hidden" id="editToken" />
 
-        <!-- Seção Identificação -->
+        <!-- ================= Seção Identificação ================= -->
         <div class="section-title"><span class="material-icons-round">business</span>Identificação</div>
         <div class="field-group">
           <div class="field">
@@ -911,66 +930,26 @@
           </div>
         </div>
 
-        <!-- Seção WhatsApp Secundário -->
-        <div class="section-title"><span class="material-icons-round">chat</span>WhatsApp secundário <span class="section-hint">(opcional)</span></div>
-        <div class="field-group">
-          <div class="grid-2">
-            <div class="field">
-              <label for="editWhatsapp2">Número do WhatsApp secundário</label>
-              <input type="tel" id="editWhatsapp2" maxlength="18" inputmode="tel" />
-              <span class="helper-text">Segundo número para atendimento diferenciado.</span>
-            </div>
-            <div class="field">
-              <label for="editBotao2">Texto do botão secundário</label>
-              <input type="text" id="editBotao2" />
-              <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com gerente".</span>
-            </div>
-          </div>
-          <div class="field">
-            <label for="editMensagem2">Mensagem automática do botão secundário</label>
-            <textarea id="editMensagem2" rows="2"></textarea>
-          </div>
-        </div>
-
-        <!-- Seção Terceiro Botão -->
-        <div class="section-title"><span class="material-icons-round">add_circle</span>Terceiro botão <span class="section-hint">(opcional)</span></div>
-        <div class="field-group">
-          <div class="grid-2">
-            <div class="field">
-              <label for="editWhatsapp3">Número do terceiro WhatsApp</label>
-              <input type="tel" id="editWhatsapp3" maxlength="18" inputmode="tel" />
-              <span class="helper-text">Use para um terceiro contato, se necessário.</span>
-            </div>
-            <div class="field">
-              <label for="editBotao3">Texto do terceiro botão</label>
-              <input type="text" id="editBotao3" placeholder="Ex: Ver cardápio" />
-              <span class="helper-text">Exemplos: "Cardápio", "Agendar", "Falar com financeiro".</span>
-            </div>
-          </div>
-          <div class="field">
-            <label for="editMensagem3">Mensagem automática do terceiro botão</label>
-            <textarea id="editMensagem3" rows="2"></textarea>
-          </div>
-        </div>
-
-        <!-- SEÇÃO NOVA: MAIS WHATSAPPS ATÉ 10 -->
+        <!-- ================= Seção Mais WhatsApps (2 a 10) ================= -->
         <div class="section-title">
           <span class="material-icons-round">groups</span>
           Mais WhatsApps
-          <span class="whatsapp-counter" id="whatsappCounter">3 de 10</span>
+          <span class="whatsapp-counter" id="whatsappCounter">1 de 10</span>
+          <span class="section-hint">(opcional)</span>
         </div>
         <div class="field-group">
-          <p class="helper-text" style="margin-bottom: 8px;">
-            Ideal para vários vendedores/atendentes. Cada um terá seu próprio botão na página final. Máximo: 10 WhatsApps no total.
-          </p>
+          <div class="whatsapp-info-box">
+            <span class="material-icons-round">lightbulb</span>
+            <span>Ideal para vários vendedores ou atendentes. Cada WhatsApp vira um botão na sua página, <strong>com a mesma cor do principal</strong>. Preencha número, texto do botão e mensagem automática. Máximo: 10 números.</span>
+          </div>
           <div id="maisWhatsappsContainer"></div>
           <button type="button" id="addWhatsappBtn">
             <span class="material-icons-round">add_circle</span>
-            Adicionar WhatsApp
+            Adicionar outro WhatsApp
           </button>
         </div>
 
-        <!-- Seção Aparência -->
+        <!-- ================= Seção Aparência ================= -->
         <div class="section-title"><span class="material-icons-round">palette</span>Aparência</div>
         <div class="field-group">
           <div class="grid-2">
@@ -1001,7 +980,7 @@
           </div>
         </div>
 
-        <!-- Seção Conteúdo -->
+        <!-- ================= Seção Conteúdo ================= -->
         <div class="section-title"><span class="material-icons-round">description</span>Conteúdo</div>
         <div class="field-group">
           <div class="field">
@@ -1011,7 +990,7 @@
           </div>
         </div>
 
-        <!-- Seção Contatos -->
+        <!-- ================= Seção Contatos ================= -->
         <div class="section-title"><span class="material-icons-round">share</span>Contatos e links</div>
         <div class="field-group">
           <div class="grid-2">
@@ -1062,6 +1041,9 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    // ============================================================
+    // CONFIGURAÇÕES GLOBAIS
+    // ============================================================
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     const MAX_WHATSAPP = 10;
     let currentUser = null;
@@ -1070,6 +1052,9 @@
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
 
+    // ============================================================
+    // TOAST (notificação temporária)
+    // ============================================================
     function showToast(msg, icon = 'check_circle') {
       const t = $('#toast');
       if (!t) return;
@@ -1078,7 +1063,9 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ============ INICIALIZAR GOOGLE IDENTITY ============
+    // ============================================================
+    // GOOGLE IDENTITY SERVICES
+    // ============================================================
     window.onload = function() {
       if (typeof google !== 'undefined') {
         google.accounts.id.initialize({
@@ -1109,7 +1096,9 @@
       }
     }
 
-    // ============ FORMATAR WHATSAPP ============
+    // ============================================================
+    // MÁSCARA DE TELEFONE
+    // ============================================================
     function formatarWhatsApp(input) {
       if (!input) return;
       input.addEventListener('input', (e) => {
@@ -1123,12 +1112,12 @@
       });
     }
     formatarWhatsApp($('#editWhatsapp'));
-    formatarWhatsApp($('#editWhatsapp2'));
-    formatarWhatsApp($('#editWhatsapp3'));
 
-    // ============ WHATSAPP EXTRA (4 A 10) ============
+    // ============================================================
+    // GERENCIAMENTO DE WHATSAPP EXTRA (2 A 10)
+    // ============================================================
     function atualizarContadorWhatsapp() {
-      const total = 3 + $$('#maisWhatsappsContainer .whatsapp-extra').length;
+      const total = 1 + $$('#maisWhatsappsContainer .whatsapp-extra').length;
       $('#whatsappCounter').textContent = `${total} de ${MAX_WHATSAPP}`;
       const addBtn = $('#addWhatsappBtn');
       if (total >= MAX_WHATSAPP) {
@@ -1142,6 +1131,12 @@
       const div = document.createElement('div');
       div.className = 'whatsapp-extra';
       div.dataset.num = numero;
+
+      // Escapa aspas para não quebrar o value
+      const safeNumero = String(dados.numero || '').replace(/"/g, '&quot;');
+      const safeBotao = String(dados.botao || '').replace(/"/g, '&quot;');
+      const safeMensagem = String(dados.mensagem || '');
+
       div.innerHTML = `
         <div class="whatsapp-extra-header">
           <strong>WhatsApp ${numero}</strong>
@@ -1150,16 +1145,19 @@
           </button>
         </div>
         <div class="field">
-          <label>Número</label>
-          <input type="tel" class="extra-numero" placeholder="(85) 90000-0000" maxlength="18" inputmode="tel" value="${dados.numero || ''}" />
+          <label>Número *</label>
+          <input type="tel" class="extra-numero" placeholder="(85) 90000-0000" maxlength="18" inputmode="tel" value="${safeNumero}" />
+          <span class="helper-text">Digite apenas números, com DDD.</span>
         </div>
         <div class="field">
           <label>Texto do botão</label>
-          <input type="text" class="extra-botao" placeholder="Ex: Falar com vendas" value="${dados.botao || ''}" />
+          <input type="text" class="extra-botao" placeholder="Ex: Falar com vendas" value="${safeBotao}" />
+          <span class="helper-text">Exemplos: "Suporte", "Unidade Centro", "Falar com vendas".</span>
         </div>
         <div class="field">
           <label>Mensagem automática</label>
-          <textarea class="extra-mensagem" rows="2" placeholder="Ex: Olá, gostaria de mais informações.">${dados.mensagem || ''}</textarea>
+          <textarea class="extra-mensagem" rows="2" placeholder="Ex: Olá, gostaria de mais informações.">${safeMensagem}</textarea>
+          <span class="helper-text">Se deixar vazio, usa a mensagem principal.</span>
         </div>
       `;
       formatarWhatsApp(div.querySelector('.extra-numero'));
@@ -1177,7 +1175,7 @@
 
     function reindexarExtras() {
       $$('#maisWhatsappsContainer .whatsapp-extra').forEach((el, idx) => {
-        const num = 4 + idx;
+        const num = 2 + idx;
         el.dataset.num = num;
         const strong = el.querySelector('.whatsapp-extra-header strong');
         if (strong) strong.textContent = `WhatsApp ${num}`;
@@ -1185,7 +1183,7 @@
     }
 
     $('#addWhatsappBtn').addEventListener('click', () => {
-      const total = 3 + $$('#maisWhatsappsContainer .whatsapp-extra').length;
+      const total = 1 + $$('#maisWhatsappsContainer .whatsapp-extra').length;
       if (total >= MAX_WHATSAPP) {
         showToast('Limite de 10 WhatsApps atingido', 'info');
         return;
@@ -1196,7 +1194,9 @@
       setTimeout(() => { novoBloco.querySelector('.extra-numero')?.focus(); }, 100);
     });
 
-    // ============ EXTRAIR URL DO GOOGLE MAPS ============
+    // ============================================================
+    // EXTRAIR URL DE EMBED (Google Maps)
+    // ============================================================
     function extrairUrlEmbed(html) {
       if (!html) return '';
       const trimmed = html.trim();
@@ -1219,7 +1219,9 @@
       }, 100);
     });
 
-    // ============ PREVIEW DE LOGO ============
+    // ============================================================
+    // PREVIEW DE LOGO
+    // ============================================================
     function atualizarPreviewEditLogo() {
       const url = $('#editLogo').value.trim();
       const preview = $('#editLogoPreview');
@@ -1233,7 +1235,9 @@
     $('#editLogo').addEventListener('input', atualizarPreviewEditLogo);
     $('#editLogo').addEventListener('paste', () => setTimeout(atualizarPreviewEditLogo, 100));
 
-    // ============ PREVIEW DE BANNER ============
+    // ============================================================
+    // PREVIEW DE BANNER
+    // ============================================================
     function atualizarPreviewEditBanner() {
       const url = $('#editBanner').value.trim();
       const preview = $('#editBannerPreview');
@@ -1247,7 +1251,9 @@
     $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
     $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
 
-    // ============ INDICADOR DE CARREGAMENTO ============
+    // ============================================================
+    // INDICADOR DE CARREGAMENTO
+    // ============================================================
     function mostrarCarregando() {
       const linksArea = $('#linksArea');
       const linksList = $('#linksList');
@@ -1262,7 +1268,9 @@
       }
     }
 
-    // ============ BUSCAR MEUS LINKS ============
+    // ============================================================
+    // BUSCAR MEUS LINKS
+    // ============================================================
     async function buscarMeusLinks() {
       try {
         mostrarCarregando();
@@ -1314,7 +1322,9 @@
       `).join('');
     }
 
-    // ============ ABRIR EDIÇÃO ============
+    // ============================================================
+    // ABRIR EDIÇÃO
+    // ============================================================
     window.abrirEdicao = async function(id, token) {
       try {
         const response = await fetch(API_URL, {
@@ -1325,18 +1335,13 @@
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
+        // ---- Preenche campos básicos ----
         $('#editId').value = data.id;
         $('#editToken').value = token;
         $('#editEmpresa').value = data.empresa || '';
         $('#editWhatsapp').value = data.whatsapp || '';
         $('#editBotao1').value = data.botao_whatsapp || '';
         $('#editMensagem1').value = data.mensagem || '';
-        $('#editWhatsapp2').value = data.whatsapp2 || '';
-        $('#editBotao2').value = data.botao_whatsapp2 || '';
-        $('#editMensagem2').value = data.mensagem_whatsapp2 || '';
-        $('#editWhatsapp3').value = data.whatsapp3 || '';
-        $('#editBotao3').value = data.botao_whatsapp3 || '';
-        $('#editMensagem3').value = data.mensagem_whatsapp3 || '';
         $('#editLogo').value = data.logo_url || '';
         $('#editBanner').value = data.banner_url || '';
         $('#editDescricao').value = data.descricao || '';
@@ -1348,39 +1353,42 @@
         $('#editHorario').value = data.horario || '';
         $('#editTema').value = data.tema || 'verde';
 
-        // ============ CARREGAR WHATSAPPS EXTRAS (4 A 10) ============
+        // ---- Reconstrói os blocos extras ----
         $('#maisWhatsappsContainer').innerHTML = '';
-        const extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras : [];
-        extras.forEach((w, idx) => {
-          const num = 4 + idx;
+
+        // Prioridade 1: array whatsapps_extras
+        let extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras : [];
+
+        // Fallback: campos individuais whatsapp2..whatsapp10
+        if (extras.length === 0) {
+          const temp = [];
+          for (let n = 2; n <= MAX_WHATSAPP; n++) {
+            const numero = data['whatsapp' + n];
+            const botao = data['botao_whatsapp' + n];
+            const mensagem = data['mensagem_whatsapp' + n];
+            if (numero || botao || mensagem) {
+              temp.push({ numero: numero || '', botao: botao || '', mensagem: mensagem || '' });
+            }
+          }
+          extras = temp;
+        }
+
+        // Cria apenas os blocos que têm número
+        let indexBloco = 2;
+        extras.forEach(w => {
           if (w && (w.numero || w.botao || w.mensagem)) {
-            const bloco = criarBlocoWhatsappExtra(num, {
+            const bloco = criarBlocoWhatsappExtra(indexBloco, {
               numero: w.numero || '',
               botao: w.botao || '',
               mensagem: w.mensagem || ''
             });
             $('#maisWhatsappsContainer').appendChild(bloco);
+            indexBloco++;
           }
         });
-        // Fallback: se a API retornar campos individuais whatsapp4..whatsapp10
-        if (extras.length === 0) {
-          for (let n = 4; n <= MAX_WHATSAPP; n++) {
-            const numero = data['whatsapp' + n];
-            const botao = data['botao_whatsapp' + n];
-            const mensagem = data['mensagem_whatsapp' + n];
-            if (numero || botao || mensagem) {
-              const bloco = criarBlocoWhatsappExtra(n, {
-                numero: numero || '',
-                botao: botao || '',
-                mensagem: mensagem || ''
-              });
-              $('#maisWhatsappsContainer').appendChild(bloco);
-            }
-          }
-        }
         atualizarContadorWhatsapp();
-        // ==========================================================
 
+        // ---- Previews de imagens ----
         if (data.logo_url) {
           $('#editLogoPreviewImg').src = data.logo_url;
           $('#editLogoPreview').style.display = 'block';
@@ -1390,6 +1398,7 @@
           $('#editBannerPreview').style.display = 'block';
         } else { $('#editBannerPreview').style.display = 'none'; }
 
+        // ---- Marca tema ativo ----
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
         });
@@ -1400,7 +1409,9 @@
       }
     };
 
-    // Fechar modal
+    // ============================================================
+    // FECHAR MODAL
+    // ============================================================
     $('#closeEditModal').addEventListener('click', () => {
       $('#editModal').classList.remove('active');
     });
@@ -1411,7 +1422,9 @@
       }
     });
 
-    // Seleção de tema no modal
+    // ============================================================
+    // SELEÇÃO DE TEMA NO MODAL
+    // ============================================================
     $$('#editThemeSelector .theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
         const temaSelecionado = card.dataset.theme;
@@ -1428,46 +1441,57 @@
       });
     });
 
-    // ============ COLETA DE WHATSAPPS EXTRAS ============
+    // ============================================================
+    // COLETA DOS WHATSAPPS EXTRAS
+    // ============================================================
     function coletarWhatsappsExtras() {
       const extras = [];
       $$('#maisWhatsappsContainer .whatsapp-extra').forEach(el => {
         const numero = el.querySelector('.extra-numero').value.trim().replace(/\D/g, '');
         const botao = el.querySelector('.extra-botao').value.trim();
         const mensagem = el.querySelector('.extra-mensagem').value.trim();
-        if (numero) extras.push({ numero, botao, mensagem });
+        extras.push({ numero, botao, mensagem });
       });
       return extras;
     }
 
-    // ============ SUBMETER FORMULÁRIO DE EDIÇÃO ============
+    // ============================================================
+    // SUBMETER FORMULÁRIO DE EDIÇÃO
+    // ============================================================
     $('#editForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Valida principal
+      const whatsappPrincipal = $('#editWhatsapp').value.trim().replace(/\D/g, '');
+      if (!whatsappPrincipal) {
+        showToast('Preencha o WhatsApp principal', 'error');
+        $('#editWhatsapp').focus();
+        return;
+      }
+
+      const extras = coletarWhatsappsExtras();
+
+      // Valida cada extra
+      for (let i = 0; i < extras.length; i++) {
+        if (!extras[i].numero) {
+          showToast(`Preencha o número do WhatsApp ${i + 2}`, 'error');
+          return;
+        }
+      }
+
       const saveBtn = $('#saveBtn');
       const loader = saveBtn.querySelector('.save-loader');
       saveBtn.disabled = true;
       loader.style.display = 'inline-block';
-
-      const msgPrincipal = $('#editMensagem1').value.trim();
-      const msgSecundaria = $('#editMensagem2').value.trim() || msgPrincipal;
-      const msgTerceira = $('#editMensagem3').value.trim() || msgPrincipal;
-
-      const extras = coletarWhatsappsExtras();
 
       const data = {
         action: 'editar',
         id: $('#editId').value,
         edit_token: $('#editToken').value,
         empresa: $('#editEmpresa').value.trim(),
-        whatsapp: $('#editWhatsapp').value.trim().replace(/\D/g, ''),
-        whatsapp2: $('#editWhatsapp2').value.trim().replace(/\D/g, ''),
-        whatsapp3: $('#editWhatsapp3').value.trim().replace(/\D/g, ''),
+        whatsapp: whatsappPrincipal,
         botao_whatsapp: $('#editBotao1').value.trim(),
-        botao_whatsapp2: $('#editBotao2').value.trim(),
-        botao_whatsapp3: $('#editBotao3').value.trim(),
-        mensagem: msgPrincipal,
-        mensagem_whatsapp2: msgSecundaria,
-        mensagem_whatsapp3: msgTerceira,
+        mensagem: $('#editMensagem1').value.trim(),
         logo_url: $('#editLogo').value.trim(),
         banner_url: $('#editBanner').value.trim(),
         descricao: $('#editDescricao').value.trim(),
@@ -1480,14 +1504,6 @@
         tema: $('#editTema').value,
         whatsapps_extras: extras
       };
-
-      // Campos individuais extras (whatsapp4..whatsapp10) para compatibilidade com a API
-      extras.forEach((w, idx) => {
-        const n = 4 + idx;
-        data['whatsapp' + n] = w.numero;
-        data['botao_whatsapp' + n] = w.botao;
-        data['mensagem_whatsapp' + n] = w.mensagem;
-      });
 
       try {
         const response = await fetch(API_URL, {
@@ -1508,7 +1524,9 @@
       }
     });
 
-    // ============ LOGOUT ============
+    // ============================================================
+    // LOGOUT
+    // ============================================================
     $('#logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
       currentUser = null;
@@ -1517,7 +1535,9 @@
       $('#linksArea').style.display = 'none';
     });
 
-    // ============ RESTAURAR SESSÃO ============
+    // ============================================================
+    // RESTAURAR SESSÃO
+    // ============================================================
     const savedUser = localStorage.getItem('whatslink_user');
     if (savedUser) {
       currentUser = JSON.parse(savedUser);
