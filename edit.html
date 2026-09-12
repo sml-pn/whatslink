@@ -262,6 +262,141 @@
       color: #ef4444;
     }
 
+    /* ============================================================
+       BANNER DE EDIÇÕES RESTANTES
+       ============================================================ */
+    .edicoes-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid;
+      animation: fadeUp 0.4s ease both;
+    }
+    .edicoes-banner .material-icons-round { font-size: 20px; flex-shrink: 0; }
+
+    .edicoes-banner.ok {
+      background: #f0fdf4;
+      border-color: #86efac;
+      color: #166534;
+    }
+    .edicoes-banner.ok .material-icons-round { color: #22c55e; }
+
+    .edicoes-banner.warning {
+      background: #fffbeb;
+      border-color: #fcd34d;
+      color: #92400e;
+    }
+    .edicoes-banner.warning .material-icons-round { color: #f59e0b; }
+
+    .edicoes-banner.danger {
+      background: #fef2f2;
+      border-color: #fca5a5;
+      color: #991b1b;
+    }
+    .edicoes-banner.danger .material-icons-round { color: #ef4444; }
+
+    .edicoes-banner strong { font-weight: 700; }
+
+    /* ============================================================
+       BLOCO RECOLHÍVEL "ONDE COLOCAR SEU LINK"
+       ============================================================ */
+    .where-details {
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-card);
+      overflow: hidden;
+      animation: fadeUp 0.4s ease both;
+    }
+    .where-details summary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      list-style: none;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+    .where-details summary::-webkit-details-marker { display: none; }
+    .where-details summary:hover { background: #f8fafc; }
+    .where-details summary .material-icons-round {
+      color: var(--theme);
+      font-size: 18px;
+    }
+    .where-details summary .arrow {
+      margin-left: auto;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+      font-size: 20px;
+    }
+    .where-details[open] summary .arrow { transform: rotate(180deg); }
+
+    .where-details .where-content {
+      padding: 0 14px 14px;
+    }
+    .where-details .subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .where-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .where-card {
+      display: flex;
+      gap: 10px;
+      padding: 10px 12px;
+      background: #fafbfc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+    .where-card:hover {
+      border-color: var(--theme);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.1);
+      transform: translateY(-1px);
+    }
+    .where-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      color: white;
+    }
+    .where-card-icon.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .where-card-icon.google { background: linear-gradient(135deg, #4285F4, #34A853); }
+    .where-card-icon.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+    .where-card-icon.tiktok { background: linear-gradient(135deg, #000000, #25F4EE); }
+
+    .where-card-body { flex: 1; min-width: 0; }
+    .where-card-body strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .where-card-body p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
     /* ========== LISTA DE LINKS ========== */
     #linksArea h2 {
       font-size: 18px;
@@ -401,7 +536,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
     }
     .modal-header h2 {
       font-size: 18px;
@@ -419,6 +554,34 @@
       line-height: 1;
       padding: 4px;
     }
+
+    /* Contador dentro do modal */
+    .modal-edicoes-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+    .modal-edicoes-info.ok {
+      background: #f0fdf4;
+      color: #166534;
+    }
+    .modal-edicoes-info.ok .material-icons-round { color: #22c55e; }
+    .modal-edicoes-info.warning {
+      background: #fffbeb;
+      color: #92400e;
+    }
+    .modal-edicoes-info.warning .material-icons-round { color: #f59e0b; }
+    .modal-edicoes-info.danger {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+    .modal-edicoes-info.danger .material-icons-round { color: #ef4444; }
+    .modal-edicoes-info .material-icons-round { font-size: 16px; }
 
     /* Formulário do modal */
     .section-title {
@@ -769,9 +932,10 @@
       transform: scale(0.98);
     }
     #saveBtn:disabled {
-      opacity: 0.7;
+      opacity: 0.5;
       cursor: not-allowed;
       transform: none;
+      box-shadow: none;
     }
     .save-loader {
       display: none;
@@ -844,6 +1008,7 @@
       .logo { font-size: 26px; }
       .logo-icon { width: 40px; height: 40px; font-size: 22px; }
       .back-link { font-size: 14px; }
+      .where-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -889,6 +1054,65 @@
 
     <!-- ================= LISTA DE LINKS ================= -->
     <div id="linksArea" style="display:none;">
+
+      <!-- Banner de edições restantes -->
+      <div class="edicoes-banner ok" id="edicoesBanner">
+        <span class="material-icons-round">check_circle</span>
+        <span id="edicoesBannerTexto">Carregando informações de edições...</span>
+      </div>
+
+      <!-- Bloco recolhível "Onde colocar seu link" -->
+      <details class="where-details">
+        <summary>
+          <span class="material-icons-round">place</span>
+          Onde colocar seu link
+          <span class="material-icons-round arrow">expand_more</span>
+        </summary>
+        <div class="where-content">
+          <p class="subtitle">
+            Cole o link dos seus cards nos lugares abaixo para seus clientes te encontrarem.
+          </p>
+          <div class="where-grid">
+            <div class="where-card">
+              <div class="where-card-icon instagram">
+                <i class="fab fa-instagram"></i>
+              </div>
+              <div class="where-card-body">
+                <strong>Instagram — Bio</strong>
+                <p>Editar perfil → campo <b>"Site"</b> → cole seu link.</p>
+              </div>
+            </div>
+            <div class="where-card">
+              <div class="where-card-icon google">
+                <span class="material-icons-round" style="color:white;font-size:20px;">storefront</span>
+              </div>
+              <div class="where-card-body">
+                <strong>Google Meu Negócio</strong>
+                <p><b>business.google.com</b> → editar → campo <b>"Site"</b>.</p>
+              </div>
+            </div>
+            <div class="where-card">
+              <div class="where-card-icon whatsapp">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+              <div class="where-card-body">
+                <strong>WhatsApp Business</strong>
+                <p>Configurações → <b>Perfil comercial</b> → campo <b>"Site"</b>.</p>
+              </div>
+            </div>
+            <div class="where-card">
+              <div class="where-card-icon tiktok">
+                <i class="fab fa-tiktok"></i>
+              </div>
+              <div class="where-card-body">
+                <strong>TikTok — Bio</strong>
+                <p>Editar perfil → campo <b>"Site"</b> → cole seu link.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
       <h2 style="margin-bottom:12px;">Meus Links</h2>
       <div id="linksList"></div>
     </div>
@@ -901,6 +1125,13 @@
         <h2><span class="material-icons-round">edit</span> Editar Link</h2>
         <button class="modal-close" id="closeEditModal">&times;</button>
       </div>
+
+      <!-- Contador de edições dentro do modal -->
+      <div class="modal-edicoes-info ok" id="modalEdicoesInfo">
+        <span class="material-icons-round">edit</span>
+        <span id="modalEdicoesTexto">Verificando edições...</span>
+      </div>
+
       <form id="editForm" novalidate>
         <input type="hidden" id="editId" />
         <input type="hidden" id="editToken" />
@@ -1048,12 +1279,13 @@
     const MAX_WHATSAPP = 10;
     let currentUser = null;
     let linksCache = [];
+    let edicoesInfo = { usados: 0, restantes: 5, limite: 5, permitido: true };
 
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
 
     // ============================================================
-    // TOAST (notificação temporária)
+    // TOAST
     // ============================================================
     function showToast(msg, icon = 'check_circle') {
       const t = $('#toast');
@@ -1061,6 +1293,62 @@
       t.innerHTML = `<span class="material-icons-round">${icon}</span> ${msg}`;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ============================================================
+    // BANNER E CONTADOR DE EDIÇÕES
+    // ============================================================
+    function atualizarBannerEdicoes(info) {
+      edicoesInfo = info || edicoesInfo;
+
+      // ---- Banner principal ----
+      const banner = $('#edicoesBanner');
+      const texto = $('#edicoesBannerTexto');
+      const icon = banner.querySelector('.material-icons-round');
+
+      // Remove classes antigas
+      banner.classList.remove('ok', 'warning', 'danger');
+
+      if (edicoesInfo.restantes === 0) {
+        banner.classList.add('danger');
+        icon.textContent = 'error';
+        texto.innerHTML = `Você já usou <strong>todas as ${edicoesInfo.limite} edições</strong> de hoje. Volte amanhã.`;
+      } else if (edicoesInfo.restantes <= 2) {
+        banner.classList.add('warning');
+        icon.textContent = 'warning';
+        texto.innerHTML = `Atenção: você tem apenas <strong>${edicoesInfo.restantes} ${edicoesInfo.restantes === 1 ? 'edição' : 'edições'}</strong> disponível(is) hoje.`;
+      } else {
+        banner.classList.add('ok');
+        icon.textContent = 'check_circle';
+        texto.innerHTML = `Você tem <strong>${edicoesInfo.restantes} de ${edicoesInfo.limite}</strong> edições disponíveis hoje.`;
+      }
+
+      // ---- Contador dentro do modal ----
+      const modalInfo = $('#modalEdicoesInfo');
+      const modalTexto = $('#modalEdicoesTexto');
+      const modalIcon = modalInfo.querySelector('.material-icons-round');
+
+      modalInfo.classList.remove('ok', 'warning', 'danger');
+
+      if (edicoesInfo.restantes === 0) {
+        modalInfo.classList.add('danger');
+        modalIcon.textContent = 'block';
+        modalTexto.innerHTML = `Você já usou as <strong>${edicoesInfo.limite} edições</strong> de hoje`;
+      } else if (edicoesInfo.restantes <= 2) {
+        modalInfo.classList.add('warning');
+        modalIcon.textContent = 'warning';
+        modalTexto.innerHTML = `Edições hoje: <strong>${edicoesInfo.usados} de ${edicoesInfo.limite}</strong> (${edicoesInfo.restantes} restante${edicoesInfo.restantes === 1 ? '' : 's'})`;
+      } else {
+        modalInfo.classList.add('ok');
+        modalIcon.textContent = 'edit';
+        modalTexto.innerHTML = `Edições hoje: <strong>${edicoesInfo.usados} de ${edicoesInfo.limite}</strong>`;
+      }
+
+      // ---- Habilita / desabilita o botão salvar ----
+      const saveBtn = $('#saveBtn');
+      if (saveBtn) {
+        saveBtn.disabled = !edicoesInfo.permitido;
+      }
     }
 
     // ============================================================
@@ -1132,7 +1420,6 @@
       div.className = 'whatsapp-extra';
       div.dataset.num = numero;
 
-      // Escapa aspas para não quebrar o value
       const safeNumero = String(dados.numero || '').replace(/"/g, '&quot;');
       const safeBotao = String(dados.botao || '').replace(/"/g, '&quot;');
       const safeMensagem = String(dados.mensagem || '');
@@ -1280,11 +1567,17 @@
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ action: 'buscar_meus_links', email: currentUser.email })
           }).then(res => res.json()),
-          new Promise(resolve => setTimeout(resolve, 2000))
+          new Promise(resolve => setTimeout(resolve, 800))
         ]);
         if (data.error) throw new Error(data.error);
         const links = data.links || [];
         linksCache = links;
+
+        // Atualiza banner e contador com os dados de edições do backend
+        if (data.edicoes) {
+          atualizarBannerEdicoes(data.edicoes);
+        }
+
         renderizarLinks(links);
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
@@ -1304,11 +1597,12 @@
         return;
       }
 
+      // Nota: cliques foram removidos daqui (agora vêm do GA4)
       linksList.innerHTML = links.map(link => `
         <div class="link-card">
           <div>
             <h3>${link.empresa}</h3>
-            <p>whatslink-48tc.onrender.com/${link.slug} • ${link.cliques} cliques</p>
+            <p>whatslink-48tc.onrender.com/${link.slug}</p>
           </div>
           <div style="display:flex; gap:8px;">
             <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
@@ -1326,6 +1620,12 @@
     // ABRIR EDIÇÃO
     // ============================================================
     window.abrirEdicao = async function(id, token) {
+      // Bloqueio local (backend também valida)
+      if (edicoesInfo.restantes === 0) {
+        showToast('Limite de edições atingido. Volte amanhã.', 'error');
+        return;
+      }
+
       try {
         const response = await fetch(API_URL, {
           method: 'POST',
@@ -1335,7 +1635,7 @@
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
-        // ---- Preenche campos básicos ----
+        // ---- Preenche campos ----
         $('#editId').value = data.id;
         $('#editToken').value = token;
         $('#editEmpresa').value = data.empresa || '';
@@ -1353,13 +1653,10 @@
         $('#editHorario').value = data.horario || '';
         $('#editTema').value = data.tema || 'verde';
 
-        // ---- Reconstrói os blocos extras ----
+        // ---- Reconstrói extras ----
         $('#maisWhatsappsContainer').innerHTML = '';
 
-        // Prioridade 1: array whatsapps_extras
         let extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras : [];
-
-        // Fallback: campos individuais whatsapp2..whatsapp10
         if (extras.length === 0) {
           const temp = [];
           for (let n = 2; n <= MAX_WHATSAPP; n++) {
@@ -1373,7 +1670,6 @@
           extras = temp;
         }
 
-        // Cria apenas os blocos que têm número
         let indexBloco = 2;
         extras.forEach(w => {
           if (w && (w.numero || w.botao || w.mensagem)) {
@@ -1388,7 +1684,7 @@
         });
         atualizarContadorWhatsapp();
 
-        // ---- Previews de imagens ----
+        // ---- Previews ----
         if (data.logo_url) {
           $('#editLogoPreviewImg').src = data.logo_url;
           $('#editLogoPreview').style.display = 'block';
@@ -1398,10 +1694,13 @@
           $('#editBannerPreview').style.display = 'block';
         } else { $('#editBannerPreview').style.display = 'none'; }
 
-        // ---- Marca tema ativo ----
+        // ---- Tema ativo ----
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
         });
+
+        // Atualiza contador dentro do modal
+        atualizarBannerEdicoes(edicoesInfo);
 
         $('#editModal').classList.add('active');
       } catch (err) {
@@ -1423,7 +1722,7 @@
     });
 
     // ============================================================
-    // SELEÇÃO DE TEMA NO MODAL
+    // SELEÇÃO DE TEMA
     // ============================================================
     $$('#editThemeSelector .theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
@@ -1460,6 +1759,12 @@
     // ============================================================
     $('#editForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Bloqueio local
+      if (edicoesInfo.restantes === 0) {
+        showToast('Limite de edições atingido. Volte amanhã.', 'error');
+        return;
+      }
 
       // Valida principal
       const whatsappPrincipal = $('#editWhatsapp').value.trim().replace(/\D/g, '');
@@ -1512,14 +1817,41 @@
           body: JSON.stringify(data)
         });
         const result = await response.json();
+
+        // ---- Caso específico: limite atingido ----
+        if (result.error && result.limite_atingido) {
+          showToast('Limite de 5 edições por dia atingido. Tente novamente amanhã.', 'error');
+          // Atualiza contador para refletir o estado real
+          atualizarBannerEdicoes({
+            usados: result.usados || edicoesInfo.limite,
+            restantes: 0,
+            limite: result.limite || edicoesInfo.limite,
+            permitido: false
+          });
+          return;
+        }
+
         if (result.error) throw new Error(result.error);
+
+        // ---- Sucesso ----
         showToast(result.message || 'Link atualizado!');
         $('#editModal').classList.remove('active');
+
+        // Atualiza contador se o backend retornou
+        if (result.usados !== undefined && result.restantes !== undefined) {
+          atualizarBannerEdicoes({
+            usados: result.usados,
+            restantes: result.restantes,
+            limite: result.limite || edicoesInfo.limite,
+            permitido: result.restantes > 0
+          });
+        }
+
         buscarMeusLinks();
       } catch (err) {
         showToast('Erro: ' + err.message, 'error');
       } finally {
-        saveBtn.disabled = false;
+        saveBtn.disabled = edicoesInfo.restantes === 0;
         loader.style.display = 'none';
       }
     });
