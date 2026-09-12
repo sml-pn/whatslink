@@ -750,6 +750,81 @@
     }
     .result-actions a:hover { background: #1e293b; border-color: #1e293b; }
 
+    /* ============================================================
+       ONDE COLOCAR SEU LINK (aparece após criar)
+       ============================================================ */
+    .where-to-place {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed #86efac;
+    }
+    .where-to-place h3 {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .where-to-place h3 .material-icons-round {
+      color: var(--theme);
+      font-size: 18px;
+    }
+    .where-to-place .subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .where-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .where-card {
+      display: flex;
+      gap: 10px;
+      padding: 10px 12px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+    .where-card:hover {
+      border-color: var(--theme);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.1);
+      transform: translateY(-1px);
+    }
+    .where-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      color: white;
+    }
+    .where-card-icon.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .where-card-icon.google { background: linear-gradient(135deg, #4285F4, #34A853); }
+    .where-card-icon.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+    .where-card-icon.tiktok { background: linear-gradient(135deg, #000000, #25F4EE); }
+
+    .where-card-body { flex: 1; min-width: 0; }
+    .where-card-body strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .where-card-body p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
     /* ========== ANIMAÇÕES ========== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(15px); }
@@ -802,6 +877,7 @@
       .logo { font-size: 26px; }
       .logo-icon { width: 40px; height: 40px; font-size: 22px; }
       .back-link { font-size: 14px; }
+      .where-grid { grid-template-columns: 1fr 1fr; }
     }
 
     @media (min-width: 900px) {
@@ -1060,6 +1136,68 @@
               <button id="previewBtn"><span class="material-icons-round">visibility</span> Ver página</button>
               <a href="edit.html"><span class="material-icons-round" style="font-size:16px;">list</span> Meus Links</a>
             </div>
+
+            <!-- ============================================================
+                 ONDE COLOCAR SEU LINK
+                 Aparece após o usuário gerar o link com sucesso
+                 ============================================================ -->
+            <div class="where-to-place">
+              <h3>
+                <span class="material-icons-round">place</span>
+                Onde colocar seu link
+              </h3>
+              <p class="subtitle">
+                Cole o link que você acabou de copiar nos lugares abaixo para seus clientes te encontrarem.
+              </p>
+
+              <div class="where-grid">
+                <!-- Instagram -->
+                <div class="where-card">
+                  <div class="where-card-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                  </div>
+                  <div class="where-card-body">
+                    <strong>Instagram — Bio</strong>
+                    <p>Toque em <b>Editar perfil</b> → no campo <b>"Site"</b>, cole seu link.</p>
+                  </div>
+                </div>
+
+                <!-- Google Meu Negócio -->
+                <div class="where-card">
+                  <div class="where-card-icon google">
+                    <span class="material-icons-round" style="color:white;font-size:20px;">storefront</span>
+                  </div>
+                  <div class="where-card-body">
+                    <strong>Google Meu Negócio</strong>
+                    <p>Acesse <b>business.google.com</b> → editar perfil → campo <b>"Site"</b>, cole seu link.</p>
+                  </div>
+                </div>
+
+                <!-- WhatsApp Business -->
+                <div class="where-card">
+                  <div class="where-card-icon whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                  </div>
+                  <div class="where-card-body">
+                    <strong>WhatsApp Business</strong>
+                    <p>Configurações → <b>Perfil comercial</b> → campo <b>"Site"</b>, cole seu link.</p>
+                  </div>
+                </div>
+
+                <!-- TikTok -->
+                <div class="where-card">
+                  <div class="where-card-icon tiktok">
+                    <i class="fab fa-tiktok"></i>
+                  </div>
+                  <div class="where-card-body">
+                    <strong>TikTok — Bio</strong>
+                    <p>Editar perfil → campo <b>"Site"</b>, cole seu link.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ============================================================ -->
+
           </div>
         </div>
       </div>
@@ -1114,7 +1252,7 @@
     }
 
     // ============================================================
-    // MÁSCARA DE TELEFONE (aplica em qualquer input)
+    // MÁSCARA DE TELEFONE
     // ============================================================
     function formatarWhatsApp(input) {
       if (!input) return;
@@ -1337,7 +1475,6 @@
 
     // ============================================================
     // COLETA DOS WHATSAPPS EXTRAS
-    // Retorna array no formato: [{numero, botao, mensagem}, ...]
     // ============================================================
     function coletarWhatsappsExtras() {
       const extras = [];
