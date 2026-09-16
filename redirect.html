@@ -41,7 +41,10 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-TTJX70ENFL');
+    // send_page_view: false → impede o page_view automático (que rodaria antes
+    // do fetch saber qual é o slug). O page_view real é disparado manualmente
+    // dentro do init(), já com os dados do link carregados.
+    gtag('config', 'G-TTJX70ENFL', { send_page_view: false });
   </script>
 
   <!-- CSS dos anúncios (rodapé e vignette) -->
@@ -386,6 +389,23 @@
       removeLoaders();
       const container = $('container');
       if (!container) return;
+
+      // ============================================================
+      // GA4: rastreia erros (link não encontrado, falha de fetch, etc.)
+      // O page_view automático está desligado (send_page_view: false),
+      // então reportamos manualmente com um caminho específico de erro.
+      // ============================================================
+      if (typeof gtag === 'function') {
+        const slug = (new URLSearchParams(location.search).get('slug') || '').trim();
+        gtag('event', 'page_view', {
+          page_title:    type === 'not_found' ? 'Link não encontrado' : 'Erro na página',
+          page_location: window.location.origin + '/' + (slug || 'erro'),
+          slug:          slug,
+          error_type:    type
+        });
+      }
+      // ============================================================
+
       const isNotFound = type === 'not_found';
       const titulo = isNotFound ? 'Link não encontrado' : 'Algo deu errado';
       const botaoTexto = isNotFound ? 'Voltar para página inicial' : 'Atualizar página';
@@ -647,10 +667,39 @@
 
         atualizarMetaTags(data, slug);
 
-        // Google Analytics: evento personalizado
+        // ============================================================
+        // GA4 — disparo manual do page_view com o slug como caminho limpo
+        // ------------------------------------------------------------
+        // Por que manual:
+        //  - O page_view automático dispara ANTES do fetch conhecer o slug.
+        //  - Ele reportaria sempre /redirect.html, sem distinguir cada link.
+        //
+        // Estratégia:
+        //  - send_page_view: false no gtag('config') desliga o automático.
+        //  - Aqui, com os dados já em mãos, disparamos o page_view real.
+        //  - page_location é construída como origin + '/' + slug (URL bonita).
+        //    A URL real do navegador continua intacta (?slug=...), preservando
+        //    F5, compartilhamento e voltar/avançar.
+        //  - 'slug', 'empresa' e 'tema' ficam disponíveis como dimensões
+        //    personalizadas no GA4.
+        // ============================================================
         if (typeof gtag === 'function') {
-          gtag('event', 'view_link', { 'link_id': data.id, 'slug': slug, 'theme': tema });
+          gtag('event', 'page_view', {
+            page_title:    sanitizeString(data.empresa, 60) || 'WhatsApp',
+            page_location: window.location.origin + '/' + slug,
+            slug:          slug,
+            empresa:       sanitizeString(data.empresa, 100) || '',
+            tema:          tema
+          });
+
+          // Evento específico do produto, mantido para funis/relatórios
+          gtag('event', 'view_link', {
+            link_id: data.id,
+            slug:    slug,
+            theme:   tema
+          });
         }
+        // ============================================================
 
         renderizarHeader(data, container);
         $('empresaNome').textContent = sanitizeString(data.empresa, 100) || 'WhatsApp';
