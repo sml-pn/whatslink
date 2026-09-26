@@ -7,7 +7,6 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://whatslink-48tc.onrender.com/edit.html" />
   <meta property="og:title" content="Meus Links - WhatsLink" />
@@ -16,34 +15,26 @@
   <meta property="og:site_name" content="WhatsLink" />
   <meta property="og:locale" content="pt_BR" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Meus Links - WhatsLink" />
   <meta name="twitter:description" content="Gerencie e edite seus links criados no WhatsLink." />
   <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
 
-  <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2325D366'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2325D366'/%3E%3Ctext x='8' y='11' font-size='8' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
 
-  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
 
-  <!-- Ícones -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
-    /* =========================================================
-       WHATSLINK - PÁGINA MEUS LINKS - CSS OTIMIZADO MOBILE
-       ========================================================= */
     :root {
       --theme: #25D366;
       --theme-dark: #128C7E;
@@ -89,7 +80,6 @@
         var(--bg-body);
     }
 
-    /* ========== HEADER ========== */
     .main-header {
       width: 100%;
       max-width: 900px;
@@ -151,7 +141,6 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* ========== CONTAINER PRINCIPAL ========== */
     .edit-container {
       width: 100%;
       max-width: 900px;
@@ -160,7 +149,6 @@
       box-sizing: border-box;
     }
 
-    /* ========== BLOCO DE LOGIN ========== */
     .login-box {
       background: var(--bg-card);
       border-radius: 20px;
@@ -215,7 +203,6 @@
     .google-login-btn:active { transform: scale(0.98); }
     .google-login-btn svg { flex-shrink: 0; }
 
-    /* ========== ÁREA DO USUÁRIO ========== */
     .user-area {
       display: flex;
       align-items: center;
@@ -455,7 +442,6 @@
       color: var(--theme);
     }
 
-    /* Estado vazio */
     .empty-state {
       text-align: center;
       padding: 40px 20px;
@@ -473,7 +459,6 @@
       margin-bottom: 16px;
     }
 
-    /* Indicador de carregamento */
     .loading-links {
       display: flex;
       flex-direction: column;
@@ -555,7 +540,6 @@
       padding: 4px;
     }
 
-    /* Contador dentro do modal */
     .modal-edicoes-info {
       display: flex;
       align-items: center;
@@ -583,7 +567,6 @@
     .modal-edicoes-info.danger .material-icons-round { color: #ef4444; }
     .modal-edicoes-info .material-icons-round { font-size: 16px; }
 
-    /* Formulário do modal */
     .section-title {
       display: flex;
       align-items: center;
@@ -672,7 +655,6 @@
       margin-bottom: 12px;
     }
 
-    /* Input com ícone */
     .input-icon-group {
       position: relative;
     }
@@ -690,7 +672,73 @@
       padding-left: 32px !important;
     }
 
-    /* ========== AVISO INFORMATIVO (MAIS WHATSAPPS) ========== */
+    /* ========== UPLOAD DE IMAGEM (ImageKit) ========== */
+    .upload-btn {
+      width: 100%;
+      padding: 12px;
+      background: rgba(37, 211, 102, 0.08);
+      border: 2px dashed rgba(37, 211, 102, 0.4);
+      border-radius: 10px;
+      color: var(--theme);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+      margin-bottom: 8px;
+    }
+    .upload-btn:hover:not(:disabled) {
+      background: rgba(37, 211, 102, 0.15);
+      border-color: var(--theme);
+      transform: translateY(-1px);
+    }
+    .upload-btn:active:not(:disabled) { transform: scale(0.98); }
+    .upload-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .upload-btn .material-icons-round { font-size: 18px; }
+
+    .upload-divider {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin: 8px 0;
+      position: relative;
+      user-select: none;
+    }
+    .upload-divider::before,
+    .upload-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: var(--border);
+    }
+    .upload-divider::before { left: 0; }
+    .upload-divider::after { right: 0; }
+
+    .upload-progress {
+      height: 4px;
+      background: rgba(37, 211, 102, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 8px;
+      display: none;
+    }
+    .upload-progress.active { display: block; }
+    .upload-progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--theme), var(--theme-dark));
+      transition: width 0.3s ease;
+    }
+
     .whatsapp-info-box {
       display: flex;
       gap: 8px;
@@ -709,7 +757,6 @@
       color: #1e40af;
     }
 
-    /* ========== WHATSAPP EXTRA (2 A 10) ========== */
     .whatsapp-extra {
       background: white;
       border: 1px solid var(--border);
@@ -806,7 +853,6 @@
       margin-left: 6px;
     }
 
-    /* Seletor de temas */
     .theme-selector-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -881,14 +927,14 @@
     .preview-mini-cardapio { background: linear-gradient(135deg, #fef3c7, #fde68a); }
     .preview-mini-cardapio .preview-dot { background: #ff8f00; }
 
-    /* Previews de imagem */
     .image-preview {
-      margin-top: 6px;
+      margin-top: 8px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--border);
       background: #f8fafc;
       display: none;
+      position: relative;
     }
     .image-preview img {
       width: 100%;
@@ -897,14 +943,31 @@
       display: block;
     }
     .logo-preview img {
-      max-height: 60px;
-      width: 60px;
+      max-height: 80px;
+      width: 80px;
       border-radius: 50%;
       object-fit: cover;
-      margin: 6px auto;
+      margin: 8px auto;
     }
+    .preview-remove {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.95);
+      color: white;
+      border: none;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .preview-remove:hover { background: #dc2626; transform: scale(1.1); }
+    .preview-remove .material-icons-round { font-size: 16px; }
 
-    /* Botão salvar */
     #saveBtn {
       width: 100%;
       padding: 14px;
@@ -948,7 +1011,6 @@
       margin-left: 8px;
     }
 
-    /* ========== TOAST ========== */
     .toast {
       position: fixed;
       bottom: 16px;
@@ -976,13 +1038,11 @@
       color: var(--theme);
     }
 
-    /* ========== ANIMAÇÃO GERAL ========== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ========== RESPONSIVIDADE EXTRA ========== */
     @media (max-width: 360px) {
       .edit-container { padding: 8px; }
       .field-group { padding: 10px; }
@@ -1025,7 +1085,6 @@
   </header>
 
   <div class="edit-container">
-    <!-- ================= BLOCO DE LOGIN ================= -->
     <div class="login-box" id="loginCard">
       <h2>🔐 Entre para editar seus links</h2>
       <p>Use sua conta Google para acessar</p>
@@ -1040,7 +1099,6 @@
       </button>
     </div>
 
-    <!-- ================= ÁREA DO USUÁRIO ================= -->
     <div id="userArea" style="display:none;">
       <div class="user-area">
         <img id="userPhoto" src="" alt="Foto" />
@@ -1052,16 +1110,13 @@
       </div>
     </div>
 
-    <!-- ================= LISTA DE LINKS ================= -->
     <div id="linksArea" style="display:none;">
 
-      <!-- Banner de edições restantes -->
       <div class="edicoes-banner ok" id="edicoesBanner">
         <span class="material-icons-round">check_circle</span>
         <span id="edicoesBannerTexto">Carregando informações de edições...</span>
       </div>
 
-      <!-- Bloco recolhível "Onde colocar seu link" -->
       <details class="where-details">
         <summary>
           <span class="material-icons-round">place</span>
@@ -1118,7 +1173,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL DE EDIÇÃO ================= -->
   <div class="modal-overlay" id="editModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1126,7 +1180,6 @@
         <button class="modal-close" id="closeEditModal">&times;</button>
       </div>
 
-      <!-- Contador de edições dentro do modal -->
       <div class="modal-edicoes-info ok" id="modalEdicoesInfo">
         <span class="material-icons-round">edit</span>
         <span id="modalEdicoesTexto">Verificando edições...</span>
@@ -1136,7 +1189,6 @@
         <input type="hidden" id="editId" />
         <input type="hidden" id="editToken" />
 
-        <!-- ================= Seção Identificação ================= -->
         <div class="section-title"><span class="material-icons-round">business</span>Identificação</div>
         <div class="field-group">
           <div class="field">
@@ -1161,7 +1213,6 @@
           </div>
         </div>
 
-        <!-- ================= Seção Mais WhatsApps (2 a 10) ================= -->
         <div class="section-title">
           <span class="material-icons-round">groups</span>
           Mais WhatsApps
@@ -1180,21 +1231,46 @@
           </button>
         </div>
 
-        <!-- ================= Seção Aparência ================= -->
         <div class="section-title"><span class="material-icons-round">palette</span>Aparência</div>
         <div class="field-group">
           <div class="grid-2">
             <div class="field">
-              <label for="editLogo">Logo (URL)</label>
-              <input type="url" id="editLogo" />
-              <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link.</span>
-              <div class="image-preview logo-preview" id="editLogoPreview"><img id="editLogoPreviewImg" src="" alt="Preview da logo" /></div>
+              <label for="editLogo">Logo <span style="font-weight:400;">(opcional)</span></label>
+              <input type="file" id="editLogoFile" accept="image/*" hidden />
+              <button type="button" class="upload-btn" id="editLogoUploadBtn">
+                <span class="material-icons-round">upload</span>
+                Escolher imagem
+              </button>
+              <div class="upload-divider">ou cole a URL abaixo</div>
+              <input type="url" id="editLogo" placeholder="https://exemplo.com/logo.png" />
+              <div class="upload-progress" id="editLogoProgress">
+                <div class="upload-progress-bar" id="editLogoProgressBar"></div>
+              </div>
+              <div class="image-preview logo-preview" id="editLogoPreview">
+                <img id="editLogoPreviewImg" src="" alt="Preview da logo" />
+                <button type="button" class="preview-remove" id="editLogoPreviewRemove" title="Remover">
+                  <span class="material-icons-round">close</span>
+                </button>
+              </div>
             </div>
             <div class="field">
-              <label for="editBanner">Banner (URL)</label>
-              <input type="url" id="editBanner" />
-              <span class="helper-text">📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.</span>
-              <div class="image-preview" id="editBannerPreview"><img id="editBannerPreviewImg" src="" alt="Preview do banner" /></div>
+              <label for="editBanner">Banner <span style="font-weight:400;">(opcional)</span></label>
+              <input type="file" id="editBannerFile" accept="image/*" hidden />
+              <button type="button" class="upload-btn" id="editBannerUploadBtn">
+                <span class="material-icons-round">upload</span>
+                Escolher imagem
+              </button>
+              <div class="upload-divider">ou cole a URL abaixo</div>
+              <input type="url" id="editBanner" placeholder="https://exemplo.com/banner.png" />
+              <div class="upload-progress" id="editBannerProgress">
+                <div class="upload-progress-bar" id="editBannerProgressBar"></div>
+              </div>
+              <div class="image-preview" id="editBannerPreview">
+                <img id="editBannerPreviewImg" src="" alt="Preview do banner" />
+                <button type="button" class="preview-remove" id="editBannerPreviewRemove" title="Remover">
+                  <span class="material-icons-round">close</span>
+                </button>
+              </div>
             </div>
           </div>
           <div class="field">
@@ -1211,7 +1287,6 @@
           </div>
         </div>
 
-        <!-- ================= Seção Conteúdo ================= -->
         <div class="section-title"><span class="material-icons-round">description</span>Conteúdo</div>
         <div class="field-group">
           <div class="field">
@@ -1221,7 +1296,6 @@
           </div>
         </div>
 
-        <!-- ================= Seção Contatos ================= -->
         <div class="section-title"><span class="material-icons-round">share</span>Contatos e links</div>
         <div class="field-group">
           <div class="grid-2">
@@ -1277,6 +1351,8 @@
     // ============================================================
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     const MAX_WHATSAPP = 10;
+    const MAX_FILE_MB = 5;
+    const IMAGEKIT_UPLOAD_URL = 'https://upload.imagekit.io/api/v1/files/upload';
     let currentUser = null;
     let linksCache = [];
     let edicoesInfo = { usados: 0, restantes: 5, limite: 5, permitido: true };
@@ -1284,9 +1360,6 @@
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
 
-    // ============================================================
-    // TOAST
-    // ============================================================
     function showToast(msg, icon = 'check_circle') {
       const t = $('#toast');
       if (!t) return;
@@ -1295,18 +1368,13 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ============================================================
-    // BANNER E CONTADOR DE EDIÇÕES
-    // ============================================================
     function atualizarBannerEdicoes(info) {
       edicoesInfo = info || edicoesInfo;
 
-      // ---- Banner principal ----
       const banner = $('#edicoesBanner');
       const texto = $('#edicoesBannerTexto');
       const icon = banner.querySelector('.material-icons-round');
 
-      // Remove classes antigas
       banner.classList.remove('ok', 'warning', 'danger');
 
       if (edicoesInfo.restantes === 0) {
@@ -1323,7 +1391,6 @@
         texto.innerHTML = `Você tem <strong>${edicoesInfo.restantes} de ${edicoesInfo.limite}</strong> edições disponíveis hoje.`;
       }
 
-      // ---- Contador dentro do modal ----
       const modalInfo = $('#modalEdicoesInfo');
       const modalTexto = $('#modalEdicoesTexto');
       const modalIcon = modalInfo.querySelector('.material-icons-round');
@@ -1344,7 +1411,6 @@
         modalTexto.innerHTML = `Edições hoje: <strong>${edicoesInfo.usados} de ${edicoesInfo.limite}</strong>`;
       }
 
-      // ---- Habilita / desabilita o botão salvar ----
       const saveBtn = $('#saveBtn');
       if (saveBtn) {
         saveBtn.disabled = !edicoesInfo.permitido;
@@ -1384,9 +1450,6 @@
       }
     }
 
-    // ============================================================
-    // MÁSCARA DE TELEFONE
-    // ============================================================
     function formatarWhatsApp(input) {
       if (!input) return;
       input.addEventListener('input', (e) => {
@@ -1400,6 +1463,212 @@
       });
     }
     formatarWhatsApp($('#editWhatsapp'));
+
+    // ============================================================
+    // UPLOAD DE IMAGEM — IMAGEKIT (signed upload)
+    // ============================================================
+    function aplicarTransformacao(url, tipo) {
+      if (!url) return '';
+      if (url.includes('?tr=')) return url;
+      if (!url.includes('ik.imagekit.io')) return url;
+      const params = tipo === 'logo'
+        ? 'tr=w-400,c-at_max,q-80,f-webp'
+        : 'tr=w-1200,c-at_max,q-80,f-webp';
+      const sep = url.includes('?') ? '&' : '?';
+      return url + sep + params;
+    }
+
+    async function obterAutenticacaoImageKit() {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'gerar_autenticacao_imagekit' })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      if (!data.token || !data.signature || !data.expire || !data.publicKey) {
+        throw new Error('Resposta de autenticação incompleta do servidor');
+      }
+      return data;
+    }
+
+    function enviarImagemParaImageKit(file, auth, tipo) {
+      return new Promise((resolve, reject) => {
+        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+        const unique = Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        const fileName = tipo + '_' + unique + '.' + ext;
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('fileName', fileName);
+        formData.append('publicKey', auth.publicKey);
+        formData.append('signature', auth.signature);
+        formData.append('token', auth.token);
+        formData.append('expire', String(auth.expire));
+        formData.append('folder', '/thelinkbio/' + tipo + 's/');
+        formData.append('useUniqueFileName', 'false');
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', IMAGEKIT_UPLOAD_URL);
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            atualizarBarraProgresso(tipo, pct);
+          }
+        };
+
+        xhr.onload = () => {
+          let payload = {};
+          try { payload = JSON.parse(xhr.responseText); } catch (e) {}
+          if (xhr.status >= 200 && xhr.status < 300 && payload.url) {
+            resolve(payload.url);
+          } else {
+            reject(new Error(payload.message || 'Falha no upload (HTTP ' + xhr.status + ')'));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error('Erro de rede no upload'));
+        xhr.ontimeout = () => reject(new Error('Timeout no upload'));
+        xhr.send(formData);
+      });
+    }
+
+    // Prefixo dos IDs do modal é "edit". Tipo original 'logo'/'banner' é preservado
+    function getIds(tipo) {
+      if (tipo === 'logo') {
+        return {
+          btn: 'editLogoUploadBtn',
+          file: 'editLogoFile',
+          url: 'editLogo',
+          progress: 'editLogoProgress',
+          progressBar: 'editLogoProgressBar',
+          preview: 'editLogoPreview',
+          previewImg: 'editLogoPreviewImg',
+          previewRemove: 'editLogoPreviewRemove'
+        };
+      }
+      return {
+        btn: 'editBannerUploadBtn',
+        file: 'editBannerFile',
+        url: 'editBanner',
+        progress: 'editBannerProgress',
+        progressBar: 'editBannerProgressBar',
+        preview: 'editBannerPreview',
+        previewImg: 'editBannerPreviewImg',
+        previewRemove: 'editBannerPreviewRemove'
+      };
+    }
+
+    function mostrarProgresso(tipo) {
+      const ids = getIds(tipo);
+      const el = document.getElementById(ids.progress);
+      if (el) el.classList.add('active');
+    }
+    function esconderProgresso(tipo) {
+      const ids = getIds(tipo);
+      const el = document.getElementById(ids.progress);
+      if (el) {
+        setTimeout(() => {
+          el.classList.remove('active');
+          atualizarBarraProgresso(tipo, 0);
+        }, 500);
+      }
+    }
+    function atualizarBarraProgresso(tipo, pct) {
+      const ids = getIds(tipo);
+      const bar = document.getElementById(ids.progressBar);
+      if (bar) bar.style.width = pct + '%';
+    }
+
+    async function lidarComArquivo(file, tipo) {
+      try {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+          throw new Error('O arquivo precisa ser uma imagem');
+        }
+        if (file.size > MAX_FILE_MB * 1024 * 1024) {
+          throw new Error(`A imagem não pode passar de ${MAX_FILE_MB} MB`);
+        }
+
+        const ids = getIds(tipo);
+        const btn = document.getElementById(ids.btn);
+        if (btn) btn.disabled = true;
+        mostrarProgresso(tipo);
+        atualizarBarraProgresso(tipo, 5);
+
+        const auth = await obterAutenticacaoImageKit();
+        atualizarBarraProgresso(tipo, 15);
+
+        const urlBase = await enviarImagemParaImageKit(file, auth, tipo);
+        const urlFinal = aplicarTransformacao(urlBase, tipo);
+
+        const input = document.getElementById(ids.url);
+        if (input) input.value = urlFinal;
+        atualizarPreview(tipo);
+
+        showToast('Imagem enviada com sucesso!', 'check_circle');
+      } catch (err) {
+        console.error('[Upload]', err);
+        showToast('Erro no upload: ' + err.message, 'error');
+      } finally {
+        const ids = getIds(tipo);
+        const btn = document.getElementById(ids.btn);
+        if (btn) btn.disabled = false;
+        esconderProgresso(tipo);
+      }
+    }
+
+    function atualizarPreview(tipo) {
+      const ids = getIds(tipo);
+      const input = document.getElementById(ids.url);
+      const preview = document.getElementById(ids.preview);
+      const img = document.getElementById(ids.previewImg);
+      if (!input || !preview || !img) return;
+
+      const url = (input.value || '').trim();
+      if (url && /^https?:\/\//i.test(url)) {
+        img.onload = () => { preview.style.display = 'block'; };
+        img.onerror = () => { preview.style.display = 'none'; };
+        img.src = url;
+      } else {
+        preview.style.display = 'none';
+        img.removeAttribute('src');
+      }
+    }
+
+    function removerImagem(tipo) {
+      const ids = getIds(tipo);
+      const input = document.getElementById(ids.url);
+      if (input) input.value = '';
+      atualizarPreview(tipo);
+    }
+
+    ['logo', 'banner'].forEach(tipo => {
+      const ids = getIds(tipo);
+      const btn = document.getElementById(ids.btn);
+      const fileInput = document.getElementById(ids.file);
+      const urlInput = document.getElementById(ids.url);
+      const removeBtn = document.getElementById(ids.previewRemove);
+
+      if (btn && fileInput) {
+        btn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) lidarComArquivo(file, tipo);
+          fileInput.value = '';
+        });
+      }
+
+      if (urlInput) {
+        urlInput.addEventListener('input', () => atualizarPreview(tipo));
+        urlInput.addEventListener('paste', () => setTimeout(() => atualizarPreview(tipo), 100));
+      }
+
+      if (removeBtn) {
+        removeBtn.addEventListener('click', () => removerImagem(tipo));
+      }
+    });
 
     // ============================================================
     // GERENCIAMENTO DE WHATSAPP EXTRA (2 A 10)
@@ -1481,9 +1750,6 @@
       setTimeout(() => { novoBloco.querySelector('.extra-numero')?.focus(); }, 100);
     });
 
-    // ============================================================
-    // EXTRAIR URL DE EMBED (Google Maps)
-    // ============================================================
     function extrairUrlEmbed(html) {
       if (!html) return '';
       const trimmed = html.trim();
@@ -1506,41 +1772,6 @@
       }, 100);
     });
 
-    // ============================================================
-    // PREVIEW DE LOGO
-    // ============================================================
-    function atualizarPreviewEditLogo() {
-      const url = $('#editLogo').value.trim();
-      const preview = $('#editLogoPreview');
-      const img = $('#editLogoPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
-        img.onload = () => { preview.style.display = 'block'; };
-        img.onerror = () => { preview.style.display = 'none'; };
-      } else preview.style.display = 'none';
-    }
-    $('#editLogo').addEventListener('input', atualizarPreviewEditLogo);
-    $('#editLogo').addEventListener('paste', () => setTimeout(atualizarPreviewEditLogo, 100));
-
-    // ============================================================
-    // PREVIEW DE BANNER
-    // ============================================================
-    function atualizarPreviewEditBanner() {
-      const url = $('#editBanner').value.trim();
-      const preview = $('#editBannerPreview');
-      const img = $('#editBannerPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
-        img.onload = () => { preview.style.display = 'block'; };
-        img.onerror = () => { preview.style.display = 'none'; };
-      } else preview.style.display = 'none';
-    }
-    $('#editBanner').addEventListener('input', atualizarPreviewEditBanner);
-    $('#editBanner').addEventListener('paste', () => setTimeout(atualizarPreviewEditBanner, 100));
-
-    // ============================================================
-    // INDICADOR DE CARREGAMENTO
-    // ============================================================
     function mostrarCarregando() {
       const linksArea = $('#linksArea');
       const linksList = $('#linksList');
@@ -1555,9 +1786,6 @@
       }
     }
 
-    // ============================================================
-    // BUSCAR MEUS LINKS
-    // ============================================================
     async function buscarMeusLinks() {
       try {
         mostrarCarregando();
@@ -1573,7 +1801,6 @@
         const links = data.links || [];
         linksCache = links;
 
-        // Atualiza banner e contador com os dados de edições do backend
         if (data.edicoes) {
           atualizarBannerEdicoes(data.edicoes);
         }
@@ -1597,12 +1824,11 @@
         return;
       }
 
-      // Nota: cliques foram removidos daqui (agora vêm do GA4)
       linksList.innerHTML = links.map(link => `
         <div class="link-card">
           <div>
             <h3>${link.empresa}</h3>
-            <p>https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}</p>
+            <p>whatslink-48tc.onrender.com/${link.slug}</p>
           </div>
           <div style="display:flex; gap:8px;">
             <a class="btn btn-view" href="https://whatslink-48tc.onrender.com/redirect.html?slug=${link.slug}" target="_blank">
@@ -1616,11 +1842,7 @@
       `).join('');
     }
 
-    // ============================================================
-    // ABRIR EDIÇÃO
-    // ============================================================
     window.abrirEdicao = async function(id, token) {
-      // Bloqueio local (backend também valida)
       if (edicoesInfo.restantes === 0) {
         showToast('Limite de edições atingido. Volte amanhã.', 'error');
         return;
@@ -1635,7 +1857,6 @@
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
-        // ---- Preenche campos ----
         $('#editId').value = data.id;
         $('#editToken').value = token;
         $('#editEmpresa').value = data.empresa || '';
@@ -1653,9 +1874,8 @@
         $('#editHorario').value = data.horario || '';
         $('#editTema').value = data.tema || 'verde';
 
-        // ---- Reconstrói extras ----
+        // Reconstrói extras
         $('#maisWhatsappsContainer').innerHTML = '';
-
         let extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras : [];
         if (extras.length === 0) {
           const temp = [];
@@ -1684,17 +1904,11 @@
         });
         atualizarContadorWhatsapp();
 
-        // ---- Previews ----
-        if (data.logo_url) {
-          $('#editLogoPreviewImg').src = data.logo_url;
-          $('#editLogoPreview').style.display = 'block';
-        } else { $('#editLogoPreview').style.display = 'none'; }
-        if (data.banner_url) {
-          $('#editBannerPreviewImg').src = data.banner_url;
-          $('#editBannerPreview').style.display = 'block';
-        } else { $('#editBannerPreview').style.display = 'none'; }
+        // Atualiza previews de imagem
+        atualizarPreview('logo');
+        atualizarPreview('banner');
 
-        // ---- Tema ativo ----
+        // Marca tema ativo
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
         });
@@ -1708,9 +1922,6 @@
       }
     };
 
-    // ============================================================
-    // FECHAR MODAL
-    // ============================================================
     $('#closeEditModal').addEventListener('click', () => {
       $('#editModal').classList.remove('active');
     });
@@ -1721,9 +1932,6 @@
       }
     });
 
-    // ============================================================
-    // SELEÇÃO DE TEMA
-    // ============================================================
     $$('#editThemeSelector .theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
         const temaSelecionado = card.dataset.theme;
@@ -1740,9 +1948,6 @@
       });
     });
 
-    // ============================================================
-    // COLETA DOS WHATSAPPS EXTRAS
-    // ============================================================
     function coletarWhatsappsExtras() {
       const extras = [];
       $$('#maisWhatsappsContainer .whatsapp-extra').forEach(el => {
@@ -1754,19 +1959,14 @@
       return extras;
     }
 
-    // ============================================================
-    // SUBMETER FORMULÁRIO DE EDIÇÃO
-    // ============================================================
     $('#editForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Bloqueio local
       if (edicoesInfo.restantes === 0) {
         showToast('Limite de edições atingido. Volte amanhã.', 'error');
         return;
       }
 
-      // Valida principal
       const whatsappPrincipal = $('#editWhatsapp').value.trim().replace(/\D/g, '');
       if (!whatsappPrincipal) {
         showToast('Preencha o WhatsApp principal', 'error');
@@ -1775,8 +1975,6 @@
       }
 
       const extras = coletarWhatsappsExtras();
-
-      // Valida cada extra
       for (let i = 0; i < extras.length; i++) {
         if (!extras[i].numero) {
           showToast(`Preencha o número do WhatsApp ${i + 2}`, 'error');
@@ -1818,10 +2016,8 @@
         });
         const result = await response.json();
 
-        // ---- Caso específico: limite atingido ----
         if (result.error && result.limite_atingido) {
           showToast('Limite de 5 edições por dia atingido. Tente novamente amanhã.', 'error');
-          // Atualiza contador para refletir o estado real
           atualizarBannerEdicoes({
             usados: result.usados || edicoesInfo.limite,
             restantes: 0,
@@ -1833,11 +2029,9 @@
 
         if (result.error) throw new Error(result.error);
 
-        // ---- Sucesso ----
         showToast(result.message || 'Link atualizado!');
         $('#editModal').classList.remove('active');
 
-        // Atualiza contador se o backend retornou
         if (result.usados !== undefined && result.restantes !== undefined) {
           atualizarBannerEdicoes({
             usados: result.usados,
@@ -1856,9 +2050,6 @@
       }
     });
 
-    // ============================================================
-    // LOGOUT
-    // ============================================================
     $('#logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('whatslink_user');
       currentUser = null;
@@ -1867,9 +2058,6 @@
       $('#linksArea').style.display = 'none';
     });
 
-    // ============================================================
-    // RESTAURAR SESSÃO
-    // ============================================================
     const savedUser = localStorage.getItem('whatslink_user');
     if (savedUser) {
       currentUser = JSON.parse(savedUser);
