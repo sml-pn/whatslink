@@ -249,9 +249,6 @@
       color: #ef4444;
     }
 
-    /* ============================================================
-       BANNER DE EDIÇÕES RESTANTES
-       ============================================================ */
     .edicoes-banner {
       display: flex;
       align-items: center;
@@ -289,9 +286,6 @@
 
     .edicoes-banner strong { font-weight: 700; }
 
-    /* ============================================================
-       BLOCO RECOLHÍVEL "ONDE COLOCAR SEU LINK"
-       ============================================================ */
     .where-details {
       margin-bottom: 16px;
       border: 1px solid var(--border);
@@ -384,7 +378,6 @@
       line-height: 1.4;
     }
 
-    /* ========== LISTA DE LINKS ========== */
     #linksArea h2 {
       font-size: 18px;
       font-weight: 700;
@@ -480,7 +473,6 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ========== MODAL ========== */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -738,6 +730,15 @@
       background: linear-gradient(90deg, var(--theme), var(--theme-dark));
       transition: width 0.3s ease;
     }
+
+    .upload-status {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 4px;
+      display: none;
+    }
+    .upload-status.active { display: block; }
 
     .whatsapp-info-box {
       display: flex;
@@ -1246,6 +1247,8 @@
               <div class="upload-progress" id="editLogoProgress">
                 <div class="upload-progress-bar" id="editLogoProgressBar"></div>
               </div>
+              <div class="upload-status" id="editLogoStatus">Processando...</div>
+              <span class="helper-text">📌 Aceita até 25 MB. Convertemos para WebP automaticamente.</span>
               <div class="image-preview logo-preview" id="editLogoPreview">
                 <img id="editLogoPreviewImg" src="" alt="Preview da logo" />
                 <button type="button" class="preview-remove" id="editLogoPreviewRemove" title="Remover">
@@ -1265,6 +1268,8 @@
               <div class="upload-progress" id="editBannerProgress">
                 <div class="upload-progress-bar" id="editBannerProgressBar"></div>
               </div>
+              <div class="upload-status" id="editBannerStatus">Processando...</div>
+              <span class="helper-text">📌 Aceita até 25 MB. Convertemos para WebP automaticamente.</span>
               <div class="image-preview" id="editBannerPreview">
                 <img id="editBannerPreviewImg" src="" alt="Preview do banner" />
                 <button type="button" class="preview-remove" id="editBannerPreviewRemove" title="Remover">
@@ -1351,7 +1356,20 @@
     // ============================================================
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     const MAX_WHATSAPP = 10;
-    const MAX_FILE_MB = 5;
+
+    // Limite ampliado: aceita até 25 MB (fotos de celular)
+    // A imagem é comprimida para WebP antes do upload
+    const MAX_FILE_MB = 25;
+
+    // Qualidade WebP (0-1). 0.82 é o ponto doce entre qualidade e tamanho
+    const WEBP_QUALITY = 0.82;
+
+    // Dimensões máximas (redimensiona mantendo proporção)
+    const DIMENSOES = {
+      logo:   { maxW: 800,  maxH: 800  },
+      banner: { maxW: 1600, maxH: 800  }
+    };
+
     const IMAGEKIT_UPLOAD_URL = 'https://upload.imagekit.io/api/v1/files/upload';
     let currentUser = null;
     let linksCache = [];
@@ -1360,6 +1378,9 @@
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
 
+    // ============================================================
+    // TOAST
+    // ============================================================
     function showToast(msg, icon = 'check_circle') {
       const t = $('#toast');
       if (!t) return;
@@ -1368,6 +1389,9 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
 
+    // ============================================================
+    // BANNER E CONTADOR DE EDIÇÕES
+    // ============================================================
     function atualizarBannerEdicoes(info) {
       edicoesInfo = info || edicoesInfo;
 
@@ -1465,6 +1489,64 @@
     formatarWhatsApp($('#editWhatsapp'));
 
     // ============================================================
+    // CONVERSÃO PARA WEBP (no navegador, via Canvas API)
+    // ============================================================
+    function converterParaWebP(file, tipo) {
+      return new Promise((resolve) => {
+        const dimensoes = DIMENSOES[tipo] || DIMENSOES.logo;
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+
+          let { width, height } = img;
+          const { maxW, maxH } = dimensoes;
+
+          if (width > maxW || height > maxH) {
+            const ratio = Math.min(maxW / width, maxH / height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                resolve(file);
+                return;
+              }
+              const nomeBase = (file.name || 'imagem').replace(/\.[^.]+$/, '');
+              const novoFile = new File(
+                [blob],
+                nomeBase + '.webp',
+                { type: 'image/webp', lastModified: Date.now() }
+              );
+              resolve(novoFile);
+            },
+            'image/webp',
+            WEBP_QUALITY
+          );
+        };
+
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          resolve(file);
+        };
+
+        img.src = url;
+      });
+    }
+
+    // ============================================================
     // UPLOAD DE IMAGEM — IMAGEKIT (signed upload)
     // ============================================================
     function aplicarTransformacao(url, tipo) {
@@ -1494,7 +1576,7 @@
 
     function enviarImagemParaImageKit(file, auth, tipo) {
       return new Promise((resolve, reject) => {
-        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+        const ext = (file.name.split('.').pop() || 'webp').toLowerCase();
         const unique = Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         const fileName = tipo + '_' + unique + '.' + ext;
 
@@ -1514,7 +1596,8 @@
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) {
             const pct = Math.round((e.loaded / e.total) * 100);
-            atualizarBarraProgresso(tipo, pct);
+            // Reserva 30% da barra para o upload
+            atualizarBarraProgresso(tipo, 70 + Math.round(pct * 0.3));
           }
         };
 
@@ -1534,7 +1617,7 @@
       });
     }
 
-    // Prefixo dos IDs do modal é "edit". Tipo original 'logo'/'banner' é preservado
+    // Prefixo dos IDs do modal é "edit"
     function getIds(tipo) {
       if (tipo === 'logo') {
         return {
@@ -1543,6 +1626,7 @@
           url: 'editLogo',
           progress: 'editLogoProgress',
           progressBar: 'editLogoProgressBar',
+          status: 'editLogoStatus',
           preview: 'editLogoPreview',
           previewImg: 'editLogoPreviewImg',
           previewRemove: 'editLogoPreviewRemove'
@@ -1554,6 +1638,7 @@
         url: 'editBanner',
         progress: 'editBannerProgress',
         progressBar: 'editBannerProgressBar',
+        status: 'editBannerStatus',
         preview: 'editBannerPreview',
         previewImg: 'editBannerPreviewImg',
         previewRemove: 'editBannerPreviewRemove'
@@ -1564,21 +1649,28 @@
       const ids = getIds(tipo);
       const el = document.getElementById(ids.progress);
       if (el) el.classList.add('active');
+      const st = document.getElementById(ids.status);
+      if (st) st.classList.add('active');
     }
     function esconderProgresso(tipo) {
       const ids = getIds(tipo);
       const el = document.getElementById(ids.progress);
-      if (el) {
-        setTimeout(() => {
-          el.classList.remove('active');
-          atualizarBarraProgresso(tipo, 0);
-        }, 500);
-      }
+      const st = document.getElementById(ids.status);
+      setTimeout(() => {
+        if (el) el.classList.remove('active');
+        if (st) { st.classList.remove('active'); st.textContent = 'Processando...'; }
+        atualizarBarraProgresso(tipo, 0);
+      }, 800);
     }
     function atualizarBarraProgresso(tipo, pct) {
       const ids = getIds(tipo);
       const bar = document.getElementById(ids.progressBar);
-      if (bar) bar.style.width = pct + '%';
+      if (bar) bar.style.width = Math.min(100, pct) + '%';
+    }
+    function atualizarStatusTexto(tipo, texto) {
+      const ids = getIds(tipo);
+      const st = document.getElementById(ids.status);
+      if (st) { st.textContent = texto; st.classList.add('active'); }
     }
 
     async function lidarComArquivo(file, tipo) {
@@ -1596,18 +1688,30 @@
         if (btn) btn.disabled = true;
         mostrarProgresso(tipo);
         atualizarBarraProgresso(tipo, 5);
+        atualizarStatusTexto(tipo, 'Otimizando imagem...');
 
+        // 1) Converte para WebP
+        const arquivoOtimizado = await converterParaWebP(file, tipo);
+        atualizarBarraProgresso(tipo, 60);
+        atualizarStatusTexto(tipo, 'Enviando...');
+
+        // 2) Pede auth ao backend
         const auth = await obterAutenticacaoImageKit();
-        atualizarBarraProgresso(tipo, 15);
+        atualizarBarraProgresso(tipo, 70);
 
-        const urlBase = await enviarImagemParaImageKit(file, auth, tipo);
+        // 3) Envia para o ImageKit
+        const urlBase = await enviarImagemParaImageKit(arquivoOtimizado, auth, tipo);
         const urlFinal = aplicarTransformacao(urlBase, tipo);
 
         const input = document.getElementById(ids.url);
         if (input) input.value = urlFinal;
         atualizarPreview(tipo);
 
-        showToast('Imagem enviada com sucesso!', 'check_circle');
+        // Feedback de compressão
+        const kbOriginal = (file.size / 1024).toFixed(0);
+        const kbFinal = (arquivoOtimizado.size / 1024).toFixed(0);
+        const reducao = Math.round((1 - arquivoOtimizado.size / file.size) * 100);
+        showToast(`Imagem enviada! ${kbOriginal} KB → ${kbFinal} KB (-${reducao}%)`, 'check_circle');
       } catch (err) {
         console.error('[Upload]', err);
         showToast('Erro no upload: ' + err.message, 'error');
@@ -1874,7 +1978,6 @@
         $('#editHorario').value = data.horario || '';
         $('#editTema').value = data.tema || 'verde';
 
-        // Reconstrói extras
         $('#maisWhatsappsContainer').innerHTML = '';
         let extras = Array.isArray(data.whatsapps_extras) ? data.whatsapps_extras : [];
         if (extras.length === 0) {
@@ -1908,12 +2011,10 @@
         atualizarPreview('logo');
         atualizarPreview('banner');
 
-        // Marca tema ativo
         $$('#editThemeSelector .theme-card-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.theme === (data.tema || 'verde'));
         });
 
-        // Atualiza contador dentro do modal
         atualizarBannerEdicoes(edicoesInfo);
 
         $('#editModal').classList.add('active');
