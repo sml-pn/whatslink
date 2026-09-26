@@ -7,7 +7,6 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#25D366" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://whatslink-48tc.onrender.com/criar.html" />
   <meta property="og:title" content="Criar Link - WhatsLink" />
@@ -16,34 +15,26 @@
   <meta property="og:site_name" content="WhatsLink" />
   <meta property="og:locale" content="pt_BR" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Criar Link - WhatsLink" />
   <meta name="twitter:description" content="Preencha os dados e gere seu link de WhatsApp em segundos." />
   <meta name="twitter:image" content="https://whatslink-48tc.onrender.com/og-image.png" />
 
-  <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2325D366'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
   <link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2325D366'/%3E%3Ctext x='8' y='11' font-size='8' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
 
-  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
 
-  <!-- Ícones -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
-    /* =========================================================
-       WHATSLINK - PÁGINA CRIAR LINK - CSS OTIMIZADO
-       ========================================================= */
     :root {
       --theme: #25D366;
       --theme-dark: #128C7E;
@@ -89,7 +80,6 @@
         var(--bg-body);
     }
 
-    /* ========== HEADER ========== */
     .main-header {
       width: 100%;
       max-width: 900px;
@@ -151,7 +141,6 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* ========== CONTAINER PRINCIPAL ========== */
     .criar-container {
       width: 100%;
       max-width: 900px;
@@ -160,7 +149,6 @@
       box-sizing: border-box;
     }
 
-    /* ========== BLOCO DE LOGIN ========== */
     .login-required {
       background: var(--bg-card);
       border-radius: 20px;
@@ -246,7 +234,6 @@
     .google-login-btn:active { transform: scale(0.98); }
     .google-login-btn svg { flex-shrink: 0; }
 
-    /* ========== BARRA DE USUÁRIO ========== */
     .user-info-bar {
       display: flex;
       align-items: center;
@@ -297,7 +284,6 @@
     }
     .logout-btn:hover { background: #fff; border-color: #ef4444; color: #ef4444; }
 
-    /* ========== AVISO DE EMAIL ========== */
     .email-notice {
       display: flex;
       align-items: center;
@@ -315,7 +301,6 @@
     }
     .email-notice .material-icons-round { font-size: 16px; flex-shrink: 0; }
 
-    /* ========== CARD DO FORMULÁRIO ========== */
     .card {
       background: var(--bg-card);
       border-radius: 16px;
@@ -339,7 +324,6 @@
     .card-header h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
     .card-subtitle { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
 
-    /* ========== SEÇÕES ========== */
     .section-title {
       display: flex;
       align-items: center;
@@ -362,7 +346,6 @@
       background: #fafbfc;
     }
 
-    /* ========== CAMPOS ========== */
     .field { margin-bottom: 12px; }
     .field:last-child { margin-bottom: 0; }
     .field label {
@@ -448,7 +431,73 @@
     }
     .slug-group input:focus { box-shadow: none; }
 
-    /* ========== AVISO INFORMATIVO (MAIS WHATSAPPS) ========== */
+    /* ========== UPLOAD DE IMAGEM (ImageKit) ========== */
+    .upload-btn {
+      width: 100%;
+      padding: 12px;
+      background: rgba(37, 211, 102, 0.08);
+      border: 2px dashed rgba(37, 211, 102, 0.4);
+      border-radius: 10px;
+      color: var(--theme);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+      margin-bottom: 8px;
+    }
+    .upload-btn:hover:not(:disabled) {
+      background: rgba(37, 211, 102, 0.15);
+      border-color: var(--theme);
+      transform: translateY(-1px);
+    }
+    .upload-btn:active:not(:disabled) { transform: scale(0.98); }
+    .upload-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .upload-btn .material-icons-round { font-size: 18px; }
+
+    .upload-divider {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin: 8px 0;
+      position: relative;
+      user-select: none;
+    }
+    .upload-divider::before,
+    .upload-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: var(--border);
+    }
+    .upload-divider::before { left: 0; }
+    .upload-divider::after { right: 0; }
+
+    .upload-progress {
+      height: 4px;
+      background: rgba(37, 211, 102, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 8px;
+      display: none;
+    }
+    .upload-progress.active { display: block; }
+    .upload-progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--theme), var(--theme-dark));
+      transition: width 0.3s ease;
+    }
+
     .whatsapp-info-box {
       display: flex;
       gap: 8px;
@@ -467,7 +516,6 @@
       color: #1e40af;
     }
 
-    /* ========== WHATSAPP EXTRA (2 A 10) ========== */
     .whatsapp-extra {
       background: white;
       border: 1px solid var(--border);
@@ -558,7 +606,6 @@
       margin-left: 6px;
     }
 
-    /* ========== SELETOR DE TEMA ========== */
     .theme-selector-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -615,9 +662,8 @@
     .preview-mini-cardapio { background: linear-gradient(135deg, #fef3c7, #fde68a); }
     .preview-mini-cardapio .preview-dot { background: #ff8f00; }
 
-    /* ========== PREVIEW DE IMAGENS ========== */
     .image-preview {
-      margin-top: 6px;
+      margin-top: 8px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--border);
@@ -632,14 +678,31 @@
       display: block;
     }
     .logo-preview img {
-      max-height: 60px;
-      width: 60px;
+      max-height: 80px;
+      width: 80px;
       border-radius: 50%;
       object-fit: cover;
-      margin: 6px auto;
+      margin: 8px auto;
     }
+    .preview-remove {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.95);
+      color: white;
+      border: none;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .preview-remove:hover { background: #dc2626; transform: scale(1.1); }
+    .preview-remove .material-icons-round { font-size: 16px; }
 
-    /* ========== BOTÃO DE SUBMIT ========== */
     #submitBtn {
       width: 100%;
       padding: 14px;
@@ -678,7 +741,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ========== RESULTADO ========== */
     #result { margin-top: 16px; animation: fadeUp 0.4s ease both; }
     .result-box {
       background: #f0fdf4;
@@ -750,9 +812,6 @@
     }
     .result-actions a:hover { background: #1e293b; border-color: #1e293b; }
 
-    /* ============================================================
-       ONDE COLOCAR SEU LINK (aparece após criar)
-       ============================================================ */
     .where-to-place {
       margin-top: 16px;
       padding-top: 16px;
@@ -825,13 +884,11 @@
       line-height: 1.4;
     }
 
-    /* ========== ANIMAÇÕES ========== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ========== TOAST ========== */
     .toast {
       position: fixed;
       bottom: 16px;
@@ -854,7 +911,6 @@
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast .material-icons-round { font-size: 18px; color: var(--theme); }
 
-    /* ========== RESPONSIVIDADE ========== */
     @media (max-width: 360px) {
       .criar-container { padding: 8px; }
       .card { padding: 12px; }
@@ -954,7 +1010,6 @@
 
         <form id="linkForm" novalidate>
 
-          <!-- ================= SEÇÃO 1: IDENTIFICAÇÃO ================= -->
           <div class="section-title">
             <span class="material-icons-round">business</span>
             Identificação
@@ -966,7 +1021,6 @@
               <span class="helper-text">Aparece no topo da sua página. Use o nome que o cliente reconhece.</span>
             </div>
 
-            <!-- WhatsApp principal: número + botão + mensagem agrupados -->
             <div class="field">
               <label for="whatsapp">WhatsApp principal *</label>
               <input type="tel" id="whatsapp" placeholder="(85) 99999-9999" required maxlength="18" inputmode="tel" />
@@ -986,7 +1040,6 @@
             </div>
           </div>
 
-          <!-- ================= SEÇÃO 2: MAIS WHATSAPPS (2 A 10) ================= -->
           <div class="section-title">
             <span class="material-icons-round">groups</span>
             Mais WhatsApps
@@ -1005,7 +1058,6 @@
             </button>
           </div>
 
-          <!-- ================= SEÇÃO 3: APARÊNCIA ================= -->
           <div class="section-title">
             <span class="material-icons-round">palette</span>
             Aparência
@@ -1027,21 +1079,48 @@
 
             <div class="grid-2">
               <div class="field">
-                <label for="logoUrl">Logo (URL) <span style="font-weight:400;">(opcional)</span></label>
+                <label for="logoUrl">Logo <span style="font-weight:400;">(opcional)</span></label>
+                <input type="file" id="logoFile" accept="image/*" hidden />
+                <button type="button" class="upload-btn" id="logoUploadBtn">
+                  <span class="material-icons-round">upload</span>
+                  Escolher imagem
+                </button>
+                <div class="upload-divider">ou cole a URL abaixo</div>
                 <input type="url" id="logoUrl" placeholder="https://exemplo.com/logo.png" />
-                <span class="helper-text">📌 Dica: use <a href="https://postimages.org/" target="_blank">postimages.org</a> e copie o Direct Link. Se falhar, usaremos as iniciais.</span>
-                <div class="image-preview logo-preview" id="logoPreview"><img id="logoPreviewImg" src="" alt="Preview da logo" /></div>
+                <div class="upload-progress" id="logoProgress">
+                  <div class="upload-progress-bar" id="logoProgressBar"></div>
+                </div>
+                <span class="helper-text">📌 Se falhar, usaremos as iniciais da empresa.</span>
+                <div class="image-preview logo-preview" id="logoPreview">
+                  <img id="logoPreviewImg" src="" alt="Preview da logo" />
+                  <button type="button" class="preview-remove" id="logoPreviewRemove" title="Remover">
+                    <span class="material-icons-round">close</span>
+                  </button>
+                </div>
               </div>
               <div class="field">
-                <label for="bannerUrl">Banner (URL) <span style="font-weight:400;">(opcional)</span></label>
+                <label for="bannerUrl">Banner <span style="font-weight:400;">(opcional)</span></label>
+                <input type="file" id="bannerFile" accept="image/*" hidden />
+                <button type="button" class="upload-btn" id="bannerUploadBtn">
+                  <span class="material-icons-round">upload</span>
+                  Escolher imagem
+                </button>
+                <div class="upload-divider">ou cole a URL abaixo</div>
                 <input type="url" id="bannerUrl" placeholder="https://exemplo.com/banner.png" />
-                <span class="helper-text">📌 Imagem horizontal (1200x400px). Mesmas dicas do logo.</span>
-                <div class="image-preview" id="bannerPreview"><img id="bannerPreviewImg" src="" alt="Preview do banner" /></div>
+                <div class="upload-progress" id="bannerProgress">
+                  <div class="upload-progress-bar" id="bannerProgressBar"></div>
+                </div>
+                <span class="helper-text">📌 Imagem horizontal (1200x400px) fica melhor.</span>
+                <div class="image-preview" id="bannerPreview">
+                  <img id="bannerPreviewImg" src="" alt="Preview do banner" />
+                  <button type="button" class="preview-remove" id="bannerPreviewRemove" title="Remover">
+                    <span class="material-icons-round">close</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- ================= SEÇÃO 4: CONTEÚDO ================= -->
           <div class="section-title">
             <span class="material-icons-round">description</span>
             Conteúdo
@@ -1054,7 +1133,6 @@
             </div>
           </div>
 
-          <!-- ================= SEÇÃO 5: CONTATOS E LINKS ================= -->
           <div class="section-title">
             <span class="material-icons-round">share</span>
             Contatos e links
@@ -1098,7 +1176,6 @@
             </div>
           </div>
 
-          <!-- ================= SEÇÃO 6: LINK PERSONALIZADO ================= -->
           <div class="section-title">
             <span class="material-icons-round">link</span>
             Link personalizado
@@ -1118,7 +1195,6 @@
           </button>
         </form>
 
-        <!-- ================= RESULTADO ================= -->
         <div id="result" style="display:none;">
           <div class="result-box">
             <div class="result-head">
@@ -1137,10 +1213,6 @@
               <a href="edit.html"><span class="material-icons-round" style="font-size:16px;">list</span> Meus Links</a>
             </div>
 
-            <!-- ============================================================
-                 ONDE COLOCAR SEU LINK
-                 Aparece após o usuário gerar o link com sucesso
-                 ============================================================ -->
             <div class="where-to-place">
               <h3>
                 <span class="material-icons-round">place</span>
@@ -1151,7 +1223,6 @@
               </p>
 
               <div class="where-grid">
-                <!-- Instagram -->
                 <div class="where-card">
                   <div class="where-card-icon instagram">
                     <i class="fab fa-instagram"></i>
@@ -1162,7 +1233,6 @@
                   </div>
                 </div>
 
-                <!-- Google Meu Negócio -->
                 <div class="where-card">
                   <div class="where-card-icon google">
                     <span class="material-icons-round" style="color:white;font-size:20px;">storefront</span>
@@ -1173,7 +1243,6 @@
                   </div>
                 </div>
 
-                <!-- WhatsApp Business -->
                 <div class="where-card">
                   <div class="where-card-icon whatsapp">
                     <i class="fab fa-whatsapp"></i>
@@ -1184,7 +1253,6 @@
                   </div>
                 </div>
 
-                <!-- TikTok -->
                 <div class="where-card">
                   <div class="where-card-icon tiktok">
                     <i class="fab fa-tiktok"></i>
@@ -1196,7 +1264,6 @@
                 </div>
               </div>
             </div>
-            <!-- ============================================================ -->
 
           </div>
         </div>
@@ -1207,20 +1274,16 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    // ============================================================
-    // CONFIGURAÇÕES GLOBAIS
-    // ============================================================
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
     const MAX_WHATSAPP = 10;
+    const MAX_FILE_MB = 5;
+    const IMAGEKIT_UPLOAD_URL = 'https://upload.imagekit.io/api/v1/files/upload';
     let currentUser = null;
 
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
 
-    // ============================================================
-    // TOAST (notificação temporária)
-    // ============================================================
     function showToast(msg, icon = 'check_circle') {
       const t = $('#toast');
       if (!t) return;
@@ -1229,17 +1292,11 @@
       setTimeout(() => t.classList.remove('show'), 3200);
     }
 
-    // ============================================================
-    // SLUGIFY (gera slug a partir de texto)
-    // ============================================================
     function slugify(text) {
       return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
     }
 
-    // ============================================================
-    // EXTRAIR URL DE EMBED (Google Maps)
-    // ============================================================
     function extrairUrlEmbed(html) {
       if (!html) return '';
       const trimmed = html.trim();
@@ -1251,9 +1308,6 @@
       return trimmed;
     }
 
-    // ============================================================
-    // MÁSCARA DE TELEFONE
-    // ============================================================
     function formatarWhatsApp(input) {
       if (!input) return;
       input.addEventListener('input', (e) => {
@@ -1269,36 +1323,176 @@
     formatarWhatsApp($('#whatsapp'));
 
     // ============================================================
-    // PREVIEW DE LOGO
+    // UPLOAD DE IMAGEM — IMAGEKIT (signed upload)
     // ============================================================
-    function atualizarPreviewLogo() {
-      const url = $('#logoUrl').value.trim();
-      const preview = $('#logoPreview');
-      const img = $('#logoPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
-        img.onload = () => { preview.style.display = 'block'; };
-        img.onerror = () => { preview.style.display = 'none'; };
-      } else preview.style.display = 'none';
+    function aplicarTransformacao(url, tipo) {
+      if (!url) return '';
+      if (url.includes('?tr=')) return url;
+      if (!url.includes('ik.imagekit.io')) return url;
+      const params = tipo === 'logo'
+        ? 'tr=w-400,c-at_max,q-80,f-webp'
+        : 'tr=w-1200,c-at_max,q-80,f-webp';
+      const sep = url.includes('?') ? '&' : '?';
+      return url + sep + params;
     }
-    $('#logoUrl').addEventListener('input', atualizarPreviewLogo);
-    $('#logoUrl').addEventListener('paste', () => setTimeout(atualizarPreviewLogo, 100));
 
-    // ============================================================
-    // PREVIEW DE BANNER
-    // ============================================================
-    function atualizarPreviewBanner() {
-      const url = $('#bannerUrl').value.trim();
-      const preview = $('#bannerPreview');
-      const img = $('#bannerPreviewImg');
-      if (url && url.startsWith('http')) {
-        img.src = url;
+    async function obterAutenticacaoImageKit() {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'gerar_autenticacao_imagekit' })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      if (!data.token || !data.signature || !data.expire || !data.publicKey) {
+        throw new Error('Resposta de autenticação incompleta do servidor');
+      }
+      return data;
+    }
+
+    function enviarImagemParaImageKit(file, auth, tipo) {
+      return new Promise((resolve, reject) => {
+        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+        const unique = Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        const fileName = tipo + '_' + unique + '.' + ext;
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('fileName', fileName);
+        formData.append('publicKey', auth.publicKey);
+        formData.append('signature', auth.signature);
+        formData.append('token', auth.token);
+        formData.append('expire', String(auth.expire));
+        formData.append('folder', '/thelinkbio/' + tipo + 's/');
+        formData.append('useUniqueFileName', 'false');
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', IMAGEKIT_UPLOAD_URL);
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            atualizarBarraProgresso(tipo, pct);
+          }
+        };
+
+        xhr.onload = () => {
+          let payload = {};
+          try { payload = JSON.parse(xhr.responseText); } catch (e) {}
+          if (xhr.status >= 200 && xhr.status < 300 && payload.url) {
+            resolve(payload.url);
+          } else {
+            reject(new Error(payload.message || 'Falha no upload (HTTP ' + xhr.status + ')'));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error('Erro de rede no upload'));
+        xhr.ontimeout = () => reject(new Error('Timeout no upload'));
+        xhr.send(formData);
+      });
+    }
+
+    function mostrarProgresso(tipo) {
+      const el = document.getElementById(tipo + 'Progress');
+      if (el) el.classList.add('active');
+    }
+    function esconderProgresso(tipo) {
+      const el = document.getElementById(tipo + 'Progress');
+      if (el) {
+        setTimeout(() => {
+          el.classList.remove('active');
+          atualizarBarraProgresso(tipo, 0);
+        }, 500);
+      }
+    }
+    function atualizarBarraProgresso(tipo, pct) {
+      const bar = document.getElementById(tipo + 'ProgressBar');
+      if (bar) bar.style.width = pct + '%';
+    }
+
+    async function lidarComArquivo(file, tipo) {
+      try {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+          throw new Error('O arquivo precisa ser uma imagem');
+        }
+        if (file.size > MAX_FILE_MB * 1024 * 1024) {
+          throw new Error(`A imagem não pode passar de ${MAX_FILE_MB} MB`);
+        }
+
+        const btn = document.getElementById(tipo + 'UploadBtn');
+        if (btn) btn.disabled = true;
+        mostrarProgresso(tipo);
+        atualizarBarraProgresso(tipo, 5);
+
+        const auth = await obterAutenticacaoImageKit();
+        atualizarBarraProgresso(tipo, 15);
+
+        const urlBase = await enviarImagemParaImageKit(file, auth, tipo);
+        const urlFinal = aplicarTransformacao(urlBase, tipo);
+
+        const input = document.getElementById(tipo + 'Url');
+        if (input) input.value = urlFinal;
+        atualizarPreview(tipo);
+
+        showToast('Imagem enviada com sucesso!', 'check_circle');
+      } catch (err) {
+        console.error('[Upload]', err);
+        showToast('Erro no upload: ' + err.message, 'error');
+      } finally {
+        const btn = document.getElementById(tipo + 'UploadBtn');
+        if (btn) btn.disabled = false;
+        esconderProgresso(tipo);
+      }
+    }
+
+    function atualizarPreview(tipo) {
+      const input = document.getElementById(tipo + 'Url');
+      const preview = document.getElementById(tipo + 'Preview');
+      const img = document.getElementById(tipo + 'PreviewImg');
+      if (!input || !preview || !img) return;
+
+      const url = (input.value || '').trim();
+      if (url && /^https?:\/\//i.test(url)) {
         img.onload = () => { preview.style.display = 'block'; };
         img.onerror = () => { preview.style.display = 'none'; };
-      } else preview.style.display = 'none';
+        img.src = url;
+      } else {
+        preview.style.display = 'none';
+        img.removeAttribute('src');
+      }
     }
-    $('#bannerUrl').addEventListener('input', atualizarPreviewBanner);
-    $('#bannerUrl').addEventListener('paste', () => setTimeout(atualizarPreviewBanner, 100));
+
+    function removerImagem(tipo) {
+      const input = document.getElementById(tipo + 'Url');
+      if (input) input.value = '';
+      atualizarPreview(tipo);
+    }
+
+    ['logo', 'banner'].forEach(tipo => {
+      const btn = document.getElementById(tipo + 'UploadBtn');
+      const fileInput = document.getElementById(tipo + 'File');
+      const urlInput = document.getElementById(tipo + 'Url');
+      const removeBtn = document.getElementById(tipo + 'PreviewRemove');
+
+      if (btn && fileInput) {
+        btn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) lidarComArquivo(file, tipo);
+          fileInput.value = '';
+        });
+      }
+
+      if (urlInput) {
+        urlInput.addEventListener('input', () => atualizarPreview(tipo));
+        urlInput.addEventListener('paste', () => setTimeout(() => atualizarPreview(tipo), 100));
+      }
+
+      if (removeBtn) {
+        removeBtn.addEventListener('click', () => removerImagem(tipo));
+      }
+    });
 
     // ============================================================
     // GOOGLE IDENTITY SERVICES
@@ -1355,9 +1549,6 @@
       catch { localStorage.removeItem('whatslink_user'); currentUser = null; }
     }
 
-    // ============================================================
-    // GERENCIAMENTO DE WHATSAPP EXTRA (2 A 10)
-    // ============================================================
     function atualizarContadorWhatsapp() {
       const total = 1 + $$('#maisWhatsappsContainer .whatsapp-extra').length;
       $('#whatsappCounter').textContent = `${total} de ${MAX_WHATSAPP}`;
@@ -1432,9 +1623,6 @@
 
     atualizarContadorWhatsapp();
 
-    // ============================================================
-    // SLUG AUTOMÁTICO (empresa -> slug)
-    // ============================================================
     const empresa = $('#empresa');
     const slug = $('#slug');
     let slugTouched = false;
@@ -1443,9 +1631,6 @@
       if (!slugTouched || slug.value === '') slug.value = slugify(empresa.value);
     });
 
-    // ============================================================
-    // LOCALIZAÇÃO (extrai URL automaticamente ao colar)
-    // ============================================================
     $('#localizacao').addEventListener('paste', (e) => {
       setTimeout(() => {
         const valor = $('#localizacao').value;
@@ -1457,9 +1642,6 @@
       }, 100);
     });
 
-    // ============================================================
-    // SELEÇÃO DE TEMA
-    // ============================================================
     $$('.theme-card-option').forEach(card => {
       card.addEventListener('click', () => {
         const temaSelecionado = card.dataset.theme;
@@ -1473,9 +1655,6 @@
       });
     });
 
-    // ============================================================
-    // COLETA DOS WHATSAPPS EXTRAS
-    // ============================================================
     function coletarWhatsappsExtras() {
       const extras = [];
       $$('#maisWhatsappsContainer .whatsapp-extra').forEach(el => {
@@ -1487,13 +1666,9 @@
       return extras;
     }
 
-    // ============================================================
-    // SUBMIT DO FORMULÁRIO
-    // ============================================================
     $('#linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Verifica sessão
       if (!currentUser) {
         const saved = localStorage.getItem('whatslink_user');
         if (saved) { try { currentUser = JSON.parse(saved); mostrarFormulario(); } catch { currentUser = null; } }
@@ -1504,7 +1679,6 @@
         return;
       }
 
-      // Valida WhatsApp principal
       const whatsappPrincipal = $('#whatsapp').value.trim().replace(/\D/g, '');
       if (!whatsappPrincipal) {
         showToast('Preencha o WhatsApp principal', 'error');
@@ -1515,7 +1689,6 @@
       const msgPrincipal = $('#mensagemPrincipal').value.trim();
       const extras = coletarWhatsappsExtras();
 
-      // Valida que cada bloco extra tenha número
       for (let i = 0; i < extras.length; i++) {
         if (!extras[i].numero) {
           showToast(`Preencha o número do WhatsApp ${i + 2}`, 'error');
@@ -1523,7 +1696,6 @@
         }
       }
 
-      // Monta payload
       const data = {
         empresa: $('#empresa').value.trim(),
         whatsapp: whatsappPrincipal,
