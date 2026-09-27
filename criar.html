@@ -542,6 +542,7 @@
     }
     .loc-aviso strong { font-weight: 700; }
 
+    /* ========== MAPA ========== */
     .mapa-wrap {
       margin-top: 12px;
       border-radius: 12px;
@@ -614,10 +615,88 @@
     .mapa-fallback:hover { background: #f0f7ff; }
     .mapa-fallback .material-icons-round { font-size: 16px; }
 
+    /* Container do mapa + pino fixo no centro */
+    .mapa-container {
+      position: relative;
+      width: 100%;
+    }
+
     #mapaCriar {
       width: 100%;
-      height: 340px;
+      height: 360px;
       z-index: 1;
+    }
+
+    /* Pino fixo no centro (padrão Uber / iFood) */
+    .pin-fixo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      width: 44px;
+      height: 44px;
+      pointer-events: none;
+      z-index: 500;
+      will-change: transform;
+    }
+    .pin-fixo .pin-shape {
+      width: 44px;
+      height: 44px;
+      border-radius: 50% 50% 50% 0;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      transform: rotate(-45deg);
+      display: grid;
+      place-items: center;
+      border: 2px solid white;
+      box-shadow:
+        0 4px 12px rgba(37, 211, 102, 0.55),
+        0 0 0 4px rgba(255, 255, 255, 0.95),
+        0 0 0 5px rgba(37, 211, 102, 0.35);
+    }
+    .pin-fixo .pin-shape .material-icons-round {
+      transform: rotate(45deg);
+      color: white;
+      font-size: 22px;
+    }
+    .pin-fixo::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 18px;
+      height: 7px;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 50%;
+      filter: blur(1.5px);
+    }
+
+    /* Aviso "arraste o mapa" que some após interação */
+    .mapa-aviso-inicial {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 14px;
+      background: rgba(15, 23, 42, 0.9);
+      color: white;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 500;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      animation: pulseAviso 2s ease-in-out infinite;
+      white-space: nowrap;
+    }
+    .mapa-aviso-inicial.oculto { display: none; }
+    .mapa-aviso-inicial .material-icons-round { font-size: 16px; }
+    @keyframes pulseAviso {
+      0%, 100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 0.85; transform: translateX(-50%) translateY(-3px); }
     }
 
     .mapa-hint {
@@ -632,78 +711,6 @@
       line-height: 1.4;
     }
     .mapa-hint .material-icons-round { font-size: 16px; flex-shrink: 0; color: #22c55e; }
-    .mapa-hint.aviso {
-      background: #fffbeb;
-      color: #92400e;
-      border-top-color: #fcd34d;
-    }
-    .mapa-hint.aviso .material-icons-round { color: #f59e0b; }
-
-    .leaflet-popup-content-wrapper {
-      border-radius: 10px !important;
-      font-family: var(--font-family) !important;
-    }
-    .leaflet-popup-content {
-      font-size: 12px !important;
-      margin: 8px 12px !important;
-    }
-
-    /* ========== PIN CUSTOMIZADO ========== */
-    .pin-custom {
-      background: transparent !important;
-      border: none !important;
-    }
-    .pin-bounce-wrap {
-      width: 44px;
-      height: 44px;
-      transform-origin: 50% 100%;
-    }
-    .pin-bounce-wrap.animar {
-      animation: pinBounce 0.7s ease;
-    }
-    @keyframes pinBounce {
-      0%, 100% { transform: translateY(0); }
-      20% { transform: translateY(-14px); }
-      40% { transform: translateY(0); }
-      60% { transform: translateY(-8px); }
-      80% { transform: translateY(0); }
-    }
-    .pin-inner {
-      width: 44px;
-      height: 44px;
-      border-radius: 50% 50% 50% 0;
-      background: linear-gradient(135deg, #25D366, #128C7E);
-      transform: rotate(-45deg);
-      display: grid;
-      place-items: center;
-      box-shadow:
-        0 4px 12px rgba(37, 211, 102, 0.5),
-        0 0 0 4px rgba(255, 255, 255, 0.95),
-        0 0 0 5px rgba(37, 211, 102, 0.35);
-      border: 2px solid white;
-    }
-    .pin-inner .material-icons-round {
-      transform: rotate(45deg);
-      color: white;
-      font-size: 22px;
-    }
-
-    /* Tooltip customizada (balão acima do pino) */
-    .leaflet-tooltip.tooltip-pin {
-      background: rgba(15, 23, 42, 0.95);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      font-family: var(--font-family);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      white-space: nowrap;
-    }
-    .leaflet-tooltip.tooltip-pin::before {
-      border-top-color: rgba(15, 23, 42, 0.95);
-    }
 
     .url-avancado {
       margin-top: 10px;
@@ -1226,7 +1233,7 @@
       .field input, .field textarea { font-size: 13px; padding: 8px 10px; }
       .theme-selector-grid { grid-template-columns: 1fr 1fr; }
       .grid-2 { grid-template-columns: 1fr; gap: 0; }
-      #mapaCriar { height: 280px; }
+      #mapaCriar { height: 300px; }
     }
 
     @media (min-width: 600px) {
@@ -1507,10 +1514,21 @@
                   <span class="material-icons-round">open_in_new</span>
                   Não encontrou? Buscar no Google Maps
                 </button>
-                <div id="mapaCriar"></div>
+                <div class="mapa-container">
+                  <div id="mapaCriar"></div>
+                  <div class="pin-fixo" aria-hidden="true">
+                    <div class="pin-shape">
+                      <span class="material-icons-round">place</span>
+                    </div>
+                  </div>
+                  <div class="mapa-aviso-inicial" id="mapaAvisoInicial">
+                    <span class="material-icons-round">pan_tool</span>
+                    Arraste o mapa para posicionar o pino
+                  </div>
+                </div>
                 <div class="mapa-hint" id="mapaHint">
                   <span class="material-icons-round">touch_app</span>
-                  <span>Clique em qualquer lugar do mapa ou arraste o pino verde para marcar o local.</span>
+                  <span>Mova o mapa até o pino ficar no local exato do seu negócio.</span>
                 </div>
               </div>
 
@@ -1650,9 +1668,10 @@
 
     let currentUser = null;
     let mapa = null;
-    let marcador = null;
     let localAtiva = false;
+    let mapaInteragido = false;   // controla se já deve preencher o campo
     let buscaTimeout = null;
+    let updateCampoTimeout = null;
 
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
@@ -1941,26 +1960,7 @@
     });
 
     // ============================================================
-    // ÍCONE DO PIN (customizado, maior e mais visível)
-    // ============================================================
-    function criarIconePin() {
-      return L.divIcon({
-        className: 'pin-custom',
-        html: `
-          <div class="pin-bounce-wrap">
-            <div class="pin-inner">
-              <span class="material-icons-round">place</span>
-            </div>
-          </div>
-        `,
-        iconSize: [44, 44],
-        iconAnchor: [22, 44],
-        tooltipAnchor: [0, -46]
-      });
-    }
-
-    // ============================================================
-    // MAPA INTERATIVO (Leaflet + OpenStreetMap)
+    // MAPA INTERATIVO — PINO FIXO NO CENTRO
     // ============================================================
     function iniciarMapa() {
       const container = document.getElementById('mapaCriar');
@@ -1977,65 +1977,45 @@
         attribution: '&copy; OpenStreetMap'
       }).addTo(mapa);
 
-      // Clique no mapa → move o pino
-      mapa.on('click', (e) => {
-        colocarMarcador(e.latlng.lat, e.latlng.lng);
+      // Quando o mapa se move (arrastar/zoom), o pino central marca o novo centro
+      mapa.on('moveend', () => {
+        if (!mapaInteragido) return;
+        const c = mapa.getCenter();
+        atualizarLocalizacaoCampo(c.lat, c.lng);
       });
 
-      // Se já existe valor (por exemplo, edição), tenta posicionar
+      // Primeira interação do usuário → esconde o aviso
+      mapa.on('dragstart', () => {
+        mapaInteragido = true;
+        const aviso = document.getElementById('mapaAvisoInicial');
+        if (aviso) aviso.classList.add('oculto');
+      });
+
+      // Clique no mapa → centraliza nele
+      mapa.on('click', (e) => {
+        moverMapaPara(e.latlng.lat, e.latlng.lng, mapa.getZoom());
+      });
+
+      // Se já existe valor inicial (edit futura), posiciona
       const valorAtual = ($('#localizacao')?.value || '').trim();
       const coords = extrairCoordsDoLink(valorAtual);
       if (coords) {
-        colocarMarcador(coords.lat, coords.lng, false);
-        mapa.setView([coords.lat, coords.lng], 16);
+        moverMapaPara(coords.lat, coords.lng, 16);
       }
     }
 
-    function colocarMarcador(lat, lng, moverMapa = true) {
+    function moverMapaPara(lat, lng, zoom) {
       if (!mapa) return;
+      mapaInteragido = true;
+      const aviso = document.getElementById('mapaAvisoInicial');
+      if (aviso) aviso.classList.add('oculto');
 
-      if (!marcador) {
-        marcador = L.marker([lat, lng], {
-          draggable: true,
-          icon: criarIconePin(),
-          zIndexOffset: 1000
-        }).addTo(mapa);
-
-        marcador.bindTooltip('Arraste para ajustar', {
-          permanent: true,
-          direction: 'top',
-          className: 'tooltip-pin',
-          offset: [0, -4]
-        });
-
-        marcador.on('dragend', () => {
-          const p = marcador.getLatLng();
-          atualizarLocalizacaoCampo(p.lat, p.lng);
-        });
+      if (zoom && zoom !== mapa.getZoom()) {
+        mapa.flyTo([lat, lng], zoom, { duration: 0.6 });
       } else {
-        marcador.setLatLng([lat, lng]);
+        mapa.flyTo([lat, lng], mapa.getZoom(), { duration: 0.6 });
       }
-
-      // Anima o pin (bounce)
-      setTimeout(() => animarPin(), 50);
-
-      if (moverMapa) {
-        mapa.setView([lat, lng], Math.max(mapa.getZoom(), 16));
-      }
-
-      atualizarLocalizacaoCampo(lat, lng);
-    }
-
-    function animarPin() {
-      if (!marcador) return;
-      const el = marcador.getElement();
-      if (!el) return;
-      const wrap = el.querySelector('.pin-bounce-wrap');
-      if (!wrap) return;
-      wrap.classList.remove('animar');
-      void wrap.offsetWidth;
-      wrap.classList.add('animar');
-      setTimeout(() => wrap.classList.remove('animar'), 750);
+      // moveend vai atualizar o campo automaticamente
     }
 
     function atualizarLocalizacaoCampo(lat, lng) {
@@ -2107,9 +2087,7 @@
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-          colocarMarcador(lat, lng, true);
+          moverMapaPara(pos.coords.latitude, pos.coords.longitude, 16);
           atualizarUIlocalizacao(true);
           showToast('Localização detectada!', 'check_circle');
 
@@ -2146,11 +2124,7 @@
 
     function desligarLocalizacao() {
       atualizarUIlocalizacao(false);
-
-      if (marcador && mapa) {
-        mapa.removeLayer(marcador);
-        marcador = null;
-      }
+      mapaInteragido = false;
 
       if (mapa) {
         mapa.setView(BRASIL_CENTER, BRASIL_ZOOM);
@@ -2158,11 +2132,15 @@
 
       const input = $('#localizacao');
       if (input) input.value = '';
+
+      const aviso = document.getElementById('mapaAvisoInicial');
+      if (aviso) aviso.classList.remove('oculto');
+
       showToast('Localização removida', 'info');
     }
 
     // ============================================================
-    // BUSCA POR ENDEREÇO (Photon API — melhor que Nominatim para lugares)
+    // BUSCA POR ENDEREÇO (Photon API)
     // ============================================================
     async function buscarEndereco(query) {
       if (!query || query.trim().length < 3) {
@@ -2195,7 +2173,7 @@
         const feat = data.features[0];
         const lng = feat.geometry.coordinates[0];
         const lat = feat.geometry.coordinates[1];
-        colocarMarcador(lat, lng, true);
+        moverMapaPara(lat, lng, 17);
 
         const p = feat.properties || {};
         const partes = [p.name, p.street, p.housenumber, p.city].filter(Boolean);
@@ -2265,7 +2243,7 @@
             if (result.state === 'granted') {
               navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                  colocarMarcador(pos.coords.latitude, pos.coords.longitude, true);
+                  moverMapaPara(pos.coords.latitude, pos.coords.longitude, 16);
                   atualizarUIlocalizacao(true);
                 },
                 () => {},
@@ -2425,7 +2403,7 @@
         if (urlExtraida !== valor) $('#localizacao').value = urlExtraida;
         const coords = extrairCoordsDoLink(urlExtraida);
         if (coords && mapa) {
-          colocarMarcador(coords.lat, coords.lng, true);
+          moverMapaPara(coords.lat, coords.lng, 16);
           showToast('Localização atualizada no mapa!');
         }
       }, 100);
