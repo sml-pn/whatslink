@@ -32,7 +32,13 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
+  <!-- Leaflet: mapa interativo open-source, sem API key -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <style>
     :root {
@@ -431,6 +437,228 @@
     }
     .slug-group input:focus { box-shadow: none; }
 
+    /* ========== LOCALIZAÇÃO ========== */
+    .loc-intro {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.5;
+    }
+    .loc-intro .material-icons-round {
+      font-size: 18px;
+      flex-shrink: 0;
+      color: #1e40af;
+    }
+
+    .loc-toggle {
+      width: 100%;
+      padding: 13px;
+      background: #f1f5f9;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+    }
+    .loc-toggle:hover:not(:disabled) {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+    .loc-toggle:active:not(:disabled) { transform: scale(0.98); }
+    .loc-toggle:disabled { opacity: 0.6; cursor: not-allowed; }
+    .loc-toggle .material-icons-round { font-size: 20px; }
+    .loc-toggle .label-off { display: inline; }
+    .loc-toggle .label-on { display: none; }
+
+    .loc-toggle.ativo {
+      background: rgba(37, 211, 102, 0.1);
+      border-color: var(--theme);
+      color: var(--theme);
+    }
+    .loc-toggle.ativo .label-off { display: none; }
+    .loc-toggle.ativo .label-on { display: inline; }
+
+    .loc-toggle.bloqueado {
+      background: #fef2f2;
+      border-color: #fca5a5;
+      color: #991b1b;
+      cursor: not-allowed;
+    }
+
+    /* Botão desativar (aparece ao lado quando ativo) */
+    .loc-desativar {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 12px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+    }
+    .loc-desativar:hover {
+      background: #fff;
+      border-color: var(--border-strong);
+    }
+    .loc-desativar.visivel { display: flex; }
+    .loc-desativar .material-icons-round { font-size: 16px; }
+
+    .loc-aviso {
+      display: none;
+      gap: 8px;
+      padding: 10px 12px;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #92400e;
+      line-height: 1.5;
+    }
+    .loc-aviso.visivel { display: flex; }
+    .loc-aviso .material-icons-round {
+      font-size: 18px;
+      flex-shrink: 0;
+      color: #f59e0b;
+    }
+    .loc-aviso strong { font-weight: 700; }
+
+    .mapa-wrap {
+      margin-top: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: white;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .mapa-search {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+    }
+    .mapa-search input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: var(--font-family);
+      background: white;
+      color: var(--text-main);
+      outline: none;
+      box-sizing: border-box;
+    }
+    .mapa-search input:focus {
+      border-color: var(--theme);
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    }
+    .mapa-search button {
+      padding: 10px 14px;
+      background: var(--theme);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: var(--font-family);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .mapa-search button:hover:not(:disabled) { background: #16a34a; }
+    .mapa-search button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .mapa-search button .material-icons-round { font-size: 18px; }
+
+    #mapaCriar {
+      width: 100%;
+      height: 340px;
+      z-index: 1;
+    }
+
+    .mapa-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 12px;
+      background: #f0fdf4;
+      color: #166534;
+      font-size: 12px;
+      border-top: 1px solid #86efac;
+      line-height: 1.4;
+    }
+    .mapa-hint .material-icons-round { font-size: 16px; flex-shrink: 0; color: #22c55e; }
+    .mapa-hint.aviso {
+      background: #fffbeb;
+      color: #92400e;
+      border-top-color: #fcd34d;
+    }
+    .mapa-hint.aviso .material-icons-round { color: #f59e0b; }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px !important;
+      font-family: var(--font-family) !important;
+    }
+    .leaflet-popup-content {
+      font-size: 12px !important;
+      margin: 8px 12px !important;
+    }
+
+    .url-avancado {
+      margin-top: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fafbfc;
+      overflow: hidden;
+    }
+    .url-avancado summary {
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      list-style: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .url-avancado summary::-webkit-details-marker { display: none; }
+    .url-avancado summary .material-icons-round {
+      font-size: 16px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+    .url-avancado[open] summary .material-icons-round { transform: rotate(180deg); }
+    .url-avancado .url-content { padding: 0 12px 12px; }
+
+    /* ========== UPLOAD DE IMAGEM ========== */
     .upload-btn {
       width: 100%;
       padding: 12px;
@@ -455,10 +683,7 @@
       transform: translateY(-1px);
     }
     .upload-btn:active:not(:disabled) { transform: scale(0.98); }
-    .upload-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    .upload-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .upload-btn .material-icons-round { font-size: 18px; }
 
     .upload-divider {
@@ -926,6 +1151,7 @@
       .field input, .field textarea { font-size: 13px; padding: 8px 10px; }
       .theme-selector-grid { grid-template-columns: 1fr 1fr; }
       .grid-2 { grid-template-columns: 1fr; gap: 0; }
+      #mapaCriar { height: 280px; }
     }
 
     @media (min-width: 600px) {
@@ -1171,10 +1397,55 @@
               </div>
             </div>
 
+            <!-- LOCALIZAÇÃO COM MAPA INTERATIVO -->
             <div class="field">
-              <label for="localizacao">Localização (Google Maps)</label>
-              <input type="text" id="localizacao" placeholder="Cole o link curto ou link de incorporação" />
-              <span class="helper-text">✅ Pode colar o link curto do Google Maps (ex.: maps.app.goo.gl). O sistema transformará em mapa automaticamente.</span>
+              <label>Localização <span style="font-weight:400;">(opcional)</span></label>
+
+              <div class="loc-intro">
+                <span class="material-icons-round">lightbulb</span>
+                <span>Marque no mapa onde seu negócio fica. Seu cliente vai ver o mapa com o pino exato.</span>
+              </div>
+
+              <button type="button" class="loc-toggle" id="locToggleBtn">
+                <span class="material-icons-round" id="locToggleIcon">my_location</span>
+                <span class="label-off">Ativar minha localização</span>
+                <span class="label-on">Localização ativa</span>
+              </button>
+
+              <button type="button" class="loc-desativar" id="locDesativarBtn">
+                <span class="material-icons-round">location_off</span>
+                Desativar e usar o mapa manualmente
+              </button>
+
+              <div class="loc-aviso" id="locAviso">
+                <span class="material-icons-round">info</span>
+                <span>Você bloqueou o acesso à localização. Para liberar, clique no <strong>ícone de cadeado 🔒</strong> na barra de endereço do navegador e permita a localização. Enquanto isso, use o mapa abaixo para marcar manualmente.</span>
+              </div>
+
+              <div class="mapa-wrap">
+                <div class="mapa-search">
+                  <input type="text" id="mapaBusca" placeholder="Buscar endereço..." />
+                  <button type="button" id="mapaBuscaBtn" title="Buscar">
+                    <span class="material-icons-round">search</span>
+                  </button>
+                </div>
+                <div id="mapaCriar"></div>
+                <div class="mapa-hint" id="mapaHint">
+                  <span class="material-icons-round">touch_app</span>
+                  <span>Arraste o pino ou clique no mapa para marcar o local exato.</span>
+                </div>
+              </div>
+
+              <details class="url-avancado">
+                <summary>
+                  <span class="material-icons-round">expand_more</span>
+                  Usar link do Google Maps (avançado)
+                </summary>
+                <div class="url-content">
+                  <input type="text" id="localizacao" placeholder="Cole o link do Google Maps aqui" />
+                  <span class="helper-text">Este campo é atualizado automaticamente quando você marca no mapa.</span>
+                </div>
+              </details>
             </div>
 
             <div class="field">
@@ -1288,22 +1559,23 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbwdPWLdfJuzb_gr3vWqn6HAGc1vb-trUWzvIZlIOC6RMmvWRxB6qbNI15gPkWnyzxoSfQ/exec';
     const BASE_URL = 'https://whatslink-48tc.onrender.com/redirect.html?slug=';
     const MAX_WHATSAPP = 10;
-
-    // Limite ampliado: aceita até 25 MB (fotos de celular)
-    // A imagem é comprimida para WebP antes do upload (fica ~150-300 KB)
     const MAX_FILE_MB = 25;
-
-    // Qualidade WebP (0-100). 82% é o ponto doce entre qualidade e tamanho
     const WEBP_QUALITY = 0.82;
-
-    // Dimensões máximas (redimensiona mantendo proporção)
     const DIMENSOES = {
       logo:   { maxW: 800,  maxH: 800  },
       banner: { maxW: 1600, maxH: 800  }
     };
-
     const IMAGEKIT_UPLOAD_URL = 'https://upload.imagekit.io/api/v1/files/upload';
+
+    // Centro do Brasil para o mapa inicial
+    const BRASIL_CENTER = [-14.235, -51.9253];
+    const BRASIL_ZOOM = 4;
+
     let currentUser = null;
+    let mapa = null;                // instância do Leaflet
+    let marcador = null;            // marcador arrastável
+    let geolocationWatchId = null;  // id do watchPosition
+    let localAtiva = false;         // estado do botão toggle
 
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
@@ -1359,12 +1631,7 @@
     formatarWhatsApp($('#whatsapp'));
 
     // ============================================================
-    // CONVERSÃO PARA WEBP (no navegador, via Canvas API)
-    // ============================================================
-    // Recebe um File original e devolve um novo File já em WebP,
-    // redimensionado conforme o tipo (logo/banner).
-    //
-    // Se o navegador não suportar WebP (raro), retorna o arquivo original.
+    // CONVERSÃO PARA WEBP
     // ============================================================
     function converterParaWebP(file, tipo) {
       return new Promise((resolve) => {
@@ -1374,8 +1641,6 @@
 
         img.onload = () => {
           URL.revokeObjectURL(url);
-
-          // Calcula novas dimensões mantendo proporção
           let { width, height } = img;
           const { maxW, maxH } = dimensoes;
 
@@ -1385,26 +1650,17 @@
             height = Math.round(height * ratio);
           }
 
-          // Desenha em canvas
           const canvas = document.createElement('canvas');
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d');
-
-          // Fundo branco (para PNGs com transparência)
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, width, height);
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Exporta como WebP
           canvas.toBlob(
             (blob) => {
-              if (!blob) {
-                // Navegador não suportou WebP — usa o original
-                resolve(file);
-                return;
-              }
-              // Cria um File novo com extensão .webp
+              if (!blob) { resolve(file); return; }
               const nomeBase = (file.name || 'imagem').replace(/\.[^.]+$/, '');
               const novoFile = new File(
                 [blob],
@@ -1420,7 +1676,7 @@
 
         img.onerror = () => {
           URL.revokeObjectURL(url);
-          resolve(file); // fallback: envia original
+          resolve(file);
         };
 
         img.src = url;
@@ -1428,13 +1684,12 @@
     }
 
     // ============================================================
-    // UPLOAD DE IMAGEM — IMAGEKIT (signed upload)
+    // UPLOAD DE IMAGEM — IMAGEKIT
     // ============================================================
     function aplicarTransformacao(url, tipo) {
       if (!url) return '';
       if (url.includes('?tr=')) return url;
       if (!url.includes('ik.imagekit.io')) return url;
-      // A transformação ?tr= agora é só um "reforço" — a imagem já chega WebP
       const params = tipo === 'logo'
         ? 'tr=w-400,c-at_max,q-80,f-webp'
         : 'tr=w-1200,c-at_max,q-80,f-webp';
@@ -1458,7 +1713,6 @@
 
     function enviarImagemParaImageKit(file, auth, tipo) {
       return new Promise((resolve, reject) => {
-        // Como já convertemos para WebP, o arquivo chega com extensão .webp
         const ext = (file.name.split('.').pop() || 'webp').toLowerCase();
         const unique = Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         const fileName = tipo + '_' + unique + '.' + ext;
@@ -1479,7 +1733,6 @@
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) {
             const pct = Math.round((e.loaded / e.total) * 100);
-            // Reserva 30% da barra para o upload (o resto foi usado na conversão)
             atualizarBarraProgresso(tipo, 70 + Math.round(pct * 0.3));
           }
         };
@@ -1500,7 +1753,6 @@
       });
     }
 
-    // ---- UI do progresso ----
     function mostrarProgresso(tipo) {
       const el = document.getElementById(tipo + 'Progress');
       if (el) el.classList.add('active');
@@ -1525,16 +1777,11 @@
       if (st) { st.textContent = texto; st.classList.add('active'); }
     }
 
-    // ---- Fluxo completo de upload ----
     async function lidarComArquivo(file, tipo) {
       try {
         if (!file) return;
-        if (!file.type.startsWith('image/')) {
-          throw new Error('O arquivo precisa ser uma imagem');
-        }
-        if (file.size > MAX_FILE_MB * 1024 * 1024) {
-          throw new Error(`A imagem não pode passar de ${MAX_FILE_MB} MB`);
-        }
+        if (!file.type.startsWith('image/')) throw new Error('O arquivo precisa ser uma imagem');
+        if (file.size > MAX_FILE_MB * 1024 * 1024) throw new Error(`A imagem não pode passar de ${MAX_FILE_MB} MB`);
 
         const btn = document.getElementById(tipo + 'UploadBtn');
         if (btn) btn.disabled = true;
@@ -1542,27 +1789,20 @@
         atualizarBarraProgresso(tipo, 5);
         atualizarStatusTexto(tipo, 'Otimizando imagem...');
 
-        // 1) Converte para WebP (no navegador)
         const arquivoOtimizado = await converterParaWebP(file, tipo);
         atualizarBarraProgresso(tipo, 60);
         atualizarStatusTexto(tipo, 'Enviando...');
 
-        // 2) Pede autenticação ao backend
         const auth = await obterAutenticacaoImageKit();
         atualizarBarraProgresso(tipo, 70);
 
-        // 3) Envia para o ImageKit
         const urlBase = await enviarImagemParaImageKit(arquivoOtimizado, auth, tipo);
-
-        // 4) Aplica transformação (reforço — já é WebP)
         const urlFinal = aplicarTransformacao(urlBase, tipo);
 
-        // 5) Preenche o campo e atualiza preview
         const input = document.getElementById(tipo + 'Url');
         if (input) input.value = urlFinal;
         atualizarPreview(tipo);
 
-        // Feedback sobre a compressão
         const kbOriginal = (file.size / 1024).toFixed(0);
         const kbFinal = (arquivoOtimizado.size / 1024).toFixed(0);
         const reducao = Math.round((1 - arquivoOtimizado.size / file.size) * 100);
@@ -1577,7 +1817,6 @@
       }
     }
 
-    // ---- Atualiza o preview com base no campo URL ----
     function atualizarPreview(tipo) {
       const input = document.getElementById(tipo + 'Url');
       const preview = document.getElementById(tipo + 'Preview');
@@ -1601,7 +1840,6 @@
       atualizarPreview(tipo);
     }
 
-    // ---- Listeners dos botões de upload ----
     ['logo', 'banner'].forEach(tipo => {
       const btn = document.getElementById(tipo + 'UploadBtn');
       const fileInput = document.getElementById(tipo + 'File');
@@ -1622,10 +1860,233 @@
         urlInput.addEventListener('paste', () => setTimeout(() => atualizarPreview(tipo), 100));
       }
 
-      if (removeBtn) {
-        removeBtn.addEventListener('click', () => removerImagem(tipo));
-      }
+      if (removeBtn) removeBtn.addEventListener('click', () => removerImagem(tipo));
     });
+
+    // ============================================================
+    // MAPA INTERATIVO (Leaflet + OpenStreetMap)
+    // ============================================================
+    function iniciarMapa() {
+      const container = document.getElementById('mapaCriar');
+      if (!container || mapa) return;
+
+      // Cria o mapa centrado no Brasil
+      mapa = L.map('mapaCriar', {
+        center: BRASIL_CENTER,
+        zoom: BRASIL_ZOOM,
+        zoomControl: true
+      });
+
+      // Camada do OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(mapa);
+
+      // Marcador arrastável (criado só quando o usuário clicar/arrastar)
+      // Clique no mapa adiciona/move o pino
+      mapa.on('click', (e) => {
+        colocarMarcador(e.latlng.lat, e.latlng.lng);
+      });
+
+      // Se já existe valor no campo localizacao (edição futura), extrai e posiciona
+      const valorAtual = ($('#localizacao')?.value || '').trim();
+      const coords = extrairCoordsDoLink(valorAtual);
+      if (coords) {
+        colocarMarcador(coords.lat, coords.lng, false);
+        mapa.setView([coords.lat, coords.lng], 16);
+      }
+    }
+
+    function colocarMarcador(lat, lng, moverMapa = true) {
+      if (!mapa) return;
+
+      if (!marcador) {
+        marcador = L.marker([lat, lng], { draggable: true }).addTo(mapa);
+        marcador.on('dragend', () => {
+          const p = marcador.getLatLng();
+          atualizarLocalizacaoCampo(p.lat, p.lng);
+        });
+      } else {
+        marcador.setLatLng([lat, lng]);
+      }
+
+      if (moverMapa) {
+        mapa.setView([lat, lng], Math.max(mapa.getZoom(), 16));
+      }
+
+      atualizarLocalizacaoCampo(lat, lng);
+    }
+
+    function atualizarLocalizacaoCampo(lat, lng) {
+      const input = $('#localizacao');
+      if (!input) return;
+      const latFmt = Number(lat).toFixed(7);
+      const lngFmt = Number(lng).toFixed(7);
+      input.value = `https://www.google.com/maps?q=${latFmt},${lngFmt}`;
+    }
+
+    function extrairCoordsDoLink(url) {
+      if (!url) return null;
+      // Formatos aceitos:
+      //   https://www.google.com/maps?q=-3.73,-38.52
+      //   https://www.google.com/maps/place/.../@-3.73,-38.52,15z
+      const q = url.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (q) return { lat: parseFloat(q[1]), lng: parseFloat(q[2]) };
+      const at = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (at) return { lat: parseFloat(at[1]), lng: parseFloat(at[2]) };
+      return null;
+    }
+
+    // ============================================================
+    // TOGGLE DE LOCALIZAÇÃO (GPS)
+    // ============================================================
+    function atualizarUIlocalizacao(ativo) {
+      const btn = $('#locToggleBtn');
+      const desativar = $('#locDesativarBtn');
+      const aviso = $('#locAviso');
+      const icon = $('#locToggleIcon');
+      if (!btn) return;
+
+      localAtiva = ativo;
+
+      if (ativo) {
+        btn.classList.add('ativo');
+        btn.classList.remove('bloqueado');
+        desativar.classList.add('visivel');
+        aviso.classList.remove('visivel');
+        icon.textContent = 'my_location';
+      } else {
+        btn.classList.remove('ativo');
+        desativar.classList.remove('visivel');
+        icon.textContent = 'my_location';
+      }
+    }
+
+    function mostrarBloqueado() {
+      const btn = $('#locToggleBtn');
+      const desativar = $('#locDesativarBtn');
+      const aviso = $('#locAviso');
+      const icon = $('#locToggleIcon');
+      if (!btn) return;
+
+      btn.classList.add('bloqueado');
+      btn.classList.remove('ativo');
+      desativar.classList.remove('visivel');
+      aviso.classList.add('visivel');
+      icon.textContent = 'location_disabled';
+      localAtiva = false;
+    }
+
+    function ligarLocalizacao() {
+      if (!navigator.geolocation) {
+        showToast('Seu navegador não suporta localização', 'error');
+        return;
+      }
+
+      // Feedback visual enquanto espera
+      const btn = $('#locToggleBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span> Obtendo localização...';
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          colocarMarcador(lat, lng, true);
+          atualizarUIlocalizacao(true);
+          showToast('Localização detectada!', 'check_circle');
+
+          // Restaura o conteúdo do botão
+          btn.innerHTML = '<span class="material-icons-round" id="locToggleIcon">my_location</span>' +
+                          '<span class="label-off">Ativar minha localização</span>' +
+                          '<span class="label-on">Localização ativa</span>';
+          btn.disabled = false;
+        },
+        (err) => {
+          console.warn('[Geo] Erro:', err);
+          btn.disabled = false;
+          btn.innerHTML = '<span class="material-icons-round" id="locToggleIcon">my_location</span>' +
+                          '<span class="label-off">Ativar minha localização</span>' +
+                          '<span class="label-on">Localização ativa</span>';
+
+          if (err.code === err.PERMISSION_DENIED) {
+            mostrarBloqueado();
+            showToast('Permissão de localização negada', 'error');
+          } else if (err.code === err.POSITION_UNAVAILABLE) {
+            showToast('Não foi possível obter sua posição. Use o mapa.', 'error');
+          } else if (err.code === err.TIMEOUT) {
+            showToast('Tempo esgotado. Tente novamente ou use o mapa.', 'error');
+          } else {
+            showToast('Erro ao obter localização. Use o mapa.', 'error');
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    }
+
+    function desligarLocalizacao() {
+      // Não revoga permissão do navegador, só limpa o estado visual
+      atualizarUIlocalizacao(false);
+      // Remove o pino do mapa
+      if (marcador && mapa) {
+        mapa.removeLayer(marcador);
+        marcador = null;
+      }
+      // Volta o mapa para o Brasil
+      if (mapa) {
+        mapa.setView(BRASIL_CENTER, BRASIL_ZOOM);
+      }
+      // Limpa o campo
+      const input = $('#localizacao');
+      if (input) input.value = '';
+      showToast('Localização removida', 'info');
+    }
+
+    // ============================================================
+    // BUSCA POR ENDEREÇO (Nominatim / OpenStreetMap)
+    // ============================================================
+    let buscaTimeout = null;
+
+    async function buscarEndereco(query) {
+      if (!query || query.trim().length < 3) {
+        showToast('Digite um endereço com pelo menos 3 caracteres', 'info');
+        return;
+      }
+
+      const btn = $('#mapaBuscaBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>';
+
+      try {
+        const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' +
+                    encodeURIComponent(query);
+        const res = await fetch(url, {
+          headers: { 'Accept': 'application/json' }
+        });
+        const data = await res.json();
+
+        if (!data || data.length === 0) {
+          showToast('Endereço não encontrado', 'error');
+          return;
+        }
+
+        const lat = parseFloat(data[0].lat);
+        const lng = parseFloat(data[0].lon);
+        colocarMarcador(lat, lng, true);
+        showToast('Endereço encontrado!', 'check_circle');
+      } catch (err) {
+        console.error('[Busca]', err);
+        showToast('Erro ao buscar endereço', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-icons-round">search</span>';
+      }
+    }
 
     // ============================================================
     // GOOGLE IDENTITY SERVICES
@@ -1662,6 +2123,30 @@
       $('#userName').textContent = currentUser.nome || '';
       $('#userEmail').textContent = currentUser.email || '';
       $('#emailVinculado').textContent = currentUser.email || '';
+
+      // Inicia o mapa DEPOIS de mostrar o form (garante que o div já tem dimensões)
+      setTimeout(() => {
+        iniciarMapa();
+
+        // Se já está autorizado, ativa automático
+        if (navigator.permissions && navigator.permissions.query) {
+          navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+            if (result.state === 'granted') {
+              // Já autorizou antes — pega posição silenciosamente
+              navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                  colocarMarcador(pos.coords.latitude, pos.coords.longitude, true);
+                  atualizarUIlocalizacao(true);
+                },
+                () => {},
+                { enableHighAccuracy: true, timeout: 8000 }
+              );
+            } else if (result.state === 'denied') {
+              mostrarBloqueado();
+            }
+          }).catch(() => {});
+        }
+      }, 100);
     }
 
     function mostrarLogin() {
@@ -1681,6 +2166,50 @@
       try { currentUser = JSON.parse(savedUser); mostrarFormulario(); }
       catch { localStorage.removeItem('whatslink_user'); currentUser = null; }
     }
+
+    // ============================================================
+    // BOTÕES DA LOCALIZAÇÃO
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnToggle = $('#locToggleBtn');
+      const btnDesativar = $('#locDesativarBtn');
+      const btnBusca = $('#mapaBuscaBtn');
+      const inputBusca = $('#mapaBusca');
+
+      if (btnToggle) {
+        btnToggle.addEventListener('click', () => {
+          if (localAtiva) {
+            desligarLocalizacao();
+          } else {
+            ligarLocalizacao();
+          }
+        });
+      }
+
+      if (btnDesativar) {
+        btnDesativar.addEventListener('click', desligarLocalizacao);
+      }
+
+      if (btnBusca) {
+        btnBusca.addEventListener('click', () => buscarEndereco(inputBusca.value));
+      }
+
+      if (inputBusca) {
+        inputBusca.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            buscarEndereco(inputBusca.value);
+          }
+        });
+        // Debounce: busca automática após 800ms sem digitar
+        inputBusca.addEventListener('input', () => {
+          clearTimeout(buscaTimeout);
+          if (inputBusca.value.trim().length >= 5) {
+            buscaTimeout = setTimeout(() => buscarEndereco(inputBusca.value), 900);
+          }
+        });
+      }
+    });
 
     // ============================================================
     // GERENCIAMENTO DE WHATSAPP EXTRA (2 A 10)
@@ -1773,7 +2302,12 @@
         const urlExtraida = extrairUrlEmbed(valor);
         if (urlExtraida !== valor) {
           $('#localizacao').value = urlExtraida;
-          showToast('Link extraído automaticamente!');
+        }
+        // Se o usuário colou um link com coordenadas, posiciona no mapa
+        const coords = extrairCoordsDoLink(urlExtraida);
+        if (coords && mapa) {
+          colocarMarcador(coords.lat, coords.lng, true);
+          showToast('Localização atualizada no mapa!');
         }
       }, 100);
     });
